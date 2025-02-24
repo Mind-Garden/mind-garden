@@ -5,12 +5,10 @@ import { Particles } from '@/components/magicui/particles';
 import { Button } from '@/components/ui/button';
 import { ProfileDropdown } from '@/components/profile-dropdown';
 import { JournalButton } from '@/components/journal-button';
-import Footer from '@/components/footer';
-import DataIntakeForm from '@/components/data-intake-form';
-import {
-  selectAllFromAttributes,
-  selectAllFromCategories,
-} from '@/utils/supabase/dbfunctions';
+import Footer from '@/components/footer'
+import DataIntakeForm from "@/components/data-intake-form";
+import {selectAllFromAttributes, selectAllFromCategories} from "@/utils/supabase/dbfunctions";
+import { SleepTrackerButton } from '@/components/sleep-tracker-button'
 
 export default async function Dashboard() {
   const supabase = await createClient();
@@ -64,6 +62,8 @@ export default async function Dashboard() {
           <div className="flex items-center gap-4">
             {/* Button to go into journal page */}
             <JournalButton />
+            {/* Button to go into sleep tracker page */}
+            <SleepTrackerButton />
             {/* Notifications for next sprint not currently implemented */}
             <Button variant="ghost" size="icon">
               <Bell className="h-5 w-5" />

@@ -269,6 +269,43 @@ export async function deleteJournalEntry(entryId: string) {
   return await supabase.from('journal_entries').delete().eq('id', entryId);
 }
 
+/**
+ * Inserts new sleep entries into the database.
+ * @param startTime - Start time of the sleep
+ * @param endTime - End time of the sleep
+ * @param userId - The user's ID
+ */
+export async function insertSleepEntry(
+  startTime: string,
+  endTime: string,
+  userId: string,
+) {
+  // Get today's date for entry date
+  const entryDate = new Date().toISOString().split('T')[0];
+
+  // Check if an entry already exists for this user on today's date
+  const { data: existingEntry, error } = await selectData('sleep_entries', {
+    user_id: userId,
+    entry_date: entryDate,
+  });
+
+  if (error) {
+    console.error('Error checking existing sleep entry:', error);
+    return { error };
+  }
+
+  if (existingEntry && existingEntry.length > 0) {
+    return { error: 'An entry already exists for today.' };
+  }
+
+  return await insertData('sleep_entries', {
+    user_id: userId,
+    entry_date: entryDate,
+    start: startTime,
+    end: endTime,
+  });
+}
+
 export async function getRandomPrompt() {
   const supabase = createClient();
 
