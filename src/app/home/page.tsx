@@ -1,14 +1,13 @@
-import { redirect } from 'next/navigation';
-import { Bell } from 'lucide-react';
-import { createClient } from '@/utils/supabase/server';
-import { Particles } from '@/components/magicui/particles';
-import { Button } from '@/components/ui/button';
-import { ProfileDropdown } from '@/components/profile-dropdown';
-import { JournalButton } from '@/components/journal-button';
+import {redirect} from 'next/navigation';
+import {Bell} from 'lucide-react';
+import {createClient} from '@/utils/supabase/server';
+import {Button} from '@/components/ui/button';
+import {ProfileDropdown} from '@/components/profile-dropdown';
+import {JournalButton} from '@/components/journal-button';
 import Footer from '@/components/footer'
 import DataIntakeForm from "@/components/data-intake-form";
 import {selectAllFromAttributes, selectAllFromCategories} from "@/utils/supabase/dbfunctions";
-import { SleepTrackerButton } from '@/components/sleep-tracker-button'
+import {SleepTrackerButton} from '@/components/sleep-tracker-button'
 
 export default async function Dashboard() {
   const supabase = await createClient();

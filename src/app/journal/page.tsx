@@ -1,21 +1,20 @@
 // Core Imports
-import { redirect } from 'next/navigation';
+import {redirect} from 'next/navigation';
 
 // Third-Party
-import { Bell } from 'lucide-react';
+import {Bell} from 'lucide-react';
 
 // Utility
-import { createClient } from '@/utils/supabase/server';
+import {createClient} from '@/utils/supabase/server';
 
 // UI
-import { Particles } from '@/components/magicui/particles';
-import { Button } from '@/components/ui/button';
-import { ProfileDropdown } from '@/components/profile-dropdown';
-import { JournalButton } from '@/components/journal-button';
-import { JournalEntryCard } from '@/components/journal-entry';
+import {Button} from '@/components/ui/button';
+import {ProfileDropdown} from '@/components/profile-dropdown';
+import {JournalButton} from '@/components/journal-button';
+import {JournalEntryCard} from '@/components/journal-entry';
 import Footer from '@/components/footer';
-import { JournalSwipe } from "@/components/journal-swipe";
-import { SleepTrackerButton } from '@/components/sleep-tracker-button';
+import {JournalSwipe} from "@/components/journal-swipe";
+import {SleepTrackerButton} from '@/components/sleep-tracker-button';
 
 
 export default async function JournalPage() {

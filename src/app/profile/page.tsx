@@ -1,19 +1,15 @@
-import { redirect } from 'next/navigation';
-import { Bell } from 'lucide-react';
+import {redirect} from 'next/navigation';
+import {Bell} from 'lucide-react';
 
-import { createClient } from "@/utils/supabase/server"
-import { Particles } from "@/components/magicui/particles"
-import { Button } from "@/components/ui/button"
-import { Card, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
-import { ProfileDropdown } from "@/components/profile-dropdown";
-import { JournalButton } from "@/components/journal-button";
-import { SleepTrackerButton } from "@/components/sleep-tracker-button";
+import {createClient} from "@/utils/supabase/server"
+import {Button} from "@/components/ui/button"
+import {ProfileDropdown} from "@/components/profile-dropdown";
+import {JournalButton} from "@/components/journal-button";
+import {SleepTrackerButton} from "@/components/sleep-tracker-button";
 import ModifyAccount from '@/components/modify-account-info';
 import ModifyPassword from '@/components/modify-password';
 import DeleteAccount from '@/components/delete-account';
 import Footer from '@/components/footer';
-
-import { ToastContainer } from 'react-toastify';
 
 export default async function ProfilePage() {
   const supabase = await createClient();
@@ -36,7 +32,6 @@ export default async function ProfilePage() {
 
   return (
     <div className="min-h-screen flex flex-col">
-      <ToastContainer />
       <header className="border-b bg-white/50 backdrop-blur-sm mt-4 mx-4 rounded-full">
         <div className="container mx-auto px-4 h-16 flex items-center justify-between">
           <div className="flex items-center">

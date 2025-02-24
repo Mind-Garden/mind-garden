@@ -1,19 +1,18 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
-import { login, signup } from '../actions/auth';
-import { Input } from '@/components/ui/input';
-import { Button } from '@/components/ui/button';
-import { Label } from '@/components/ui/label';
-import { Card, CardContent } from '@/components/ui/card';
-import { Mail, Lock, User, CircleAlert, LoaderCircle } from 'lucide-react';
-import { Particles } from '@/components/magicui/particles';
-import { WordRotate } from '@/components/magicui/word-rotate';
+import React, {useEffect, useState} from 'react';
+import {login, signup} from '@/actions/auth';
+import {Input} from '@/components/ui/input';
+import {Button} from '@/components/ui/button';
+import {Label} from '@/components/ui/label';
+import {Card, CardContent} from '@/components/ui/card';
+import {CircleAlert, LoaderCircle, Lock, Mail, User} from 'lucide-react';
+import {WordRotate} from '@/components/magicui/word-rotate';
 import Footer from '@/components/footer';
-import { useRouter } from 'next/navigation'; 
-import { forgotPassword } from '@/actions/auth';
-import { toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css"; 
+import {useRouter} from 'next/navigation';
+import {forgotPassword} from '@/actions/auth';
+import {toast} from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 export default function Home() {
   const [isLogin, setIsLogin] = useState(true);

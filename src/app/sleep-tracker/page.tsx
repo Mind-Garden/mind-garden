@@ -1,20 +1,19 @@
-// Core Imports  
-import { redirect } from 'next/navigation';
+// Core Imports
+import {redirect} from 'next/navigation';
 
-// Third-Party 
-import { Bell } from "lucide-react";
+// Third-Party
+import {Bell} from "lucide-react";
 
 // Utility
-import { createClient } from '@/utils/supabase/server';
+import {createClient} from '@/utils/supabase/server';
 
 // UI
-import { Particles } from "@/components/magicui/particles";
-import { Button } from "@/components/ui/button";
-import { ProfileDropdown } from '@/components/profile-dropdown';
-import { JournalButton } from '@/components/journal-button';
+import {Button} from "@/components/ui/button";
+import {ProfileDropdown} from '@/components/profile-dropdown';
+import {JournalButton} from '@/components/journal-button';
 import Footer from '@/components/footer';
-import { SleepTrackerButton } from '@/components/sleep-tracker-button';
-import { SleepEntryCard } from '@/components/sleep-entry';
+import {SleepTrackerButton} from '@/components/sleep-tracker-button';
+import {SleepEntryCard} from '@/components/sleep-entry';
 
 export default async function SleepTrackerPage() {
   const supabase = await createClient();

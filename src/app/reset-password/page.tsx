@@ -1,13 +1,12 @@
 'use client';
 
-import { redirect } from "next/navigation"
-import { Particles } from "@/components/magicui/particles"
+import {redirect} from "next/navigation"
+import {Particles} from "@/components/magicui/particles"
 import Footer from "@/components/footer";
 import ResetPassword from "@/components/reset-password";
-import { ToastContainer } from "react-toastify";
-import { useEffect, useState } from 'react';
-import { toast } from "react-toastify";
-import { authenticateResetCode } from "@/actions/auth";
+import {toast} from "react-toastify";
+import {useEffect, useState} from 'react';
+import {authenticateResetCode} from "@/actions/auth";
 
 export default function ResetPasswordPage() { 
   const [session, setSession] = useState<any | null>(null);
@@ -40,16 +39,8 @@ export default function ResetPasswordPage() {
   }
 
   return (
-    <div
-      className="min-h-screen flex flex-col"
-      style={{
-        backgroundImage: "url(/gradient.svg)",
-        backgroundSize: "cover",
-      }}
-    >
+    <div className="min-h-screen flex flex-col">
       <Particles className="absolute inset-0 z-0" quantity={200} ease={80} color={"#000000"} refresh />
-      <ToastContainer/>
-
       <main className="flex-1 container mx-auto px-4 py-8">
         <div className="max-w-2xl mx-auto space-y-8">
           {session ? <ResetPassword session={session} /> : null}
