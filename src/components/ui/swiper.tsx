@@ -35,15 +35,18 @@ function SwiperUI<T extends {}>({
         className="journal-swiper"
         onSlideChange={(swiper) => {
           setActiveIndex(swiper.activeIndex);
-          // Only trigger when on the last slide
           if (swiper.isEnd && swiper.activeIndex === data.length - 1) {
             onReachEnd?.();
           }
         }}
       >
         {data.map((item, index) => (
-          <SwiperSlide key={index}>
-            <div className="bg-white/80 backdrop-blur-sm p-8 rounded-2xl shadow-lg transition-all duration-300 hover:shadow-xl min-h-[300px] flex flex-col">
+          <SwiperSlide key={index} className="transition-opacity duration-500">
+            <div
+              className={`p-8 rounded-2xl shadow-lg transition-all duration-300 hover:shadow-xl min-h-[300px] flex flex-col
+                ${activeIndex === index ? 'opacity-100' : 'opacity-0'}
+              `}
+            >
               {renderSlide(item)}
             </div>
           </SwiperSlide>
@@ -52,7 +55,11 @@ function SwiperUI<T extends {}>({
 
       {/* Show current entry position */}
       <div className="text-center mt-4 text-sm text-gray-600">
-        Journal Entry {activeIndex + 1} of {data.length}
+        {data.length > 0 ? (
+          <>Journal Entry {activeIndex + 1} of {data.length}</>
+        ) : (
+          <>No entries for this day</>
+        )}
       </div>
     </div>
   );

@@ -11,10 +11,9 @@ import { createClient } from '@/utils/supabase/server';
 import { Button } from '@/components/ui/button';
 import { ProfileDropdown } from '@/components/profile-dropdown';
 import { JournalButton } from '@/components/journal-button';
-import { JournalEntryCard } from '@/components/journal-entry';
 import Footer from '@/components/footer';
-import { JournalSwipe } from '@/components/journal-swipe';
 import { SleepTrackerButton } from '@/components/sleep-tracker-button';
+import { Journal } from '@/components/journal';
 
 export default async function JournalPage() {
   const supabase = await createClient();
@@ -64,12 +63,8 @@ export default async function JournalPage() {
       </header>
 
       {/* Main Content */}
-      <main className="flex-1 container mx-auto px-4 py-8">
-        <JournalEntryCard userId={userId} />
-        <div className="mb-8">
-          {/* Journal Entries */}
-          <JournalSwipe userId={userId} />
-        </div>
+      <main className="max-w-6xl mx-auto bg-white/50 backdrop-blur-sm">
+        <Journal userId = {userId} />
       </main>
 
       {/* Footer */}

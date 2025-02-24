@@ -30,6 +30,7 @@ import { JournalEntry } from '@/components/journal-swipe'; // Import JournalEntr
 export function JournalEntryEditCard(item: Readonly<JournalEntry>) {
   const [entry, setEntry] = useState(item.journal_text);
   const [isUpdating, setIsUpdating] = useState(false);
+  const [isDeleted, setIsDeleted] = useState(false); // New state to track deletion
 
   const formattedDate = new Date(
     item.entry_date + 'T00:00:00Z',
@@ -48,7 +49,6 @@ export function JournalEntryEditCard(item: Readonly<JournalEntry>) {
     }
 
     setIsUpdating(true);
-
     const result = await updateJournalEntry(item.id, entry);
     setIsUpdating(false);
 
@@ -57,13 +57,20 @@ export function JournalEntryEditCard(item: Readonly<JournalEntry>) {
       : toast.success('Journal entry updated successfully!');
   };
 
+  // Handles deleting the journal entry
   const handleDelete = async () => {
     const result = await deleteJournalEntry(item.id);
 
-    result?.error
-      ? toast.error('Failed to delete journal entry.')
-      : toast.success('Journal entry deleted successfully!');
+    if (result?.error) {
+      toast.error('Failed to delete journal entry.');
+    } else {
+      toast.success('Journal entry deleted successfully!');
+      setIsDeleted(true); // Hide component after successful deletion
+    }
   };
+
+  // If deleted, return nothing (removes the component from UI)
+  if (isDeleted) return null;
 
   return (
     <div className="max-w-2xl mx-auto space-y-8">
@@ -97,7 +104,9 @@ export function JournalEntryEditCard(item: Readonly<JournalEntry>) {
           <Button onClick={handleUpdate} disabled={isUpdating}>
             {isUpdating ? 'Updating...' : 'Update Entry'}
           </Button>
-          <Button onClick={handleDelete}> Delete Entry </Button>
+          <Button onClick={handleDelete} variant="destructive">
+            Delete Entry
+          </Button>
         </CardFooter>
       </Card>
     </div>

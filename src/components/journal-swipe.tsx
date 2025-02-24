@@ -27,13 +27,10 @@ export interface JournalEntry {
  * Custom hook to manage journal entries with pagination
  * This hook handles loading, storing, and fetching more entries as needed
  */
-function useJournalEntries(userId: string) {
+function useJournalEntries(userId: string, date: Date) {
   const [entries, setEntries] = useState<JournalEntry[]>([]);
-  const [currentEntryId, setCurrentEntryId] = useState('');
   const [isLoading, setIsLoading] = useState(false); // used to prevent multiple fetches
   const [hasMore, setHasMore] = useState(true); // used to determine if there are more entries to fetch
-  const ENTRIES_PER_PAGE = 5;
-
   const fetchMoreEntries = async () => {
     // Prevent fetching more entries if we're already loading or at the end
     if (isLoading || !hasMore) return;
@@ -42,7 +39,7 @@ function useJournalEntries(userId: string) {
     try {
       const { data, error } = await selectJournalEntries(
         userId,
-        currentEntryId,
+        date,
       );
 
       if (error) throw error;
@@ -55,28 +52,20 @@ function useJournalEntries(userId: string) {
           const uniqueNewEntries = newEntries.filter(
             (entry) => !existingIds.has(entry.id),
           );
-
-          //set the last retrieved entry ID
-          const lastEntry = data[data.length - 1] as unknown as JournalEntry;
-          if (lastEntry?.id) {
-            setCurrentEntryId(lastEntry.id);
-          }
-          //check if there more entries to fetch
-          setHasMore(data.length >= ENTRIES_PER_PAGE);
           return [...prev, ...uniqueNewEntries];
         });
       }
     } catch (error) {
       console.error('Error fetching journal entries:', error);
-    } finally {
-      setIsLoading(false);
+    } finally
+    {
+      setIsLoading(false)
     }
   };
 
   // Reset everything when userId changes
   useEffect(() => {
     setEntries([]);
-    setCurrentEntryId('');
     setHasMore(true);
     fetchMoreEntries();
   }, [userId]); // Add userId as a dependency
@@ -95,12 +84,13 @@ function useJournalEntries(userId: string) {
  */
 interface JournalSwipeProps {
   readonly userId: string;
+  readonly date: Date;
 }
 
-export function JournalSwipe({ userId }: JournalSwipeProps) {
+export function JournalSwipe({ userId, date}: JournalSwipeProps) {
   // Use our custom hook to manage entries
   const { entries, isLoading, hasMore, fetchMoreEntries } =
-    useJournalEntries(userId);
+    useJournalEntries(userId,date);
 
   return (
     <div className="container flex flex-col items-center justify-center pt-5">

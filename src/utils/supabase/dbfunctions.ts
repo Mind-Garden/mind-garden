@@ -67,47 +67,6 @@ export async function selectData<T>(
   return { data };
 }
 
-/**
- * Selects data from a given Supabase table with pagination support
- * @param table - The name of the table
- * @param conditions - The conditions for filtering data (optional)
- * @param columns - The columns to select (optional, defaults to all columns)
- * @param lastEntryId - The ID of the last fetched entry for pagination
- * @param rangeEnd - The number of entries to fetch
- * @returns - The selected data or error
- * This will be the function for all our select operations with pagination (private to this script)
- */
-export async function selectDataLazy<T>(
-  table: string,
-  conditions?: object,
-  columns: string[] = ['*'],
-  lastRetrievedId: string | null = null,
-  rangeEnd: number = 5,
-) {
-  const supabase = createClient();
-  let query = supabase.from(table).select(columns.join(', '));
-
-  if (conditions) {
-    query = query.match(conditions);
-  }
-
-  // If lastEntryId is provided, we'll fetch entries that come after this ID
-  if (lastRetrievedId) {
-    query = query.gt('id', lastRetrievedId);
-  }
-
-  // Apply pagination using limit and ordering by id in ascending order
-  query = query.order('id', { ascending: true }).limit(rangeEnd);
-
-  const { data, error } = await query;
-
-  if (error) {
-    console.error(`Error selecting from ${table}:`, error.message);
-    return { error };
-  }
-
-  return { data };
-}
 
 /**
  * Selects journal entries for a specific user, using entry ID for pagination
@@ -118,14 +77,15 @@ export async function selectDataLazy<T>(
  */
 export async function selectJournalEntries(
   userId: string,
-  lastEntryId: string | null,
+  date: Date,
   columns: string[] = ['*'],
 ) {
-  const { data, error } = await selectDataLazy(
+  const { data, error } = await selectData(
     'journal_entries',
-    { user_id: userId },
-    columns,
-    lastEntryId,
+    { user_id: userId,
+      entry_date: date.toISOString().split('T')[0]
+    },
+    columns
   );
 
   if (error) {
@@ -134,6 +94,22 @@ export async function selectJournalEntries(
   }
 
   return { data };
+}
+
+export async function getUniqueEntryDates(userId: string) {
+  // Fetch distinct entry_dates for the given userId
+  const { data, error } = await selectData(
+    'journal_entries', // Table name
+    { user_id: userId }, // Condition to match the user ID
+    ['entry_date'] // Select unique dates only
+  );
+
+  if (error) {
+    console.error('Error fetching unique entry dates:', error);
+    return { error };
+  }
+
+  return {data};
 }
 
 /**

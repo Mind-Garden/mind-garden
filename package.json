@@ -38,6 +38,7 @@
     "next": "15.1.5",
     "node-fetch": "^2.7.0",
     "react": "^19.0.0",
+    "react-day-picker": "^8.10.1",
     "react-dom": "^19.0.0",
     "react-swipe": "^6.0.4",
     "react-toastify": "^11.0.3",
