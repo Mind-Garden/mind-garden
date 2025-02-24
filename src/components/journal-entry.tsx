@@ -25,6 +25,7 @@ import {
 } from '@/components/ui/card';
 import { TextArea } from '@/components/ui/textarea';
 import { Button } from '@/components/ui/button';
+import { RandomPromptCard } from './random-prompt-card';
 
 interface JournalEntryProps {
   readonly userId: string;
@@ -67,6 +68,7 @@ export function JournalEntryCard({ userId }: JournalEntryProps) {
 
   return (
     <div className="max-w-2xl mx-auto space-y-8">
+      <RandomPromptCard />
       <Card className="bg-white/50 backdrop-blur-sm rounded-2xl">
         {/* Header */}
         <CardHeader>
