@@ -1,14 +1,14 @@
-'use client'
+'use client';
 
 import React, { useEffect, useState } from 'react';
-import { login, signup } from "../actions/auth";
-import { Input } from "@/components/ui/input"
-import { Button } from "@/components/ui/button"
-import { Label } from "@/components/ui/label"
-import { Card, CardContent } from "@/components/ui/card"
-import { Mail, Lock, User, CircleAlert, LoaderCircle } from "lucide-react"
-import { Particles } from "@/components/magicui/particles";
-import { WordRotate } from "@/components/magicui/word-rotate";
+import { login, signup } from '../actions/auth';
+import { Input } from '@/components/ui/input';
+import { Button } from '@/components/ui/button';
+import { Label } from '@/components/ui/label';
+import { Card, CardContent } from '@/components/ui/card';
+import { Mail, Lock, User, CircleAlert, LoaderCircle } from 'lucide-react';
+import { Particles } from '@/components/magicui/particles';
+import { WordRotate } from '@/components/magicui/word-rotate';
 import Footer from '@/components/footer';
 import { useRouter } from 'next/navigation'; 
 import { forgotPassword } from '@/actions/auth';
@@ -73,21 +73,29 @@ export default function Home() {
   };
 
   return (
-    <div className="min-h-screen w-full flex flex-col items-center justify-center py-16" style={{
-      backgroundImage: `url(/gradient.svg)`, backgroundSize: "cover",
-    }}>
+    <div
+      className="min-h-screen w-full flex flex-col items-center justify-center py-16"
+      style={{
+        backgroundImage: `url(/gradient.svg)`,
+        backgroundSize: 'cover',
+      }}
+    >
       <Particles
         className="absolute inset-0 z-0"
         quantity={200}
         ease={80}
-        color={"#000000"}
+        color={'#000000'}
         refresh
       />
 
       {/* Title, logo and tagline */}
       <div className="text-center mb-12 relative">
         <div className=" flex items-center justify-center">
-          <img src="/logo.png" alt="Mind Garden Logo" className="h-20 w-20 mx-auto mb-4 mr-7" />
+          <img
+            src="/logo.png"
+            alt="Mind Garden Logo"
+            className="h-20 w-20 mx-auto mb-4 mr-7"
+          />
           <h1 className="text-7xl md:text-8xl font-bold bg-gradient-to-r from-green-400 to-blue-400 text-transparent bg-clip-text mb-4">
             Mind Garden
           </h1>
@@ -98,17 +106,17 @@ export default function Home() {
             <WordRotate
               className="inline-block"
               words={[
-                "Mental Wellness",
-                "Growth",
-                "Mindfulness",
-                "Balance",
-                "Resilience",
-                "Well-being",
-                "Potential",
-                "Focus",
-                "Happiness",
-                "Strength",
-                "Self-awareness"
+                'Mental Wellness',
+                'Growth',
+                'Mindfulness',
+                'Balance',
+                'Resilience',
+                'Well-being',
+                'Potential',
+                'Focus',
+                'Happiness',
+                'Strength',
+                'Self-awareness',
               ]}
             />
           </span>
@@ -137,17 +145,33 @@ export default function Home() {
             {!isLogin && (
               <div className="grid grid-cols-2 gap-8">
                 <div className="space-y-3">
-                  <Label htmlFor="firstName" className="text-base">First Name</Label>
+                  <Label htmlFor="firstName" className="text-base">
+                    First Name
+                  </Label>
                   <div className="relative">
                     <User className="absolute left-4 top-3.5 h-5 w-5 text-gray-400" />
-                    <Input id="firstName" name="firstName" placeholder="John" className="pl-12 h-12 text-lg" required />
+                    <Input
+                      id="firstName"
+                      name="firstName"
+                      placeholder="John"
+                      className="pl-12 h-12 text-lg"
+                      required
+                    />
                   </div>
                 </div>
                 <div className="space-y-3">
-                  <Label htmlFor="lastName" className="text-base">Last Name</Label>
+                  <Label htmlFor="lastName" className="text-base">
+                    Last Name
+                  </Label>
                   <div className="relative">
                     <User className="absolute left-4 top-3.5 h-5 w-5 text-gray-400" />
-                    <Input id="lastName" name="lastName" placeholder="Doe" className="pl-12 h-12 text-lg" required />
+                    <Input
+                      id="lastName"
+                      name="lastName"
+                      placeholder="Doe"
+                      className="pl-12 h-12 text-lg"
+                      required
+                    />
                   </div>
                 </div>
               </div>
@@ -155,7 +179,9 @@ export default function Home() {
 
             {/* Email */}
             <div className="space-y-3">
-              <Label htmlFor="email" className="text-base">Email</Label>
+              <Label htmlFor="email" className="text-base">
+                Email
+              </Label>
               <div className="relative">
                 <Mail className="absolute left-4 top-3.5 h-5 w-5 text-gray-400" />
                 <Input
@@ -172,7 +198,9 @@ export default function Home() {
             {/* Password */}
             <div className="space-y-3">
               <div className="flex items-center justify-between">
-                <Label htmlFor="password" className="text-base">Password</Label>
+                <Label htmlFor="password" className="text-base">
+                  Password
+                </Label>
                 {isLogin && (
                   <p className="text-base text-green-600 hover:text-green-700 transition-colors"
                     onClick={handleForgotPassword}>
@@ -187,7 +215,9 @@ export default function Home() {
                   name="password"
                   type="password"
                   required
-                  placeholder={isLogin ? "Enter your password" : "Create a strong password"}
+                  placeholder={
+                    isLogin ? 'Enter your password' : 'Create a strong password'
+                  }
                   className="pl-12 h-12 text-lg"
                 />
               </div>
@@ -202,29 +232,36 @@ export default function Home() {
               {isLoading ? (
                 <>
                   <LoaderCircle className="h-5 w-5 animate-spin" />
-                  <span>{isLogin ? "Unlocking your garden.." : "Sprouting your account..."}</span>
+                  <span>
+                    {isLogin
+                      ? 'Unlocking your garden..'
+                      : 'Sprouting your account...'}
+                  </span>
                 </>
               ) : (
-                <span>{isLogin ? "Log in" : "Sign up"}</span>
+                <span>{isLogin ? 'Log in' : 'Sign up'}</span>
               )}
             </Button>
 
             {/* Toggle between login and signup */}
             <div className="text-center">
-              <span className="text-base text-gray-600">{isLogin ? "Don't have an account?" : "Already have an account?"}</span>{" "}
+              <span className="text-base text-gray-600">
+                {isLogin
+                  ? "Don't have an account?"
+                  : 'Already have an account?'}
+              </span>{' '}
               <button
                 type="button"
                 onClick={() => setIsLogin(!isLogin)}
                 className="text-base text-green-600 hover:text-green-700 font-medium transition-colors"
               >
-                {isLogin ? "Sign up" : "Log in"}
+                {isLogin ? 'Sign up' : 'Log in'}
               </button>
             </div>
-
           </form>
         </CardContent>
       </Card>
       <Footer />
     </div>
-  )
+  );
 }

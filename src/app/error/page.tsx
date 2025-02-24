@@ -1,13 +1,13 @@
-'use client'
+'use client';
 
 export default function ErrorPage() {
   return (
-    <div 
+    <div
       className="min-h-screen flex items-center justify-center p-4"
       style={{
         backgroundImage: `url(/gradient.svg)`,
-        backgroundSize: "cover",
-        backgroundPosition: "center",
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
       }}
     >
       <div className="w-full max-w-md bg-white shadow-2xl rounded-2xl p-8 border border-green-100 text-center">
