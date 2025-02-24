@@ -14,7 +14,9 @@ import { ProfileDropdown } from '@/components/profile-dropdown';
 import { JournalButton } from '@/components/journal-button';
 import { JournalEntryCard } from '@/components/journal-entry';
 import Footer from '@/components/footer';
-import { JournalSwipe } from '@/components/journal-swipe';
+import { JournalSwipe } from "@/components/journal-swipe";
+import { SleepTrackerButton } from '@/components/sleep-tracker-button';
+
 
 export default async function JournalPage() {
   const supabase = await createClient();
@@ -67,6 +69,7 @@ export default async function JournalPage() {
           <div className="flex items-center gap-4">
             {/* Journal Button */}
             <JournalButton />
+            <SleepTrackerButton />
             {/* Notifications */}
             <Button variant="ghost" size="icon">
               <Bell className="h-5 w-5" />

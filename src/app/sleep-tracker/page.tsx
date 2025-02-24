@@ -1,19 +1,22 @@
+// Core Imports  
 import { redirect } from 'next/navigation';
-import { Bell } from 'lucide-react';
+
+// Third-Party 
+import { Bell } from "lucide-react";
+
+// Utility
 import { createClient } from '@/utils/supabase/server';
-import { Particles } from '@/components/magicui/particles';
-import { Button } from '@/components/ui/button';
+
+// UI
+import { Particles } from "@/components/magicui/particles";
+import { Button } from "@/components/ui/button";
 import { ProfileDropdown } from '@/components/profile-dropdown';
 import { JournalButton } from '@/components/journal-button';
 import Footer from '@/components/footer';
-import DataIntakeForm from '@/components/data-intake/data-intake-form';
-import {
-  selectAllFromAttributes,
-  selectAllFromCategories,
-} from '@/utils/supabase/dbfunctions';
-import { SleepTrackerButton } from '@/components/sleep-tracker-button'
+import { SleepTrackerButton } from '@/components/sleep-tracker-button';
+import { SleepEntryCard } from '@/components/sleep-entry';
 
-export default async function Dashboard() {
+export default async function SleepTrackerPage() {
   const supabase = await createClient();
 
   const { data: authData, error: authError } = await supabase.auth.getUser();
@@ -28,62 +31,56 @@ export default async function Dashboard() {
     .eq('id', userId)
     .single();
 
-  const categories = await selectAllFromCategories();
-  const attributes = await selectAllFromAttributes();
-
-  if (!categories || !attributes) {
-    console.error('Failed to fetch categories or attributes.');
-    redirect('/error');
-  }
-
-  if (profileError) {
+  if (profileError || !profileData) {
     redirect('/error');
   }
 
   return (
-    <div className="min-h-screen flex flex-col inset-0 z-0 bg-gradient animate-gradient">
+    <div
+      className="min-h-screen flex flex-col"
+      style={{
+        backgroundImage: `url(/gradient.svg)`,
+        backgroundSize: "cover",
+      }}
+    >
+      {/* Particles Background */}
       <Particles
-        // Particles background
         className="absolute inset-0 z-0"
         quantity={200}
         ease={80}
-        color={'#000000'}
+        color={"#000000"}
         refresh
       />
 
+      {/* Header */}
       <header className="border-b bg-white/50 backdrop-blur-sm mt-4 mx-4 rounded-full">
         <div className="container mx-auto px-4 h-16 flex items-center justify-between">
           {/* Logo */}
           <div className="flex items-center">
-            <img
-              src="/logo.png"
-              alt="Mind Garden Logo"
-              className="h-7 w-7 mr-2"
-            />
+            <img src="/logo.png" alt="Mind Garden Logo" className="h-7 w-7 mr-2" />
             <p className="text-2xl font-semibold text-green-700">Mind Garden</p>
           </div>
           <div className="flex items-center gap-4">
-            {/* Button to go into journal page */}
+            {/* Journal Button */}
             <JournalButton />
-            {/* Button to go into sleep tracker page */}
+            {/* Sleep Tracker Button */}
             <SleepTrackerButton />
-            {/* Notifications for next sprint not currently implemented */}
+            {/* Notifications */}
             <Button variant="ghost" size="icon">
               <Bell className="h-5 w-5" />
             </Button>
+            {/* Profile Dropdown */}
             <ProfileDropdown />
           </div>
         </div>
       </header>
 
+      {/* Main Content */}
       <main className="flex-1 container mx-auto px-4 py-8">
-        <DataIntakeForm
-          userId={userId}
-          categories={categories}
-          attributes={attributes}
-        />
+      <SleepEntryCard userId={userId} />
       </main>
 
+      {/* Footer */}
       <Footer />
     </div>
   );
