@@ -6,7 +6,7 @@ import { Button } from '@/components/ui/button';
 import { ProfileDropdown } from '@/components/profile-dropdown';
 import { JournalButton } from '@/components/journal-button';
 import Footer from '@/components/footer';
-import DataIntakeForm from '@/components/data-intake-form';
+import DataIntakeForm from '@/components/data-intake/data-intake-form';
 import {
   selectAllFromAttributes,
   selectAllFromCategories,
