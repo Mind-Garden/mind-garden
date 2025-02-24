@@ -1,13 +1,19 @@
 import { redirect } from 'next/navigation';
 import { Bell } from 'lucide-react';
 
-import { createClient } from "@/utils/supabase/server"
-import { Particles } from "@/components/magicui/particles"
-import { Button } from "@/components/ui/button"
-import { Card, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
-import { ProfileDropdown } from "@/components/profile-dropdown";
-import { JournalButton } from "@/components/journal-button";
-import { SleepTrackerButton } from "@/components/sleep-tracker-button";
+import { createClient } from '@/utils/supabase/server';
+import { Particles } from '@/components/magicui/particles';
+import { Button } from '@/components/ui/button';
+import {
+  Card,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card';
+import { ProfileDropdown } from '@/components/profile-dropdown';
+import { JournalButton } from '@/components/journal-button';
+import { SleepTrackerButton } from '@/components/sleep-tracker-button';
 import ModifyAccount from '@/components/modify-account-info';
 import ModifyPassword from '@/components/modify-password';
 import DeleteAccount from '@/components/delete-account';

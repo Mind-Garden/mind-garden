@@ -10,10 +10,10 @@ import { Mail, Lock, User, CircleAlert, LoaderCircle } from 'lucide-react';
 import { Particles } from '@/components/magicui/particles';
 import { WordRotate } from '@/components/magicui/word-rotate';
 import Footer from '@/components/footer';
-import { useRouter } from 'next/navigation'; 
+import { useRouter } from 'next/navigation';
 import { forgotPassword } from '@/actions/auth';
-import { toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css"; 
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 export default function Home() {
   const [isLogin, setIsLogin] = useState(true);
@@ -46,26 +46,26 @@ export default function Home() {
   }, [isLogin]);
 
   /**
-   * Handles the forgot password functionality. It prompts the user to 
+   * Handles the forgot password functionality. It prompts the user to
    * enter their email address and sends a reset email if the email is
    * valid. If the email is not valid or there is any other issue, it
    * shows an error message.
    */
   const handleForgotPassword = async () => {
-    const email = document.querySelector<HTMLInputElement>("#email")?.value;
-    
+    const email = document.querySelector<HTMLInputElement>('#email')?.value;
+
     if (!email) {
-      toast.warn("Please enter your email first.");
+      toast.warn('Please enter your email first.');
       return;
     }
-  
+
     setIsLoading(true);
     try {
       const { error, success } = await forgotPassword(email);
       if (error) {
         setError(error);
       } else {
-        toast.success("Password reset email sent successfully.");
+        toast.success('Password reset email sent successfully.');
       }
     } finally {
       setIsLoading(false);
@@ -202,8 +202,10 @@ export default function Home() {
                   Password
                 </Label>
                 {isLogin && (
-                  <p className="text-base text-green-600 hover:text-green-700 transition-colors"
-                    onClick={handleForgotPassword}>
+                  <p
+                    className="text-base text-green-600 hover:text-green-700 transition-colors"
+                    onClick={handleForgotPassword}
+                  >
                     Forgot password?
                   </p>
                 )}

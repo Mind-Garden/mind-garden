@@ -1,20 +1,20 @@
-"use client"; 
+'use client';
 
 // Core imports
-import { useRouter } from 'next/navigation'
+import { useRouter } from 'next/navigation';
 
 // Third party
-import { Moon } from "lucide-react"
+import { Moon } from 'lucide-react';
 
 // UI
-import { Button } from "@/components/ui/button";
+import { Button } from '@/components/ui/button';
 
 export function SleepTrackerButton() {
-    const { push } = useRouter();
+  const { push } = useRouter();
 
-    return  (
+  return (
     <Button onClick={() => push('/sleep-tracker')} variant="ghost" size="icon">
-    <Moon className="h-5 w-5" />
-    </Button>  
-    )
+      <Moon className="h-5 w-5" />
+    </Button>
+  );
 }

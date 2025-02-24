@@ -14,9 +14,8 @@ import { ProfileDropdown } from '@/components/profile-dropdown';
 import { JournalButton } from '@/components/journal-button';
 import { JournalEntryCard } from '@/components/journal-entry';
 import Footer from '@/components/footer';
-import { JournalSwipe } from "@/components/journal-swipe";
+import { JournalSwipe } from '@/components/journal-swipe';
 import { SleepTrackerButton } from '@/components/sleep-tracker-button';
-
 
 export default async function JournalPage() {
   const supabase = await createClient();

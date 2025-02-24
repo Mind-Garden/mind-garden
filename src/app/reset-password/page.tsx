@@ -1,21 +1,21 @@
 'use client';
 
-import { redirect } from "next/navigation"
-import { Particles } from "@/components/magicui/particles"
-import Footer from "@/components/footer";
-import ResetPassword from "@/components/reset-password";
-import { ToastContainer } from "react-toastify";
+import { redirect } from 'next/navigation';
+import { Particles } from '@/components/magicui/particles';
+import Footer from '@/components/footer';
+import ResetPassword from '@/components/reset-password';
+import { ToastContainer } from 'react-toastify';
 import { useEffect, useState } from 'react';
-import { toast } from "react-toastify";
-import { authenticateResetCode } from "@/actions/auth";
+import { toast } from 'react-toastify';
+import { authenticateResetCode } from '@/actions/auth';
 
-export default function ResetPasswordPage() { 
+export default function ResetPasswordPage() {
   const [session, setSession] = useState<any | null>(null);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     const urlParams = new URLSearchParams(window.location.search);
-    const code = urlParams.get("code");
+    const code = urlParams.get('code');
 
     if (code) {
       const fetchSession = async () => {
@@ -24,8 +24,8 @@ export default function ResetPasswordPage() {
         if (error) {
           setError(error);
           setSession(null);
-          toast("Failed to authenticate with reset code.");
-          redirect("/")
+          toast('Failed to authenticate with reset code.');
+          redirect('/');
         } else {
           setSession(data);
         }
@@ -36,19 +36,25 @@ export default function ResetPasswordPage() {
   }, []);
 
   if (error) {
-    redirect("/error");
+    redirect('/error');
   }
 
   return (
     <div
       className="min-h-screen flex flex-col"
       style={{
-        backgroundImage: "url(/gradient.svg)",
-        backgroundSize: "cover",
+        backgroundImage: 'url(/gradient.svg)',
+        backgroundSize: 'cover',
       }}
     >
-      <Particles className="absolute inset-0 z-0" quantity={200} ease={80} color={"#000000"} refresh />
-      <ToastContainer/>
+      <Particles
+        className="absolute inset-0 z-0"
+        quantity={200}
+        ease={80}
+        color={'#000000'}
+        refresh
+      />
+      <ToastContainer />
 
       <main className="flex-1 container mx-auto px-4 py-8">
         <div className="max-w-2xl mx-auto space-y-8">
@@ -59,4 +65,3 @@ export default function ResetPasswordPage() {
     </div>
   );
 }
-
