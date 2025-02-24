@@ -1,14 +1,16 @@
 import { redirect } from 'next/navigation';
 import { Bell } from 'lucide-react';
 import { createClient } from '@/utils/supabase/server';
-import { Particles } from '@/components/magicui/particles';
 import { Button } from '@/components/ui/button';
 import { ProfileDropdown } from '@/components/profile-dropdown';
 import { JournalButton } from '@/components/journal-button';
-import Footer from '@/components/footer'
-import DataIntakeForm from "@/components/data-intake-form";
-import {selectAllFromAttributes, selectAllFromCategories} from "@/utils/supabase/dbfunctions";
-import { SleepTrackerButton } from '@/components/sleep-tracker-button'
+import Footer from '@/components/footer';
+import DataIntakeForm from '@/components/data-intake-form';
+import {
+  selectAllFromAttributes,
+  selectAllFromCategories,
+} from '@/utils/supabase/dbfunctions';
+import { SleepTrackerButton } from '@/components/sleep-tracker-button';
 
 export default async function Dashboard() {
   const supabase = await createClient();
@@ -38,16 +40,7 @@ export default async function Dashboard() {
   }
 
   return (
-    <div className="min-h-screen flex flex-col inset-0 z-0 bg-gradient animate-gradient">
-      <Particles
-        // Particles background
-        className="absolute inset-0 z-0"
-        quantity={200}
-        ease={80}
-        color={'#000000'}
-        refresh
-      />
-
+    <div className="min-h-screen flex flex-col">
       <header className="border-b bg-white/50 backdrop-blur-sm mt-4 mx-4 rounded-full">
         <div className="container mx-auto px-4 h-16 flex items-center justify-between">
           {/* Logo */}

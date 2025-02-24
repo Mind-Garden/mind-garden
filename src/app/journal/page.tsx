@@ -8,15 +8,13 @@ import { Bell } from 'lucide-react';
 import { createClient } from '@/utils/supabase/server';
 
 // UI
-import { Particles } from '@/components/magicui/particles';
 import { Button } from '@/components/ui/button';
 import { ProfileDropdown } from '@/components/profile-dropdown';
 import { JournalButton } from '@/components/journal-button';
 import { JournalEntryCard } from '@/components/journal-entry';
 import Footer from '@/components/footer';
-import { JournalSwipe } from "@/components/journal-swipe";
+import { JournalSwipe } from '@/components/journal-swipe';
 import { SleepTrackerButton } from '@/components/sleep-tracker-button';
-
 
 export default async function JournalPage() {
   const supabase = await createClient();
@@ -38,22 +36,7 @@ export default async function JournalPage() {
   }
 
   return (
-    <div
-      className="min-h-screen flex flex-col"
-      style={{
-        backgroundImage: `url(/gradient.svg)`,
-        backgroundSize: 'cover',
-      }}
-    >
-      {/* Particles Background */}
-      <Particles
-        className="absolute inset-0 z-0"
-        quantity={200}
-        ease={80}
-        color={'#000000'}
-        refresh
-      />
-
+    <div className="min-h-screen flex flex-col">
       {/* Header */}
       <header className="border-b bg-white/50 backdrop-blur-sm mt-4 mx-4 rounded-full">
         <div className="container mx-auto px-4 h-16 flex items-center justify-between">
