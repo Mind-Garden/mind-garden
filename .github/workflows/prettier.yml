@@ -1,0 +1,24 @@
+name: Prettier
+on: [push]
+
+jobs:
+  build:
+    name: Prettier
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          token: ${{ secrets.GH_PAT }} # Use the PAT to push changes
+
+      - uses: bahmutov/npm-install@v1
+
+      - run: npm run format # Run Prettier
+
+      - run: git status # Debug: Check if files were changed
+
+      - name: Commit and push if changes exist
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git add .
+          git diff --cached --quiet || (git commit -m "chore: format code with Prettier" && git push origin HEAD)

@@ -1,7 +1,7 @@
-import {Angry, Frown, Laugh, LucideIcon, Meh, Smile} from "lucide-react";
+import { Angry, Frown, Laugh, LucideIcon, Meh, Smile } from 'lucide-react';
 
 interface ScaleIconProps {
-  scaleRating: number
+  scaleRating: number;
 }
 
 function ScaleIcon({ scaleRating }: ScaleIconProps) {
@@ -10,11 +10,11 @@ function ScaleIcon({ scaleRating }: ScaleIconProps) {
     2: Frown,
     3: Meh,
     4: Smile,
-    5: Laugh
-  }
+    5: Laugh,
+  };
 
-  const IconComponent = ICON_MAP[scaleRating]
-  return <IconComponent className="h-5 w-5" />
+  const IconComponent = ICON_MAP[scaleRating];
+  return <IconComponent className="h-5 w-5" />;
 }
 
-export default ScaleIcon
+export default ScaleIcon;

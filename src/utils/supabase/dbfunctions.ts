@@ -1,5 +1,5 @@
-import {createClient} from "./client";
-import {IAttributes, ICategories, IResponses} from "@/utils/supabase/schema";
+import { createClient } from './client';
+import { IAttributes, ICategories, IResponses } from '@/utils/supabase/schema';
 
 /**
  * Inserts data into a given Supabase table
@@ -11,14 +11,17 @@ import {IAttributes, ICategories, IResponses} from "@/utils/supabase/schema";
 export async function insertData<T>(table: string, data: T | T[]) {
   const supabase = createClient();
 
-  const {data: insertedData, error} = await supabase.from(table).insert(data).select();
+  const { data: insertedData, error } = await supabase
+    .from(table)
+    .insert(data)
+    .select();
 
   if (error) {
     console.error(`Error inserting into ${table}:`, error.message);
-    return {error};
+    return { error };
   }
 
-  return {data: insertedData};
+  return { data: insertedData };
 }
 
 /**
@@ -28,11 +31,10 @@ export async function insertData<T>(table: string, data: T | T[]) {
  * @returns - Success response or error
  **/
 export async function saveJournalEntry(entry: string, userId: string) {
-
   if (!entry.trim()) return; // Prevent empty entries
-  return await insertData("journal_entries", {
+  return await insertData('journal_entries', {
     user_id: userId,
-    journal_text: entry
+    journal_text: entry,
   });
 }
 
@@ -44,21 +46,25 @@ export async function saveJournalEntry(entry: string, userId: string) {
  * @returns - The selected data or error
  * This will be a general function for all our select operations (private to this script)
  */
-export async function selectData<T>(table: string, conditions?: object, columns: string[] = ['*']) {
+export async function selectData<T>(
+  table: string,
+  conditions?: object,
+  columns: string[] = ['*'],
+) {
   const supabase = createClient();
 
   // Build the query with conditions and selected columns
-  const {data, error} = await supabase
+  const { data, error } = await supabase
     .from(table)
-    .select(columns.join(', '))  // Use columns passed or default to '*'
-    .match(conditions ?? {});    // Use conditions (if any)
+    .select(columns.join(', ')) // Use columns passed or default to '*'
+    .match(conditions ?? {}); // Use conditions (if any)
 
   if (error) {
     console.error(`Error selecting from ${table}:`, error.message);
-    return {error};
+    return { error };
   }
 
-  return {data};
+  return { data };
 }
 
 /**
@@ -71,7 +77,13 @@ export async function selectData<T>(table: string, conditions?: object, columns:
  * @returns - The selected data or error
  * This will be the function for all our select operations with pagination (private to this script)
  */
-export async function selectDataLazy<T>(table: string, conditions?: object, columns: string[] = ['*'], lastRetrievedId: string | null = null, rangeEnd: number = 5) {
+export async function selectDataLazy<T>(
+  table: string,
+  conditions?: object,
+  columns: string[] = ['*'],
+  lastRetrievedId: string | null = null,
+  rangeEnd: number = 5,
+) {
   const supabase = createClient();
   let query = supabase.from(table).select(columns.join(', '));
 
@@ -79,22 +91,22 @@ export async function selectDataLazy<T>(table: string, conditions?: object, colu
     query = query.match(conditions);
   }
 
-  // If lastEntryId is provided, we'll fetch entries that come after this ID 
+  // If lastEntryId is provided, we'll fetch entries that come after this ID
   if (lastRetrievedId) {
     query = query.gt('id', lastRetrievedId);
   }
 
   // Apply pagination using limit and ordering by id in ascending order
-  query = query.order('id', {ascending: true}).limit(rangeEnd);
+  query = query.order('id', { ascending: true }).limit(rangeEnd);
 
-  const {data, error} = await query;
+  const { data, error } = await query;
 
   if (error) {
     console.error(`Error selecting from ${table}:`, error.message);
-    return {error};
+    return { error };
   }
 
-  return {data};
+  return { data };
 }
 
 /**
@@ -104,15 +116,24 @@ export async function selectDataLazy<T>(table: string, conditions?: object, colu
  * @param columns - Optional columns to fetch (defaults to all columns)
  * @returns - The journal entries data or error
  */
-export async function selectJournalEntries(userId: string, lastEntryId: string | null, columns: string[] = ['*']) {
-  const {data, error} = await selectDataLazy('journal_entries', {user_id: userId}, columns, lastEntryId);
+export async function selectJournalEntries(
+  userId: string,
+  lastEntryId: string | null,
+  columns: string[] = ['*'],
+) {
+  const { data, error } = await selectDataLazy(
+    'journal_entries',
+    { user_id: userId },
+    columns,
+    lastEntryId,
+  );
 
   if (error) {
-    console.error("Error fetching journal entries:", error.message);
-    return {error: error.message};
+    console.error('Error fetching journal entries:', error.message);
+    return { error: error.message };
   }
 
-  return {data};
+  return { data };
 }
 
 /**
@@ -124,15 +145,23 @@ export async function selectJournalEntries(userId: string, lastEntryId: string |
  * This will be a general function for all our update operations (private to this script)
  */
 
-export async function updateData<T>(table: string, conditions: object, dataToUpdate: T) {
+export async function updateData<T>(
+  table: string,
+  conditions: object,
+  dataToUpdate: T,
+) {
   const supabase = createClient();
-  const {data, error} = await supabase.from(table).update(dataToUpdate).match(conditions).select();
+  const { data, error } = await supabase
+    .from(table)
+    .update(dataToUpdate)
+    .match(conditions)
+    .select();
 
   if (error) {
     console.error(`Error updating ${table}:`, error.message);
-    return {error};
+    return { error };
   } else {
-    return {data};
+    return { data };
   }
 }
 
@@ -145,7 +174,11 @@ export async function updateData<T>(table: string, conditions: object, dataToUpd
 export async function updateJournalEntry(entryId: string, newEntry: string) {
   if (!newEntry.trim()) return; // Prevent empty entries
 
-  return await updateData('journal_entries', {id: entryId}, {journal_text: newEntry});
+  return await updateData(
+    'journal_entries',
+    { id: entryId },
+    { journal_text: newEntry },
+  );
 }
 
 /**
@@ -153,7 +186,7 @@ export async function updateJournalEntry(entryId: string, newEntry: string) {
  * @returns - Array of categories or null
  */
 export async function selectAllFromCategories(): Promise<Array<ICategories> | null> {
-  const {data, error} = await selectData<ICategories>("categories");
+  const { data, error } = await selectData<ICategories>('categories');
   if (error) {
     console.error(`Error selecting responses by date:`, error.message);
     return null;
@@ -166,7 +199,7 @@ export async function selectAllFromCategories(): Promise<Array<ICategories> | nu
  * @returns - Array of attributes or null
  */
 export async function selectAllFromAttributes(): Promise<Array<IAttributes> | null> {
-  const {data, error} = await selectData<IAttributes>("attributes");
+  const { data, error } = await selectData<IAttributes>('attributes');
   if (error) throw new Error(error.message);
   return data as unknown as IAttributes[];
 }
@@ -177,8 +210,11 @@ export async function selectAllFromAttributes(): Promise<Array<IAttributes> | nu
  * @param entryDate - The date of the responses
  * @returns - Array of responses or null
  */
-export async function selectResponsesByDate(userId: string, entryDate: string): Promise<Array<IResponses> | null> {
-  const {data, error} = await selectData<IResponses>("responses", {
+export async function selectResponsesByDate(
+  userId: string,
+  entryDate: string,
+): Promise<Array<IResponses> | null> {
+  const { data, error } = await selectData<IResponses>('responses', {
     user_id: userId,
     entry_date: entryDate,
   });
@@ -193,8 +229,16 @@ export async function selectResponsesByDate(userId: string, entryDate: string): 
  * @param userId - The user's ID
  * @param scaleRating - The user's scale rating for their day
  */
-export async function insertResponses(attributeIds: Set<string>, userId: string, scaleRating: number): Promise<void> {
-  const {error} = await insertData("responses", {user_id: userId, attribute_ids: Array.from(attributeIds), scale_rating: scaleRating});
+export async function insertResponses(
+  attributeIds: Set<string>,
+  userId: string,
+  scaleRating: number,
+): Promise<void> {
+  const { error } = await insertData('responses', {
+    user_id: userId,
+    attribute_ids: Array.from(attributeIds),
+    scale_rating: scaleRating,
+  });
   if (error) throw new Error(error.message);
 }
 
@@ -203,24 +247,26 @@ export async function insertResponses(attributeIds: Set<string>, userId: string,
  * @param attributeIds - Set of attribute IDs to delete
  * @param userId - The user's ID
  */
-export async function deleteResponses(attributeIds: Set<string>, userId: string): Promise<void> {
+export async function deleteResponses(
+  attributeIds: Set<string>,
+  userId: string,
+): Promise<void> {
   const supabase = createClient();
-  const entryDate = new Date().toISOString().split("T")[0];
+  const entryDate = new Date().toISOString().split('T')[0];
 
-  const {error} = await supabase
-    .from("responses")
+  const { error } = await supabase
+    .from('responses')
     .delete()
-    .match({user_id: userId, entry_date: entryDate})
-    .in("attribute_id", Array.from(attributeIds));
+    .match({ user_id: userId, entry_date: entryDate })
+    .in('attribute_id', Array.from(attributeIds));
 
   if (error) throw new Error(error.message);
-
 }
 
 export async function deleteJournalEntry(entryId: string) {
   const supabase = createClient();
-  
-  return await supabase.from('journal_entries').delete().eq('id', entryId)
+
+  return await supabase.from('journal_entries').delete().eq('id', entryId);
 }
 
 /**
@@ -244,12 +290,10 @@ export async function insertSleepEntry(startTime: string, endTime: string, userI
     return {error};
   }
 
-  // if an entry already exists for the current entry date, return an error
   if (existingEntry && existingEntry.length > 0) {
     return {error: "An entry already exists for today."};
   }
-
-  // Insert new entry if no duplicate exists
+  
   return await insertData("sleep_entries", {
     user_id: userId,
     entry_date: entryDate,
@@ -258,3 +302,14 @@ export async function insertSleepEntry(startTime: string, endTime: string, userI
   });
 }
 
+export async function getRandomPrompt() {
+  const supabase = createClient();
+
+  const { data, error } = await supabase.rpc('get_random_prompt');
+
+  if (error) {
+    return { error: error.message };
+  }
+
+  return { data };
+}

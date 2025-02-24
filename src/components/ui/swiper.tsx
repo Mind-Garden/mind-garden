@@ -1,12 +1,12 @@
 // Core imports
-import React, { useState } from "react";
+import React, { useState } from 'react';
 
 // UI
-import { Swiper, SwiperSlide } from "swiper/react";
-import { Navigation, EffectFade } from "swiper/modules";
-import "swiper/css";
-import "swiper/css/effect-fade";
-import "swiper/css/navigation";
+import { Swiper, SwiperSlide } from 'swiper/react';
+import { Navigation, EffectFade } from 'swiper/modules';
+import 'swiper/css';
+import 'swiper/css/effect-fade';
+import 'swiper/css/navigation';
 
 interface SwiperUIProps<T> {
   data: T[];
@@ -19,7 +19,6 @@ function SwiperUI<T extends {}>({
   renderSlide,
   onReachEnd,
 }: Readonly<SwiperUIProps<T>>) {
-  
   // Track current slide for pagination display
   const [activeIndex, setActiveIndex] = useState(0);
 
@@ -44,9 +43,7 @@ function SwiperUI<T extends {}>({
       >
         {data.map((item, index) => (
           <SwiperSlide key={index}>
-            <div
-              className="bg-white/80 backdrop-blur-sm p-8 rounded-2xl shadow-lg transition-all duration-300 hover:shadow-xl min-h-[300px] flex flex-col"
-            >
+            <div className="bg-white/80 backdrop-blur-sm p-8 rounded-2xl shadow-lg transition-all duration-300 hover:shadow-xl min-h-[300px] flex flex-col">
               {renderSlide(item)}
             </div>
           </SwiperSlide>

@@ -1,21 +1,22 @@
-// Core Imports  
+// Core Imports
 import { redirect } from 'next/navigation';
 
-// Third-Party 
-import { Bell } from "lucide-react";
+// Third-Party
+import { Bell } from 'lucide-react';
 
 // Utility
 import { createClient } from '@/utils/supabase/server';
 
 // UI
-import { Particles } from "@/components/magicui/particles";
-import { Button } from "@/components/ui/button";
+import { Particles } from '@/components/magicui/particles';
+import { Button } from '@/components/ui/button';
 import { ProfileDropdown } from '@/components/profile-dropdown';
 import { JournalButton } from '@/components/journal-button';
 import { JournalEntryCard } from '@/components/journal-entry';
 import Footer from '@/components/footer';
 import { JournalSwipe } from "@/components/journal-swipe";
 import { SleepTrackerButton } from '@/components/sleep-tracker-button';
+
 
 export default async function JournalPage() {
   const supabase = await createClient();
@@ -41,7 +42,7 @@ export default async function JournalPage() {
       className="min-h-screen flex flex-col"
       style={{
         backgroundImage: `url(/gradient.svg)`,
-        backgroundSize: "cover",
+        backgroundSize: 'cover',
       }}
     >
       {/* Particles Background */}
@@ -49,7 +50,7 @@ export default async function JournalPage() {
         className="absolute inset-0 z-0"
         quantity={200}
         ease={80}
-        color={"#000000"}
+        color={'#000000'}
         refresh
       />
 
@@ -58,7 +59,11 @@ export default async function JournalPage() {
         <div className="container mx-auto px-4 h-16 flex items-center justify-between">
           {/* Logo */}
           <div className="flex items-center">
-            <img src="/logo.png" alt="Mind Garden Logo" className="h-7 w-7 mr-2" />
+            <img
+              src="/logo.png"
+              alt="Mind Garden Logo"
+              className="h-7 w-7 mr-2"
+            />
             <p className="text-2xl font-semibold text-green-700">Mind Garden</p>
           </div>
           <div className="flex items-center gap-4">

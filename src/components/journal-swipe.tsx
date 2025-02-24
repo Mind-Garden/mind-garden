@@ -1,4 +1,4 @@
-'use client'
+'use client';
 // Core imports
 import React, { useState, useEffect } from 'react';
 
@@ -29,28 +29,32 @@ export interface JournalEntry {
  */
 function useJournalEntries(userId: string) {
   const [entries, setEntries] = useState<JournalEntry[]>([]);
-  const [currentEntryId, setCurrentEntryId] = useState("");
+  const [currentEntryId, setCurrentEntryId] = useState('');
   const [isLoading, setIsLoading] = useState(false); // used to prevent multiple fetches
   const [hasMore, setHasMore] = useState(true); // used to determine if there are more entries to fetch
   const ENTRIES_PER_PAGE = 5;
 
-
   const fetchMoreEntries = async () => {
-    // Prevent fetching more entries if we're already loading or at the end 
+    // Prevent fetching more entries if we're already loading or at the end
     if (isLoading || !hasMore) return;
 
     setIsLoading(true);
     try {
-      const { data, error } = await selectJournalEntries(userId, currentEntryId);
+      const { data, error } = await selectJournalEntries(
+        userId,
+        currentEntryId,
+      );
 
       if (error) throw error;
 
       if (data) {
-        setEntries(prev => {
+        setEntries((prev) => {
           // Prevent duplicate entries by checking IDs
           const newEntries = data as unknown as JournalEntry[];
-          const existingIds = new Set(prev.map(entry => entry.id));
-          const uniqueNewEntries = newEntries.filter(entry => !existingIds.has(entry.id));
+          const existingIds = new Set(prev.map((entry) => entry.id));
+          const uniqueNewEntries = newEntries.filter(
+            (entry) => !existingIds.has(entry.id),
+          );
 
           //set the last retrieved entry ID
           const lastEntry = data[data.length - 1] as unknown as JournalEntry;
@@ -60,7 +64,6 @@ function useJournalEntries(userId: string) {
           //check if there more entries to fetch
           setHasMore(data.length >= ENTRIES_PER_PAGE);
           return [...prev, ...uniqueNewEntries];
-
         });
       }
     } catch (error) {
@@ -73,20 +76,18 @@ function useJournalEntries(userId: string) {
   // Reset everything when userId changes
   useEffect(() => {
     setEntries([]);
-    setCurrentEntryId("");
+    setCurrentEntryId('');
     setHasMore(true);
     fetchMoreEntries();
-
   }, [userId]); // Add userId as a dependency
 
   return {
     entries,
     isLoading,
     hasMore,
-    fetchMoreEntries
+    fetchMoreEntries,
   };
 }
-
 
 /**
  * Main journal component that combines the hook and UI components
@@ -98,7 +99,8 @@ interface JournalSwipeProps {
 
 export function JournalSwipe({ userId }: JournalSwipeProps) {
   // Use our custom hook to manage entries
-  const { entries, isLoading, hasMore, fetchMoreEntries } = useJournalEntries(userId);
+  const { entries, isLoading, hasMore, fetchMoreEntries } =
+    useJournalEntries(userId);
 
   return (
     <div className="container flex flex-col items-center justify-center pt-5">
@@ -113,9 +115,7 @@ export function JournalSwipe({ userId }: JournalSwipeProps) {
       />
 
       {/* Loader appears BELOW SwiperUI */}
-      {isLoading && (
-        <LoaderCircle className="h-5 w-5 animate-spin mt-4" />
-      )}
+      {isLoading && <LoaderCircle className="h-5 w-5 animate-spin mt-4" />}
     </div>
   );
 }
