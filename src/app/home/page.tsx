@@ -38,16 +38,7 @@ export default async function Dashboard() {
   }
 
   return (
-    <div className="min-h-screen flex flex-col inset-0 z-0 bg-gradient animate-gradient">
-      <Particles
-        // Particles background
-        className="absolute inset-0 z-0"
-        quantity={200}
-        ease={80}
-        color={'#000000'}
-        refresh
-      />
-
+    <div className="min-h-screen flex flex-col">
       <header className="border-b bg-white/50 backdrop-blur-sm mt-4 mx-4 rounded-full">
         <div className="container mx-auto px-4 h-16 flex items-center justify-between">
           {/* Logo */}

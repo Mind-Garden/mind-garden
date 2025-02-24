@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { Geist, Geist_Mono } from 'next/font/google';
 import './globals.css';
 import { ToastContainer } from 'react-toastify';
+import {Particles} from "@/components/magicui/particles";
 
 const geistSans = Geist({
   variable: '--font-geist-sans',
@@ -27,8 +28,16 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} antialiased min-h-screen flex flex-col inset-0 z-0 bg-gradient animate-gradient`}
       >
+        {/* Particles Background */}
+        <Particles
+          className="absolute inset-0 z-0"
+          quantity={200}
+          ease={80}
+          color={'#000000'}
+          refresh
+        />
         {/* Toast (Notification) position */}
         {children}
         <ToastContainer position="top-right" autoClose={3000} />

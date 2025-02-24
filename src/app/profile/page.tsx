@@ -35,14 +35,7 @@ export default async function ProfilePage() {
   }
 
   return (
-    <div className="min-h-screen flex flex-col inset-0 -z-10 animate-gradient bg-gradient">
-      <Particles
-        className="absolute inset-0 z-0"
-        quantity={200}
-        ease={80}
-        color={'#000000'}
-        refresh
-      />
+    <div className="min-h-screen flex flex-col">
       <ToastContainer />
       <header className="border-b bg-white/50 backdrop-blur-sm mt-4 mx-4 rounded-full">
         <div className="container mx-auto px-4 h-16 flex items-center justify-between">

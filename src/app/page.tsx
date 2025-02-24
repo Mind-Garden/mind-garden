@@ -73,21 +73,7 @@ export default function Home() {
   };
 
   return (
-    <div
-      className="min-h-screen w-full flex flex-col items-center justify-center py-16"
-      style={{
-        backgroundImage: `url(/gradient.svg)`,
-        backgroundSize: 'cover',
-      }}
-    >
-      <Particles
-        className="absolute inset-0 z-0"
-        quantity={200}
-        ease={80}
-        color={'#000000'}
-        refresh
-      />
-
+    <div className="w-full flex flex-col items-center justify-center py-16">
       {/* Title, logo and tagline */}
       <div className="text-center mb-12 relative">
         <div className=" flex items-center justify-center">
