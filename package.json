@@ -11,10 +11,10 @@
     "lint:check": "eslint . --max-warnings 0",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
-    "test": "NODE_ENV=test jest --testPathPattern='/src/'",
+    "test": "cross-env NODE_ENV=test jest --testPathPattern='/src/'",
     "test:coverage": "cross-env TARGET_PATH=${npm_config_path} jest --coverage --collectCoverageFrom=\"$TARGET_PATH/**/*.{ts,tsx}\"",
-    "test:seq": "NODE_ENV=test ENV=test jest --runInBand --testPathPattern='/src/' --bail=false",
-    "test:seq:failed": "NODE_ENV=test ENV=test jest --runInBand NODE_ENV=test ENV=test --testPathPattern='/src/' --bail=false --onlyFailures",
+    "test:seq": "cross-env NODE_ENV=test ENV=test jest --runInBand --testPathPattern='/src/' --bail=false",
+    "test:seq:failed": "cross-env NODE_ENV=test ENV=test jest --runInBand NODE_ENV=test ENV=test --testPathPattern='/src/' --bail=false --onlyFailures",
     "clear_jest": "jest --clearCache"
   },
   "dependencies": {
@@ -45,11 +45,8 @@
     "swipe-js-iso": "^2.1.5",
     "swiper": "^11.2.3",
     "tailwind-merge": "^3.0.1",
-    "tailwindcss-animate": "^1.0.7"
-  },
-  "jest": {
-    "preset": "ts-jest",
-    "testEnvironment": "node"
+    "tailwindcss-animate": "^1.0.7",
+    "ts-node": "^10.9.2"
   },
   "devDependencies": {
     "@babel/core": "^7.26.9",
