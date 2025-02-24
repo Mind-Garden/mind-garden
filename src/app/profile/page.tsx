@@ -1,11 +1,11 @@
-import {redirect} from 'next/navigation';
-import {Bell} from 'lucide-react';
+import { redirect } from 'next/navigation';
+import { Bell } from 'lucide-react';
 
-import {createClient} from "@/utils/supabase/server"
-import {Button} from "@/components/ui/button"
-import {ProfileDropdown} from "@/components/profile-dropdown";
-import {JournalButton} from "@/components/journal-button";
-import {SleepTrackerButton} from "@/components/sleep-tracker-button";
+import { createClient } from '@/utils/supabase/server';
+import { Button } from '@/components/ui/button';
+import { ProfileDropdown } from '@/components/profile-dropdown';
+import { JournalButton } from '@/components/journal-button';
+import { SleepTrackerButton } from '@/components/sleep-tracker-button';
 import ModifyAccount from '@/components/modify-account-info';
 import ModifyPassword from '@/components/modify-password';
 import DeleteAccount from '@/components/delete-account';

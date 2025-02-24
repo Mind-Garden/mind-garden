@@ -1,19 +1,19 @@
 // Core Imports
-import {redirect} from 'next/navigation';
+import { redirect } from 'next/navigation';
 
 // Third-Party
-import {Bell} from "lucide-react";
+import { Bell } from 'lucide-react';
 
 // Utility
-import {createClient} from '@/utils/supabase/server';
+import { createClient } from '@/utils/supabase/server';
 
 // UI
-import {Button} from "@/components/ui/button";
-import {ProfileDropdown} from '@/components/profile-dropdown';
-import {JournalButton} from '@/components/journal-button';
+import { Button } from '@/components/ui/button';
+import { ProfileDropdown } from '@/components/profile-dropdown';
+import { JournalButton } from '@/components/journal-button';
 import Footer from '@/components/footer';
-import {SleepTrackerButton} from '@/components/sleep-tracker-button';
-import {SleepEntryCard} from '@/components/sleep-entry';
+import { SleepTrackerButton } from '@/components/sleep-tracker-button';
+import { SleepEntryCard } from '@/components/sleep-entry';
 
 export default async function SleepTrackerPage() {
   const supabase = await createClient();
@@ -41,7 +41,11 @@ export default async function SleepTrackerPage() {
         <div className="container mx-auto px-4 h-16 flex items-center justify-between">
           {/* Logo */}
           <div className="flex items-center">
-            <img src="/logo.png" alt="Mind Garden Logo" className="h-7 w-7 mr-2" />
+            <img
+              src="/logo.png"
+              alt="Mind Garden Logo"
+              className="h-7 w-7 mr-2"
+            />
             <p className="text-2xl font-semibold text-green-700">Mind Garden</p>
           </div>
           <div className="flex items-center gap-4">
@@ -61,7 +65,7 @@ export default async function SleepTrackerPage() {
 
       {/* Main Content */}
       <main className="flex-1 container mx-auto px-4 py-8">
-      <SleepEntryCard userId={userId} />
+        <SleepEntryCard userId={userId} />
       </main>
 
       {/* Footer */}

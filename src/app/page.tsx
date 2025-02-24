@@ -1,18 +1,18 @@
 'use client';
 
-import React, {useEffect, useState} from 'react';
-import {login, signup} from '@/actions/auth';
-import {Input} from '@/components/ui/input';
-import {Button} from '@/components/ui/button';
-import {Label} from '@/components/ui/label';
-import {Card, CardContent} from '@/components/ui/card';
-import {CircleAlert, LoaderCircle, Lock, Mail, User} from 'lucide-react';
-import {WordRotate} from '@/components/magicui/word-rotate';
+import React, { useEffect, useState } from 'react';
+import { login, signup } from '@/actions/auth';
+import { Input } from '@/components/ui/input';
+import { Button } from '@/components/ui/button';
+import { Label } from '@/components/ui/label';
+import { Card, CardContent } from '@/components/ui/card';
+import { CircleAlert, LoaderCircle, Lock, Mail, User } from 'lucide-react';
+import { WordRotate } from '@/components/magicui/word-rotate';
 import Footer from '@/components/footer';
-import {useRouter} from 'next/navigation';
-import {forgotPassword} from '@/actions/auth';
-import {toast} from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+import { useRouter } from 'next/navigation';
+import { forgotPassword } from '@/actions/auth';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 export default function Home() {
   const [isLogin, setIsLogin] = useState(true);
@@ -45,26 +45,26 @@ export default function Home() {
   }, [isLogin]);
 
   /**
-   * Handles the forgot password functionality. It prompts the user to 
+   * Handles the forgot password functionality. It prompts the user to
    * enter their email address and sends a reset email if the email is
    * valid. If the email is not valid or there is any other issue, it
    * shows an error message.
    */
   const handleForgotPassword = async () => {
-    const email = document.querySelector<HTMLInputElement>("#email")?.value;
-    
+    const email = document.querySelector<HTMLInputElement>('#email')?.value;
+
     if (!email) {
-      toast.warn("Please enter your email first.");
+      toast.warn('Please enter your email first.');
       return;
     }
-  
+
     setIsLoading(true);
     try {
       const { error, success } = await forgotPassword(email);
       if (error) {
         setError(error);
       } else {
-        toast.success("Password reset email sent successfully.");
+        toast.success('Password reset email sent successfully.');
       }
     } finally {
       setIsLoading(false);
@@ -187,8 +187,10 @@ export default function Home() {
                   Password
                 </Label>
                 {isLogin && (
-                  <p className="text-base text-green-600 hover:text-green-700 transition-colors"
-                    onClick={handleForgotPassword}>
+                  <p
+                    className="text-base text-green-600 hover:text-green-700 transition-colors"
+                    onClick={handleForgotPassword}
+                  >
                     Forgot password?
                   </p>
                 )}
