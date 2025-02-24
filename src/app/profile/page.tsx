@@ -8,9 +8,6 @@ import { Card, CardDescription, CardFooter, CardHeader, CardTitle } from "@/comp
 import { ProfileDropdown } from "@/components/profile-dropdown";
 import { JournalButton } from "@/components/journal-button";
 import { SleepTrackerButton } from "@/components/sleep-tracker-button";
-import Footer from "@/components/footer";
-
-
 import ModifyAccount from '@/components/modify-account-info';
 import ModifyPassword from '@/components/modify-password';
 import DeleteAccount from '@/components/delete-account';
