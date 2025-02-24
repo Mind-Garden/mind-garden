@@ -12,7 +12,7 @@ jest.mock('@/utils/supabase/client', () => ({
 }));
 
 describe('Data Intake Actions', () => {
-  let mockSupabaseClient;
+  let mockSupabaseClient: any;
 
   beforeEach(() => {
     jest.clearAllMocks();
