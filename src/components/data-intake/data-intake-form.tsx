@@ -7,12 +7,12 @@ import {
   insertResponses,
   selectResponsesByDate,
 } from '@/utils/supabase/dbfunctions';
-import AttributeIcon from '@/components/attribute-icon';
-import ToggleButton from '@/components/toggle-button';
+import AttributeIcon from '@/components/data-intake/attribute-icon';
+import ToggleButton from '@/components/data-intake/toggle-button';
 import { Button } from '@/components/ui/button';
 import { LoaderCircle } from 'lucide-react';
 import { IAttributes, ICategories } from '@/utils/supabase/schema';
-import ScaleIcon from '@/components/scale-icon';
+import ScaleIcon from '@/components/data-intake/scale-icon';
 
 interface DataIntakeFormProps {
   userId: string;
