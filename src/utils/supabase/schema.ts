@@ -38,3 +38,9 @@ export interface ICategories {
   id: string;
   name: string;
 }
+
+export interface IReminder {
+  id: string;
+  user_id: string;
+  reminder_time: Date;
+}
