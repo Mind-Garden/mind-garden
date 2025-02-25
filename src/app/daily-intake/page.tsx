@@ -1,6 +1,11 @@
 import { redirect } from 'next/navigation';
 import { createClient } from '@/utils/supabase/server';
 import Footer from '@/components/footer';
+import DataIntakeForm from '@/components/data-intake/data-intake-form';
+import {
+  selectAllFromAttributes,
+  selectAllFromCategories,
+} from '@/utils/supabase/dbfunctions';
 import { Header } from '@/components/header';
 
 export default async function Dashboard() {
@@ -18,6 +23,14 @@ export default async function Dashboard() {
     .eq('id', userId)
     .single();
 
+  const categories = await selectAllFromCategories();
+  const attributes = await selectAllFromAttributes();
+
+  if (!categories || !attributes) {
+    console.error('Failed to fetch categories or attributes.');
+    redirect('/error');
+  }
+
   if (profileError) {
     redirect('/error');
   }
@@ -27,7 +40,11 @@ export default async function Dashboard() {
       <Header />
 
       <main className="flex-1 container mx-auto px-4 py-8">
-        Welcome to Mind Garden, {profileData?.first_name}!
+        <DataIntakeForm
+          userId={userId}
+          categories={categories}
+          attributes={attributes}
+        />
       </main>
 
       <Footer />

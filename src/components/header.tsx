@@ -1,6 +1,6 @@
 'use client';
 
-import { LucideIcon, Moon, NotebookPen } from 'lucide-react';
+import { LucideIcon, Moon, NotebookPen, ListCheck } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { ProfileDropdown } from '@/components/profile-dropdown';
@@ -24,6 +24,11 @@ export function Header() {
   // List of navigation items - easy to add more
   const navItems: NavItem[] = [
     {
+      icon: ListCheck,
+      path: '/daily-intake',
+      label: 'Daily Intake',
+    },
+    {
       icon: NotebookPen,
       path: '/journal',
       label: 'Journal',
@@ -43,7 +48,7 @@ export function Header() {
           <img
             src="/logo.png"
             alt="Mind Garden Logo"
-            className="h-7 w-7 mr-2 transition-transform hover:scale-110"
+            className="h-8 w-auto mr-2 transition-transform hover:scale-110"
             onClick={() => router.push('/home')}
             style={{ cursor: 'pointer' }}
           />
