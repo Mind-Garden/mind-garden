@@ -53,7 +53,6 @@ export function JournalEntryCard({ userId }: JournalEntryProps) {
 
   return (
     <div className="max-w-2xl mx-auto space-y-8">
-      <RandomPromptCard />
       <Card className="bg-white/50 backdrop-blur-sm rounded-2xl border-none">
         {/* Header */}
         <CardHeader>
@@ -66,6 +65,9 @@ export function JournalEntryCard({ userId }: JournalEntryProps) {
           <div className="flex items-center space-x-2">
             <CardDescription>Journal your thoughts</CardDescription>
             <Brain className="h-4 w-4" />
+          </div>
+          <div className="flex items-center space-x-2 justify-center pt-6">
+            <RandomPromptCard />
           </div>
         </CardHeader>
 
