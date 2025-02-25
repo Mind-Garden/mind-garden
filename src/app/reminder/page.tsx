@@ -21,13 +21,14 @@ import { ReminderEntryCard } from '@/components/reminder-entry';
 export default function ReminderPage() {
   const supabase = createClient();
   const router = useRouter();
-  
+
   const [userId, setUserId] = useState<string | null>(null);
   const [reminderTime, setReminderTime] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchUserAndReminder = async () => {
-      const { data: authData, error: authError } = await supabase.auth.getUser();
+      const { data: authData, error: authError } =
+        await supabase.auth.getUser();
       if (authError || !authData?.user) {
         router.push('/error');
         return;
@@ -54,9 +55,14 @@ export default function ReminderPage() {
 
     const checkReminder = () => {
       const now = new Date();
-      const [reminderHour, reminderMinute] = reminderTime.split(':').map(Number);
+      const [reminderHour, reminderMinute] = reminderTime
+        .split(':')
+        .map(Number);
 
-      if (now.getHours() === reminderHour && now.getMinutes() === reminderMinute) {
+      if (
+        now.getHours() === reminderHour &&
+        now.getMinutes() === reminderMinute
+      ) {
         showNotification();
       }
     };
@@ -92,14 +98,24 @@ export default function ReminderPage() {
       }}
     >
       {/* Particles Background */}
-      <Particles className="absolute inset-0 z-0" quantity={200} ease={80} color={'#000000'} refresh />
+      <Particles
+        className="absolute inset-0 z-0"
+        quantity={200}
+        ease={80}
+        color={'#000000'}
+        refresh
+      />
 
       {/* Header */}
       <header className="border-b bg-white/50 backdrop-blur-sm mt-4 mx-4 rounded-full">
         <div className="container mx-auto px-4 h-16 flex items-center justify-between">
           {/* Logo */}
           <div className="flex items-center">
-            <img src="/logo.png" alt="Mind Garden Logo" className="h-7 w-7 mr-2" />
+            <img
+              src="/logo.png"
+              alt="Mind Garden Logo"
+              className="h-7 w-7 mr-2"
+            />
             <p className="text-2xl font-semibold text-green-700">Mind Garden</p>
           </div>
           <div className="flex items-center gap-4">

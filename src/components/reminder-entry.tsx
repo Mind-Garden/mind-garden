@@ -4,7 +4,10 @@
 import { useEffect, useState } from 'react';
 
 // Utility
-import { getReminderTime, updateReminderTime } from '@/utils/supabase/dbfunctions';
+import {
+  getReminderTime,
+  updateReminderTime,
+} from '@/utils/supabase/dbfunctions';
 
 // UI
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -23,16 +26,17 @@ export function ReminderEntryCard({ userId }: ReminderEntryProps) {
     if (!userId) return;
 
     const fetchReminderTime = async () => {
-      try{
+      try {
         const reminderData = await getReminderTime(userId);
 
         if (reminderData && reminderData.reminder_time) {
           // Convert Date object back to HH:mm string for the input field
-          const timeString = reminderData.reminder_time.toISOString().substring(11, 16); // Extract HH:mm
+          const timeString = reminderData.reminder_time
+            .toISOString()
+            .substring(11, 16); // Extract HH:mm
           setReminderTime(timeString);
         }
-      }
-      catch (error) {
+      } catch (error) {
         console.error('Error fetching reminder time:', error);
       }
     };

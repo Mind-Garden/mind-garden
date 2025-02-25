@@ -1,6 +1,11 @@
 import { create } from 'domain';
 import { createClient } from './client';
-import { IAttributes, ICategories, IReminder, IResponses } from '@/utils/supabase/schema';
+import {
+  IAttributes,
+  ICategories,
+  IReminder,
+  IResponses,
+} from '@/utils/supabase/schema';
 
 /**
  * Inserts data into a given Supabase table
@@ -319,9 +324,7 @@ export async function getRandomPrompt() {
   return { data };
 }
 
-export async function getReminderTime(
-    userId: string,
-  ){
+export async function getReminderTime(userId: string) {
   const { data, error } = await selectData<IReminder>('reminder', {
     user_id: userId,
   });
@@ -329,18 +332,18 @@ export async function getReminderTime(
   if (error) {
     throw new Error(error.message);
   }
-  
-  if (data && ('reminder_time' in data) && !data?.reminder_time) {
+
+  if (data && 'reminder_time' in data && !data?.reminder_time) {
     return null; // Return null instead of throwing
   }
-  
+
   return data as unknown as IReminder;
 }
 
 export async function updateReminderTime(
-    userId: string,
-    newReminderTime: string,
-  ){
+  userId: string,
+  newReminderTime: string,
+) {
   return await updateData(
     'reminder',
     { user_id: userId },
