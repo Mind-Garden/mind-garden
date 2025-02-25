@@ -53,8 +53,8 @@ jobs:
       - name: Verify Java version
         run: java -version  # confirm it's using Java 17
       
-      - name: Force Java 17
-        run: echo "JAVA_HOME=$(dirname $(dirname $(readlink -f $(which java))))" >> $GITHUB_ENV
+      - name: Force Java 17 for SonarQube
+        run: echo "SONAR_SCANNER_OPTS=-Djava.home=$JAVA_HOME" >> $GITHUB_ENV
 
       - name: Debug Java Version
         run: |
