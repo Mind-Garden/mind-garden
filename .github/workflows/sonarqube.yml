@@ -28,9 +28,9 @@ name: SonarQube analysis
 
 on:
   push:
-    branches: [ "main", "develop" ]
+    branches: ['main', 'develop']
   pull_request:
-    branches: [ "main" ]
+    branches: ['main']
   workflow_dispatch:
 
 permissions:
@@ -49,6 +49,7 @@ jobs:
         with:
           distribution: 'temurin'
           java-version: '17'
+          cache: 'false'
 
       - name: Verify Java version
         run: java -version  # confirm it's using Java 17
@@ -61,7 +62,6 @@ jobs:
           echo "JAVA_HOME is $JAVA_HOME"
           java -version
           javac -version
-
 
       - name: Analyze with SonarQube
         uses: SonarSource/sonarqube-scan-action@7295e71c9583053f5bf40e9d4068a0c974603ec8
