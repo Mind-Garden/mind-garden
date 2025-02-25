@@ -40,7 +40,7 @@ export default function ModifyPassword() {
     }
   };
   return (
-    <Card className="bg-white/50 backdrop-blur-sm rounded-2xl">
+    <Card className="bg-white/50 backdrop-blur-sm rounded-2xl border-none">
       <CardHeader>
         <CardTitle>Change Password</CardTitle>
         <CardDescription>Update your password</CardDescription>

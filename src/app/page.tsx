@@ -79,7 +79,7 @@ export default function Home() {
           <img
             src="/logo.png"
             alt="Mind Garden Logo"
-            className="h-20 w-20 mx-auto mb-4 mr-7"
+            className="h-20 w-auto mb-4 mr-7"
           />
           <h1 className="text-7xl md:text-8xl font-bold bg-gradient-to-r from-green-400 to-blue-400 text-transparent bg-clip-text mb-4">
             Mind Garden

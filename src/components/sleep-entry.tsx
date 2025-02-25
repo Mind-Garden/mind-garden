@@ -69,7 +69,7 @@ export function SleepEntryCard({ userId }: SleepTrackerProps) {
 
   return (
     <div className="max-w-md mx-auto space-y-8">
-      <Card className="bg-white/50 backdrop-blur-sm rounded-2xl">
+      <Card className="bg-white/50 backdrop-blur-sm rounded-2xl border-none">
         {/* Header */}
         <CardHeader>
           {/* Title and Icon */}

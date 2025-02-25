@@ -69,7 +69,7 @@ export function JournalEntryCard({ userId }: JournalEntryProps) {
   return (
     <div className="max-w-2xl mx-auto space-y-8">
       <RandomPromptCard />
-      <Card className="bg-white/50 backdrop-blur-sm rounded-2xl">
+      <Card className="bg-white/50 backdrop-blur-sm rounded-2xl border-none">
         {/* Header */}
         <CardHeader>
           {/* Title and Icon */}
