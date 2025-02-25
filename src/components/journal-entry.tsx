@@ -9,9 +9,7 @@ import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 // Utility
-import {
-  saveJournalEntry,
-} from '@/utils/supabase/dbfunctions';
+import { saveJournalEntry } from '@/utils/supabase/dbfunctions';
 
 //UI
 import {
