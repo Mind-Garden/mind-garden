@@ -52,8 +52,8 @@ jobs:
           cache: 'false'
 
       - name: Verify Java version
-        run: java -version  # confirm it's using Java 17
-      
+        run: java -version # confirm it's using Java 17
+
       - name: Force Java 17 for SonarQube
         run: echo "SONAR_SCANNER_OPTS=-Djava.home=$JAVA_HOME" >> $GITHUB_ENV
 
