@@ -28,9 +28,9 @@ name: SonarQube analysis
 
 on:
   push:
-    branches: [ "main", "develop" ]
+    branches: ['main', 'develop']
   pull_request:
-    branches: [ "main" ]
+    branches: ['main']
   workflow_dispatch:
 
 permissions:
@@ -51,8 +51,8 @@ jobs:
           java-version: '17'
 
       - name: Verify Java version
-        run: java -version  # confirm it's using Java 17
-      
+        run: java -version # confirm it's using Java 17
+
       - name: Force Java 17 for SonarQube
         run: echo "SONAR_SCANNER_OPTS=-Djava.home=$JAVA_HOME" >> $GITHUB_ENV
 
@@ -61,7 +61,6 @@ jobs:
           echo "JAVA_HOME is $JAVA_HOME"
           java -version
           javac -version
-
 
       - name: Analyze with SonarQube
         uses: SonarSource/sonarqube-scan-action@7295e71c9583053f5bf40e9d4068a0c974603ec8
