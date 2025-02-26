@@ -1,13 +1,15 @@
+// Core Imports
 import { redirect } from 'next/navigation';
 
+// Utility
 import { createClient } from '@/utils/supabase/server';
-import ModifyAccount from '@/components/modify-account-info';
-import ModifyPassword from '@/components/modify-password';
-import DeleteAccount from '@/components/delete-account';
+
+// UI
 import Footer from '@/components/footer';
+import { SleepEntryCard } from '@/components/sleep-entry';
 import { Header } from '@/components/header';
 
-export default async function ProfilePage() {
+export default async function SleepTrackerPage() {
   const supabase = await createClient();
 
   const { data: authData, error: authError } = await supabase.auth.getUser();
@@ -22,7 +24,7 @@ export default async function ProfilePage() {
     .eq('id', userId)
     .single();
 
-  if (profileError) {
+  if (profileError || !profileData) {
     redirect('/error');
   }
 
@@ -30,13 +32,12 @@ export default async function ProfilePage() {
     <div className="min-h-screen flex flex-col">
       <Header />
 
+      {/* Main Content */}
       <main className="flex-1 container mx-auto px-4 py-8">
-        <div className="max-w-2xl mx-auto space-y-8">
-          <ModifyAccount profileData={profileData} userId={userId} />
-          <ModifyPassword />
-          <DeleteAccount userId={userId} />
-        </div>
+        <SleepEntryCard userId={userId} />
       </main>
+
+      {/* Footer */}
       <Footer />
     </div>
   );

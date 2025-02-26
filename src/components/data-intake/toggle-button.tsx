@@ -32,7 +32,6 @@ function ToggleButton<T extends string | number>({
   );
 }
 
-// Wrap the component AFTER defining it
 export default React.memo(ToggleButton) as <T extends string | number>(
   props: ToggleButtonProps<T>,
 ) => JSX.Element;

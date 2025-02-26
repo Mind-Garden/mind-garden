@@ -41,7 +41,7 @@ export default function ModifyAccount(props: {
   };
 
   return (
-    <Card className="bg-white/50 backdrop-blur-sm rounded-2xl">
+    <Card className="bg-white/50 backdrop-blur-sm rounded-2xl border-none">
       <CardHeader>
         <CardTitle>Profile Information</CardTitle>
         <CardDescription>Update your personal information</CardDescription>

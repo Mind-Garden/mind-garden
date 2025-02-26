@@ -5,8 +5,8 @@ import {
   deleteAccount,
   modifyAccount,
   modifyPassword,
-} from '../../actions/auth';
-import { createClient } from './server';
+} from '@/actions/auth';
+import { createClient } from '@/utils/supabase/server';
 import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
 
@@ -20,7 +20,7 @@ jest.mock('next/navigation', () => ({
 }));
 
 // Mock Supabase client
-jest.mock('../supabase/server', () => ({
+jest.mock('@/utils/supabase/server', () => ({
   createClient: jest.fn(),
 }));
 
