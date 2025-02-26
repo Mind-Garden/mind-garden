@@ -218,9 +218,9 @@ export async function deleteResponses(
   if (error) throw new Error(error.message);
 }
 
-export async function deleteJournalEntry(entryId: string) {
+export async function deleteJournalEntry(id: string) {
   const supabase = getSupabaseClient();
-  const { error } = await supabase.from('journal_entries').delete().match({entryId: entryId});
+  const { error } = await supabase.from('journal_entries').delete().match({id: id});
 
   if (error) throw new Error(error.message);
 }
