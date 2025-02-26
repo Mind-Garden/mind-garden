@@ -7,10 +7,10 @@ import {
 import { getSupabaseClient } from '@/utils/supabase/client';
 
 jest.mock('@/utils/supabase/client', () => ({
-  createClient: jest.fn(),
+  getSupabaseClient: jest.fn(),
 }));
 
-describe('Data Intake Actions', () => {
+describe('Journal Actions', () => {
   let mockSupabaseClient: any;
 
   beforeEach(() => {

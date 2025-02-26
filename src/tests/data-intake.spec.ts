@@ -8,7 +8,7 @@ import {
 import { getSupabaseClient } from '@/utils/supabase/client';
 
 jest.mock('@/utils/supabase/client', () => ({
-  createClient: jest.fn(),
+  getSupabaseClient: jest.fn(),
 }));
 
 describe('Data Intake Actions', () => {
@@ -54,7 +54,7 @@ describe('Data Intake Actions', () => {
       const result = await selectAllFromCategories();
       expect(result).toBeNull();
       expect(console.error).toHaveBeenCalledWith(
-        'Error selecting responses by date:',
+        'Error selecting categories:',
         'Error',
       );
     });
