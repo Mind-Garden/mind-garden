@@ -58,14 +58,13 @@ export default function Home() {
       toast.warn("Please enter your email first.");
       return;
     }
-  
-    setIsLoading(true);
+
     try {
       // extract site url from client side
       const siteUrl = typeof window !== "undefined" ? window.location.origin : "";
       const { error, success } = await forgotPassword(email, siteUrl);
       if (error) {
-        setError(error);
+        toast.warn("Please try again later.");
       } else {
         toast.success("Password reset email sent successfully.");
       }
@@ -204,10 +203,12 @@ export default function Home() {
                   Password
                 </Label>
                 {isLogin && (
-                  <p className="text-base text-green-600 hover:text-green-700 transition-colors"
+                  <button 
+                    type="button"
+                    className="text-base text-green-600 hover:text-green-700 transition-colors"
                     onClick={handleForgotPassword}>
                     Forgot password?
-                  </p>
+                  </button>
                 )}
               </div>
               <div className="relative">
@@ -216,7 +217,6 @@ export default function Home() {
                   id="password"
                   name="password"
                   type="password"
-                  required
                   placeholder={
                     isLogin ? 'Enter your password' : 'Create a strong password'
                   }
