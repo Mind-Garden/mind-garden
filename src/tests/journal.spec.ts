@@ -1,9 +1,4 @@
 import {
-  deleteResponses,
-  insertResponses,
-  selectAllFromAttributes,
-  selectAllFromCategories,
-  selectResponsesByDate,
   saveJournalEntry,
   fetchJournalEntries,
   updateJournalEntry,
