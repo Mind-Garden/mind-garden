@@ -1,36 +1,23 @@
-import { createClient } from './client';
+import { getSupabaseClient } from './client';
 import { IAttributes, ICategories, IResponses, IJournalEntries } from '@/utils/supabase/schema';
-
-
-export const getDate = () => {
-  const date = new Date();
-  const offsetMs = date.getTimezoneOffset() * 60000; // Convert offset to milliseconds
-  return new Date(date.getTime() - offsetMs);
-}
-
-function getLocalISOString(date = new Date()) {
-  return getDate().toISOString().split('T')[0] //only get the month-day-year
-}
+import { getLocalISOString } from '@/lib/utility';
 
 /**
  * Inserts data into a given Supabase table
  * @param table - The name of the table
- * @param data - The data to insert (object or array of objects)
+ * @param dataToInsert - The data to insert (object or array of objects)
  * @returns - Success response or error
  * This will be a general function for all our insert operations (private to this script)
  */
-export async function insertData<T>(table: string, data: T | T[]) {
-  const supabase = createClient();
 
-  // Ensure data is an array
-  const dataArray = Array.isArray(data) ? data : [data];
+async function insertData<T>(table: string, dataToInsert: T[]) {
+  const supabase = getSupabaseClient();
+
 
   // Add entry_date to each item in the array
-  const dataWithDate = dataArray.map(item => ({ ...item, entry_date: getLocalISOString() }));
+  const dataWithDate = dataToInsert.map(item => ({ ...item, entry_date: getLocalISOString() }));
 
-  console.log(dataWithDate);
-
-  const { data: insertedData, error } = await supabase
+  const { data, error } = await supabase
     .from(table)
     .insert(dataWithDate)
     .select();
@@ -40,7 +27,7 @@ export async function insertData<T>(table: string, data: T | T[]) {
     return { error };
   }
 
-  return { data: insertedData };
+  return { data };
 }
 
 /**
@@ -48,13 +35,20 @@ export async function insertData<T>(table: string, data: T | T[]) {
  * @param entry - The journal entry text
  * @param userId - The user ID of the journal entry owner
  * @returns - Success response or error
- **/
+ */
 export async function saveJournalEntry(entry: string, userId: string) {
   if (!entry.trim()) return; // Prevent empty entries
-  return await insertData('journal_entries', {
+  const {data, error} = await insertData('journal_entries', [{
     user_id: userId,
     journal_text: entry,
-  });
+  }]);
+
+  if (error) {
+    console.error('Error saving journal entry:', error.message);
+    return { error: error.message };
+  } 
+
+  return { data };
 }
 
 /**
@@ -65,12 +59,10 @@ export async function saveJournalEntry(entry: string, userId: string) {
  * @returns - The selected data or error
  * This will be a general function for all our select operations (private to this script)
  */
-export async function selectData<T>(
-  table: string,
-  conditions?: object,
-  columns: string[] = ['*'],
-) {
-  const supabase = createClient();
+
+async function selectData<T>(table: string, conditions?: object, columns: string[] = ['*']) {
+
+  const supabase = getSupabaseClient();
 
   // Build the query with conditions and selected columns
   const { data, error } = await supabase
@@ -111,12 +103,9 @@ export async function fetchJournalEntries(userId: string) {
  * This will be a general function for all our update operations (private to this script)
  */
 
-export async function updateData<T>(
-  table: string,
-  conditions: object,
-  dataToUpdate: T,
-) {
-  const supabase = createClient();
+async function updateData<T>(table: string, conditions: object, dataToUpdate: T) {
+
+  const supabase = getSupabaseClient();
   const { data, error } = await supabase
     .from(table)
     .update(dataToUpdate)
@@ -125,7 +114,7 @@ export async function updateData<T>(
 
   if (error) {
     console.error(`Error updating ${table}:`, error.message);
-    return { error };
+    return { error : error.message};
   } else {
     return { data };
   }
@@ -154,7 +143,7 @@ export async function updateJournalEntry(entryId: string, newEntry: string) {
 export async function selectAllFromCategories(): Promise<Array<ICategories> | null> {
   const { data, error } = await selectData<ICategories>('categories');
   if (error) {
-    console.error(`Error selecting responses by date:`, error.message);
+    console.error(`Error selecting categories:`, error.message);
     return null;
   }
   return data as unknown as ICategories[];
@@ -200,11 +189,11 @@ export async function insertResponses(
   userId: string,
   scaleRating: number,
 ): Promise<void> {
-  const { error } = await insertData('responses', {
+  const { error } = await insertData('responses', [{
     user_id: userId,
     attribute_ids: Array.from(attributeIds),
     scale_rating: scaleRating,
-  });
+  }]);
   if (error) throw new Error(error.message);
 }
 
@@ -217,7 +206,7 @@ export async function deleteResponses(
   attributeIds: Set<string>,
   userId: string,
 ): Promise<void> {
-  const supabase = createClient();
+  const supabase = getSupabaseClient();
   const entryDate = new Date().toISOString().split('T')[0];
 
   const { error } = await supabase
@@ -230,7 +219,7 @@ export async function deleteResponses(
 }
 
 export async function deleteJournalEntry(entryId: string) {
-  const supabase = createClient();
+  const supabase = getSupabaseClient();
 
   return await supabase.from('journal_entries').delete().eq('id', entryId);
 }
@@ -260,12 +249,12 @@ export async function insertSleepEntry(
     return { error: 'Sleep entry already exists for today' };
   }
 
-  return await insertData('sleep_entries', {
+  return await insertData('sleep_entries', [{
     user_id: userId,
     entry_date: entryDate,
     start: startTime,
     end: endTime,
-  });
+  }]);
 }
 
 export async function sleepEntryExists(userId: string, entryDate: string) {
@@ -285,8 +274,11 @@ export async function sleepEntryExists(userId: string, entryDate: string) {
   return { exists: false };
 }
 
+/**
+ * Calls a supabase table function to retrieve a random prompt
+ */
 export async function getRandomPrompt() {
-  const supabase = createClient();
+  const supabase = getSupabaseClient();
 
   const { data, error } = await supabase.rpc('get_random_prompt');
 

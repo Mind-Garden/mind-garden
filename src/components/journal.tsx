@@ -12,9 +12,14 @@ import { Badge } from "./ui/badge"
 import { PenLine, Trash2, CalendarDays, Save, X, Edit, NotebookPen, LoaderCircle } from "lucide-react"
 
 import { RandomPromptCard } from "./random-prompt-card"
-import { deleteJournalEntry, fetchJournalEntries, saveJournalEntry, updateJournalEntry, getDate } from "@/utils/supabase/dbfunctions"
+import { deleteJournalEntry, fetchJournalEntries, saveJournalEntry, updateJournalEntry } from "@/utils/supabase/dbfunctions"
 import { toast } from "react-toastify"
 import { IJournalEntries } from "@/utils/supabase/schema"
+
+import { getDate, undoConversion } from "@/lib/utility"
+
+
+
 
 
 interface NewJournalProps {
@@ -24,13 +29,12 @@ interface NewJournalProps {
 export default function NewJournal({ userId }: NewJournalProps) {
 
   const [date, setDate] = useState<Date>(getDate())
-  const [newEntry, setNewEntry] = useState("")
+  const [newEntry, setNewEntry] = useState("") 
   const [entries, setEntries] = useState<IJournalEntries[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
   const [editingEntryId, setEditingEntryId] = useState<string | null>(null)
   const [editingText, setEditingText] = useState("")
-
 
 
   // Helper function to convert entry_date string to Date object with proper UTC handling
@@ -184,32 +188,34 @@ export default function NewJournal({ userId }: NewJournalProps) {
               Your Journal Calendar
             </CardTitle>
           </CardHeader>
-          <CardContent>
+            <CardContent>
             <Calendar
               mode="single"
-              selected={date}
-              onSelect={(date) => date && setDate(date)}
+
+              selected={undoConversion(date)}
+
+              onSelect={(date: Date | undefined) => date && setDate(date)}
               className="rounded-md flex items-center justify-center"
               components={{
-                DayContent: ({ date: dayDate }) => {
-                  const count = getEntriesCount(dayDate)
-                  return (
-                    <div className="relative w-full h-full p-2">
-                      <span>{dayDate.getDate()}</span>
-                      {count > 0 && (
-                        <Badge
-                          variant="destructive"
-                          className="absolute -top-2 -right-2 h-5 w-5 p-0 flex items-center justify-center rounded-full text-[10px] z-50"
-                        >
-                          {count}
-                        </Badge>
-                      )}
-                    </div>
-                  )
-                },
+              DayContent: ({ date: dayDate }: { date: Date }) => {
+                const count = getEntriesCount(dayDate)
+                return (
+                <div className="relative w-full h-full p-2">
+                  <span>{dayDate.getDate()}</span>
+                  {count > 0 && (
+                  <Badge
+                    variant="destructive"
+                    className="absolute -top-2 -right-2 h-5 w-5 p-0 flex items-center justify-center rounded-full text-[10px] z-50"
+                  >
+                    {count}
+                  </Badge>
+                  )}
+                </div>
+                )
+              },
               }}
             />
-          </CardContent>
+            </CardContent>
         </Card>
 
         {/* Journal Entry Form */}
@@ -245,7 +251,7 @@ export default function NewJournal({ userId }: NewJournalProps) {
           <div className="flex items-center justify-between">
             <CardTitle>
               Entries for{" "}
-              {date.toLocaleDateString("en-US", {
+              {undoConversion(date).toLocaleDateString("en-US", {
                 month: "long",
                 day: "numeric",
                 year: "numeric",

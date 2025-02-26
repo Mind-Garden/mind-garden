@@ -5,10 +5,10 @@ import {
   selectAllFromCategories,
   selectResponsesByDate,
 } from '@/utils/supabase/dbfunctions';
-import { createClient } from '@/utils/supabase/client';
+import { getSupabaseClient } from '@/utils/supabase/client';
 
 jest.mock('@/utils/supabase/client', () => ({
-  createClient: jest.fn(),
+  getSupabaseClient: jest.fn(),
 }));
 
 describe('Data Intake Actions', () => {
@@ -19,7 +19,7 @@ describe('Data Intake Actions', () => {
     mockSupabaseClient = {
       from: jest.fn(),
     };
-    (createClient as jest.Mock).mockReturnValue(mockSupabaseClient);
+    (getSupabaseClient as jest.Mock).mockReturnValue(mockSupabaseClient);
   });
 
   describe('selectAllFromCategories', () => {
@@ -54,7 +54,7 @@ describe('Data Intake Actions', () => {
       const result = await selectAllFromCategories();
       expect(result).toBeNull();
       expect(console.error).toHaveBeenCalledWith(
-        'Error selecting responses by date:',
+        'Error selecting categories:',
         'Error',
       );
     });
