@@ -12,7 +12,8 @@ import { Badge } from "./ui/badge"
 import { PenLine, Trash2, CalendarDays, Save, X, Edit, NotebookPen, LoaderCircle } from "lucide-react"
 
 import { RandomPromptCard } from "./random-prompt-card"
-import { deleteJournalEntry, fetchJournalEntries, saveJournalEntry, updateJournalEntry, getDate } from "@/utils/supabase/dbfunctions"
+import { deleteJournalEntry, fetchJournalEntries, saveJournalEntry, updateJournalEntry } from "@/utils/supabase/dbfunctions"
+import { getDate } from "@/lib/utility"
 import { toast } from "react-toastify"
 import { IJournalEntries } from "@/utils/supabase/schema"
 
