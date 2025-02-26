@@ -56,7 +56,7 @@ export default function NewJournal({ userId }: NewJournalProps) {
           return
         }
         if (data) {
-          setEntries(data);
+          setEntries(data.reverse());
         }
         setLoading(false);
     };
