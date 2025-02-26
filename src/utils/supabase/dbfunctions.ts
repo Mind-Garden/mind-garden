@@ -2,6 +2,13 @@
 import { createClient } from './client';
 import { IAttributes, ICategories, IResponses, IJournalEntries } from '@/utils/supabase/schema';
 
+
+function getLocalISOString(date = new Date()) {
+  const offsetMs = date.getTimezoneOffset() * 60000; // Convert offset to milliseconds
+  const localTime = new Date(date.getTime() - offsetMs);
+  return localTime.toISOString().split('T')[0] //only get the month-day-year
+}
+
 /**
  * Inserts data into a given Supabase table
  * @param table - The name of the table
@@ -12,15 +19,11 @@ import { IAttributes, ICategories, IResponses, IJournalEntries } from '@/utils/s
 export async function insertData<T>(table: string, data: T | T[]) {
   const supabase = createClient();
 
-  const entryDate = new Date().toISOString().split('T')[0];
-  console.log(new Date())
-  console.log(entryDate);
-
   // Ensure data is an array
   const dataArray = Array.isArray(data) ? data : [data];
 
   // Add entry_date to each item in the array
-  const dataWithDate = dataArray.map(item => ({ ...item, entry_date: entryDate }));
+  const dataWithDate = dataArray.map(item => ({ ...item, entry_date: getLocalISOString() }));
 
   console.log(dataWithDate);
 
