@@ -1,4 +1,4 @@
-import { createClient } from './client';
+import { getSupabaseClient } from './client';
 import { IAttributes, ICategories, IResponses, IJournalEntries } from '@/utils/supabase/schema';
 import { getLocalISOString } from '@/lib/utility';
 
@@ -10,7 +10,7 @@ import { getLocalISOString } from '@/lib/utility';
  * This will be a general function for all our insert operations (private to this script)
  */
 async function insertData<T>(table: string, data: T | T[]) {
-  const supabase = createClient();
+  const supabase = getSupabaseClient();
 
   // Ensure data is an array, if not then return as array
   const dataArray = Array.isArray(data) ? data : [data];
@@ -39,10 +39,17 @@ async function insertData<T>(table: string, data: T | T[]) {
  */
 export async function saveJournalEntry(entry: string, userId: string) {
   if (!entry.trim()) return; // Prevent empty entries
-  return await insertData('journal_entries', {
+  const {data, error} = await insertData('journal_entries', {
     user_id: userId,
     journal_text: entry,
   });
+
+  if (error) {
+    console.error('Error saving journal entry:', error.message);
+    return { error: error.message };
+  } 
+
+  return { data };
 }
 
 /**
@@ -54,7 +61,7 @@ export async function saveJournalEntry(entry: string, userId: string) {
  * This will be a general function for all our select operations (private to this script)
  */
 async function selectData<T>(table: string, conditions?: object, columns: string[] = ['*']) {
-  const supabase = createClient();
+  const supabase = getSupabaseClient();
 
   // Build the query with conditions and selected columns
   const { data, error } = await supabase
@@ -95,7 +102,7 @@ export async function fetchJournalEntries(userId: string) {
  * This will be a general function for all our update operations (private to this script)
  */
 async function updateData<T>(table: string, conditions: object, dataToUpdate: T) {
-  const supabase = createClient();
+  const supabase = getSupabaseClient();
   const { data, error } = await supabase
     .from(table)
     .update(dataToUpdate)
@@ -196,7 +203,7 @@ export async function deleteResponses(
   attributeIds: Set<string>,
   userId: string,
 ): Promise<void> {
-  const supabase = createClient();
+  const supabase = getSupabaseClient();
   const entryDate = new Date().toISOString().split('T')[0];
 
   const { error } = await supabase
@@ -209,7 +216,7 @@ export async function deleteResponses(
 }
 
 export async function deleteJournalEntry(entryId: string) {
-  const supabase = createClient();
+  const supabase = getSupabaseClient();
 
   return await supabase.from('journal_entries').delete().eq('id', entryId);
 }
@@ -251,8 +258,11 @@ export async function insertSleepEntry(
   });
 }
 
+/**
+ * Calls a supabase table function to retrieve a random prompt
+ */
 export async function getRandomPrompt() {
-  const supabase = createClient();
+  const supabase = getSupabaseClient();
 
   const { data, error } = await supabase.rpc('get_random_prompt');
 

@@ -4,8 +4,12 @@ import {
   selectAllFromAttributes,
   selectAllFromCategories,
   selectResponsesByDate,
+  saveJournalEntry,
+  fetchJournalEntries,
+  updateJournalEntry,
+
 } from '@/utils/supabase/dbfunctions';
-import { createClient } from '@/utils/supabase/client';
+import { getSupabaseClient } from '@/utils/supabase/client';
 
 jest.mock('@/utils/supabase/client', () => ({
   createClient: jest.fn(),
@@ -19,7 +23,7 @@ describe('Data Intake Actions', () => {
     mockSupabaseClient = {
       from: jest.fn(),
     };
-    (createClient as jest.Mock).mockReturnValue(mockSupabaseClient);
+    (getSupabaseClient as jest.Mock).mockReturnValue(mockSupabaseClient);
   });
 
   describe('selectAllFromCategories', () => {
