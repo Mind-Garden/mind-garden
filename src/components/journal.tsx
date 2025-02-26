@@ -15,7 +15,11 @@ import { RandomPromptCard } from "./random-prompt-card"
 import { deleteJournalEntry, fetchJournalEntries, saveJournalEntry, updateJournalEntry } from "@/utils/supabase/dbfunctions"
 import { toast } from "react-toastify"
 import { IJournalEntries } from "@/utils/supabase/schema"
+
 import { getDate, undoConversion } from "@/lib/utility"
+
+
+
 
 
 interface NewJournalProps {
@@ -187,7 +191,9 @@ export default function NewJournal({ userId }: NewJournalProps) {
             <CardContent>
             <Calendar
               mode="single"
+
               selected={undoConversion(date)}
+
               onSelect={(date: Date | undefined) => date && setDate(date)}
               className="rounded-md flex items-center justify-center"
               components={{

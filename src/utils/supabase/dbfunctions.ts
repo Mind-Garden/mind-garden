@@ -9,8 +9,10 @@ import { getLocalISOString } from '@/lib/utility';
  * @returns - Success response or error
  * This will be a general function for all our insert operations (private to this script)
  */
+
 async function insertData<T>(table: string, dataToInsert: T[]) {
   const supabase = getSupabaseClient();
+
 
   // Add entry_date to each item in the array
   const dataWithDate = dataToInsert.map(item => ({ ...item, entry_date: getLocalISOString() }));
@@ -57,7 +59,9 @@ export async function saveJournalEntry(entry: string, userId: string) {
  * @returns - The selected data or error
  * This will be a general function for all our select operations (private to this script)
  */
+
 async function selectData<T>(table: string, conditions?: object, columns: string[] = ['*']) {
+
   const supabase = getSupabaseClient();
 
   // Build the query with conditions and selected columns
@@ -98,7 +102,9 @@ export async function fetchJournalEntries(userId: string) {
  * @returns - Success response or error
  * This will be a general function for all our update operations (private to this script)
  */
+
 async function updateData<T>(table: string, conditions: object, dataToUpdate: T) {
+
   const supabase = getSupabaseClient();
   const { data, error } = await supabase
     .from(table)
