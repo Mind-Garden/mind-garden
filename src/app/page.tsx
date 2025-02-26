@@ -61,7 +61,9 @@ export default function Home() {
   
     setIsLoading(true);
     try {
-      const { error, success } = await forgotPassword(email);
+      // extract site url from client side
+      const siteUrl = typeof window !== "undefined" ? window.location.origin : "";
+      const { error, success } = await forgotPassword(email, siteUrl);
       if (error) {
         setError(error);
       } else {
