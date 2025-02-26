@@ -203,12 +203,11 @@ export default function Home() {
                   Password
                 </Label>
                 {isLogin && (
-                  <button 
-                    type="button"
-                    className="text-base text-green-600 hover:text-green-700 transition-colors"
+                  <p 
+                    className="text-base text-green-600 hover:text-green-700 transition-colors cursor-pointer"
                     onClick={handleForgotPassword}>
                     Forgot password?
-                  </button>
+                  </p>
                 )}
               </div>
               <div className="relative">
