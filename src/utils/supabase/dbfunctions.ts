@@ -1,17 +1,7 @@
 
 import { createClient } from './client';
 import { IAttributes, ICategories, IResponses, IJournalEntries } from '@/utils/supabase/schema';
-
-
-export const getDate = () => {
-  const date = new Date();
-  const offsetMs = date.getTimezoneOffset() * 60000; // Convert offset to milliseconds
-  return new Date(date.getTime() - offsetMs);
-}
-
-function getLocalISOString(date = new Date()) {
-  return getDate().toISOString().split('T')[0] //only get the month-day-year
-}
+import { getLocalISOString } from '@/lib/utility';
 
 /**
  * Inserts data into a given Supabase table
