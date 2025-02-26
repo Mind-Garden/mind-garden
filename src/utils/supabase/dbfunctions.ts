@@ -12,9 +12,21 @@ import { IAttributes, ICategories, IResponses, IJournalEntries } from '@/utils/s
 export async function insertData<T>(table: string, data: T | T[]) {
   const supabase = createClient();
 
+  const entryDate = new Date().toISOString().split('T')[0];
+  console.log(new Date())
+  console.log(entryDate);
+
+  // Ensure data is an array
+  const dataArray = Array.isArray(data) ? data : [data];
+
+  // Add entry_date to each item in the array
+  const dataWithDate = dataArray.map(item => ({ ...item, entry_date: entryDate }));
+
+  console.log(dataWithDate);
+
   const { data: insertedData, error } = await supabase
     .from(table)
-    .insert(data)
+    .insert(dataWithDate)
     .select();
 
   if (error) {
