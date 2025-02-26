@@ -284,7 +284,7 @@ export async function insertSleepEntry(
   // Get today's date for entry date
   const entryDate = new Date().toISOString().split('T')[0];
 
-  const {exists, error } = await sleepEntryExists(userId, entryDate);
+  const { exists, error } = await sleepEntryExists(userId, entryDate);
 
   if (error) {
     console.error('Error checking existing sleep entry:', error);
