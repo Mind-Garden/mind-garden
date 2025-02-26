@@ -5,20 +5,17 @@ import { getLocalISOString } from '@/lib/utility';
 /**
  * Inserts data into a given Supabase table
  * @param table - The name of the table
- * @param data - The data to insert (object or array of objects)
+ * @param dataToInsert - The data to insert (object or array of objects)
  * @returns - Success response or error
  * This will be a general function for all our insert operations (private to this script)
  */
-async function insertData<T>(table: string, data: T | T[]) {
+async function insertData<T>(table: string, dataToInsert: T[]) {
   const supabase = getSupabaseClient();
 
-  // Ensure data is an array, if not then return as array
-  const dataArray = Array.isArray(data) ? data : [data];
-
   // Add entry_date to each item in the array
-  const dataWithDate = dataArray.map(item => ({ ...item, entry_date: getLocalISOString() }));
+  const dataWithDate = dataToInsert.map(item => ({ ...item, entry_date: getLocalISOString() }));
 
-  const { data: insertedData, error } = await supabase
+  const { data, error } = await supabase
     .from(table)
     .insert(dataWithDate)
     .select();
@@ -28,7 +25,7 @@ async function insertData<T>(table: string, data: T | T[]) {
     return { error };
   }
 
-  return { data: insertedData };
+  return { data };
 }
 
 /**
@@ -39,10 +36,10 @@ async function insertData<T>(table: string, data: T | T[]) {
  */
 export async function saveJournalEntry(entry: string, userId: string) {
   if (!entry.trim()) return; // Prevent empty entries
-  const {data, error} = await insertData('journal_entries', {
+  const {data, error} = await insertData('journal_entries', [{
     user_id: userId,
     journal_text: entry,
-  });
+  }]);
 
   if (error) {
     console.error('Error saving journal entry:', error.message);
@@ -111,7 +108,7 @@ async function updateData<T>(table: string, conditions: object, dataToUpdate: T)
 
   if (error) {
     console.error(`Error updating ${table}:`, error.message);
-    return { error };
+    return { error : error.message};
   } else {
     return { data };
   }
@@ -186,11 +183,11 @@ export async function insertResponses(
   userId: string,
   scaleRating: number,
 ): Promise<void> {
-  const { error } = await insertData('responses', {
+  const { error } = await insertData('responses', [{
     user_id: userId,
     attribute_ids: Array.from(attributeIds),
     scale_rating: scaleRating,
-  });
+  }]);
   if (error) throw new Error(error.message);
 }
 
@@ -250,12 +247,12 @@ export async function insertSleepEntry(
     return { error: 'An entry already exists for today.' };
   }
 
-  return await insertData('sleep_entries', {
+  return await insertData('sleep_entries', [{
     user_id: userId,
     entry_date: entryDate,
     start: startTime,
     end: endTime,
-  });
+  }]);
 }
 
 /**
