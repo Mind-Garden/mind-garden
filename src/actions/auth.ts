@@ -3,7 +3,6 @@
 import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
 
-
 import { createClient } from '../utils/supabase/server';
 
 export async function login(formData: FormData) {
@@ -133,9 +132,8 @@ const validateName = (name: FormDataEntryValue | null, field: string) => {
     return { error: `${field} must be at least 2 characters long` };
 };
 
-
 export async function forgotPassword(email: string, siteUrl: string) {
-  const supabase = await createClient()
+  const supabase = await createClient();
 
   const { error } = await supabase.auth.resetPasswordForEmail(email, {
     redirectTo: `${siteUrl}/reset-password`,
