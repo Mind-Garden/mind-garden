@@ -1,17 +1,6 @@
-
 import { createClient } from './client';
 import { IAttributes, ICategories, IResponses, IJournalEntries } from '@/utils/supabase/schema';
-
-
-export const getDate = () => {
-  const date = new Date();
-  const offsetMs = date.getTimezoneOffset() * 60000; // Convert offset to milliseconds
-  return new Date(date.getTime() - offsetMs);
-}
-
-function getLocalISOString(date = new Date()) {
-  return getDate().toISOString().split('T')[0] //only get the month-day-year
-}
+import { getLocalISOString } from '@/lib/utility';
 
 /**
  * Inserts data into a given Supabase table
@@ -20,16 +9,14 @@ function getLocalISOString(date = new Date()) {
  * @returns - Success response or error
  * This will be a general function for all our insert operations (private to this script)
  */
-export async function insertData<T>(table: string, data: T | T[]) {
+async function insertData<T>(table: string, data: T | T[]) {
   const supabase = createClient();
 
-  // Ensure data is an array
+  // Ensure data is an array, if not then return as array
   const dataArray = Array.isArray(data) ? data : [data];
 
   // Add entry_date to each item in the array
   const dataWithDate = dataArray.map(item => ({ ...item, entry_date: getLocalISOString() }));
-
-  console.log(dataWithDate);
 
   const { data: insertedData, error } = await supabase
     .from(table)
@@ -49,7 +36,7 @@ export async function insertData<T>(table: string, data: T | T[]) {
  * @param entry - The journal entry text
  * @param userId - The user ID of the journal entry owner
  * @returns - Success response or error
- **/
+ */
 export async function saveJournalEntry(entry: string, userId: string) {
   if (!entry.trim()) return; // Prevent empty entries
   return await insertData('journal_entries', {
@@ -66,11 +53,7 @@ export async function saveJournalEntry(entry: string, userId: string) {
  * @returns - The selected data or error
  * This will be a general function for all our select operations (private to this script)
  */
-export async function selectData<T>(
-  table: string,
-  conditions?: object,
-  columns: string[] = ['*'],
-) {
+async function selectData<T>(table: string, conditions?: object, columns: string[] = ['*']) {
   const supabase = createClient();
 
   // Build the query with conditions and selected columns
@@ -111,12 +94,7 @@ export async function fetchJournalEntries(userId: string) {
  * @returns - Success response or error
  * This will be a general function for all our update operations (private to this script)
  */
-
-export async function updateData<T>(
-  table: string,
-  conditions: object,
-  dataToUpdate: T,
-) {
+async function updateData<T>(table: string, conditions: object, dataToUpdate: T) {
   const supabase = createClient();
   const { data, error } = await supabase
     .from(table)
@@ -155,7 +133,7 @@ export async function updateJournalEntry(entryId: string, newEntry: string) {
 export async function selectAllFromCategories(): Promise<Array<ICategories> | null> {
   const { data, error } = await selectData<ICategories>('categories');
   if (error) {
-    console.error(`Error selecting responses by date:`, error.message);
+    console.error(`Error selecting categories:`, error.message);
     return null;
   }
   return data as unknown as ICategories[];
