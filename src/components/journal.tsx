@@ -15,6 +15,7 @@ import { RandomPromptCard } from "./random-prompt-card"
 import { deleteJournalEntry, fetchJournalEntries, saveJournalEntry, updateJournalEntry } from "@/utils/supabase/dbfunctions"
 import { toast } from "react-toastify"
 import { IJournalEntries } from "@/utils/supabase/schema"
+import { getDate } from "@/utils/supabase/dbfunctions"
 
 
 interface NewJournalProps {
@@ -22,13 +23,16 @@ interface NewJournalProps {
 }
 
 export default function NewJournal({ userId }: NewJournalProps) {
-  const [date, setDate] = useState<Date>(new Date())
+
+  const [date, setDate] = useState<Date>(getDate())
   const [newEntry, setNewEntry] = useState("")
   const [entries, setEntries] = useState<IJournalEntries[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
   const [editingEntryId, setEditingEntryId] = useState<string | null>(null)
   const [editingText, setEditingText] = useState("")
+
+
 
   // Helper function to convert entry_date string to Date object with proper UTC handling
   const parseEntryDate = (dateString: string) => {
@@ -76,11 +80,7 @@ export default function NewJournal({ userId }: NewJournalProps) {
   // Get entries count for each date
   const getEntriesCount = (day: Date) => {
     // Convert the day to UTC midnight for comparison
-    const utcDay = new Date(Date.UTC(
-      day.getFullYear(),
-      day.getMonth(),
-      day.getDate()
-    ))
+    const utcDay = new Date(day)
     
     return entries.filter(entry => 
       isSameDay(utcDay, entry.entry_date)

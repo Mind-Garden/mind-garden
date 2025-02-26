@@ -3,10 +3,14 @@ import { createClient } from './client';
 import { IAttributes, ICategories, IResponses, IJournalEntries } from '@/utils/supabase/schema';
 
 
-function getLocalISOString(date = new Date()) {
+export const getDate = () => {
+  const date = new Date();
   const offsetMs = date.getTimezoneOffset() * 60000; // Convert offset to milliseconds
-  const localTime = new Date(date.getTime() - offsetMs);
-  return localTime.toISOString().split('T')[0] //only get the month-day-year
+  return new Date(date.getTime() - offsetMs);
+}
+
+function getLocalISOString(date = new Date()) {
+  return getDate().toISOString().split('T')[0] //only get the month-day-year
 }
 
 /**
