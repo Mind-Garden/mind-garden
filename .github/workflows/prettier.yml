@@ -10,7 +10,7 @@ jobs:
         with:
           token: ${{ secrets.GH_PAT }} # Use the PAT to push changes
 
-      - uses: bahmutov/npm-install@v1
+      - uses: bahmutov/npm install --legacy-peer-deps @v1
 
       - run: npm run format # Run Prettier
 
