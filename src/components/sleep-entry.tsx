@@ -1,7 +1,7 @@
 "use client";
 
 //Core imports
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 // Third party imports
 import { Moon, Clock } from "lucide-react";
@@ -9,11 +9,10 @@ import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css"; 
 
 // Utility
-import { insertSleepEntry } from "@/utils/supabase/dbfunctions";
+import { insertSleepEntry, sleepEntryExists } from "@/utils/supabase/dbfunctions";
 
 //UI
 import {Card,CardContent,CardDescription,CardFooter,CardHeader,CardTitle} from "@/components/ui/card";
-import { TextArea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 
 
@@ -21,17 +20,25 @@ interface SleepTrackerProps {
   readonly userId: string;
 }
 
-const getCurrentDateTime = () => {
-  const now = new Date();
-  const offset = now.getTimezoneOffset();
-  now.setMinutes(now.getMinutes() - offset);
-
-  return now.toISOString().slice(0, 16); 
-};
 
 export function SleepEntryCard({ userId }: SleepTrackerProps) {
-  const [startTime, setStartTime] = useState(getCurrentDateTime);
-  const [endTime, setEndTime] = useState(getCurrentDateTime);
+  const [startTime, setStartTime] = useState<string>("");
+  const [endTime, setEndTime] = useState<string>("");
+  const [entryExists, setEntryExists] = useState<boolean | null>(null);
+
+  const checkkEntryExists = async() => {
+    const entryDate = new Date().toISOString().split('T')[0];
+    const { exists, error } = await sleepEntryExists(userId, entryDate);  
+    if(error) {
+      toast.warn("Error checking existing sleep entry!");
+      return;
+    }
+    setEntryExists(exists);
+  }
+
+  useEffect(() => {
+    checkkEntryExists();
+  }, [userId]);
 
   const handleInsert = async() => {
     // dont allow empty inserts
@@ -57,8 +64,8 @@ export function SleepEntryCard({ userId }: SleepTrackerProps) {
     }
   
     toast.success("Sleep entry saved successfully!");
-    setStartTime("");
-    setEndTime("");
+
+    checkkEntryExists();
   }
 
   return (
@@ -80,30 +87,39 @@ export function SleepEntryCard({ userId }: SleepTrackerProps) {
 
         {/* Content */}
         <CardContent className="space-y-10">
-          <div className="space-y-2">
-            <label>Start Time: </label>
-            <input
-              type="datetime-local"
-              value={startTime}
-              onChange={(e) => setStartTime(e.target.value)}
-              className="w-full md:w-64"/>
-          </div>
-          <div className="space-y-2">
-            <label>End Time:  </label>
-            <input
-              type="datetime-local"
-              value={endTime}
-              onChange={(e) => setEndTime(e.target.value)}
-              className="w-full md:w-64"/>
-          </div>
+          {entryExists ? (
+            <div className="text-center">
+              <p>Entry has been completed for today.</p>
+            </div>
+          ) : (
+            <>
+              <div className="space-y-2">
+                <label>Start Time: </label>
+                <input
+                  type="time"
+                  step="60"
+                  value={startTime}
+                  onChange={(e) => setStartTime(e.target.value)}
+                />
+              </div>
+              <div className="space-y-2">
+                <label>End Time: </label>
+                <input
+                  type="time"
+                  step="60"
+                  value={endTime}
+                  onChange={(e) => setEndTime(e.target.value)}
+                />
+              </div>
+            </>
+          )}
         </CardContent>
 
         {/* Footer */}
         <CardFooter>
-          {/* This will save our journal entry and make the textarea blank */}
-          <Button onClick={handleInsert}> 
-            Save Sleep Entry
-          </Button>
+          {!entryExists && (
+            <Button onClick={handleInsert}>Save Sleep Entry</Button>
+          )}
         </CardFooter>
       </Card>
     </div>

@@ -1,3 +1,4 @@
+import { exists } from 'fs';
 import { createClient } from './client';
 import { IAttributes, ICategories, IResponses } from '@/utils/supabase/schema';
 
@@ -283,7 +284,26 @@ export async function insertSleepEntry(
   // Get today's date for entry date
   const entryDate = new Date().toISOString().split('T')[0];
 
-  // Check if an entry already exists for this user on today's date
+  const {exists, error } = await sleepEntryExists(userId, entryDate);
+
+  if (error) {
+    console.error('Error checking existing sleep entry:', error);
+    return { error };
+  }
+
+  if (exists) {
+    return { error: 'Sleep entry already exists for today' };
+  }
+
+  return await insertData('sleep_entries', {
+    user_id: userId,
+    entry_date: entryDate,
+    start: startTime,
+    end: endTime,
+  });
+}
+
+export async function sleepEntryExists(userId: string, entryDate: string) {
   const { data: existingEntry, error } = await selectData('sleep_entries', {
     user_id: userId,
     entry_date: entryDate,
@@ -295,15 +315,9 @@ export async function insertSleepEntry(
   }
 
   if (existingEntry && existingEntry.length > 0) {
-    return { error: 'An entry already exists for today.' };
+    return { exists: true };
   }
-
-  return await insertData('sleep_entries', {
-    user_id: userId,
-    entry_date: entryDate,
-    start: startTime,
-    end: endTime,
-  });
+  return { exists: false };
 }
 
 export async function getRandomPrompt() {
