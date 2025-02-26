@@ -29,7 +29,7 @@ export default function DeleteAccount(props: { userId: string }) {
   };
 
   return (
-    <Card className="bg-white/50 backdrop-blur-sm rounded-2xl">
+    <Card className="bg-white/50 backdrop-blur-sm rounded-2xl border-none">
       <CardHeader>
         <CardTitle>Delete Account</CardTitle>
         <CardDescription>

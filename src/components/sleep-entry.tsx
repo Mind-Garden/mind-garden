@@ -1,25 +1,32 @@
-"use client";
+'use client';
 
 //Core imports
 import { useEffect, useState } from "react";
 
+
 // Third party imports
-import { Moon, Clock } from "lucide-react";
-import { toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css"; 
+import { Moon, Clock } from 'lucide-react';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 // Utility
 import { insertSleepEntry, sleepEntryExists } from "@/utils/supabase/dbfunctions";
 
 //UI
-import {Card,CardContent,CardDescription,CardFooter,CardHeader,CardTitle} from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
 
 
 interface SleepTrackerProps {
   readonly userId: string;
 }
-
 
 export function SleepEntryCard({ userId }: SleepTrackerProps) {
   const [startTime, setStartTime] = useState<string>("");
@@ -40,25 +47,25 @@ export function SleepEntryCard({ userId }: SleepTrackerProps) {
     checkkEntryExists();
   }, [userId]);
 
-  const handleInsert = async() => {
-    // dont allow empty inserts
+  const handleInsert = async () => {
+    // don't allow empty inserts
     if (!startTime.trim() || !endTime.trim()) {
-      toast.warn("Both start and end times are required!");
+      toast.warn('Both start and end times are required!');
       return;
     }
 
     if (new Date(startTime) >= new Date(endTime)) {
-      toast.warn("Start time must be before end time!");
+      toast.warn('Start time must be before end time!');
       return;
     }
 
     const result = await insertSleepEntry(startTime, endTime, userId);
 
     if (result?.error) {
-      if (typeof result.error === "string") {
+      if (typeof result.error === 'string') {
         toast.warn(result.error);
       } else {
-        toast.warn("Error saving sleep entry!");
+        toast.warn('Error saving sleep entry!');
       }
       return;
     }
@@ -70,7 +77,7 @@ export function SleepEntryCard({ userId }: SleepTrackerProps) {
 
   return (
     <div className="max-w-md mx-auto space-y-8">
-      <Card className="bg-white/50 backdrop-blur-sm rounded-2xl">
+      <Card className="bg-white/50 backdrop-blur-sm rounded-2xl border-none">
         {/* Header */}
         <CardHeader>
           {/* Title and Icon */}

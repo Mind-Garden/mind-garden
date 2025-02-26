@@ -1,15 +1,14 @@
-// Core Imports
 import { redirect } from 'next/navigation';
-
-// Utility
 import { createClient } from '@/utils/supabase/server';
-
-// UI
 import Footer from '@/components/footer';
-import { SleepEntryCard } from '@/components/sleep-entry';
+import DataIntakeForm from '@/components/data-intake/data-intake-form';
+import {
+  selectAllFromAttributes,
+  selectAllFromCategories,
+} from '@/utils/supabase/dbfunctions';
 import { Header } from '@/components/header';
 
-export default async function SleepTrackerPage() {
+export default async function Dashboard() {
   const supabase = await createClient();
 
   const { data: authData, error: authError } = await supabase.auth.getUser();
@@ -24,7 +23,15 @@ export default async function SleepTrackerPage() {
     .eq('id', userId)
     .single();
 
-  if (profileError || !profileData) {
+  const categories = await selectAllFromCategories();
+  const attributes = await selectAllFromAttributes();
+
+  if (!categories || !attributes) {
+    console.error('Failed to fetch categories or attributes.');
+    redirect('/error');
+  }
+
+  if (profileError) {
     redirect('/error');
   }
 
@@ -32,12 +39,14 @@ export default async function SleepTrackerPage() {
     <div className="min-h-screen flex flex-col">
       <Header />
 
-      {/* Main Content */}
       <main className="flex-1 container mx-auto px-4 py-8">
-        <SleepEntryCard userId={userId} />
+        <DataIntakeForm
+          userId={userId}
+          categories={categories}
+          attributes={attributes}
+        />
       </main>
 
-      {/* Footer */}
       <Footer />
     </div>
   );

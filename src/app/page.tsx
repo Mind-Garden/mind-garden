@@ -1,19 +1,18 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
-import { login, signup } from '../actions/auth';
+import { login, signup } from '@/actions/auth';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
 import { Card, CardContent } from '@/components/ui/card';
-import { Mail, Lock, User, CircleAlert, LoaderCircle } from 'lucide-react';
-import { Particles } from '@/components/magicui/particles';
+import { CircleAlert, LoaderCircle, Lock, Mail, User } from 'lucide-react';
 import { WordRotate } from '@/components/magicui/word-rotate';
 import Footer from '@/components/footer';
-import { useRouter } from 'next/navigation'; 
+import { useRouter } from 'next/navigation';
 import { forgotPassword } from '@/actions/auth';
-import { toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css"; 
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 export default function Home() {
   const [isLogin, setIsLogin] = useState(true);
@@ -46,26 +45,26 @@ export default function Home() {
   }, [isLogin]);
 
   /**
-   * Handles the forgot password functionality. It prompts the user to 
+   * Handles the forgot password functionality. It prompts the user to
    * enter their email address and sends a reset email if the email is
    * valid. If the email is not valid or there is any other issue, it
    * shows an error message.
    */
   const handleForgotPassword = async () => {
-    const email = document.querySelector<HTMLInputElement>("#email")?.value;
-    
+    const email = document.querySelector<HTMLInputElement>('#email')?.value;
+
     if (!email) {
-      toast.warn("Please enter your email first.");
+      toast.warn('Please enter your email first.');
       return;
     }
-  
+
     setIsLoading(true);
     try {
       const { error, success } = await forgotPassword(email);
       if (error) {
         setError(error);
       } else {
-        toast.success("Password reset email sent successfully.");
+        toast.success('Password reset email sent successfully.');
       }
     } finally {
       setIsLoading(false);
@@ -73,28 +72,14 @@ export default function Home() {
   };
 
   return (
-    <div
-      className="min-h-screen w-full flex flex-col items-center justify-center py-16"
-      style={{
-        backgroundImage: `url(/gradient.svg)`,
-        backgroundSize: 'cover',
-      }}
-    >
-      <Particles
-        className="absolute inset-0 z-0"
-        quantity={200}
-        ease={80}
-        color={'#000000'}
-        refresh
-      />
-
+    <div className="w-full flex flex-col items-center justify-center py-16">
       {/* Title, logo and tagline */}
       <div className="text-center mb-12 relative">
         <div className=" flex items-center justify-center">
           <img
             src="/logo.png"
             alt="Mind Garden Logo"
-            className="h-20 w-20 mx-auto mb-4 mr-7"
+            className="h-20 w-auto mb-4 mr-7"
           />
           <h1 className="text-7xl md:text-8xl font-bold bg-gradient-to-r from-green-400 to-blue-400 text-transparent bg-clip-text mb-4">
             Mind Garden
@@ -202,8 +187,10 @@ export default function Home() {
                   Password
                 </Label>
                 {isLogin && (
-                  <p className="text-base text-green-600 hover:text-green-700 transition-colors"
-                    onClick={handleForgotPassword}>
+                  <p
+                    className="text-base text-green-600 hover:text-green-700 transition-colors"
+                    onClick={handleForgotPassword}
+                  >
                     Forgot password?
                   </p>
                 )}
