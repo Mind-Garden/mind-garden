@@ -1,5 +1,6 @@
+
 import { createClient } from './client';
-import { IAttributes, ICategories, IResponses } from '@/utils/supabase/schema';
+import { IAttributes, ICategories, IResponses, IJournalEntries } from '@/utils/supabase/schema';
 
 /**
  * Inserts data into a given Supabase table
@@ -107,6 +108,22 @@ export async function selectDataLazy<T>(
   }
 
   return { data };
+}
+
+/**
+ * Fetches journal entries for a specific user
+ * @param userId - The user ID whose journal entries need to be fetched
+ * @returns - The journal entries data or error
+ */
+export async function fetchJournalEntries(userId: string) {
+  const { data, error } = await selectData('journal_entries', { user_id: userId }, ['*']);
+
+  if (error) {
+    console.error('Error fetching journal entries:', error.message);
+    return { error: error.message };
+  }
+
+  return { data: data as unknown as IJournalEntries[] };
 }
 
 /**

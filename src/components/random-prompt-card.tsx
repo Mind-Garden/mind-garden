@@ -29,7 +29,7 @@ export function RandomPromptCard() {
   };
 
   return (
-    <div className="flex items-center space-x-2">
+    <div className="flex items-center space-x-2 mb-3">
       <CardDescription>Need inspiration?</CardDescription>
       <AnimatePresence mode="wait">
         <motion.div
