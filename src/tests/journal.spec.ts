@@ -243,7 +243,7 @@ describe('Journal Actions', () => {
 
       const result = await deleteJournalEntry(entryId)
 
-      expect(result).toBeUndefined();
+      expect(result.data).toBeUndefined();
 
       expect(deleteMock).toHaveBeenCalled();
       expect(matchMock).toHaveBeenCalled();
@@ -260,10 +260,10 @@ describe('Journal Actions', () => {
         delete: deleteMock,
       });
 
-      await expect(
-        deleteJournalEntry(entryId),
-      ).rejects.toThrow('Delete error');
-      
+      const result = await deleteJournalEntry(entryId)
+
+      expect(result.error).toEqual({"message": "Delete error"});
+
       expect(deleteMock).toHaveBeenCalled();
       expect(matchMock).toHaveBeenCalled();
     })
