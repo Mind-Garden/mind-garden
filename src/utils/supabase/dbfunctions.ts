@@ -1,5 +1,5 @@
 
-import { createClient } from './client';
+import { getSupabaseClient } from './client';
 import { IAttributes, ICategories, IResponses, IJournalEntries } from '@/utils/supabase/schema';
 import { getLocalISOString } from '@/lib/utility';
 
@@ -11,7 +11,7 @@ import { getLocalISOString } from '@/lib/utility';
  * This will be a general function for all our insert operations (private to this script)
  */
 export async function insertData<T>(table: string, data: T | T[]) {
-  const supabase = createClient();
+  const supabase = getSupabaseClient();
 
   // Ensure data is an array
   const dataArray = Array.isArray(data) ? data : [data];
@@ -61,7 +61,7 @@ export async function selectData<T>(
   conditions?: object,
   columns: string[] = ['*'],
 ) {
-  const supabase = createClient();
+  const supabase = getSupabaseClient();
 
   // Build the query with conditions and selected columns
   const { data, error } = await supabase
@@ -107,7 +107,7 @@ export async function updateData<T>(
   conditions: object,
   dataToUpdate: T,
 ) {
-  const supabase = createClient();
+  const supabase = getSupabaseClient();
   const { data, error } = await supabase
     .from(table)
     .update(dataToUpdate)
@@ -208,7 +208,7 @@ export async function deleteResponses(
   attributeIds: Set<string>,
   userId: string,
 ): Promise<void> {
-  const supabase = createClient();
+  const supabase = getSupabaseClient();
   const entryDate = new Date().toISOString().split('T')[0];
 
   const { error } = await supabase
@@ -221,7 +221,7 @@ export async function deleteResponses(
 }
 
 export async function deleteJournalEntry(entryId: string) {
-  const supabase = createClient();
+  const supabase = getSupabaseClient();
 
   return await supabase.from('journal_entries').delete().eq('id', entryId);
 }
@@ -264,7 +264,7 @@ export async function insertSleepEntry(
 }
 
 export async function getRandomPrompt() {
-  const supabase = createClient();
+  const supabase = getSupabaseClient();
 
   const { data, error } = await supabase.rpc('get_random_prompt');
 
