@@ -1,20 +1,13 @@
 'use client';
 
-// Core Imports
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
-
-// Third-Party
 import { Bell } from 'lucide-react';
-
-// Utility
 import { createClient } from '@/utils/supabase/client';
-
-// UI
 import { Particles } from '@/components/magicui/particles';
 import { Button } from '@/components/ui/button';
 import { ProfileDropdown } from '@/components/profile-dropdown';
-import { ReminderButton } from '@/components/reminder-button';
+import { Header } from '@/components/header'
 import Footer from '@/components/footer';
 import { ReminderEntryCard } from '@/components/reminder-entry';
 
@@ -29,17 +22,20 @@ export default function ReminderPage() {
     const fetchUserAndReminder = async () => {
       const { data: authData, error: authError } =
         await supabase.auth.getUser();
+      
       if (authError || !authData?.user) {
         router.push('/error');
         return;
       }
 
-      setUserId(authData.user.id);
+      const userId = authData.user.id;
+      setUserId(userId); // Set userId first
 
+      // Fetch reminder time only if userId is set
       const { data, error } = await supabase
         .from('users')
         .select('reminder_time')
-        .eq('id', authData.user.id)
+        .eq('id', userId)
         .single();
 
       if (!error && data?.reminder_time) {
@@ -48,7 +44,7 @@ export default function ReminderPage() {
     };
 
     fetchUserAndReminder();
-  }, []);
+  }, [supabase, router]); // Added dependencies
 
   useEffect(() => {
     if (!reminderTime) return;
@@ -106,34 +102,11 @@ export default function ReminderPage() {
         refresh
       />
 
-      {/* Header */}
-      <header className="border-b bg-white/50 backdrop-blur-sm mt-4 mx-4 rounded-full">
-        <div className="container mx-auto px-4 h-16 flex items-center justify-between">
-          {/* Logo */}
-          <div className="flex items-center">
-            <img
-              src="/logo.png"
-              alt="Mind Garden Logo"
-              className="h-7 w-7 mr-2"
-            />
-            <p className="text-2xl font-semibold text-green-700">Mind Garden</p>
-          </div>
-          <div className="flex items-center gap-4">
-            {/* Reminder Button */}
-            <ReminderButton />
-            {/* Notifications */}
-            <Button variant="ghost" size="icon">
-              <Bell className="h-5 w-5" />
-            </Button>
-            {/* Profile Dropdown */}
-            <ProfileDropdown />
-          </div>
-        </div>
-      </header>
+      <Header />
 
       {/* Main Content */}
       <main className="flex-1 container mx-auto px-4 py-8">
-        <ReminderEntryCard userId={userId} />
+        {userId ? <ReminderEntryCard userId={userId} /> : <p>Loading...</p>}
       </main>
 
       {/* Footer */}
