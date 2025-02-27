@@ -8,7 +8,6 @@ import {
   forgotPassword,
   authenticateResetCode,
 } from '@/actions/auth';
-import ResetPassword from '@/components/reset-password';
 import { createClient } from '@/utils/supabase/server';
 import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
