@@ -1,5 +1,5 @@
 import { getSupabaseClient } from './client';
-import { IAttributes, ICategories, IResponses, IJournalEntries } from '@/utils/supabase/schema';
+import { IAttributes, ICategories, IResponses, IJournalEntries, IReminders } from '@/utils/supabase/schema';
 import { getLocalISOString } from '@/lib/utility';
 
 /**
@@ -287,4 +287,57 @@ export async function getRandomPrompt() {
   }
 
   return { data };
+}
+
+export async function getReminderTime(userId: string) {
+  const { data, error } = await selectData<IReminders>('reminders', {
+    user_id: userId,
+  });
+
+  if (error) {
+    throw new Error(error.message);
+  }
+
+  if (data && 'reminder_time' in data && !data?.reminder_time) {
+    return null; // Return null instead of throwing
+  }
+
+  return data as unknown as IReminders;
+}
+
+export async function insertReminder(
+  userId: string
+) {
+  // Get the current time in HH:mm:ss format
+  const reminderTime = new Date().toISOString().substring(11, 19); // Extract HH:mm:ss
+
+  // Check if an entry already exists for this user
+  const { data: existingReminder, error } = await selectData('reminders', {
+    user_id: userId,
+  });
+
+  if (error) {
+    console.error('Error checking existing reminder:', error);
+    return { error };
+  }
+
+  // Only insert if there is no record for the user in table reminders
+  if(existingReminder && Object.keys(existingReminder).length === 0){
+    return await insertData('reminders', [{
+      user_id: userId,
+      reminder_time: reminderTime, // Now correctly formatted for a TIME column
+    }]);
+  }
+}
+
+
+export async function updateReminderTime(
+  userId: string,
+  newReminderTime: string,
+) {
+  return await updateData(
+    'reminders',
+    { user_id: userId },
+    { reminder_time: newReminderTime },
+  );
 }

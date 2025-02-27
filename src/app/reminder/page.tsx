@@ -2,14 +2,14 @@
 
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { createClient } from '@/utils/supabase/client';
+import { getSupabaseClient } from '@/utils/supabase/client';
 import { Particles } from '@/components/magicui/particles';
 import { Header } from '@/components/header';
 import Footer from '@/components/footer';
 import { ReminderEntryCard } from '@/components/reminder-entry';
 
 export default function ReminderPage() {
-  const supabase = createClient();
+  const supabase = getSupabaseClient();
   const router = useRouter();
 
   const [userId, setUserId] = useState<string | null>(null);
