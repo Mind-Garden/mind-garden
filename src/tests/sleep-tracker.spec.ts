@@ -118,8 +118,6 @@ describe('Sleep Tracker Actions', () => {
       });
 
       const result = await sleepEntryExists(mockData.data[0].user_id, mockData.data[0].entry_date);
-      console.log(result);
-      console.log(mockReturnValue);
       expect(result).toEqual(mockReturnValue);
       expect(selectMock).toHaveBeenCalled();
       expect(matchMock).toHaveBeenCalled();
