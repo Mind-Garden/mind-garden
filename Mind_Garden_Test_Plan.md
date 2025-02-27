@@ -97,10 +97,6 @@ Role Details:
     * Empty when no data  
   * Insert responses  
   * Update responses
-* Reminders:
-  * Insert reminder time
-  * Fetch reminder time
-  * Update reminder time
 
 
 ## **Test Completeness**
