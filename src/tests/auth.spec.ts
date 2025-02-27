@@ -5,7 +5,10 @@ import {
   deleteAccount,
   modifyAccount,
   modifyPassword,
+  forgotPassword,
+  authenticateResetCode,
 } from '@/actions/auth';
+import ResetPassword from '@/components/reset-password';
 import { createClient } from '@/utils/supabase/server';
 import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
@@ -47,6 +50,8 @@ describe('Auth Functions', () => {
           deleteUser: jest.fn(),
         },
         getUser: jest.fn(),
+        resetPasswordForEmail: jest.fn().mockResolvedValue({ error: null }),
+        exchangeCodeForSession: jest.fn(),
       },
       from: jest.fn(() => ({
         update: mockUpdate, // Properly mocked update function
@@ -398,6 +403,78 @@ describe('Auth Functions', () => {
 
       // Assert
       expect(result).toEqual({ error: errorMessage });
+    });
+  });
+
+  describe('forgotPassword', () => {
+    it('should successfully send password reset email', async () => {
+      // Arrange
+      const email = 'test@example.com';
+      const siteUrl = 'https://example.com';
+
+      // Act 
+      const result = await forgotPassword(email, siteUrl);
+
+      // Assert
+      expect(mockSupabaseClient.auth.resetPasswordForEmail).toHaveBeenCalledWith(
+        email, 
+        { redirectTo: `${siteUrl}/reset-password` } 
+      );
+      expect(result).toEqual({ success: "Password reset link set to your email." });
+    });
+
+    it('should return error message when sending email fails', async () => {
+      // Arrange
+      const email = 'test@example.com';
+      const siteUrl = 'https://example.com';
+      const mockError = { message: 'Failed to send password reset email' };
+
+      mockSupabaseClient.auth.resetPasswordForEmail.mockResolvedValue({
+        error: mockError,
+      });
+
+      // Act 
+      const result = await forgotPassword(email, siteUrl);
+
+      // Assert
+      expect(mockSupabaseClient.auth.resetPasswordForEmail).toHaveBeenCalledWith(
+        email,
+        { redirectTo: `${siteUrl}/reset-password` }
+      );
+      expect(result).toEqual({ error: mockError.message });
+    });
+
+  });
+
+  describe('authenticateResetCode', () => {
+    it('it should successfully authenticate code for a session', async () => {
+      // Arrange
+      const code = 'valid-code';
+      const mockSessionData = { session: { access_token: 'mock-access-token', refresh_token: 'mock-refresh-token' } };
+
+      mockSupabaseClient.auth.exchangeCodeForSession.mockResolvedValueOnce({ data: mockSessionData, error: null });
+
+      // Act 
+      const result = await authenticateResetCode(code);
+
+      // Assert
+      expect(mockSupabaseClient.auth.exchangeCodeForSession).toHaveBeenCalledWith(code);
+      expect(result).toEqual({ data: mockSessionData.session });
+    });
+
+    it('should return error message when code exchange fails', async () => {
+      // Arrange
+      const code = 'invalid-code';
+      const mockError = { message: 'Invalid code' };
+  
+      mockSupabaseClient.auth.exchangeCodeForSession.mockResolvedValueOnce({ data: null, error: mockError });
+  
+      // Act 
+      const result = await authenticateResetCode(code);
+  
+      // Assert
+      expect(mockSupabaseClient.auth.exchangeCodeForSession).toHaveBeenCalledWith(code);
+      expect(result).toEqual({ error: mockError.message });
     });
   });
 });
