@@ -8,6 +8,7 @@ import dayjs, { Dayjs } from 'dayjs';
 import {
   getReminderTime,
   updateReminderTime,
+  insertReminder,
 } from '@/utils/supabase/dbfunctions';
 import { 
   Card, 
@@ -22,6 +23,7 @@ import {
   DialogTrigger,
   DialogTitle,
 } from '@/components/ui/dialog';
+import { IReminders } from '@/utils/supabase/schema';
 
 interface ReminderEntryProps {
   userId: string | null;
@@ -34,21 +36,31 @@ export function ReminderEntryCard({ userId }: ReminderEntryProps) {
 
   useEffect(() => {
     if (!userId) return;
-
+  
     const fetchReminderTime = async () => {
       try {
         const reminderData = await getReminderTime(userId);
-
-        if (reminderData && reminderData.reminder_time) {
-          setReminderTime(dayjs(reminderData.reminder_time));
+        
+        if (reminderData && Array.isArray(reminderData) && reminderData.length > 0 && reminderData[0].reminder_time) {
+          const newReminderTime = reminderData[0].reminder_time.replaceAll(':','-')
+          console.log(newReminderTime)
+          setReminderTime(dayjs(newReminderTime));
+        } 
+        else {
+          await insertReminder(userId);
+          const newReminder = await getReminderTime(userId);
+          if (newReminder && Array.isArray(newReminder) && newReminder.length > 0 && newReminder[0].reminder_time) {
+            setReminderTime(dayjs(newReminder[0].reminder_time));
+          }
         }
       } catch (error) {
         console.error('Error fetching reminder time:', error);
       }
     };
-
+  
     fetchReminderTime();
   }, [userId]);
+  
 
   const handleUpdateReminder = async () => {
     if (!userId || !reminderTime) return;

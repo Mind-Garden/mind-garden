@@ -39,7 +39,7 @@ export interface ICategories {
   name: string;
 }
 
-export interface IReminder {
+export interface IReminders {
   id: string;
   user_id: string;
   reminder_time: Date;

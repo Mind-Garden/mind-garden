@@ -30,12 +30,12 @@ export default function ReminderPage() {
 
       // Fetch reminder time only if userId is set
       const { data, error } = await supabase
-        .from('users')
+        .from('reminders')
         .select('reminder_time')
         .eq('id', userId)
         .single();
-
-      if (!error && data?.reminder_time) {
+      
+      if (!error && data.reminder_time) {
         setReminderTime(data.reminder_time);
       }
     };
