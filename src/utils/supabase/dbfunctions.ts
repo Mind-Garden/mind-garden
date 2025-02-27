@@ -218,10 +218,11 @@ export async function deleteResponses(
   if (error) throw new Error(error.message);
 }
 
-export async function deleteJournalEntry(entryId: string) {
+export async function deleteJournalEntry(id: string) {
   const supabase = getSupabaseClient();
+  const result = await supabase.from('journal_entries').delete().match({id: id});
 
-  return await supabase.from('journal_entries').delete().eq('id', entryId);
+  return result;
 }
 
 /**

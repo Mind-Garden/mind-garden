@@ -2,7 +2,8 @@ import {
   saveJournalEntry,
   fetchJournalEntries,
   updateJournalEntry,
-
+  deleteJournalEntry,
+  getRandomPrompt
 } from '@/utils/supabase/dbfunctions';
 
 import { undoConversion } from '@/lib/utility';
@@ -227,5 +228,67 @@ describe('Journal Actions', () => {
       expect(result.getTime()).toBe(expected.getTime());
     });
   });
+
+  describe('Delete journal entry', () => {
+    it('should delete the journal entry successfully', async () => {
+      const entryId = '1';
+
+      const matchMock = jest.fn().mockReturnValue({ error: null });
+      const deleteMock = jest.fn().mockReturnValue({ match: matchMock });
+
+      mockSupabaseClient.from.mockReturnValue({
+        delete: deleteMock,
+      });
+
+      const result = await deleteJournalEntry(entryId)
+
+      expect(result.data).toBeUndefined();
+
+      expect(deleteMock).toHaveBeenCalled();
+      expect(matchMock).toHaveBeenCalled();
+    })
+
+    it('should fail at deleting a journal entry that does not exist', async () => {
+      const entryId = '-1';
+
+      const matchMock = jest.fn().mockReturnValue({ error: { message: 'Delete error' } });
+      const deleteMock = jest.fn().mockReturnValue({ match: matchMock });
+
+      mockSupabaseClient.from.mockReturnValue({
+        delete: deleteMock,
+      });
+
+      const result = await deleteJournalEntry(entryId)
+
+      expect(result.error).toEqual({"message": "Delete error"});
+
+      expect(deleteMock).toHaveBeenCalled();
+      expect(matchMock).toHaveBeenCalled();
+    })
+
+  })
+
+  describe('Get random prompt', () => {
+    it('should fetch the random prompt successfully', async () => {
+      const mockData = { prompt: 'This is an inspirational prompt.' };
+      const rpcMock = jest.fn().mockReturnValue({ data: mockData, error: null });
+      mockSupabaseClient.rpc = rpcMock;
+
+      const result = await getRandomPrompt();
+
+      expect(mockSupabaseClient.rpc).toHaveBeenCalledWith('get_random_prompt');
+      expect(result).toEqual({ data: mockData });
+    })
+
+    it('should fail at fetching the random prompt', async () => {
+      const rpcMock = jest.fn().mockReturnValue({ data: null, error: { message: 'Prompt error' } });
+      mockSupabaseClient.rpc = rpcMock;
+
+      const result = await getRandomPrompt();
+
+      expect(mockSupabaseClient.rpc).toHaveBeenCalledWith('get_random_prompt');
+      expect(result).toEqual({ error: 'Prompt error' });
+    })
+  })
 
 });
