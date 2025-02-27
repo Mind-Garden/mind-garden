@@ -10,16 +10,18 @@ import { getLocalISOString } from '@/lib/utility';
  * This will be a general function for all our insert operations (private to this script)
  */
 
-async function insertData<T>(table: string, dataToInsert: T[]) {
+async function insertData<T>(table: string, dataToInsert: T[], modifyEntryDate: boolean = false) {
   const supabase = getSupabaseClient();
 
 
-  // Add entry_date to each item in the array
-  const dataWithDate = dataToInsert.map(item => ({ ...item, entry_date: getLocalISOString() }));
+  if (modifyEntryDate){
+    // Add entry_date to each item in the array
+    dataToInsert = dataToInsert.map(item => ({ ...item, entry_date: getLocalISOString() }));
+  }
 
   const { data, error } = await supabase
     .from(table)
-    .insert(dataWithDate)
+    .insert(dataToInsert)
     .select();
 
   if (error) {
@@ -193,7 +195,7 @@ export async function insertResponses(
     user_id: userId,
     attribute_ids: Array.from(attributeIds),
     scale_rating: scaleRating,
-  }]);
+  }], true);
   if (error) throw new Error(error.message);
 }
 
@@ -254,7 +256,7 @@ export async function insertSleepEntry(
     entry_date: entryDate,
     start: startTime,
     end: endTime,
-  }]);
+  }], true);
 }
 
 export async function sleepEntryExists(userId: string, entryDate: string) {
@@ -298,15 +300,12 @@ export async function getReminderTime(userId: string) {
     throw new Error(error.message);
   }
 
-  if (data && 'reminder_time' in data && !data?.reminder_time) {
-    return null; // Return null instead of throwing
-  }
-
   return data as unknown as IReminders;
 }
 
-export async function insertReminder(
-  userId: string
+export async function insertReminderTime(
+  userId: string,
+  userEmail: string,
 ) {
   // Get the current time in HH:mm:ss format
   const reminderTime = new Date().toISOString().substring(11, 19); // Extract HH:mm:ss
@@ -325,7 +324,8 @@ export async function insertReminder(
   if(existingReminder && Object.keys(existingReminder).length === 0){
     return await insertData('reminders', [{
       user_id: userId,
-      reminder_time: reminderTime, // Now correctly formatted for a TIME column
+      email: userEmail,
+      reminder_time: reminderTime,
     }]);
   }
 }

@@ -6,13 +6,14 @@ import { getSupabaseClient } from '@/utils/supabase/client';
 import { Particles } from '@/components/magicui/particles';
 import { Header } from '@/components/header';
 import Footer from '@/components/footer';
-import { ReminderEntryCard } from '@/components/reminder-entry';
+import { ReminderCard } from '@/components/reminder-entry';
 
 export default function ReminderPage() {
   const supabase = getSupabaseClient();
   const router = useRouter();
 
   const [userId, setUserId] = useState<string | null>(null);
+  const [email, setEmail] = useState<string | null | undefined>(null);
   const [reminderTime, setReminderTime] = useState<string | null>(null);
 
   useEffect(() => {
@@ -26,7 +27,10 @@ export default function ReminderPage() {
       }
 
       const userId = authData.user.id;
+      const email = authData.user.email;
+      
       setUserId(userId); // Set userId first
+      setEmail(email);
 
       // Fetch reminder time only if userId is set
       const { data, error } = await supabase
@@ -103,7 +107,7 @@ export default function ReminderPage() {
 
       {/* Main Content */}
       <main className="flex-1 container mx-auto px-4 py-8">
-        {userId ? <ReminderEntryCard userId={userId} /> : <p>Loading...</p>}
+        {userId ? <ReminderCard userId={userId} email={email} /> : <p>Loading...</p>}
       </main>
 
       {/* Footer */}

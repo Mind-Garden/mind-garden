@@ -8,7 +8,7 @@ import dayjs, { Dayjs } from 'dayjs';
 import {
   getReminderTime,
   updateReminderTime,
-  insertReminder,
+  insertReminderTime,
 } from '@/utils/supabase/dbfunctions';
 import { 
   Card, 
@@ -23,31 +23,31 @@ import {
   DialogTrigger,
   DialogTitle,
 } from '@/components/ui/dialog';
-import { IReminders } from '@/utils/supabase/schema';
 
-interface ReminderEntryProps {
+interface ReminderProps {
   userId: string | null;
+  email: string | null | undefined;
 }
 
-export function ReminderEntryCard({ userId }: ReminderEntryProps) {
+export function ReminderCard({ userId, email }: ReminderProps) {
   const [reminderTime, setReminderTime] = useState<Dayjs | null>(dayjs());
   const [loading, setLoading] = useState<boolean>(false);
   const [open, setOpen] = useState<boolean>(false);
 
   useEffect(() => {
-    if (!userId) return;
+    if (!userId || !email) return;
   
     const fetchReminderTime = async () => {
       try {
         const reminderData = await getReminderTime(userId);
         
         if (reminderData && Array.isArray(reminderData) && reminderData.length > 0 && reminderData[0].reminder_time) {
-          const newReminderTime = reminderData[0].reminder_time.replaceAll(':','-')
+          const newReminderTime = reminderData[0].reminder_time.split(':');
           console.log(newReminderTime)
-          setReminderTime(dayjs(newReminderTime));
+          setReminderTime(dayjs().hour(newReminderTime[0]).minute(newReminderTime[1]));
         } 
         else {
-          await insertReminder(userId);
+          await insertReminderTime(userId, email);
           const newReminder = await getReminderTime(userId);
           if (newReminder && Array.isArray(newReminder) && newReminder.length > 0 && newReminder[0].reminder_time) {
             setReminderTime(dayjs(newReminder[0].reminder_time));

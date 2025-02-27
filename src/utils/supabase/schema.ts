@@ -42,5 +42,6 @@ export interface ICategories {
 export interface IReminders {
   id: string;
   user_id: string;
+  email: string;
   reminder_time: Date;
 }
