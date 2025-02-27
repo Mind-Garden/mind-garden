@@ -9,7 +9,6 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import dayjs, { Dayjs } from 'dayjs';
 
-
 // Utility
 import {
   getReminderTime,
@@ -19,7 +18,12 @@ import {
 // UI
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Dialog, DialogContent, DialogTrigger, DialogTitle } from '@/components/ui/dialog';
+import {
+  Dialog,
+  DialogContent,
+  DialogTrigger,
+  DialogTitle,
+} from '@/components/ui/dialog';
 
 interface ReminderEntryProps {
   userId: string | null;
@@ -93,7 +97,8 @@ export function ReminderEntryCard({ userId }: ReminderEntryProps) {
           </Dialog>
 
           <p className="text-lg font-semibold">
-            Selected Time: {reminderTime ? reminderTime.format('hh:mm A') : 'Not set'}
+            Selected Time:{' '}
+            {reminderTime ? reminderTime.format('hh:mm A') : 'Not set'}
           </p>
 
           <Button onClick={handleUpdateReminder} disabled={loading}>
