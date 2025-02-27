@@ -132,9 +132,8 @@ const validateName = (name: FormDataEntryValue | null, field: string) => {
     return { error: `${field} must be at least 2 characters long` };
 };
 
-export async function forgotPassword(email: string) {
+export async function forgotPassword(email: string, siteUrl: string) {
   const supabase = await createClient();
-  const siteUrl = 'http://localhost:3000';
 
   const { error } = await supabase.auth.resetPasswordForEmail(email, {
     redirectTo: `${siteUrl}/reset-password`,
