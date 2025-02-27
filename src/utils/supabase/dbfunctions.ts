@@ -155,7 +155,12 @@ export async function selectAllFromCategories(): Promise<Array<ICategories> | nu
  */
 export async function selectAllFromAttributes(): Promise<Array<IAttributes> | null> {
   const { data, error } = await selectData<IAttributes>('attributes');
-  if (error) throw new Error(error.message);
+
+  if (error) {
+    console.error('Error selecting categories:', error);
+    return null;
+  }
+
   return data as unknown as IAttributes[];
 }
 
@@ -168,14 +173,18 @@ export async function selectAllFromAttributes(): Promise<Array<IAttributes> | nu
 export async function selectResponsesByDate(
   userId: string,
   entryDate: string,
-): Promise<Array<IResponses> | null> {
+): Promise<IResponses | null> {
   const { data, error } = await selectData<IResponses>('responses', {
     user_id: userId,
     entry_date: entryDate,
   });
 
-  if (error) throw new Error(error.message);
-  return data as unknown as IResponses[];
+  if (error) {
+    console.error('Error selecting response by date:', error);
+    return null;
+  }
+
+  return data.length > 0 ? data[0] as unknown as IResponses : null;
 }
 
 /**
@@ -194,28 +203,35 @@ export async function insertResponses(
     attribute_ids: Array.from(attributeIds),
     scale_rating: scaleRating,
   }]);
-  if (error) throw new Error(error.message);
-}
 
+  if (error) {
+    console.error('Error inserting response:', error);
+  }
+}
 /**
- * Deletes responses for a given user and date.
- * @param attributeIds - Set of attribute IDs to delete
- * @param userId - The user's ID
+ * Updates an existing response in the database.
+ * @param responseId - The unique identifier of the response.
+ * @param attributeIds - A set of attribute IDs representing the user's selected attributes.
+ * @param userId - The unique identifier of the user.
+ * @param scaleRating - The user's scale rating for their day.
  */
-export async function deleteResponses(
+export async function updateResponses(
+  responseId: string,
   attributeIds: Set<string>,
   userId: string,
+  scaleRating: number,
 ): Promise<void> {
-  const supabase = getSupabaseClient();
   const entryDate = new Date().toISOString().split('T')[0];
 
-  const { error } = await supabase
-    .from('responses')
-    .delete()
-    .match({ user_id: userId, entry_date: entryDate })
-    .in('attribute_id', Array.from(attributeIds));
+  const { error } = await updateData(
+    'responses',
+    { id: responseId, user_id: userId, entry_date: entryDate },
+    { attribute_ids: Array.from(attributeIds), scale_rating: scaleRating },
+  );
 
-  if (error) throw new Error(error.message);
+  if (error) {
+    console.error('Error updating response:', error);
+  }
 }
 
 export async function deleteJournalEntry(id: string) {

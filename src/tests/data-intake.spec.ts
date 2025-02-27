@@ -1,9 +1,9 @@
 import {
-  deleteResponses,
   insertResponses,
   selectAllFromAttributes,
   selectAllFromCategories,
   selectResponsesByDate,
+  updateResponses,
 } from '@/utils/supabase/dbfunctions';
 import { getSupabaseClient } from '@/utils/supabase/client';
 
@@ -78,7 +78,7 @@ describe('Data Intake Actions', () => {
       expect(matchMock).toHaveBeenCalled();
     });
 
-    it('should throw an error when there is a failure', async () => {
+    it('should return null when there is a failure', async () => {
       const matchMock = jest
         .fn()
         .mockResolvedValue({ data: null, error: { message: 'Error' } });
@@ -88,16 +88,15 @@ describe('Data Intake Actions', () => {
         select: selectMock,
       });
 
-      await expect(selectAllFromAttributes()).rejects.toThrow('Error');
+      await expect(selectAllFromAttributes()).resolves.toBeNull();
     });
   });
 
   describe('selectResponsesByDate', () => {
     it('should return responses for a given user and date', async () => {
-      const mockData = [{ id: 1, response: 'Good day' }];
-      const matchMock = jest
-        .fn()
-        .mockResolvedValue({ data: mockData, error: null });
+      const mockData = { id: 1, response: 'Good day' };
+      const matchMock = jest.fn()
+        .mockResolvedValue({ data: [mockData], error: null });
       const selectMock = jest.fn().mockReturnValue({ match: matchMock });
 
       mockSupabaseClient.from.mockReturnValue({
@@ -110,7 +109,7 @@ describe('Data Intake Actions', () => {
       expect(matchMock).toHaveBeenCalled();
     });
 
-    it('should return empty array when no data is found', async () => {
+    it('should return null when no data is found', async () => {
       const matchMock = jest.fn().mockResolvedValue({ data: [], error: null });
       const selectMock = jest.fn().mockReturnValue({ match: matchMock });
 
@@ -119,7 +118,7 @@ describe('Data Intake Actions', () => {
       });
 
       const result = await selectResponsesByDate('user123', '2024-02-23');
-      expect(result).toEqual([]);
+      expect(result).toBeNull();
     });
 
     it('should throw an error when fetching responses fails', async () => {
@@ -134,7 +133,7 @@ describe('Data Intake Actions', () => {
 
       await expect(
         selectResponsesByDate('user123', '2024-02-23'),
-      ).rejects.toThrow('Fetch error');
+      ).resolves.toBeNull();
     });
   });
 
@@ -156,10 +155,9 @@ describe('Data Intake Actions', () => {
       expect(insertMock).toHaveBeenCalled();
     });
 
-    it('should throw an error when insert fails', async () => {
-      const selectMock = jest
-        .fn()
-        .mockResolvedValue({ data: null, error: { message: 'Insert error' } });
+    it('should return when insert fails', async () => {
+      const selectMock = jest.fn()
+        .mockResolvedValue({ data: null, error: { message: 'Insert error' }});
       const insertMock = jest.fn().mockReturnValue({ select: selectMock });
 
       mockSupabaseClient.from.mockReturnValue({
@@ -168,42 +166,57 @@ describe('Data Intake Actions', () => {
 
       await expect(
         insertResponses(new Set(['attr1']), 'user123', 5),
-      ).rejects.toThrow('Insert error');
+      ).resolves.toBeUndefined();
     });
   });
 
-  describe('deleteResponses', () => {
-    it('should successfully delete responses', async () => {
-      const inMock = jest.fn().mockResolvedValue({ error: null });
-      const matchMock = jest.fn().mockReturnValue({ in: inMock });
-      const deleteMock = jest.fn().mockReturnValue({ match: matchMock });
+  describe('updateResponses', () => {
+    const responseId = 'response123';
+    const userId = 'user123';
+    const attributeIds = ['attr1', 'attr2'];
+    const scaleRating = 5;
+
+    it('should successfully update responses', async () => {
+      const matchMock = jest.fn().mockReturnThis();
+      const selectMock = jest.fn()
+        .mockResolvedValue({data: [{}], error: null});
+      const updateMock = jest.fn()
+        .mockReturnValue({match: matchMock, select: selectMock});
 
       mockSupabaseClient.from.mockReturnValue({
-        delete: deleteMock,
+        update: updateMock,
       });
 
       await expect(
-        deleteResponses(new Set(['attr1', 'attr2']), 'user123'),
+        updateResponses(responseId, new Set(attributeIds), userId, scaleRating),
       ).resolves.toBeUndefined();
-      expect(deleteMock).toHaveBeenCalled();
-      expect(matchMock).toHaveBeenCalled();
-      expect(inMock).toHaveBeenCalled();
+      expect(mockSupabaseClient.from).toHaveBeenCalledWith('responses');
+      expect(updateMock).toHaveBeenCalledWith({
+        attribute_ids: attributeIds,
+        scale_rating: scaleRating
+      });
+      expect(matchMock).toHaveBeenCalledWith({
+        id: responseId,
+        user_id: userId,
+        entry_date: expect.any(String)
+      });
     });
 
-    it('should throw an error when delete fails', async () => {
-      const inMock = jest
-        .fn()
-        .mockResolvedValue({ error: { message: 'Delete error' } });
-      const matchMock = jest.fn().mockReturnValue({ in: inMock });
-      const deleteMock = jest.fn().mockReturnValue({ match: matchMock });
+    it('should return when update fails', async () => {
+      console.error = jest.fn();
+      const matchMock = jest.fn().mockReturnThis();
+      const selectMock = jest.fn()
+        .mockResolvedValue({data: null, error: { message: 'Update error' }});
+      const updateMock = jest.fn()
+        .mockReturnValue({match: matchMock, select: selectMock});
 
       mockSupabaseClient.from.mockReturnValue({
-        delete: deleteMock,
+        update: updateMock,
       });
 
       await expect(
-        deleteResponses(new Set(['attr1', 'attr2']), 'user123'),
-      ).rejects.toThrow('Delete error');
+        updateResponses(responseId, new Set(attributeIds), userId, scaleRating),
+      ).resolves.toBeUndefined();
     });
   });
 });
