@@ -242,17 +242,6 @@ export async function insertSleepEntry(
   // Get today's date for entry date
   const entryDate = getLocalISOString();
 
-  // const { exists, error } = await sleepEntryExists(userId, entryDate);
-
-  // if (error) {
-  //   console.error('Error checking existing sleep entry:', error);
-  //   return { error };
-  // }
-
-  // if (exists) {
-  //   return { error: 'Sleep entry already exists for today' };
-  // }
-
   return await insertData('sleep_entries', [{
     user_id: userId,
     entry_date: entryDate,
