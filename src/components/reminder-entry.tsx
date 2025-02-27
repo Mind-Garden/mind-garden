@@ -10,12 +10,7 @@ import {
   updateReminderTime,
   insertReminderTime,
 } from '@/utils/supabase/dbfunctions';
-import { 
-  Card, 
-  CardContent, 
-  CardHeader, 
-  CardTitle,
-} from '@/components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import {
   Dialog,
@@ -36,19 +31,30 @@ export function ReminderCard({ userId, email }: ReminderProps) {
 
   useEffect(() => {
     if (!userId || !email) return;
-  
+
     const fetchReminderTime = async () => {
       try {
         const reminderData = await getReminderTime(userId);
-        
-        if (reminderData && Array.isArray(reminderData) && reminderData.length > 0 && reminderData[0].reminder_time) {
-          const [hour, minute] = reminderData[0].reminder_time.split(':').map(Number);
+
+        if (
+          reminderData &&
+          Array.isArray(reminderData) &&
+          reminderData.length > 0 &&
+          reminderData[0].reminder_time
+        ) {
+          const [hour, minute] = reminderData[0].reminder_time
+            .split(':')
+            .map(Number);
           setReminderTime(dayjs().hour(hour).minute(minute));
-        } 
-        else {
+        } else {
           await insertReminderTime(userId, email);
           const newReminder = await getReminderTime(userId);
-          if (newReminder && Array.isArray(newReminder) && newReminder.length > 0 && newReminder[0].reminder_time) {
+          if (
+            newReminder &&
+            Array.isArray(newReminder) &&
+            newReminder.length > 0 &&
+            newReminder[0].reminder_time
+          ) {
             setReminderTime(dayjs(newReminder[0].reminder_time));
           }
         }
@@ -56,10 +62,9 @@ export function ReminderCard({ userId, email }: ReminderProps) {
         console.error('Error fetching reminder time:', error);
       }
     };
-  
+
     fetchReminderTime();
   }, [userId]);
-  
 
   const handleUpdateReminder = async () => {
     if (!userId || !reminderTime) return;

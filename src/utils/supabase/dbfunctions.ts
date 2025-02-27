@@ -1,5 +1,11 @@
 import { getSupabaseClient } from './client';
-import { IAttributes, ICategories, IResponses, IJournalEntries, IReminders } from '@/utils/supabase/schema';
+import {
+  IAttributes,
+  ICategories,
+  IResponses,
+  IJournalEntries,
+  IReminders,
+} from '@/utils/supabase/schema';
 import { getLocalISOString } from '@/lib/utility';
 
 /**
@@ -10,13 +16,19 @@ import { getLocalISOString } from '@/lib/utility';
  * This will be a general function for all our insert operations (private to this script)
  */
 
-async function insertData<T>(table: string, dataToInsert: T[], modifyEntryDate: boolean = false) {
+async function insertData<T>(
+  table: string,
+  dataToInsert: T[],
+  modifyEntryDate: boolean = false,
+) {
   const supabase = getSupabaseClient();
 
-
-  if (modifyEntryDate){
+  if (modifyEntryDate) {
     // Add entry_date to each item in the array
-    dataToInsert = dataToInsert.map(item => ({ ...item, entry_date: getLocalISOString() }));
+    dataToInsert = dataToInsert.map((item) => ({
+      ...item,
+      entry_date: getLocalISOString(),
+    }));
   }
 
   const { data, error } = await supabase
@@ -40,15 +52,17 @@ async function insertData<T>(table: string, dataToInsert: T[], modifyEntryDate: 
  */
 export async function saveJournalEntry(entry: string, userId: string) {
   if (!entry.trim()) return; // Prevent empty entries
-  const {data, error} = await insertData('journal_entries', [{
-    user_id: userId,
-    journal_text: entry,
-  }]);
+  const { data, error } = await insertData('journal_entries', [
+    {
+      user_id: userId,
+      journal_text: entry,
+    },
+  ]);
 
   if (error) {
     console.error('Error saving journal entry:', error.message);
     return { error: error.message };
-  } 
+  }
 
   return { data };
 }
@@ -62,8 +76,11 @@ export async function saveJournalEntry(entry: string, userId: string) {
  * This will be a general function for all our select operations (private to this script)
  */
 
-async function selectData<T>(table: string, conditions?: object, columns: string[] = ['*']) {
-
+async function selectData<T>(
+  table: string,
+  conditions?: object,
+  columns: string[] = ['*'],
+) {
   const supabase = getSupabaseClient();
 
   // Build the query with conditions and selected columns
@@ -86,7 +103,11 @@ async function selectData<T>(table: string, conditions?: object, columns: string
  * @returns - The journal entries data or error
  */
 export async function fetchJournalEntries(userId: string) {
-  const { data, error } = await selectData('journal_entries', { user_id: userId }, ['*']);
+  const { data, error } = await selectData(
+    'journal_entries',
+    { user_id: userId },
+    ['*'],
+  );
 
   if (error) {
     console.error('Error fetching journal entries:', error.message);
@@ -105,8 +126,11 @@ export async function fetchJournalEntries(userId: string) {
  * This will be a general function for all our update operations (private to this script)
  */
 
-async function updateData<T>(table: string, conditions: object, dataToUpdate: T) {
-
+async function updateData<T>(
+  table: string,
+  conditions: object,
+  dataToUpdate: T,
+) {
   const supabase = getSupabaseClient();
   const { data, error } = await supabase
     .from(table)
@@ -116,7 +140,7 @@ async function updateData<T>(table: string, conditions: object, dataToUpdate: T)
 
   if (error) {
     console.error(`Error updating ${table}:`, error.message);
-    return { error : error.message};
+    return { error: error.message };
   } else {
     return { data };
   }
@@ -191,11 +215,17 @@ export async function insertResponses(
   userId: string,
   scaleRating: number,
 ): Promise<void> {
-  const { error } = await insertData('responses', [{
-    user_id: userId,
-    attribute_ids: Array.from(attributeIds),
-    scale_rating: scaleRating,
-  }], true);
+  const { error } = await insertData(
+    'responses',
+    [
+      {
+        user_id: userId,
+        attribute_ids: Array.from(attributeIds),
+        scale_rating: scaleRating,
+      },
+    ],
+    true,
+  );
   if (error) throw new Error(error.message);
 }
 
@@ -251,12 +281,18 @@ export async function insertSleepEntry(
     return { error: 'Sleep entry already exists for today' };
   }
 
-  return await insertData('sleep_entries', [{
-    user_id: userId,
-    entry_date: entryDate,
-    start: startTime,
-    end: endTime,
-  }], true);
+  return await insertData(
+    'sleep_entries',
+    [
+      {
+        user_id: userId,
+        entry_date: entryDate,
+        start: startTime,
+        end: endTime,
+      },
+    ],
+    true,
+  );
 }
 
 export async function sleepEntryExists(userId: string, entryDate: string) {
@@ -303,10 +339,7 @@ export async function getReminderTime(userId: string) {
   return data as unknown as IReminders;
 }
 
-export async function insertReminderTime(
-  userId: string,
-  userEmail: string,
-) {
+export async function insertReminderTime(userId: string, userEmail: string) {
   // Get the current time in HH:mm:ss format
   const reminderTime = new Date().toISOString().substring(11, 19); // Extract HH:mm:ss
 
@@ -321,15 +354,16 @@ export async function insertReminderTime(
   }
 
   // Only insert if there is no record for the user in table reminders
-  if(existingReminder && Object.keys(existingReminder).length === 0){
-    return await insertData('reminders', [{
-      user_id: userId,
-      email: userEmail,
-      reminder_time: reminderTime,
-    }]);
+  if (existingReminder && Object.keys(existingReminder).length === 0) {
+    return await insertData('reminders', [
+      {
+        user_id: userId,
+        email: userEmail,
+        reminder_time: reminderTime,
+      },
+    ]);
   }
 }
-
 
 export async function updateReminderTime(
   userId: string,

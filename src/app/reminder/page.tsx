@@ -28,7 +28,7 @@ export default function ReminderPage() {
 
       const userId = authData.user.id;
       const email = authData.user.email;
-      
+
       setUserId(userId); // Set userId first
       setEmail(email);
 
@@ -38,7 +38,7 @@ export default function ReminderPage() {
         .select('reminder_time')
         .eq('id', userId)
         .single();
-      
+
       if (!error && data.reminder_time) {
         setReminderTime(data.reminder_time);
       }
@@ -107,7 +107,11 @@ export default function ReminderPage() {
 
       {/* Main Content */}
       <main className="flex-1 container mx-auto px-4 py-8">
-        {userId ? <ReminderCard userId={userId} email={email} /> : <p>Loading...</p>}
+        {userId ? (
+          <ReminderCard userId={userId} email={email} />
+        ) : (
+          <p>Loading...</p>
+        )}
       </main>
 
       {/* Footer */}

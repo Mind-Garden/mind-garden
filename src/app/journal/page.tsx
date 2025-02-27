@@ -4,7 +4,7 @@ import { createClient } from '@/utils/supabase/server';
 
 import { Header } from '@/components/header';
 import Footer from '@/components/footer';
-import  NewJournal from '@/components/journal';
+import NewJournal from '@/components/journal';
 
 export default async function JournalPage() {
   const supabase = await createClient();
@@ -31,7 +31,7 @@ export default async function JournalPage() {
 
       {/* Main Content */}
       <main className="flex-1 container mx-auto px-4 py-8">
-        <NewJournal userId={userId}/>
+        <NewJournal userId={userId} />
       </main>
 
       <Footer />

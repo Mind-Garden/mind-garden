@@ -1,8 +1,7 @@
 'use client';
 
 //Core imports
-import { useEffect, useState } from "react";
-
+import { useEffect, useState } from 'react';
 
 // Third party imports
 import { Moon, Clock } from 'lucide-react';
@@ -10,7 +9,10 @@ import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 // Utility
-import { insertSleepEntry, sleepEntryExists } from "@/utils/supabase/dbfunctions";
+import {
+  insertSleepEntry,
+  sleepEntryExists,
+} from '@/utils/supabase/dbfunctions';
 
 //UI
 import {
@@ -23,25 +25,24 @@ import {
 } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 
-
 interface SleepTrackerProps {
   readonly userId: string;
 }
 
 export function SleepEntryCard({ userId }: SleepTrackerProps) {
-  const [startTime, setStartTime] = useState<string>("");
-  const [endTime, setEndTime] = useState<string>("");
+  const [startTime, setStartTime] = useState<string>('');
+  const [endTime, setEndTime] = useState<string>('');
   const [entryExists, setEntryExists] = useState<boolean | null>(null);
 
-  const checkkEntryExists = async() => {
+  const checkkEntryExists = async () => {
     const entryDate = new Date().toISOString().split('T')[0];
-    const { exists, error } = await sleepEntryExists(userId, entryDate);  
-    if(error) {
-      toast.warn("Error checking existing sleep entry!");
+    const { exists, error } = await sleepEntryExists(userId, entryDate);
+    if (error) {
+      toast.warn('Error checking existing sleep entry!');
       return;
     }
     setEntryExists(exists);
-  }
+  };
 
   useEffect(() => {
     checkkEntryExists();
@@ -69,11 +70,11 @@ export function SleepEntryCard({ userId }: SleepTrackerProps) {
       }
       return;
     }
-  
-    toast.success("Sleep entry saved successfully!");
+
+    toast.success('Sleep entry saved successfully!');
 
     checkkEntryExists();
-  }
+  };
 
   return (
     <div className="max-w-md mx-auto space-y-8">
