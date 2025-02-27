@@ -7,7 +7,7 @@ import { createClient } from '@/utils/supabase/client';
 import { Particles } from '@/components/magicui/particles';
 import { Button } from '@/components/ui/button';
 import { ProfileDropdown } from '@/components/profile-dropdown';
-import { Header } from '@/components/header'
+import { Header } from '@/components/header';
 import Footer from '@/components/footer';
 import { ReminderEntryCard } from '@/components/reminder-entry';
 
@@ -22,7 +22,7 @@ export default function ReminderPage() {
     const fetchUserAndReminder = async () => {
       const { data: authData, error: authError } =
         await supabase.auth.getUser();
-      
+
       if (authError || !authData?.user) {
         router.push('/error');
         return;
