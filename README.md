@@ -82,8 +82,8 @@ For this project, we are leveraging modern technologies to ensure scalability, m
 2. **Daily Data Intake**
     - As a user, I want to be able to track multiple habits so that I can monitor my progress and goals.
         - Given that I am a logged-in user, when I open the “habit tracker” page, then the system shows me all of my habits and allows me to visually fill out whether or not I successfully completed it that day (colored in day for complete).
-    - As a user, I want to be able to receive reminders about my daily habits so that I can stay on track and avoid forgetting them.
-        - Given that I am a user with an account, when I do not fill out my daily habit trackers by a certain time of the day, then the system sends reminders to complete it.
+    - As a user, I want to be able to rate my day on a scale from 1 to 5, so that I can get an at-a-glance view of the quality of my day
+        - Given that I am a logged-in user, when I open the "habit tracker" page, then the system allows me to rate my day on a scale from 1 to 5 and submit with my tracked habits
     - As a user, I want to be able to track my sleep so that I can understand my sleep patterns and improve my well-being.
         - Given that I am a logged-in user, when I open the “sleep tracker” page, then the system allows me to fill in information about my sleep and also allows me to view information on days prior.
 3. **Journal Entry System**
