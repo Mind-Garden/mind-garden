@@ -9,7 +9,7 @@ export interface IJournalEntries {
   id: string;
   user_id: string;
   entry_date: string;
-  entry: string;
+  journal_text: string;
 }
 
 export interface ISleepEntries {

@@ -1,14 +1,10 @@
-// Core Imports
 import { redirect } from 'next/navigation';
 
-// Utility
 import { createClient } from '@/utils/supabase/server';
 
-// UI
-import { JournalEntryCard } from '@/components/journal-entry';
-import Footer from '@/components/footer';
-import { JournalSwipe } from '@/components/journal-swipe';
 import { Header } from '@/components/header';
+import Footer from '@/components/footer';
+import  NewJournal from '@/components/journal';
 
 export default async function JournalPage() {
   const supabase = await createClient();
@@ -35,14 +31,9 @@ export default async function JournalPage() {
 
       {/* Main Content */}
       <main className="flex-1 container mx-auto px-4 py-8">
-        <JournalEntryCard userId={userId} />
-        <div className="mb-8">
-          {/* Journal Entries */}
-          <JournalSwipe userId={userId} />
-        </div>
+        <NewJournal userId={userId}/>
       </main>
 
-      {/* Footer */}
       <Footer />
     </div>
   );
