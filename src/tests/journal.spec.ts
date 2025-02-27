@@ -231,7 +231,6 @@ describe('Journal Actions', () => {
 
   describe('Delete journal entry', () => {
     it('should delete the journal entry successfully', async () => {
-      console.error = jest.fn();
       const entryId = '1';
 
       const matchMock = jest.fn().mockReturnValue({ error: null });
@@ -250,7 +249,6 @@ describe('Journal Actions', () => {
     })
 
     it('should fail at deleting a journal entry that does not exist', async () => {
-      console.error = jest.fn();
       const entryId = '-1';
 
       const matchMock = jest.fn().mockReturnValue({ error: { message: 'Delete error' } });
