@@ -24,46 +24,40 @@ function DataIntakeForm({
   categories,
   attributes,
 }: DataIntakeFormProps) {
-  const [savedSelection, setSavedSelection] = useState<Set<string>>(
-    new Set(),
-  );
   const [currentSelection, setCurrentSelection] = useState<Set<string>>(
     new Set(),
   );
+  const [responseId, setResponseId] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
   const [loadingSelection, setLoadingSelection] = useState(true);
   const [completedForm, setCompletedForm] = useState(false);
   const [scaleSelection, setScaleSelection] = useState<number | null>(null);
   const [scaleError, setScaleError] = useState(false);
 
-  // Fetch data
-  useEffect(() => {
-    let mounted = true;
+  // Fetch function extracted
+  const fetchResponses = useCallback(async () => {
+    setLoadingSelection(true); // Show loading state during re-fetch
+    try {
+      const response = await selectResponsesByDate(
+        userId,
+        new Date().toISOString().split('T')[0]
+      );
 
-    async function fetchResponses() {
-      try {
-        const response = await selectResponsesByDate(
-          userId,
-          new Date().toISOString().split('T')[0],
-        );
-
-        if (mounted) {
-          setSavedSelection(new Set(response?.attribute_ids ?? []));
-          setCurrentSelection(new Set(response?.attribute_ids ?? []));
-          setScaleSelection(response?.scale_rating ?? null);
-          setLoadingSelection(false);
-          if (response) setCompletedForm(true);
-        }
-      } catch (err) {
-        console.error('Error fetching table data:', err);
-      }
+      setCurrentSelection(new Set(response?.attribute_ids ?? []));
+      setScaleSelection(response?.scale_rating ?? null);
+      setResponseId(response?.id ?? null);
+      setCompletedForm(!!response);
+    } catch (err) {
+      console.error('Error fetching table data:', err);
+    } finally {
+      setLoadingSelection(false);
     }
+  }, [userId]);
 
+  // Initial fetch in useEffect
+  useEffect(() => {
     fetchResponses();
-    return () => {
-      mounted = false;
-    };
-  }, []);
+  }, [fetchResponses]);
 
   // Memoized attribute map
   const attributesByCategory = useMemo(() => {
@@ -102,15 +96,15 @@ function DataIntakeForm({
     setScaleError(false);
 
     try {
-      if (savedSelection.size === 0) {
+      if (!responseId) {
         // Insert new selection if no previous responses exist
         await insertResponses(currentSelection, userId, scaleSelection);
-        setSavedSelection(new Set(currentSelection));
-      } else if (savedSelection.size > 0) {
+      } else {
         // Update if both responses already exist
-        await updateResponses(currentSelection, userId, scaleSelection);
-        setSavedSelection(new Set(currentSelection));
+        await updateResponses(responseId, currentSelection, userId, scaleSelection);
       }
+
+      await fetchResponses();
     } catch (error) {
       console.error('Error submitting form:', error);
     } finally {

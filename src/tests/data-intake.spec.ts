@@ -171,6 +171,11 @@ describe('Data Intake Actions', () => {
   });
 
   describe('updateResponses', () => {
+    const responseId = 'response123';
+    const userId = 'user123';
+    const attributeIds = ['attr1', 'attr2'];
+    const scaleRating = 5;
+
     it('should successfully update responses', async () => {
       const matchMock = jest.fn().mockReturnThis();
       const selectMock = jest.fn()
@@ -183,15 +188,16 @@ describe('Data Intake Actions', () => {
       });
 
       await expect(
-        updateResponses(new Set(['attr1', 'attr2']), 'user123', 5),
+        updateResponses(responseId, new Set(attributeIds), userId, scaleRating),
       ).resolves.toBeUndefined();
       expect(mockSupabaseClient.from).toHaveBeenCalledWith('responses');
       expect(updateMock).toHaveBeenCalledWith({
-        attribute_ids: ['attr1', 'attr2'],
-        scale_rating: 5
+        attribute_ids: attributeIds,
+        scale_rating: scaleRating
       });
       expect(matchMock).toHaveBeenCalledWith({
-        user_id: 'user123',
+        id: responseId,
+        user_id: userId,
         entry_date: expect.any(String)
       });
     });
@@ -209,7 +215,7 @@ describe('Data Intake Actions', () => {
       });
 
       await expect(
-        updateResponses(new Set(['attr1']), 'user123', 5),
+        updateResponses(responseId, new Set(attributeIds), userId, scaleRating),
       ).resolves.toBeUndefined();
     });
   });

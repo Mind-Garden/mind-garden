@@ -210,11 +210,13 @@ export async function insertResponses(
 }
 /**
  * Updates an existing response in the database.
+ * @param responseId - The unique identifier of the response.
  * @param attributeIds - A set of attribute IDs representing the user's selected attributes.
  * @param userId - The unique identifier of the user.
  * @param scaleRating - The user's scale rating for their day.
  */
 export async function updateResponses(
+  responseId: string,
   attributeIds: Set<string>,
   userId: string,
   scaleRating: number,
@@ -223,7 +225,7 @@ export async function updateResponses(
 
   const { error } = await updateData(
     'responses',
-    { user_id: userId, entry_date: entryDate },
+    { id: responseId, user_id: userId, entry_date: entryDate },
     { attribute_ids: Array.from(attributeIds), scale_rating: scaleRating },
   );
 
