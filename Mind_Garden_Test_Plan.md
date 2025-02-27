@@ -8,56 +8,56 @@
 | 1.1 | Feb 26, 2025 | Caroline | Sprint 2 |
 |  |  |  |  |
 
-1. # **Introduction**
+ # **Introduction**
 
-   1. ##  **Scope**
+   ##  **Scope**
 
-Scope defines the features and functional or non-functional requirements of the software that **will be** tested.
+  Scope defines the features and functional or non-functional requirements of the software that **will be** tested.
 
-Testing Scope for Sprint 2:
+  Testing Scope for Sprint 2:
 
-1. Account Management  
-   1. Account Creation  
-   2. Account Login  
-   3. Account Deletion  
-   4. Account Information Modification  
-   5. Password Change  
-2. Daily Data Intake  
-   1. Habit Tracker  
-   2. Reminders  
-   3. Sleep Tracker  
-3. Journal Entry System  
-   1. Create Journal Entry  
-   2. Edit Journal Entry  
-   3. Delete Journal Entry  
-   4. Journal Entry Prompt  
-   5. View Journal Entries
+  1. Account Management  
+    1. Account Creation  
+    2. Account Login  
+    3. Account Deletion  
+    4. Account Information Modification  
+    5. Password Change  
+  2. Daily Data Intake  
+    1. Habit Tracker  
+    2. Reminders  
+    3. Sleep Tracker  
+  3. Journal Entry System  
+    1. Create Journal Entry  
+    2. Edit Journal Entry  
+    3. Delete Journal Entry  
+    4. Journal Entry Prompt  
+    5. View Journal Entries
 
-   2. ## **Roles and Responsibilities** 
+## **Roles and Responsibilities** 
 
-| Name | GitHub username | Role |
-| :---- | :---- | :---- |
-| Ji Min Ryu | @jiminryuu | Back-end Developer |
-| Hassan Khan | @hkhan701 | Full-stack Developer |
-| Manisha Gurukumar | @gmanishaa | Front-end Developer |
-| Caroline Nieminen | @cnieminen | Full-stack Developer |
-| Colm Ukrainec | @colmukrainec | Full-stack Developer |
-| Aiden Park | @orca277 | Test Manager/Back-end Developer |
+  | Name | GitHub username | Role |
+  | :---- | :---- | :---- |
+  | Ji Min Ryu | @jiminryuu | Back-end Developer |
+  | Hassan Khan | @hkhan701 | Full-stack Developer |
+  | Manisha Gurukumar | @gmanishaa | Front-end Developer |
+  | Caroline Nieminen | @cnieminen | Full-stack Developer |
+  | Colm Ukrainec | @colmukrainec | Full-stack Developer |
+  | Aiden Park | @orca277 | Test Manager/Back-end Developer |
 
 Role Details:
 
 1. Front-end Developer  
-- Focused on creating user-friendly UI and UX  
+    - Focused on creating user-friendly UI and UX  
 2. Back-end Developer  
-- Focused on creating the logic and managing the database, which will be displayed by the front-end  
+    - Focused on creating the logic and managing the database, which will be displayed by the front-end  
 3. Test Manager  
-- Responsible for managing the Testing Suite for our application
+    - Responsible for managing the Testing Suite for our application
 
-Other group roles such as QA or documentation are spread out evenly between members.
+  Other group roles such as QA or documentation are spread out evenly between members.
 
-2. # **Test Methodology**
+# **Test Methodology**
 
-   1. ## **Test Levels**
+   ## **Test Levels**
 
 ### Unit/Integration test
 
@@ -103,23 +103,21 @@ Other group roles such as QA or documentation are spread out evenly between memb
   * Update reminder time
 
 
-  2. ## **Test Completeness**
+## **Test Completeness**
 
 * 100% back-end code coverage (mandatory for this project), all the back-end source code should be covered by test cases.
 
-3. # **Resource & Environment Needs**
+# **Resource & Environment Needs**
 
-   1. ## **Testing Tools**
+## **Testing Tools**
 
 * Jest
 
- 
-
-2. ## **Test Environment**
+## **Test Environment**
 
 * Our GitHub Actions uses ubuntu-latest, but can be run on Windows/macOS
 
-4. # **Terms/Acronyms** 
+# **Terms/Acronyms** 
 
-None.
+* None.
 
