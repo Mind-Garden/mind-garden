@@ -353,16 +353,13 @@ export async function insertReminderTime(userId: string, userEmail: string) {
     return { error };
   }
 
-  // Only insert if there is no record for the user in table reminders
-  if (existingReminder && Object.keys(existingReminder).length === 0) {
-    return await insertData('reminders', [
-      {
-        user_id: userId,
-        email: userEmail,
-        reminder_time: reminderTime,
-      },
-    ]);
-  }
+  return await insertData('reminders', [
+    {
+      user_id: userId,
+      email: userEmail,
+      reminder_time: reminderTime,
+    },
+  ]);
 }
 
 export async function updateReminderTime(
