@@ -42,9 +42,8 @@ export function ReminderCard({ userId, email }: ReminderProps) {
         const reminderData = await getReminderTime(userId);
         
         if (reminderData && Array.isArray(reminderData) && reminderData.length > 0 && reminderData[0].reminder_time) {
-          const newReminderTime = reminderData[0].reminder_time.split(':');
-          console.log(newReminderTime)
-          setReminderTime(dayjs().hour(newReminderTime[0]).minute(newReminderTime[1]));
+          const [hour, minute] = reminderData[0].reminder_time.split(':').map(Number);
+          setReminderTime(dayjs().hour(hour).minute(minute));
         } 
         else {
           await insertReminderTime(userId, email);
