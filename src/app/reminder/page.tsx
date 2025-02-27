@@ -2,11 +2,8 @@
 
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { Bell } from 'lucide-react';
 import { createClient } from '@/utils/supabase/client';
 import { Particles } from '@/components/magicui/particles';
-import { Button } from '@/components/ui/button';
-import { ProfileDropdown } from '@/components/profile-dropdown';
 import { Header } from '@/components/header';
 import Footer from '@/components/footer';
 import { ReminderEntryCard } from '@/components/reminder-entry';
