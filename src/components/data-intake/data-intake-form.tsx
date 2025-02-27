@@ -3,9 +3,8 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import {
-  deleteResponses,
   insertResponses,
-  selectResponsesByDate,
+  selectResponsesByDate, updateResponses,
 } from '@/utils/supabase/dbfunctions';
 import AttributeIcon from '@/components/data-intake/attribute-icon';
 import ToggleButton from '@/components/data-intake/toggle-button';
@@ -25,14 +24,14 @@ function DataIntakeForm({
   categories,
   attributes,
 }: DataIntakeFormProps) {
-  const [currentResponses, setCurrentResponses] = useState<Set<string>>(
+  const [savedSelection, setSavedSelection] = useState<Set<string>>(
     new Set(),
   );
   const [currentSelection, setCurrentSelection] = useState<Set<string>>(
     new Set(),
   );
   const [submitting, setSubmitting] = useState(false);
-  const [loadingResponses, setLoadingResponses] = useState(true);
+  const [loadingSelection, setLoadingSelection] = useState(true);
   const [completedForm, setCompletedForm] = useState(false);
   const [scaleSelection, setScaleSelection] = useState<number | null>(null);
   const [scaleError, setScaleError] = useState(false);
@@ -43,17 +42,17 @@ function DataIntakeForm({
 
     async function fetchResponses() {
       try {
-        const responses = await selectResponsesByDate(
+        const response = await selectResponsesByDate(
           userId,
           new Date().toISOString().split('T')[0],
         );
 
         if (mounted) {
-          setCurrentResponses(new Set(responses?.[0]?.attribute_ids ?? []));
-          setCurrentSelection(new Set(responses?.[0]?.attribute_ids ?? []));
-          setScaleSelection(responses?.[0]?.scale_rating ?? null);
-          setLoadingResponses(false);
-          if (responses && responses.length > 0) setCompletedForm(true);
+          setSavedSelection(new Set(response?.attribute_ids ?? []));
+          setCurrentSelection(new Set(response?.attribute_ids ?? []));
+          setScaleSelection(response?.scale_rating ?? null);
+          setLoadingSelection(false);
+          if (response) setCompletedForm(true);
         }
       } catch (err) {
         console.error('Error fetching table data:', err);
@@ -90,7 +89,7 @@ function DataIntakeForm({
   }, []);
 
   // Submit handler
-  const handleSubmit = async () => {
+  const handleSubmit = async (): Promise<void> => {
     // Prevent multiple submissions at once
     if (submitting) return;
 
@@ -101,30 +100,17 @@ function DataIntakeForm({
 
     setSubmitting(true);
     setScaleError(false);
-    const removedResponses = new Set(
-      [...currentResponses].filter((x) => !currentSelection.has(x)),
-    );
-    const addedResponses = new Set(
-      [...currentSelection].filter((x) => !currentResponses.has(x)),
-    );
-
-    // Make sure there is something to submit
-    if (addedResponses.size === 0 && removedResponses.size === 0) {
-      setSubmitting(false);
-      return;
-    }
 
     try {
-      await Promise.all([
-        addedResponses.size > 0
-          ? insertResponses(addedResponses, userId, scaleSelection)
-          : Promise.resolve(),
-        removedResponses.size > 0
-          ? deleteResponses(removedResponses, userId)
-          : Promise.resolve(),
-      ]);
-
-      setCurrentResponses(new Set(currentSelection));
+      if (savedSelection.size === 0) {
+        // Insert new selection if no previous responses exist
+        await insertResponses(currentSelection, userId, scaleSelection);
+        setSavedSelection(new Set(currentSelection));
+      } else if (savedSelection.size > 0) {
+        // Update if both responses already exist
+        await updateResponses(currentSelection, userId, scaleSelection);
+        setSavedSelection(new Set(currentSelection));
+      }
     } catch (error) {
       console.error('Error submitting form:', error);
     } finally {
@@ -133,12 +119,12 @@ function DataIntakeForm({
     }
   };
 
-  const handleScaleToggle = useCallback((rating: number) => {
+  const handleScaleToggle = useCallback((rating: number): void => {
     setScaleSelection((prev) => (prev === rating ? null : rating));
     if (scaleSelection) setScaleError(false);
   }, []);
 
-  if (loadingResponses) {
+  if (loadingSelection) {
     return (
       <div className="flex min-h-screen justify-center items-center">
         <LoaderCircle className="justify-center h-10 w-10 animate-spin min-h-screen" />
