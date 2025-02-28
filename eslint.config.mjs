@@ -1,53 +1,22 @@
-import { dirname } from 'path';
-import { fileURLToPath } from 'url';
-import { FlatCompat } from '@eslint/eslintrc';
+import globals from "globals";
+import pluginJs from "@eslint/js";
+import tseslint from "typescript-eslint";
+import pluginReact from "eslint-plugin-react";
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
 
-const compat = new FlatCompat({
-  baseDirectory: __dirname,
-});
-
-const eslintConfig = [
-  ...compat.extends(
-    'next/core-web-vitals', // Next.js recommended rules
-    'next/typescript', // TypeScript support
-    'eslint:recommended', // General recommended rules
-    'plugin:prettier/recommended', // Prettier integration
-  ),
+/** @type {import('eslint').Linter.Config[]} */
+export default [
+  {files: ["**/*.{js,mjs,cjs,ts,jsx,tsx}"]},
+  {languageOptions: { globals: globals.browser }},
+  {ignores: ["node_modules", "dist", "build", "public", ".next", "coverage"]},
+  pluginJs.configs.recommended,
+  ...tseslint.configs.recommended,
+  pluginReact.configs.flat.recommended,
   {
-    plugins: ['prettier'],
-    rules: {
-      // Prettier Rules
-      'prettier/prettier': [
-        'error',
-        {
-          semi: false, // No semicolons
-          singleQuote: true, // Single quotes for strings
-          trailingComma: 'es5',
-          printWidth: 80,
-          tabWidth: 2,
-        },
-      ],
-
-      // Custom ESLint Rules
-      semi: ['error', 'never'], // Disallow semicolons
-      '@typescript-eslint/no-explicit-any': [
-        'error',
-        {
-          fixToUnknown: false, // Avoid suggesting `unknown`
-          ignoreRestArgs: false, // Disallow in rest arguments
-        },
-      ],
-      '@typescript-eslint/ban-ts-comment': [
-        'error',
-        {
-          'ts-ignore': 'allow-with-description', // Allow `@ts-ignore` only with description
-        },
-      ],
+    settings: {
+      react: {
+        version: "detect",
+      },
     },
   },
 ];
-
-export default eslintConfig;

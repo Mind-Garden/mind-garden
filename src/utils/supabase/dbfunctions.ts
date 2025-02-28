@@ -1,5 +1,10 @@
 import { getSupabaseClient } from './client';
-import { IAttributes, ICategories, IResponses, IJournalEntries } from '@/utils/supabase/schema';
+import {
+  IAttributes,
+  ICategories,
+  IResponses,
+  IJournalEntries,
+} from '@/utils/supabase/schema';
 import { getLocalISOString } from '@/lib/utility';
 
 /**
@@ -13,9 +18,11 @@ import { getLocalISOString } from '@/lib/utility';
 async function insertData<T>(table: string, dataToInsert: T[]) {
   const supabase = getSupabaseClient();
 
-
   // Add entry_date to each item in the array
-  const dataWithDate = dataToInsert.map(item => ({ ...item, entry_date: getLocalISOString() }));
+  const dataWithDate = dataToInsert.map((item) => ({
+    ...item,
+    entry_date: getLocalISOString(),
+  }));
 
   const { data, error } = await supabase
     .from(table)
@@ -38,15 +45,17 @@ async function insertData<T>(table: string, dataToInsert: T[]) {
  */
 export async function saveJournalEntry(entry: string, userId: string) {
   if (!entry.trim()) return; // Prevent empty entries
-  const {data, error} = await insertData('journal_entries', [{
-    user_id: userId,
-    journal_text: entry,
-  }]);
+  const { data, error } = await insertData('journal_entries', [
+    {
+      user_id: userId,
+      journal_text: entry,
+    },
+  ]);
 
   if (error) {
     console.error('Error saving journal entry:', error.message);
     return { error: error.message };
-  } 
+  }
 
   return { data };
 }
@@ -59,9 +68,12 @@ export async function saveJournalEntry(entry: string, userId: string) {
  * @returns - The selected data or error
  * This will be a general function for all our select operations (private to this script)
  */
-
-async function selectData<T>(table: string, conditions?: object, columns: string[] = ['*']) {
-
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+async function selectData<T>(
+  table: string,
+  conditions?: object,
+  columns: string[] = ['*'],
+) {
   const supabase = getSupabaseClient();
 
   // Build the query with conditions and selected columns
@@ -84,7 +96,11 @@ async function selectData<T>(table: string, conditions?: object, columns: string
  * @returns - The journal entries data or error
  */
 export async function fetchJournalEntries(userId: string) {
-  const { data, error } = await selectData('journal_entries', { user_id: userId }, ['*']);
+  const { data, error } = await selectData(
+    'journal_entries',
+    { user_id: userId },
+    ['*'],
+  );
 
   if (error) {
     console.error('Error fetching journal entries:', error.message);
@@ -103,8 +119,11 @@ export async function fetchJournalEntries(userId: string) {
  * This will be a general function for all our update operations (private to this script)
  */
 
-async function updateData<T>(table: string, conditions: object, dataToUpdate: T) {
-
+async function updateData<T>(
+  table: string,
+  conditions: object,
+  dataToUpdate: T,
+) {
   const supabase = getSupabaseClient();
   const { data, error } = await supabase
     .from(table)
@@ -114,7 +133,7 @@ async function updateData<T>(table: string, conditions: object, dataToUpdate: T)
 
   if (error) {
     console.error(`Error updating ${table}:`, error.message);
-    return { error : error.message};
+    return { error: error.message };
   } else {
     return { data };
   }
@@ -189,11 +208,13 @@ export async function insertResponses(
   userId: string,
   scaleRating: number,
 ): Promise<void> {
-  const { error } = await insertData('responses', [{
-    user_id: userId,
-    attribute_ids: Array.from(attributeIds),
-    scale_rating: scaleRating,
-  }]);
+  const { error } = await insertData('responses', [
+    {
+      user_id: userId,
+      attribute_ids: Array.from(attributeIds),
+      scale_rating: scaleRating,
+    },
+  ]);
   if (error) throw new Error(error.message);
 }
 
@@ -249,12 +270,14 @@ export async function insertSleepEntry(
     return { error: 'Sleep entry already exists for today' };
   }
 
-  return await insertData('sleep_entries', [{
-    user_id: userId,
-    entry_date: entryDate,
-    start: startTime,
-    end: endTime,
-  }]);
+  return await insertData('sleep_entries', [
+    {
+      user_id: userId,
+      entry_date: entryDate,
+      start: startTime,
+      end: endTime,
+    },
+  ]);
 }
 
 export async function sleepEntryExists(userId: string, entryDate: string) {

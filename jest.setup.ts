@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
+ 
 import * as jwt from 'jsonwebtoken';
 import SuperTest from 'supertest';
 
