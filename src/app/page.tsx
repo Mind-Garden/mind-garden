@@ -43,8 +43,8 @@ export default function Home() {
   }, [isLogin]);
 
   useEffect(() => {
-    if (typeof window !== "undefined") {
-      setSiteUrl(window.location.origin);
+    if (typeof window !== "undefined" && !process.env.NEXT_PUBLIC_SITE_URL) {
+        setSiteUrl(window.location.origin);
     }
   }, []);
 
