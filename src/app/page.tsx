@@ -16,7 +16,7 @@ export default function Home() {
   const [isLogin, setIsLogin] = useState(true);
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-  const [siteUrl, setSiteUrl] = useState(process.env.NEXT_PUBLIC_SITE_URL || "");
+  const [siteUrl, setSiteUrl] = useState(process.env.NEXT_PUBLIC_SITE_URL || '');
 
   /**
    * Handles authentication by calling the appropriate function
@@ -43,7 +43,7 @@ export default function Home() {
   }, [isLogin]);
 
   useEffect(() => {
-    if (typeof window !== "undefined" && !process.env.NEXT_PUBLIC_SITE_URL) {
+    if (typeof window !== 'undefined' && !process.env.NEXT_PUBLIC_SITE_URL) {
         setSiteUrl(window.location.origin);
     }
   }, []);
@@ -65,7 +65,7 @@ export default function Home() {
     try {
       const { error, success } = await forgotPassword(email, siteUrl);
       if (error) {
-        toast.warn("Please try again later.");
+        toast.warn('Please try again later.');
       } else {
         toast.success('Password reset email sent successfully.');
       }
@@ -236,7 +236,7 @@ export default function Home() {
             <div className="text-center">
               <span className="text-base text-gray-600">
                 {isLogin
-                  ? "Don't have an account?"
+                  ? 'Don\'t have an account?'
                   : 'Already have an account?'}
               </span>{' '}
               <button

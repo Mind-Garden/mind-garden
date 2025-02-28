@@ -1,4 +1,4 @@
-import { insertSleepEntry, sleepEntryExists } from "@/utils/supabase/dbfunctions";
+import { insertSleepEntry, sleepEntryExists } from '@/utils/supabase/dbfunctions';
 import { getSupabaseClient } from '@/utils/supabase/client';
 
 jest.mock('@/utils/supabase/client', () => ({
@@ -22,7 +22,7 @@ describe('Sleep Tracker Actions', () => {
       const selectMock = jest
           .fn()
           .mockResolvedValue({ data: mockData['data'], error: null });
-      const insertMock = jest.fn().mockReturnValue({ select: selectMock })
+      const insertMock = jest.fn().mockReturnValue({ select: selectMock });
 
       mockSupabaseClient.from.mockReturnValue({
           insert: insertMock
@@ -37,12 +37,12 @@ describe('Sleep Tracker Actions', () => {
     it('should return error.message and log the error on failure', async () => {
       console.error = jest.fn();
       const mockData = { data: [{start: '2:00:00', end: '9:00:00', user_id: '1'}] };
-      const mockReturnValue = {error: { message: 'Error' } }
+      const mockReturnValue = {error: { message: 'Error' } };
 
       const selectMock = jest
         .fn()
         .mockResolvedValue(mockReturnValue);
-      const insertMock = jest.fn().mockReturnValue({ select: selectMock })
+      const insertMock = jest.fn().mockReturnValue({ select: selectMock });
 
       mockSupabaseClient.from.mockReturnValue({
         insert: insertMock
@@ -53,7 +53,7 @@ describe('Sleep Tracker Actions', () => {
       expect(insertMock).toHaveBeenCalled();
       expect(selectMock).toHaveBeenCalled();
       expect(console.error).toHaveBeenCalledWith(
-        `Error inserting into sleep_entries:`,
+        'Error inserting into sleep_entries:',
         mockReturnValue.error.message);
     });
 
@@ -106,7 +106,7 @@ describe('Sleep Tracker Actions', () => {
     it('should return error.message and log the error on failure', async () => {
       console.error = jest.fn();
       const mockData = { data: [{ user_id: '1', entry_date: '2025-02-26' }] };
-      const mockReturnValue = {error: { message: 'Error' } }
+      const mockReturnValue = {error: { message: 'Error' } };
 
       const matchMock = jest
         .fn()
@@ -122,7 +122,7 @@ describe('Sleep Tracker Actions', () => {
       expect(selectMock).toHaveBeenCalled();
       expect(matchMock).toHaveBeenCalled();
       expect(console.error).toHaveBeenCalledWith(
-        `Error selecting from sleep_entries:`,
+        'Error selecting from sleep_entries:',
         mockReturnValue.error.message);
     });
   });

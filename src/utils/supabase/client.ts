@@ -10,6 +10,6 @@ export function getSupabaseClient(): SupabaseClient {
       process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
     );
   }
-  return supabaseClient
+  return supabaseClient;
 
 }

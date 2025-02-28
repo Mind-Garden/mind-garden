@@ -1,7 +1,7 @@
 'use client';
 
 //Core imports
-import { useEffect, useState } from "react";
+import { useEffect, useState } from 'react';
 
 
 // Third party imports
@@ -10,7 +10,7 @@ import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 // Utility
-import { insertSleepEntry, sleepEntryExists } from "@/utils/supabase/dbfunctions";
+import { insertSleepEntry, sleepEntryExists } from '@/utils/supabase/dbfunctions';
 import { getLocalISOString } from '@/lib/utility';
 
 //UI
@@ -30,19 +30,19 @@ interface SleepTrackerProps {
 }
 
 export function SleepEntryCard({ userId }: SleepTrackerProps) {
-  const [startTime, setStartTime] = useState<string>("");
-  const [endTime, setEndTime] = useState<string>("");
+  const [startTime, setStartTime] = useState<string>('');
+  const [endTime, setEndTime] = useState<string>('');
   const [entryExists, setEntryExists] = useState<boolean | null>(null);
 
   const checkEntryExists = async() => {
     const entryDate = getLocalISOString();
     const { exists, error } = await sleepEntryExists(userId, entryDate);  
     if(error) {
-      toast.warn("Error checking existing sleep entry!");
+      toast.warn('Error checking existing sleep entry!');
       return;
     }
     setEntryExists(exists);
-  }
+  };
 
   useEffect(() => {
     checkEntryExists();
@@ -71,10 +71,10 @@ export function SleepEntryCard({ userId }: SleepTrackerProps) {
       return;
     }
   
-    toast.success("Sleep entry saved successfully!");
+    toast.success('Sleep entry saved successfully!');
 
     checkEntryExists();
-  }
+  };
 
   return (
     <div className="max-w-md mx-auto space-y-8">

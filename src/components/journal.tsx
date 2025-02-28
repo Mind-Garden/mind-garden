@@ -1,22 +1,22 @@
-"use client"
+'use client';
 
-import { useState, useEffect } from "react"
+import { useState, useEffect } from 'react';
 
-import { Calendar } from "@/components/ui/calendar"
-import { Button } from "@/components/ui/button"
-import { TextArea } from "@/components/ui/textarea"
-import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
-import { ScrollArea } from "@/components/ui/scroll-area"
-import { Badge } from "./ui/badge"
+import { Calendar } from '@/components/ui/calendar';
+import { Button } from '@/components/ui/button';
+import { TextArea } from '@/components/ui/textarea';
+import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
+import { ScrollArea } from '@/components/ui/scroll-area';
+import { Badge } from './ui/badge';
 
-import { PenLine, Trash2, CalendarDays, Save, X, Edit, NotebookPen, LoaderCircle } from "lucide-react"
+import { PenLine, Trash2, CalendarDays, Save, X, Edit, NotebookPen, LoaderCircle } from 'lucide-react';
 
-import { RandomPromptCard } from "./random-prompt-card"
-import { deleteJournalEntry, fetchJournalEntries, saveJournalEntry, updateJournalEntry } from "@/utils/supabase/dbfunctions"
-import { toast } from "react-toastify"
-import { IJournalEntries } from "@/utils/supabase/schema"
+import { RandomPromptCard } from './random-prompt-card';
+import { deleteJournalEntry, fetchJournalEntries, saveJournalEntry, updateJournalEntry } from '@/utils/supabase/dbfunctions';
+import { toast } from 'react-toastify';
+import { IJournalEntries } from '@/utils/supabase/schema';
 
-import { getDate, undoConversion } from "@/lib/utility"
+import { getDate, undoConversion } from '@/lib/utility';
 
 
 
@@ -28,29 +28,29 @@ interface NewJournalProps {
 
 export default function NewJournal({ userId }: NewJournalProps) {
 
-  const [date, setDate] = useState<Date>(getDate())
-  const [newEntry, setNewEntry] = useState("") 
-  const [entries, setEntries] = useState<IJournalEntries[]>([])
-  const [loading, setLoading] = useState(true)
-  const [error, setError] = useState<string | null>(null)
-  const [editingEntryId, setEditingEntryId] = useState<string | null>(null)
-  const [editingText, setEditingText] = useState("")
+  const [date, setDate] = useState<Date>(getDate());
+  const [newEntry, setNewEntry] = useState(''); 
+  const [entries, setEntries] = useState<IJournalEntries[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  const [editingEntryId, setEditingEntryId] = useState<string | null>(null);
+  const [editingText, setEditingText] = useState('');
 
 
   // Helper function to convert entry_date string to Date object with proper UTC handling
   const parseEntryDate = (dateString: string) => {
-    return new Date(dateString + 'T00:00:00Z')
-  }
+    return new Date(dateString + 'T00:00:00Z');
+  };
 
   // Helper to check if two dates represent the same day
   const isSameDay = (date1: Date, dateString: string) => {
-    const date2 = parseEntryDate(dateString)
+    const date2 = parseEntryDate(dateString);
     return (
       date1.getUTCFullYear() === date2.getUTCFullYear() &&
       date1.getUTCMonth() === date2.getUTCMonth() &&
       date1.getUTCDate() === date2.getUTCDate()
-    )
-  }
+    );
+  };
 
   // Fetch journal entries for the given user
   useEffect(() => {
@@ -60,7 +60,7 @@ export default function NewJournal({ userId }: NewJournalProps) {
       if (error) {
         setError(error);
         setLoading(false);
-        return
+        return;
       }
       if (data) {
         setEntries(data.toReversed());
@@ -78,22 +78,22 @@ export default function NewJournal({ userId }: NewJournalProps) {
       <LoaderCircle className="h-12 w-12 text-gray-500 animate-spin" />
     </div>
   );
-  if (error) return <div>Error: {error}</div>
+  if (error) return <div>Error: {error}</div>;
 
   // Get entries count for each date
   const getEntriesCount = (day: Date) => {
     // Convert the day to UTC midnight for comparison
-    const utcDay = new Date(day)
+    const utcDay = new Date(day);
 
     return entries.filter(entry =>
       isSameDay(utcDay, entry.entry_date)
-    ).length
-  }
+    ).length;
+  };
 
   // Get entries for the selected date
   const selectedDateEntries = entries.filter(entry =>
     isSameDay(date, entry.entry_date)
-  )
+  );
 
   // Save a new journal entry
   const handleSaveEntry = async () => {
@@ -103,7 +103,7 @@ export default function NewJournal({ userId }: NewJournalProps) {
       return;
     }
 
-    const result = await saveJournalEntry(newEntry, userId)
+    const result = await saveJournalEntry(newEntry, userId);
 
     //error checking
     if (result?.error || (!result?.error && !result?.data)) {
@@ -112,15 +112,15 @@ export default function NewJournal({ userId }: NewJournalProps) {
       toast.success('Successfully added journal entry!');
     }
     if (error) {
-      throw error
+      throw error;
     }
 
     if (result?.data?.[0]) {
       // Add the new entry to the local state
-      setEntries([result.data[0], ...entries])
-      setNewEntry("")
+      setEntries([result.data[0], ...entries]);
+      setNewEntry('');
     }
-  }
+  };
 
   // Delete a journal entry
   const handleDeleteEntry = async (id: string) => {
@@ -131,34 +131,34 @@ export default function NewJournal({ userId }: NewJournalProps) {
       : toast.success('Journal entry deleted successfully!');
 
     // Update the local state
-    setEntries(entries.filter((entry) => entry.id !== id))
-  }
+    setEntries(entries.filter((entry) => entry.id !== id));
+  };
 
   // Start editing an entry
   const startEditing = (entry: IJournalEntries) => {
-    setEditingEntryId(entry.id)
-    setEditingText(entry.journal_text)
-  }
+    setEditingEntryId(entry.id);
+    setEditingText(entry.journal_text);
+  };
 
   // Cancel editing
   const cancelEditing = () => {
-    setEditingEntryId(null)
-    setEditingText("")
-  }
+    setEditingEntryId(null);
+    setEditingText('');
+  };
 
   // Save edited entry
   const saveEditedEntry = async (id: string) => {
     if (!editingText.trim()) {
-      toast.warn('Journal entry cannot be empty!')
-      return
+      toast.warn('Journal entry cannot be empty!');
+      return;
     }
 
     try {
-      const result = await updateJournalEntry(id, editingText)
+      const result = await updateJournalEntry(id, editingText);
 
       if (result?.error) {
-        toast.error('Failed to update journal entry.')
-        return
+        toast.error('Failed to update journal entry.');
+        return;
       }
 
       // Update the local state
@@ -168,13 +168,13 @@ export default function NewJournal({ userId }: NewJournalProps) {
         return [updatedEntry, ...filteredEntries];
       });
 
-      toast.success('Journal entry updated successfully!')
-      setEditingEntryId(null)
-      setEditingText("")
+      toast.success('Journal entry updated successfully!');
+      setEditingEntryId(null);
+      setEditingText('');
     } catch (err) {
-      toast.error('An error occurred while updating the entry.')
+      toast.error('An error occurred while updating the entry.');
     }
-  }
+  };
 
   return (
     <div className="max-w-7xl mx-auto p-4 md:p-8 space-y-6">
@@ -198,7 +198,7 @@ export default function NewJournal({ userId }: NewJournalProps) {
               className="rounded-md flex items-center justify-center"
               components={{
               DayContent: ({ date: dayDate }: { date: Date }) => {
-                const count = getEntriesCount(dayDate)
+                const count = getEntriesCount(dayDate);
                 return (
                 <div className="relative w-full h-full p-2">
                   <span>{dayDate.getDate()}</span>
@@ -211,7 +211,7 @@ export default function NewJournal({ userId }: NewJournalProps) {
                   </Badge>
                   )}
                 </div>
-                )
+                );
               },
               }}
             />
@@ -250,15 +250,15 @@ export default function NewJournal({ userId }: NewJournalProps) {
         <CardHeader>
           <div className="flex items-center justify-between">
             <CardTitle>
-              Entries for{" "}
-              {undoConversion(date).toLocaleDateString("en-US", {
-                month: "long",
-                day: "numeric",
-                year: "numeric",
+              Entries for{' '}
+              {undoConversion(date).toLocaleDateString('en-US', {
+                month: 'long',
+                day: 'numeric',
+                year: 'numeric',
               })}
             </CardTitle>
             <Badge variant="secondary">
-              {selectedDateEntries.length} {selectedDateEntries.length === 1 ? "entry" : "entries"}
+              {selectedDateEntries.length} {selectedDateEntries.length === 1 ? 'entry' : 'entries'}
             </Badge>
           </div>
         </CardHeader>
@@ -316,5 +316,5 @@ export default function NewJournal({ userId }: NewJournalProps) {
         </CardContent>
       </Card>
     </div>
-  )
+  );
 }

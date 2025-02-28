@@ -30,7 +30,7 @@ describe('Journal Actions', () => {
       const selectMock = jest
         .fn()
         .mockResolvedValue({ data: mockData['data'], error: null });
-      const insertMock = jest.fn().mockReturnValue({ select: selectMock })
+      const insertMock = jest.fn().mockReturnValue({ select: selectMock });
 
       mockSupabaseClient.from.mockReturnValue({
         insert: insertMock
@@ -45,12 +45,12 @@ describe('Journal Actions', () => {
     it('should return error.message and log the error on failure', async () => {
       console.error = jest.fn();
       const mockData = { data: [{ journalText: 'Mock Journal Entry', userId: '1', entry_date: '2025-01-01'}] };
-      const mockReturnValue = { data: null, error: { message: 'Error' } }
+      const mockReturnValue = { data: null, error: { message: 'Error' } };
 
       const selectMock = jest
         .fn()
         .mockResolvedValue(mockReturnValue);
-      const insertMock = jest.fn().mockReturnValue({ select: selectMock })
+      const insertMock = jest.fn().mockReturnValue({ select: selectMock });
 
       mockSupabaseClient.from.mockReturnValue({
         insert: insertMock
@@ -61,7 +61,7 @@ describe('Journal Actions', () => {
       expect(insertMock).toHaveBeenCalled();
       expect(selectMock).toHaveBeenCalled();
       expect(console.error).toHaveBeenCalledWith(
-        `Error inserting into journal_entries:`,
+        'Error inserting into journal_entries:',
         mockReturnValue.error.message);
     });
 
@@ -240,13 +240,13 @@ describe('Journal Actions', () => {
         delete: deleteMock,
       });
 
-      const result = await deleteJournalEntry(entryId)
+      const result = await deleteJournalEntry(entryId);
 
       expect(result.data).toBeUndefined();
 
       expect(deleteMock).toHaveBeenCalled();
       expect(matchMock).toHaveBeenCalled();
-    })
+    });
 
     it('should fail at deleting a journal entry that does not exist', async () => {
       const entryId = '-1';
@@ -258,15 +258,15 @@ describe('Journal Actions', () => {
         delete: deleteMock,
       });
 
-      const result = await deleteJournalEntry(entryId)
+      const result = await deleteJournalEntry(entryId);
 
-      expect(result.error).toEqual({"message": "Delete error"});
+      expect(result.error).toEqual({'message': 'Delete error'});
 
       expect(deleteMock).toHaveBeenCalled();
       expect(matchMock).toHaveBeenCalled();
-    })
+    });
 
-  })
+  });
 
   describe('Get random prompt', () => {
     it('should fetch the random prompt successfully', async () => {
@@ -278,7 +278,7 @@ describe('Journal Actions', () => {
 
       expect(mockSupabaseClient.rpc).toHaveBeenCalledWith('get_random_prompt');
       expect(result).toEqual({ data: mockData });
-    })
+    });
 
     it('should fail at fetching the random prompt', async () => {
       const rpcMock = jest.fn().mockReturnValue({ data: null, error: { message: 'Prompt error' } });
@@ -288,7 +288,7 @@ describe('Journal Actions', () => {
 
       expect(mockSupabaseClient.rpc).toHaveBeenCalledWith('get_random_prompt');
       expect(result).toEqual({ error: 'Prompt error' });
-    })
-  })
+    });
+  });
 
 });

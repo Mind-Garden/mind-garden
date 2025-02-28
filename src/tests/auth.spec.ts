@@ -419,7 +419,7 @@ describe('Auth Functions', () => {
         email, 
         { redirectTo: `${siteUrl}/reset-password` } 
       );
-      expect(result).toEqual({ success: "Password reset link set to your email." });
+      expect(result).toEqual({ success: 'Password reset link set to your email.' });
     });
 
     it('should return error message when sending email fails', async () => {
