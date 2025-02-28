@@ -16,7 +16,7 @@
     "test:seq": "cross-env NODE_ENV=test ENV=test jest --runInBand --testPathPattern='/src/' --bail=false",
     "test:seq:failed": "cross-env NODE_ENV=test ENV=test jest --runInBand NODE_ENV=test ENV=test --testPathPattern='/src/' --bail=false --onlyFailures",
     "clear_jest": "jest --clearCache",
-    "prepare": "husky && husky install"
+    "prepare": "husky"
   },
   "dependencies": {
     "@radix-ui/react-dialog": "^1.1.6",
