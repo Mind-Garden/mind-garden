@@ -4,7 +4,8 @@ import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import {
   insertResponses,
-  selectResponsesByDate, updateResponses,
+  selectResponsesByDate,
+  updateResponses,
 } from '@/utils/supabase/dbfunctions';
 import AttributeIcon from '@/components/data-intake/attribute-icon';
 import ToggleButton from '@/components/data-intake/toggle-button';
@@ -40,7 +41,7 @@ function DataIntakeForm({
     try {
       const response = await selectResponsesByDate(
         userId,
-        new Date().toISOString().split('T')[0]
+        new Date().toISOString().split('T')[0],
       );
 
       setCurrentSelection(new Set(response?.attribute_ids ?? []));
@@ -101,7 +102,12 @@ function DataIntakeForm({
         await insertResponses(currentSelection, userId, scaleSelection);
       } else {
         // Update if both responses already exist
-        await updateResponses(responseId, currentSelection, userId, scaleSelection);
+        await updateResponses(
+          responseId,
+          currentSelection,
+          userId,
+          scaleSelection,
+        );
       }
 
       await fetchResponses();
