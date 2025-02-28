@@ -1,5 +1,6 @@
 import { getSupabaseClient } from './client';
-import { IAttributes, ICategories, IResponses, IJournalEntries } from '@/utils/supabase/schema';
+import { IAttributes, ICategories, IResponses, IJournalEntries } from "@/utils/supabase/schema";
+
 import { getLocalISOString } from '@/lib/utility';
 
 /**
