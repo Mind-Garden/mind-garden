@@ -16,6 +16,7 @@ export default function Home() {
   const [isLogin, setIsLogin] = useState(true);
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const [siteUrl, setSiteUrl] = useState("");
 
   /**
    * Handles authentication by calling the appropriate function
@@ -41,6 +42,12 @@ export default function Home() {
     setError('');
   }, [isLogin]);
 
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      setSiteUrl(window.location.origin);
+    }
+  }, []);
+
   /**
    * Handles the forgot password functionality. It prompts the user to
    * enter their email address and sends a reset email if the email is
@@ -56,8 +63,6 @@ export default function Home() {
     }
 
     try {
-      // extract site url from client side
-      const siteUrl = typeof window !== "undefined" ? window.location.origin : "";
       const { error, success } = await forgotPassword(email, siteUrl);
       if (error) {
         toast.warn("Please try again later.");
