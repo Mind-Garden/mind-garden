@@ -174,12 +174,7 @@ export async function selectAllFromCategories(): Promise<Array<ICategories> | nu
  */
 export async function selectAllFromAttributes(): Promise<Array<IAttributes> | null> {
   const { data, error } = await selectData<IAttributes>('attributes');
-
-  if (error) {
-    console.error('Error selecting categories:', error);
-    return null;
-  }
-
+  if (error) throw new Error(error.message);
   return data as unknown as IAttributes[];
 }
 
@@ -192,18 +187,14 @@ export async function selectAllFromAttributes(): Promise<Array<IAttributes> | nu
 export async function selectResponsesByDate(
   userId: string,
   entryDate: string,
-): Promise<IResponses | null> {
+): Promise<Array<IResponses> | null> {
   const { data, error } = await selectData<IResponses>('responses', {
     user_id: userId,
     entry_date: entryDate,
   });
 
-  if (error) {
-    console.error('Error selecting response by date:', error);
-    return null;
-  }
-
-  return data.length > 0 ? data[0] as unknown as IResponses : null;
+  if (error) throw new Error(error.message);
+  return data as unknown as IResponses[];
 }
 
 /**
@@ -227,41 +218,31 @@ export async function insertResponses(
   if (error) throw new Error(error.message);
 }
 
-  if (error) {
-    console.error('Error inserting response:', error);
-  }
-}
 /**
- * Updates an existing response in the database.
- * @param responseId - The unique identifier of the response.
- * @param attributeIds - A set of attribute IDs representing the user's selected attributes.
- * @param userId - The unique identifier of the user.
- * @param scaleRating - The user's scale rating for their day.
+ * Deletes responses for a given user and date.
+ * @param attributeIds - Set of attribute IDs to delete
+ * @param userId - The user's ID
  */
-export async function updateResponses(
-  responseId: string,
+export async function deleteResponses(
   attributeIds: Set<string>,
   userId: string,
-  scaleRating: number,
 ): Promise<void> {
+  const supabase = getSupabaseClient();
   const entryDate = new Date().toISOString().split('T')[0];
 
-  const { error } = await updateData(
-    'responses',
-    { id: responseId, user_id: userId, entry_date: entryDate },
-    { attribute_ids: Array.from(attributeIds), scale_rating: scaleRating },
-  );
+  const { error } = await supabase
+    .from('responses')
+    .delete()
+    .match({ user_id: userId, entry_date: entryDate })
+    .in('attribute_id', Array.from(attributeIds));
 
-  if (error) {
-    console.error('Error updating response:', error);
-  }
+  if (error) throw new Error(error.message);
 }
 
-export async function deleteJournalEntry(id: string) {
+export async function deleteJournalEntry(entryId: string) {
   const supabase = getSupabaseClient();
-  const result = await supabase.from('journal_entries').delete().match({id: id});
 
-  return result;
+  return await supabase.from('journal_entries').delete().eq('id', entryId);
 }
 
 /**
@@ -275,12 +256,19 @@ export async function insertSleepEntry(
   endTime: string,
   userId: string,
 ) {
-  // Validate inputs
-  if (!startTime.trim() || !endTime.trim()) {
-    return undefined; // Ensures test expects undefined
-  }
   // Get today's date for entry date
-  const entryDate = getLocalISOString();
+  const entryDate = new Date().toISOString().split('T')[0];
+
+  const { exists, error } = await sleepEntryExists(userId, entryDate);
+
+  if (error) {
+    console.error('Error checking existing sleep entry:', error);
+    return { error };
+  }
+
+  if (exists) {
+    return { error: 'Sleep entry already exists for today' };
+  }
 
   return await insertData('sleep_entries', [
     {
