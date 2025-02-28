@@ -139,7 +139,7 @@ export async function forgotPassword(email: string, siteUrl: string) {
   const { error } = await supabase.auth.resetPasswordForEmail(email, {
     redirectTo: `${siteUrl}/reset-password`,
   });
-
+  console.log('siteUrl', siteUrl);
   if (error) {
     return { error: error.message };
   }
