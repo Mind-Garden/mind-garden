@@ -63,6 +63,7 @@ export default function Home() {
     }
 
     try {
+      console.log('siteUrl', siteUrl);
       const { error, success } = await forgotPassword(email, siteUrl);
       if (error) {
         toast.warn("Please try again later.");
