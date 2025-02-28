@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
-import { login, signup } from '@/actions/auth';
+import { login, signup, forgotPassword } from '@/actions/auth';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
@@ -9,8 +9,6 @@ import { Card, CardContent } from '@/components/ui/card';
 import { CircleAlert, LoaderCircle, Lock, Mail, User } from 'lucide-react';
 import { WordRotate } from '@/components/magicui/word-rotate';
 import Footer from '@/components/footer';
-import { useRouter } from 'next/navigation';
-import { forgotPassword } from '@/actions/auth';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -18,8 +16,8 @@ export default function Home() {
   const [isLogin, setIsLogin] = useState(true);
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const [siteUrl, setSiteUrl] = useState(process.env.NEXT_PUBLIC_SITE_URL || "");
 
-  const router = useRouter();
   /**
    * Handles authentication by calling the appropriate function
    * (login or signup) based on the value of isLogin. If the
@@ -44,6 +42,12 @@ export default function Home() {
     setError('');
   }, [isLogin]);
 
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      setSiteUrl(window.location.origin);
+    }
+  }, []);
+
   /**
    * Handles the forgot password functionality. It prompts the user to
    * enter their email address and sends a reset email if the email is
@@ -58,11 +62,10 @@ export default function Home() {
       return;
     }
 
-    setIsLoading(true);
     try {
-      const { error, success } = await forgotPassword(email);
+      const { error, success } = await forgotPassword(email, siteUrl);
       if (error) {
-        setError(error);
+        toast.warn("Please try again later.");
       } else {
         toast.success('Password reset email sent successfully.');
       }
@@ -187,12 +190,12 @@ export default function Home() {
                   Password
                 </Label>
                 {isLogin && (
-                  <p
+                  <button 
                     className="text-base text-green-600 hover:text-green-700 transition-colors"
-                    onClick={handleForgotPassword}
-                  >
+                    type="button"
+                    onClick={handleForgotPassword}>
                     Forgot password?
-                  </p>
+                  </button>
                 )}
               </div>
               <div className="relative">
@@ -201,7 +204,6 @@ export default function Home() {
                   id="password"
                   name="password"
                   type="password"
-                  required
                   placeholder={
                     isLogin ? 'Enter your password' : 'Create a strong password'
                   }

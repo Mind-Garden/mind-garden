@@ -127,14 +127,12 @@ export async function modifyPassword(newPassword: string) {
 
 const validateName = (name: FormDataEntryValue | null, field: string) => {
   if (!name) return { error: `${field} is required` };
-  if (typeof name !== 'string') return { error: `${field} must be a string` };
-  if (name.length < 2)
+  if (typeof name !== 'string' || name.length < 2)
     return { error: `${field} must be at least 2 characters long` };
 };
 
-export async function forgotPassword(email: string) {
+export async function forgotPassword(email: string, siteUrl: string) {
   const supabase = await createClient();
-  const siteUrl = 'http://localhost:3000';
 
   const { error } = await supabase.auth.resetPasswordForEmail(email, {
     redirectTo: `${siteUrl}/reset-password`,
