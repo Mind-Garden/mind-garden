@@ -411,15 +411,18 @@ describe('Auth Functions', () => {
       const email = 'test@example.com';
       const siteUrl = 'https://example.com';
 
-      // Act 
+      // Act
       const result = await forgotPassword(email, siteUrl);
 
       // Assert
-      expect(mockSupabaseClient.auth.resetPasswordForEmail).toHaveBeenCalledWith(
-        email, 
-        { redirectTo: `${siteUrl}/reset-password` } 
-      );
-      expect(result).toEqual({ success: "Password reset link set to your email." });
+      expect(
+        mockSupabaseClient.auth.resetPasswordForEmail,
+      ).toHaveBeenCalledWith(email, {
+        redirectTo: `${siteUrl}/reset-password`,
+      });
+      expect(result).toEqual({
+        success: 'Password reset link set to your email.',
+      });
     });
 
     it('should return error message when sending email fails', async () => {
@@ -432,32 +435,42 @@ describe('Auth Functions', () => {
         error: mockError,
       });
 
-      // Act 
+      // Act
       const result = await forgotPassword(email, siteUrl);
 
       // Assert
-      expect(mockSupabaseClient.auth.resetPasswordForEmail).toHaveBeenCalledWith(
-        email,
-        { redirectTo: `${siteUrl}/reset-password` }
-      );
+      expect(
+        mockSupabaseClient.auth.resetPasswordForEmail,
+      ).toHaveBeenCalledWith(email, {
+        redirectTo: `${siteUrl}/reset-password`,
+      });
       expect(result).toEqual({ error: mockError.message });
     });
-
   });
 
   describe('authenticateResetCode', () => {
     it('it should successfully authenticate code for a session', async () => {
       // Arrange
       const code = 'valid-code';
-      const mockSessionData = { session: { access_token: 'mock-access-token', refresh_token: 'mock-refresh-token' } };
+      const mockSessionData = {
+        session: {
+          access_token: 'mock-access-token',
+          refresh_token: 'mock-refresh-token',
+        },
+      };
 
-      mockSupabaseClient.auth.exchangeCodeForSession.mockResolvedValueOnce({ data: mockSessionData, error: null });
+      mockSupabaseClient.auth.exchangeCodeForSession.mockResolvedValueOnce({
+        data: mockSessionData,
+        error: null,
+      });
 
-      // Act 
+      // Act
       const result = await authenticateResetCode(code);
 
       // Assert
-      expect(mockSupabaseClient.auth.exchangeCodeForSession).toHaveBeenCalledWith(code);
+      expect(
+        mockSupabaseClient.auth.exchangeCodeForSession,
+      ).toHaveBeenCalledWith(code);
       expect(result).toEqual({ data: mockSessionData.session });
     });
 
@@ -465,14 +478,19 @@ describe('Auth Functions', () => {
       // Arrange
       const code = 'invalid-code';
       const mockError = { message: 'Invalid code' };
-  
-      mockSupabaseClient.auth.exchangeCodeForSession.mockResolvedValueOnce({ data: null, error: mockError });
-  
-      // Act 
+
+      mockSupabaseClient.auth.exchangeCodeForSession.mockResolvedValueOnce({
+        data: null,
+        error: mockError,
+      });
+
+      // Act
       const result = await authenticateResetCode(code);
-  
+
       // Assert
-      expect(mockSupabaseClient.auth.exchangeCodeForSession).toHaveBeenCalledWith(code);
+      expect(
+        mockSupabaseClient.auth.exchangeCodeForSession,
+      ).toHaveBeenCalledWith(code);
       expect(result).toEqual({ error: mockError.message });
     });
   });

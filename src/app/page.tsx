@@ -16,7 +16,9 @@ export default function Home() {
   const [isLogin, setIsLogin] = useState(true);
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-  const [siteUrl, setSiteUrl] = useState(process.env.NEXT_PUBLIC_SITE_URL || "");
+  const [siteUrl, setSiteUrl] = useState(
+    process.env.NEXT_PUBLIC_SITE_URL || '',
+  );
 
   /**
    * Handles authentication by calling the appropriate function
@@ -43,8 +45,8 @@ export default function Home() {
   }, [isLogin]);
 
   useEffect(() => {
-    if (typeof window !== "undefined" && !process.env.NEXT_PUBLIC_SITE_URL) {
-        setSiteUrl(window.location.origin);
+    if (typeof window !== 'undefined' && !process.env.NEXT_PUBLIC_SITE_URL) {
+      setSiteUrl(window.location.origin);
     }
   }, []);
 
@@ -65,7 +67,7 @@ export default function Home() {
     try {
       const { error, success } = await forgotPassword(email, siteUrl);
       if (error) {
-        toast.warn("Please try again later.");
+        toast.warn('Please try again later.');
       } else {
         toast.success('Password reset email sent successfully.');
       }
@@ -190,10 +192,11 @@ export default function Home() {
                   Password
                 </Label>
                 {isLogin && (
-                  <button 
+                  <button
                     className="text-base text-green-600 hover:text-green-700 transition-colors"
                     type="button"
-                    onClick={handleForgotPassword}>
+                    onClick={handleForgotPassword}
+                  >
                     Forgot password?
                   </button>
                 )}

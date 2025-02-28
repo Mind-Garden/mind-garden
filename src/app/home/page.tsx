@@ -28,7 +28,7 @@ export default async function Home() {
       <Header />
 
       <main className="flex-1 container mx-auto px-4 py-8">
-      <div className="mb-8 text-center">
+        <div className="mb-8 text-center">
           <h1 className="text-3xl font-bold mb-2 opacity-50">
             Welcome to Mind Garden, {profileData?.first_name}!
           </h1>
