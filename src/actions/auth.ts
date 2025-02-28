@@ -134,7 +134,8 @@ const validateName = (name: FormDataEntryValue | null, field: string) => {
 
 export async function forgotPassword(email: string, siteUrl: string) {
   const supabase = await createClient();
-
+  console.log('auth function');
+  console.log('siteUrl', siteUrl);
   const { error } = await supabase.auth.resetPasswordForEmail(email, {
     redirectTo: `${siteUrl}/reset-password`,
   });
