@@ -15,7 +15,8 @@
     "test:coverage": "cross-env TARGET_PATH=${npm_config_path} jest --coverage --collectCoverageFrom=\"$TARGET_PATH/**/*.{ts,tsx}\"",
     "test:seq": "cross-env NODE_ENV=test ENV=test jest --runInBand --testPathPattern='/src/' --bail=false",
     "test:seq:failed": "cross-env NODE_ENV=test ENV=test jest --runInBand NODE_ENV=test ENV=test --testPathPattern='/src/' --bail=false --onlyFailures",
-    "clear_jest": "jest --clearCache"
+    "clear_jest": "jest --clearCache",
+    "husky": "npx husky install && npx husky add .husky/pre-commit"
   },
   "dependencies": {
     "@radix-ui/react-dialog": "^1.1.6",
@@ -76,5 +77,11 @@
     "tailwindcss": "^3.4.1",
     "ts-jest": "^29.2.5",
     "typescript": "^5"
+  },
+  "lint-staged": {
+    "src/**/*.{js,jsx,ts,tsx}": [
+      "eslint --fix",
+      "prettier --write"
+    ]
   }
 }
