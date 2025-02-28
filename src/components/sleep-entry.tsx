@@ -3,14 +3,16 @@
 //Core imports
 import { useEffect, useState } from 'react';
 
-
 // Third party imports
 import { Moon, Clock } from 'lucide-react';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 // Utility
-import { insertSleepEntry, sleepEntryExists } from '@/utils/supabase/dbfunctions';
+import {
+  insertSleepEntry,
+  sleepEntryExists,
+} from '@/utils/supabase/dbfunctions';
 import { getLocalISOString } from '@/lib/utility';
 
 //UI
@@ -24,7 +26,6 @@ import {
 } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 
-
 interface SleepTrackerProps {
   readonly userId: string;
 }
@@ -34,10 +35,10 @@ export function SleepEntryCard({ userId }: SleepTrackerProps) {
   const [endTime, setEndTime] = useState<string>('');
   const [entryExists, setEntryExists] = useState<boolean | null>(null);
 
-  const checkEntryExists = async() => {
+  const checkEntryExists = async () => {
     const entryDate = getLocalISOString();
-    const { exists, error } = await sleepEntryExists(userId, entryDate);  
-    if(error) {
+    const { exists, error } = await sleepEntryExists(userId, entryDate);
+    if (error) {
       toast.warn('Error checking existing sleep entry!');
       return;
     }
@@ -70,7 +71,7 @@ export function SleepEntryCard({ userId }: SleepTrackerProps) {
       toast.warn('Error saving sleep entry!');
       return;
     }
-  
+
     toast.success('Sleep entry saved successfully!');
 
     checkEntryExists();

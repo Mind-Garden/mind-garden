@@ -31,7 +31,7 @@ export default async function JournalPage() {
 
       {/* Main Content */}
       <main className="flex-1 container mx-auto px-4 py-8">
-        <NewJournal userId={userId}/>
+        <NewJournal userId={userId} />
       </main>
 
       <Footer />

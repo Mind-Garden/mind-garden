@@ -5,37 +5,51 @@ import { useState, useEffect } from 'react';
 import { Calendar } from '@/components/ui/calendar';
 import { Button } from '@/components/ui/button';
 import { TextArea } from '@/components/ui/textarea';
-import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
+import {
+  Card,
+  CardContent,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Badge } from './ui/badge';
 
-import { PenLine, Trash2, CalendarDays, Save, X, Edit, NotebookPen, LoaderCircle } from 'lucide-react';
+import {
+  PenLine,
+  Trash2,
+  CalendarDays,
+  Save,
+  X,
+  Edit,
+  NotebookPen,
+  LoaderCircle,
+} from 'lucide-react';
 
 import { RandomPromptCard } from './random-prompt-card';
-import { deleteJournalEntry, fetchJournalEntries, saveJournalEntry, updateJournalEntry } from '@/utils/supabase/dbfunctions';
+import {
+  deleteJournalEntry,
+  fetchJournalEntries,
+  saveJournalEntry,
+  updateJournalEntry,
+} from '@/utils/supabase/dbfunctions';
 import { toast } from 'react-toastify';
 import { IJournalEntries } from '@/utils/supabase/schema';
 
 import { getDate, undoConversion } from '@/lib/utility';
-
-
-
-
 
 interface NewJournalProps {
   readonly userId: string;
 }
 
 export default function NewJournal({ userId }: NewJournalProps) {
-
   const [date, setDate] = useState<Date>(getDate());
-  const [newEntry, setNewEntry] = useState(''); 
+  const [newEntry, setNewEntry] = useState('');
   const [entries, setEntries] = useState<IJournalEntries[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [editingEntryId, setEditingEntryId] = useState<string | null>(null);
   const [editingText, setEditingText] = useState('');
-
 
   // Helper function to convert entry_date string to Date object with proper UTC handling
   const parseEntryDate = (dateString: string) => {
@@ -73,11 +87,12 @@ export default function NewJournal({ userId }: NewJournalProps) {
     }
   }, [userId]);
 
-  if (loading) return (
-    <div className="flex items-center justify-center min-h-screen">
-      <LoaderCircle className="h-12 w-12 text-gray-500 animate-spin" />
-    </div>
-  );
+  if (loading)
+    return (
+      <div className="flex items-center justify-center min-h-screen">
+        <LoaderCircle className="h-12 w-12 text-gray-500 animate-spin" />
+      </div>
+    );
   if (error) return <div>Error: {error}</div>;
 
   // Get entries count for each date
@@ -85,14 +100,13 @@ export default function NewJournal({ userId }: NewJournalProps) {
     // Convert the day to UTC midnight for comparison
     const utcDay = new Date(day);
 
-    return entries.filter(entry =>
-      isSameDay(utcDay, entry.entry_date)
-    ).length;
+    return entries.filter((entry) => isSameDay(utcDay, entry.entry_date))
+      .length;
   };
 
   // Get entries for the selected date
-  const selectedDateEntries = entries.filter(entry =>
-    isSameDay(date, entry.entry_date)
+  const selectedDateEntries = entries.filter((entry) =>
+    isSameDay(date, entry.entry_date),
   );
 
   // Save a new journal entry
@@ -162,9 +176,12 @@ export default function NewJournal({ userId }: NewJournalProps) {
       }
 
       // Update the local state
-      setEntries(prevEntries => {
-        const updatedEntry = { ...prevEntries.find(entry => entry.id === id)!, journal_text: editingText };
-        const filteredEntries = prevEntries.filter(entry => entry.id !== id);
+      setEntries((prevEntries) => {
+        const updatedEntry = {
+          ...prevEntries.find((entry) => entry.id === id)!,
+          journal_text: editingText,
+        };
+        const filteredEntries = prevEntries.filter((entry) => entry.id !== id);
         return [updatedEntry, ...filteredEntries];
       });
 
@@ -188,34 +205,32 @@ export default function NewJournal({ userId }: NewJournalProps) {
               Your Journal Calendar
             </CardTitle>
           </CardHeader>
-            <CardContent>
+          <CardContent>
             <Calendar
               mode="single"
-
               selected={undoConversion(date)}
-
               onSelect={(date: Date | undefined) => date && setDate(date)}
               className="rounded-md flex items-center justify-center"
               components={{
-              DayContent: ({ date: dayDate }: { date: Date }) => {
-                const count = getEntriesCount(dayDate);
-                return (
-                <div className="relative w-full h-full p-2">
-                  <span>{dayDate.getDate()}</span>
-                  {count > 0 && (
-                  <Badge
-                    variant="destructive"
-                    className="absolute -top-2 -right-2 h-5 w-5 p-0 flex items-center justify-center rounded-full text-[10px] z-50"
-                  >
-                    {count}
-                  </Badge>
-                  )}
-                </div>
-                );
-              },
+                DayContent: ({ date: dayDate }: { date: Date }) => {
+                  const count = getEntriesCount(dayDate);
+                  return (
+                    <div className="relative w-full h-full p-2">
+                      <span>{dayDate.getDate()}</span>
+                      {count > 0 && (
+                        <Badge
+                          variant="destructive"
+                          className="absolute -top-2 -right-2 h-5 w-5 p-0 flex items-center justify-center rounded-full text-[10px] z-50"
+                        >
+                          {count}
+                        </Badge>
+                      )}
+                    </div>
+                  );
+                },
               }}
             />
-            </CardContent>
+          </CardContent>
         </Card>
 
         {/* Journal Entry Form */}
@@ -258,7 +273,8 @@ export default function NewJournal({ userId }: NewJournalProps) {
               })}
             </CardTitle>
             <Badge variant="secondary">
-              {selectedDateEntries.length} {selectedDateEntries.length === 1 ? 'entry' : 'entries'}
+              {selectedDateEntries.length}{' '}
+              {selectedDateEntries.length === 1 ? 'entry' : 'entries'}
             </Badge>
           </div>
         </CardHeader>
@@ -266,7 +282,9 @@ export default function NewJournal({ userId }: NewJournalProps) {
           <ScrollArea className="h-[500px] pr-4">
             {selectedDateEntries.length === 0 ? (
               <div className="text-center py-8">
-                <p className="text-muted-foreground">No entries for this date</p>
+                <p className="text-muted-foreground">
+                  No entries for this date
+                </p>
               </div>
             ) : (
               <div className="space-y-4">
@@ -280,7 +298,9 @@ export default function NewJournal({ userId }: NewJournalProps) {
                           className="min-h-[150px]"
                         />
                       ) : (
-                        <p className="whitespace-pre-wrap">{entry.journal_text}</p>
+                        <p className="whitespace-pre-wrap">
+                          {entry.journal_text}
+                        </p>
                       )}
                     </CardContent>
                     <CardFooter className="justify-between">
@@ -290,18 +310,27 @@ export default function NewJournal({ userId }: NewJournalProps) {
                             <X className="w-4 h-4 mr-2" />
                             Cancel
                           </Button>
-                          <Button variant="default" onClick={() => saveEditedEntry(entry.id)}>
+                          <Button
+                            variant="default"
+                            onClick={() => saveEditedEntry(entry.id)}
+                          >
                             <Save className="w-4 h-4 mr-2" />
                             Save Entry
                           </Button>
                         </div>
                       ) : (
                         <div className="flex gap-2">
-                          <Button variant="outline" onClick={() => startEditing(entry)}>
+                          <Button
+                            variant="outline"
+                            onClick={() => startEditing(entry)}
+                          >
                             <Edit className="w-4 h-4 mr-2" />
                             Edit Entry
                           </Button>
-                          <Button variant="destructive" onClick={() => handleDeleteEntry(entry.id)}>
+                          <Button
+                            variant="destructive"
+                            onClick={() => handleDeleteEntry(entry.id)}
+                          >
                             <Trash2 className="w-4 h-4 mr-2" />
                             Delete Entry
                           </Button>

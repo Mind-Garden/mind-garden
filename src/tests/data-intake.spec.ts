@@ -95,7 +95,8 @@ describe('Data Intake Actions', () => {
   describe('selectResponsesByDate', () => {
     it('should return responses for a given user and date', async () => {
       const mockData = { id: 1, response: 'Good day' };
-      const matchMock = jest.fn()
+      const matchMock = jest
+        .fn()
         .mockResolvedValue({ data: [mockData], error: null });
       const selectMock = jest.fn().mockReturnValue({ match: matchMock });
 
@@ -156,8 +157,9 @@ describe('Data Intake Actions', () => {
     });
 
     it('should return when insert fails', async () => {
-      const selectMock = jest.fn()
-        .mockResolvedValue({ data: null, error: { message: 'Insert error' }});
+      const selectMock = jest
+        .fn()
+        .mockResolvedValue({ data: null, error: { message: 'Insert error' } });
       const insertMock = jest.fn().mockReturnValue({ select: selectMock });
 
       mockSupabaseClient.from.mockReturnValue({
@@ -178,10 +180,12 @@ describe('Data Intake Actions', () => {
 
     it('should successfully update responses', async () => {
       const matchMock = jest.fn().mockReturnThis();
-      const selectMock = jest.fn()
-        .mockResolvedValue({data: [{}], error: null});
-      const updateMock = jest.fn()
-        .mockReturnValue({match: matchMock, select: selectMock});
+      const selectMock = jest
+        .fn()
+        .mockResolvedValue({ data: [{}], error: null });
+      const updateMock = jest
+        .fn()
+        .mockReturnValue({ match: matchMock, select: selectMock });
 
       mockSupabaseClient.from.mockReturnValue({
         update: updateMock,
@@ -193,22 +197,24 @@ describe('Data Intake Actions', () => {
       expect(mockSupabaseClient.from).toHaveBeenCalledWith('responses');
       expect(updateMock).toHaveBeenCalledWith({
         attribute_ids: attributeIds,
-        scale_rating: scaleRating
+        scale_rating: scaleRating,
       });
       expect(matchMock).toHaveBeenCalledWith({
         id: responseId,
         user_id: userId,
-        entry_date: expect.any(String)
+        entry_date: expect.any(String),
       });
     });
 
     it('should return when update fails', async () => {
       console.error = jest.fn();
       const matchMock = jest.fn().mockReturnThis();
-      const selectMock = jest.fn()
-        .mockResolvedValue({data: null, error: { message: 'Update error' }});
-      const updateMock = jest.fn()
-        .mockReturnValue({match: matchMock, select: selectMock});
+      const selectMock = jest
+        .fn()
+        .mockResolvedValue({ data: null, error: { message: 'Update error' } });
+      const updateMock = jest
+        .fn()
+        .mockReturnValue({ match: matchMock, select: selectMock });
 
       mockSupabaseClient.from.mockReturnValue({
         update: updateMock,

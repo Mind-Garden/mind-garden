@@ -3,7 +3,7 @@ import {
   fetchJournalEntries,
   updateJournalEntry,
   deleteJournalEntry,
-  getRandomPrompt
+  getRandomPrompt,
 } from '@/utils/supabase/dbfunctions';
 
 import { undoConversion } from '@/lib/utility';
@@ -26,17 +26,28 @@ describe('Journal Actions', () => {
 
   describe('Save Journal Entry', () => {
     it('should return the saved entry when insert is successful', async () => {
-      const mockData = { data: [{ journalText: 'Mock Journal Entry', userId: '1' , entry_date: '2025-01-01'}] };
+      const mockData = {
+        data: [
+          {
+            journalText: 'Mock Journal Entry',
+            userId: '1',
+            entry_date: '2025-01-01',
+          },
+        ],
+      };
       const selectMock = jest
         .fn()
         .mockResolvedValue({ data: mockData['data'], error: null });
       const insertMock = jest.fn().mockReturnValue({ select: selectMock });
 
       mockSupabaseClient.from.mockReturnValue({
-        insert: insertMock
+        insert: insertMock,
       });
 
-      const result = await saveJournalEntry(mockData.data[0].journalText, mockData.data[0].userId,);
+      const result = await saveJournalEntry(
+        mockData.data[0].journalText,
+        mockData.data[0].userId,
+      );
       expect(result).toEqual(mockData);
       expect(insertMock).toHaveBeenCalled();
       expect(selectMock).toHaveBeenCalled();
@@ -44,25 +55,35 @@ describe('Journal Actions', () => {
 
     it('should return error.message and log the error on failure', async () => {
       console.error = jest.fn();
-      const mockData = { data: [{ journalText: 'Mock Journal Entry', userId: '1', entry_date: '2025-01-01'}] };
+      const mockData = {
+        data: [
+          {
+            journalText: 'Mock Journal Entry',
+            userId: '1',
+            entry_date: '2025-01-01',
+          },
+        ],
+      };
       const mockReturnValue = { data: null, error: { message: 'Error' } };
 
-      const selectMock = jest
-        .fn()
-        .mockResolvedValue(mockReturnValue);
+      const selectMock = jest.fn().mockResolvedValue(mockReturnValue);
       const insertMock = jest.fn().mockReturnValue({ select: selectMock });
 
       mockSupabaseClient.from.mockReturnValue({
-        insert: insertMock
+        insert: insertMock,
       });
 
-      const result = await saveJournalEntry(mockData.data[0].journalText, mockData.data[0].userId,);
+      const result = await saveJournalEntry(
+        mockData.data[0].journalText,
+        mockData.data[0].userId,
+      );
       expect(result).toEqual({ error: mockReturnValue.error.message });
       expect(insertMock).toHaveBeenCalled();
       expect(selectMock).toHaveBeenCalled();
       expect(console.error).toHaveBeenCalledWith(
         'Error inserting into journal_entries:',
-        mockReturnValue.error.message);
+        mockReturnValue.error.message,
+      );
     });
 
     it('should not proceed with empty entry text', async () => {
@@ -74,7 +95,6 @@ describe('Journal Actions', () => {
       expect(result).toBeUndefined();
       expect(mockSupabaseClient.from).not.toHaveBeenCalled();
     });
-
   });
 
   describe('Fetch Journal Entries', () => {
@@ -82,8 +102,18 @@ describe('Journal Actions', () => {
       console.error = jest.fn();
       const userId = '1';
       const mockEntries = [
-        { id: '1', journal_text: 'Entry 1', user_id: userId, entry_date: '2025-01-01' },
-        { id: '2', journal_text: 'Entry 2', user_id: userId, entry_date: '2025-01-01' }
+        {
+          id: '1',
+          journal_text: 'Entry 1',
+          user_id: userId,
+          entry_date: '2025-01-01',
+        },
+        {
+          id: '2',
+          journal_text: 'Entry 2',
+          user_id: userId,
+          entry_date: '2025-01-01',
+        },
       ];
 
       const matchMock = jest
@@ -122,7 +152,10 @@ describe('Journal Actions', () => {
       expect(mockSupabaseClient.from).toHaveBeenCalledWith('journal_entries');
       expect(selectMock).toHaveBeenCalledWith('*');
       expect(result).toEqual({ error: mockError.message });
-      expect(console.error).toHaveBeenCalledWith('Error fetching journal entries:', mockError.message);
+      expect(console.error).toHaveBeenCalledWith(
+        'Error fetching journal entries:',
+        mockError.message,
+      );
     });
   });
 
@@ -135,14 +168,13 @@ describe('Journal Actions', () => {
         id: entryId,
         journal_text: newEntryText,
         user_id: '1',
-        entry_date: '2025-01-01'
+        entry_date: '2025-01-01',
       };
 
       const selectMock = jest.fn().mockResolvedValue({
         data: [mockUpdatedEntry],
-        error: null
+        error: null,
       });
-
 
       const matchMock = jest.fn().mockReturnValue({
         select: selectMock,
@@ -174,7 +206,7 @@ describe('Journal Actions', () => {
 
       const selectMock = jest.fn().mockResolvedValue({
         data: null,
-        error: mockError
+        error: mockError,
       });
 
       const matchMock = jest.fn().mockReturnValue({
@@ -196,7 +228,10 @@ describe('Journal Actions', () => {
       expect(matchMock).toHaveBeenCalledWith({ id: entryId });
       expect(selectMock).toHaveBeenCalled();
       expect(result).toEqual({ error: mockError.message });
-      expect(console.error).toHaveBeenCalledWith('Error updating journal_entries:', mockError.message);
+      expect(console.error).toHaveBeenCalledWith(
+        'Error updating journal_entries:',
+        mockError.message,
+      );
     });
 
     it('should not proceed with empty entry text', async () => {
@@ -215,14 +250,16 @@ describe('Journal Actions', () => {
       // Create a mock date
       const mockDate = new Date('2023-01-15T12:00:00Z');
       const mockTimezoneOffset = 300; // 5 hours in minutes
-      
+
       // Mock the getTimezoneOffset method only
-      jest.spyOn(Date.prototype, 'getTimezoneOffset').mockReturnValue(mockTimezoneOffset);
-      
+      jest
+        .spyOn(Date.prototype, 'getTimezoneOffset')
+        .mockReturnValue(mockTimezoneOffset);
+
       // Calculate expected: time + offset in ms
-      const expectedTime = mockDate.getTime() + (mockTimezoneOffset * 60000);
+      const expectedTime = mockDate.getTime() + mockTimezoneOffset * 60000;
       const expected = new Date(expectedTime);
-      
+
       // Run function and compare
       const result = undoConversion(mockDate);
       expect(result.getTime()).toBe(expected.getTime());
@@ -251,7 +288,9 @@ describe('Journal Actions', () => {
     it('should fail at deleting a journal entry that does not exist', async () => {
       const entryId = '-1';
 
-      const matchMock = jest.fn().mockReturnValue({ error: { message: 'Delete error' } });
+      const matchMock = jest
+        .fn()
+        .mockReturnValue({ error: { message: 'Delete error' } });
       const deleteMock = jest.fn().mockReturnValue({ match: matchMock });
 
       mockSupabaseClient.from.mockReturnValue({
@@ -260,18 +299,19 @@ describe('Journal Actions', () => {
 
       const result = await deleteJournalEntry(entryId);
 
-      expect(result.error).toEqual({'message': 'Delete error'});
+      expect(result.error).toEqual({ message: 'Delete error' });
 
       expect(deleteMock).toHaveBeenCalled();
       expect(matchMock).toHaveBeenCalled();
     });
-
   });
 
   describe('Get random prompt', () => {
     it('should fetch the random prompt successfully', async () => {
       const mockData = { prompt: 'This is an inspirational prompt.' };
-      const rpcMock = jest.fn().mockReturnValue({ data: mockData, error: null });
+      const rpcMock = jest
+        .fn()
+        .mockReturnValue({ data: mockData, error: null });
       mockSupabaseClient.rpc = rpcMock;
 
       const result = await getRandomPrompt();
@@ -281,7 +321,9 @@ describe('Journal Actions', () => {
     });
 
     it('should fail at fetching the random prompt', async () => {
-      const rpcMock = jest.fn().mockReturnValue({ data: null, error: { message: 'Prompt error' } });
+      const rpcMock = jest
+        .fn()
+        .mockReturnValue({ data: null, error: { message: 'Prompt error' } });
       mockSupabaseClient.rpc = rpcMock;
 
       const result = await getRandomPrompt();
@@ -290,5 +332,4 @@ describe('Journal Actions', () => {
       expect(result).toEqual({ error: 'Prompt error' });
     });
   });
-
 });
