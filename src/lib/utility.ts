@@ -1,5 +1,4 @@
-export const getDate = () => {
-  const date = new Date();
+export const getDate = (date:Date) => {
   const offsetMs = date.getTimezoneOffset() * 60000; // Convert offset to milliseconds
   return new Date(date.getTime() - offsetMs);
 };
@@ -9,6 +8,6 @@ export const undoConversion = (date: Date) => {
   return new Date(date.getTime() + offsetMs);
 };
 
-export function getLocalISOString() {
-  return getDate().toISOString().split('T')[0]; //only get the month-day-year
+export function getLocalISOString(date: Date = new Date()) {
+  return getDate(date).toISOString().split('T')[0].trim(); //only get the month-day-year
 }
