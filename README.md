@@ -119,8 +119,6 @@ For this project, we are leveraging modern technologies to ensure scalability, m
      - Given that I am a logged-in user and that I am viewing the home page, when I click the badges icon, then the system displays all badges that I have earned as unhighlighted icons.
 
 6. **Data Visualization**
-    - As a user, I want to see a visualization on the homepage so that I can quickly access and understand my progress.
-      - Given that I am a logged-in user on the homepage, when I click on the visualization, the system navigates me to the relevant data tracking page.
     - As a user, I want a heat map to track whether I have completed my habits so that I can identify gaps in my routine.
       - Given that I am on the habit tracker page, when I select the heat map view, the system displays a calendar with days marked to show I have completed journal, data intake and sleep entires.
     - As a user, I want to be able to view quantifiable habits such as exercise and studying, so that I can measure my progress more effectively. 
