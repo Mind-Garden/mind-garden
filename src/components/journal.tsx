@@ -32,9 +32,9 @@ import {
   fetchJournalEntries,
   saveJournalEntry,
   updateJournalEntry,
-} from '@/utils/supabase/dbfunctions';
+} from '@/actions/journal';
 import { toast } from 'react-toastify';
-import { IJournalEntries } from '@/utils/supabase/schema';
+import { IJournalEntries } from '@/supabase/schema';
 
 import { getDate, undoConversion } from '@/lib/utility';
 

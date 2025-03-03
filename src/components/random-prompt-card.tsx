@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 import { RotateCw } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { cn } from '@/lib/utils';
-import { getRandomPrompt } from '@/utils/supabase/dbfunctions';
+import { getRandomPrompt } from '@/actions/journal';
 import { CardDescription } from '@/components/ui/card';
 
 export function RandomPromptCard() {

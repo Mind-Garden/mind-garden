@@ -12,7 +12,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import {
   insertSleepEntry,
   sleepEntryExists,
-} from '@/utils/supabase/dbfunctions';
+} from '@/actions/data-intake';
 import { getLocalISOString } from '@/lib/utility';
 
 //UI
