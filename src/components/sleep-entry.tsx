@@ -13,6 +13,7 @@ import {
   insertSleepEntry,
   sleepEntryExists,
 } from '@/utils/supabase/dbfunctions';
+import { getLocalISOString } from '@/lib/utility';
 
 //UI
 import {
@@ -34,8 +35,8 @@ export function SleepEntryCard({ userId }: SleepTrackerProps) {
   const [endTime, setEndTime] = useState<string>('');
   const [entryExists, setEntryExists] = useState<boolean | null>(null);
 
-  const checkkEntryExists = async () => {
-    const entryDate = new Date().toISOString().split('T')[0];
+  const checkEntryExists = async () => {
+    const entryDate = getLocalISOString();
     const { exists, error } = await sleepEntryExists(userId, entryDate);
     if (error) {
       toast.warn('Error checking existing sleep entry!');
@@ -45,7 +46,7 @@ export function SleepEntryCard({ userId }: SleepTrackerProps) {
   };
 
   useEffect(() => {
-    checkkEntryExists();
+    checkEntryExists();
   }, [userId]);
 
   const handleInsert = async () => {
@@ -60,20 +61,20 @@ export function SleepEntryCard({ userId }: SleepTrackerProps) {
       return;
     }
 
+    if (entryExists) {
+      toast.warn('Sleep entry already exists for today!');
+      return;
+    }
     const result = await insertSleepEntry(startTime, endTime, userId);
 
     if (result?.error) {
-      if (typeof result.error === 'string') {
-        toast.warn(result.error);
-      } else {
-        toast.warn('Error saving sleep entry!');
-      }
+      toast.warn('Error saving sleep entry!');
       return;
     }
 
     toast.success('Sleep entry saved successfully!');
 
-    checkkEntryExists();
+    checkEntryExists();
   };
 
   return (
