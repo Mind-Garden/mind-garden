@@ -44,7 +44,7 @@ Our core features for Mind Garden are the ability to create an account, voice-ma
 - **Daily data intake:** At the end of each day, the user will be expected to input data relating to the habits they wish to track. This can be something like how much water they drank or how much sleep they got the night prior.
 - **Journal entry system:** Along with the daily data intake, the user will be prompted to write in their digital journal. Here, they can either express their feelings freely or use the provided guided questions.
 - **Data visualization:** The data from the daily input and journal entries can then be used for data visualization where the user can view their habit patterns and how that might relate to their mood. Summaries from both the daily input and journal entries will be made possible using AI.
-- **Achievement progress tracking:** As the user uses Mind Garden, they can achieve things like badges and streaks. For example, if the user writes in their journal every day for 20 days, they can achieve a badge to reward their consistency. The user will also have a streak of 20 days. \*\*\*\*By implementing badges and streaks, we are hoping to motivate the user to continue to use the application. We think consistency is important for self-improvement.
+- **Reminders:** As the user engages with Mind Garden, they will have the option to set personalized reminders to help them maintain their daily routines and keep consistency. The reminders will be sent via email and users can customize these reminders to only include specific features they wish to be reminded of or turn them off if they prefer.
 
 Our application can respond to 20 users with a total of 200 requests per minute concurrently.
 
@@ -108,7 +108,7 @@ For this project, we are leveraging modern technologies to ensure scalability, m
      - Given that I am a logged-in user, and that I am viewing my task list, when I click and drag a task to a new position, then the system updates the order of tasks and saves the order.
    - **As a user, I want to be able to mark tasks as complete, so that I can track my progress and stay motivated.**
      - Given that I am a logged-in user, and that I am viewing my task list, when I click the checkbox button next to a task, then the task is visually marked as complete (strikethrough text).
-5. **Notifications/Reminders**
+5. **Reminders**
    - **As a user, I want to be able to set the time for my reminders so that they align with my schedule.**
      - Given that I am a logged-in user, when I navigate to the notifications page, then the system displays an interface where I can set specific times for different reminders, such as daily habit tracking, journaling, and general check-ins.
    - **As a user, I want to receive reminders if I have not completed my habit tracker or journal entry by a certain time so that I am prompted to stay consistent.**
