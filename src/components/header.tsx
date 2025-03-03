@@ -1,6 +1,6 @@
 'use client';
 
-import { LucideIcon, Moon, NotebookPen, ListCheck } from 'lucide-react';
+import { LucideIcon, Moon, NotebookPen, ListCheck, Bell } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { ProfileDropdown } from '@/components/profile-dropdown';
@@ -23,6 +23,11 @@ export function Header() {
 
   // List of navigation items - easy to add more
   const navItems: NavItem[] = [
+    {
+      icon: Bell,
+      path: '/reminder',
+      label: 'Reminder',
+    },
     {
       icon: ListCheck,
       path: '/daily-intake',

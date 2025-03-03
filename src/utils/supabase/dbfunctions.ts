@@ -4,6 +4,7 @@ import {
   ICategories,
   IResponses,
   IJournalEntries,
+  IReminders,
 } from '@/utils/supabase/schema';
 import { getLocalISOString } from '@/lib/utility';
 
@@ -15,18 +16,24 @@ import { getLocalISOString } from '@/lib/utility';
  * This will be a general function for all our insert operations (private to this script)
  */
 
-async function insertData<T>(table: string, dataToInsert: T[]) {
+async function insertData<T>(
+  table: string,
+  dataToInsert: T[],
+  modifyEntryDate: boolean = false,
+) {
   const supabase = getSupabaseClient();
 
-  // Add entry_date to each item in the array
-  const dataWithDate = dataToInsert.map((item) => ({
-    ...item,
-    entry_date: getLocalISOString(),
-  }));
+  if (modifyEntryDate) {
+    // Add entry_date to each item in the array
+    dataToInsert = dataToInsert.map((item) => ({
+      ...item,
+      entry_date: getLocalISOString(),
+    }));
+  }
 
   const { data, error } = await supabase
     .from(table)
-    .insert(dataWithDate)
+    .insert(dataToInsert)
     .select();
 
   if (error) {
@@ -217,13 +224,17 @@ export async function insertResponses(
   userId: string,
   scaleRating: number,
 ): Promise<void> {
-  const { error } = await insertData('responses', [
-    {
-      user_id: userId,
-      attribute_ids: Array.from(attributeIds),
-      scale_rating: scaleRating,
-    },
-  ]);
+  const { error } = await insertData(
+    'responses',
+    [
+      {
+        user_id: userId,
+        attribute_ids: Array.from(attributeIds),
+        scale_rating: scaleRating,
+      },
+    ],
+    true,
+  );
 
   if (error) {
     console.error('Error inserting response:', error);
@@ -283,14 +294,29 @@ export async function insertSleepEntry(
   // Get today's date for entry date
   const entryDate = getLocalISOString();
 
-  return await insertData('sleep_entries', [
-    {
-      user_id: userId,
-      entry_date: entryDate,
-      start: startTime,
-      end: endTime,
-    },
-  ]);
+  const { exists, error } = await sleepEntryExists(userId, entryDate);
+
+  if (error) {
+    console.error('Error checking existing sleep entry:', error);
+    return { error };
+  }
+
+  if (exists) {
+    return { error: 'Sleep entry already exists for today' };
+  }
+
+  return await insertData(
+    'sleep_entries',
+    [
+      {
+        user_id: userId,
+        entry_date: entryDate,
+        start: startTime,
+        end: endTime,
+      },
+    ],
+    true,
+  );
 }
 
 export async function sleepEntryExists(userId: string, entryDate: string) {
@@ -323,4 +349,50 @@ export async function getRandomPrompt() {
   }
 
   return { data };
+}
+
+export async function getReminderTime(userId: string) {
+  const { data, error } = await selectData<IReminders>('reminders', {
+    user_id: userId,
+  });
+
+  if (error) {
+    throw new Error(error.message);
+  }
+
+  return data as unknown as IReminders;
+}
+
+export async function insertReminderTime(userId: string, userEmail: string) {
+  // Get the current time in HH:mm:ss format
+  const reminderTime = new Date().toISOString().substring(11, 19); // Extract HH:mm:ss
+
+  // Check if an entry already exists for this user
+  const { data: existingReminder, error } = await selectData('reminders', {
+    user_id: userId,
+  });
+
+  if (error) {
+    console.error('Error checking existing reminder:', error);
+    return { error };
+  }
+
+  return await insertData('reminders', [
+    {
+      user_id: userId,
+      email: userEmail,
+      reminder_time: reminderTime,
+    },
+  ]);
+}
+
+export async function updateReminderTime(
+  userId: string,
+  newReminderTime: string,
+) {
+  return await updateData(
+    'reminders',
+    { user_id: userId },
+    { reminder_time: newReminderTime },
+  );
 }
