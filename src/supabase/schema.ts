@@ -70,3 +70,10 @@ export interface MoodCountData {
   scale_rating: number;
   count: number;
 }
+
+export interface IReminders {
+  id: string;
+  user_id: string;
+  email: string;
+  reminder_time: Date;
+}
