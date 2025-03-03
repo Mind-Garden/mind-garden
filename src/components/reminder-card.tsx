@@ -59,7 +59,7 @@ export function ReminderCard({ userId, email }: ReminderProps) {
           }
         }
       } catch (error) {
-        console.error('Error fetching reminder time:', error);
+        console.error('Error fetching reminders time:', error);
       }
     };
 
@@ -77,7 +77,7 @@ export function ReminderCard({ userId, email }: ReminderProps) {
     if (success) {
       alert('Reminder time updated successfully!');
     } else {
-      console.error('Error updating reminder time');
+      console.error('Error updating reminders time');
     }
   };
 
@@ -99,10 +99,18 @@ export function ReminderCard({ userId, email }: ReminderProps) {
                 <StaticTimePicker
                   value={reminderTime}
                   onChange={(newTime) => setReminderTime(newTime)}
+                  shouldDisableTime={(value, view) => {
+                    if (view === 'minutes') {
+                      // Only allow "00" minutes — disable all other minutes
+                      return value.minute() !== 0;
+                    }
+                    return false;
+                  }}
                   slotProps={{
                     actionBar: { actions: [] },
                   }}
                 />
+
               </LocalizationProvider>
               <Button className="mt-4 w-full" onClick={() => setOpen(false)}>
                 Confirm Time

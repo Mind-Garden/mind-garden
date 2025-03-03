@@ -7,6 +7,7 @@ import {
   selectAllFromCategories,
 } from '@/utils/supabase/dbfunctions';
 import { Header } from '@/components/header';
+import {sendReminderEmail} from "@/actions/notifications";
 
 export default async function Dashboard() {
   const supabase = await createClient();

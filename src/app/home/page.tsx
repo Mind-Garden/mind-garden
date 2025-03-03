@@ -3,6 +3,7 @@ import { createClient } from '@/utils/supabase/server';
 import Footer from '@/components/footer';
 import { Header } from '@/components/header';
 import Dashboard from '@/components/dashboard';
+import {sendReminderEmail} from "@/actions/notifications";
 
 export default async function Home() {
   const supabase = await createClient();

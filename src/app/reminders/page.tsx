@@ -1,14 +1,15 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { getSupabaseClient } from '@/utils/supabase/client';
 import { Particles } from '@/components/magicui/particles';
 import { Header } from '@/components/header';
 import Footer from '@/components/footer';
-import { ReminderCard } from '@/components/reminder-entry';
+import { ReminderCard } from '@/components/reminder-card';
+import {LoaderCircle} from "lucide-react";
 
-export default function ReminderPage() {
+export default function RemindersPage() {
   const supabase = getSupabaseClient();
   const router = useRouter();
 
@@ -32,7 +33,7 @@ export default function ReminderPage() {
       setUserId(userId); // Set userId first
       setEmail(email);
 
-      // Fetch reminder time only if userId is set
+      // Fetch reminders time only if userId is set
       const { data, error } = await supabase
         .from('reminders')
         .select('reminder_time')
@@ -87,22 +88,7 @@ export default function ReminderPage() {
   };
 
   return (
-    <div
-      className="min-h-screen flex flex-col"
-      style={{
-        backgroundImage: `url(/gradient.svg)`,
-        backgroundSize: 'cover',
-      }}
-    >
-      {/* Particles Background */}
-      <Particles
-        className="absolute inset-0 z-0"
-        quantity={200}
-        ease={80}
-        color={'#000000'}
-        refresh
-      />
-
+    <div className="min-h-screen flex flex-col">
       <Header />
 
       {/* Main Content */}
@@ -110,7 +96,9 @@ export default function ReminderPage() {
         {userId ? (
           <ReminderCard userId={userId} email={email} />
         ) : (
-          <p>Loading...</p>
+          <div className="flex justify-center items-center">
+            <LoaderCircle className="justify-center h-10 w-10 animate-spin" />
+          </div>
         )}
       </main>
 

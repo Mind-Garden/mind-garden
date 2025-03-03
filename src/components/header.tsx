@@ -25,8 +25,8 @@ export function Header() {
   const navItems: NavItem[] = [
     {
       icon: Bell,
-      path: '/reminder',
-      label: 'Reminder',
+      path: '/reminders',
+      label: 'Notifications',
     },
     {
       icon: ListCheck,

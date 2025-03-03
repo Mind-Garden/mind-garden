@@ -13,6 +13,7 @@ import { Button } from '@/components/ui/button';
 import { LoaderCircle } from 'lucide-react';
 import { IAttributes, ICategories } from '@/utils/supabase/schema';
 import ScaleIcon from '@/components/data-intake/scale-icon';
+import {sendReminderEmail} from "@/actions/notifications";
 
 interface DataIntakeFormProps {
   userId: string;
@@ -132,8 +133,20 @@ function DataIntakeForm({
     );
   }
 
+  async function handleSendReminders() {
+    await sendReminderEmail(
+      'colmukrainec@gmail.com',
+      'Test Reminder',
+      'This is a test reminders email.'
+    );
+  }
+
   return (
     <div className="w-full max-w-4xl mx-auto px-4 py-2">
+      <div style={{ padding: '2rem' }}>
+        <h1>Habit Tracker Dashboard</h1>
+        <button onClick={handleSendReminders}>Run Reminder Check</button>
+      </div>
       <div className="bg-white/50 backdrop-blur-sm mt-4 mx-4 rounded-full mb-6 py-4 px-2">
         <div className="container mx-auto px-4 py-4 h-16 flex items-center justify-between">
           <div className="flex flex-col items-left pl-2">

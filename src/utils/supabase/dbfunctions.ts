@@ -373,7 +373,7 @@ export async function insertReminderTime(userId: string, userEmail: string) {
   });
 
   if (error) {
-    console.error('Error checking existing reminder:', error);
+    console.error('Error checking existing reminders:', error);
     return { error };
   }
 

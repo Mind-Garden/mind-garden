@@ -21,7 +21,7 @@ describe('Reminder Actions', () => {
   });
 
   describe('Insert Reminder Time', () => {
-    it('should insert a new reminder time when successful', async () => {
+    it('should insert a new reminders time when successful', async () => {
       const userId = '1';
       const email = 'test@example.com';
       const mockInsertData = [{ id: userId, email, reminder_time: '09:00' }];
@@ -75,7 +75,7 @@ describe('Reminder Actions', () => {
   });
 
   describe('Fetch Reminder Time', () => {
-    it('should return the reminder time when select is successful', async () => {
+    it('should return the reminders time when select is successful', async () => {
       const userId = '1';
       const mockReminderTime = [{ reminder_time: '08:30' }];
 
@@ -116,7 +116,7 @@ describe('Reminder Actions', () => {
   });
 
   describe('Update Reminder Time', () => {
-    it('should update the reminder time successfully', async () => {
+    it('should update the reminders time successfully', async () => {
       const userId = '1';
       const newTime = '10:15';
       const mockUpdatedData = { id: userId, reminder_time: newTime };
