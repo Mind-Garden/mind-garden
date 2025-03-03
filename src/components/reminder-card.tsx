@@ -1,15 +1,11 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { StaticTimePicker } from '@mui/x-date-pickers/StaticTimePicker';
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import dayjs, { Dayjs } from 'dayjs';
 import {
   getReminderTime,
   updateReminderTime,
   insertReminderTime,
-} from '@/utils/supabase/dbfunctions';
+} from '@/actions/notifications';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import {
@@ -24,8 +20,24 @@ interface ReminderProps {
   email: string | null | undefined;
 }
 
+// Helper function to convert 12-hour time to 24-hour format string
+function formatTime(hour: number, amPm: 'AM' | 'PM'): string {
+  let hour24 = hour;
+  if (amPm === 'PM' && hour !== 12) hour24 += 12;
+  if (amPm === 'AM' && hour === 12) hour24 = 0;
+  return `${hour24.toString().padStart(2, '0')}:00`;  // Always :00 since we're removing minute selection
+}
+
+// Helper function to display time in 12-hour format
+function formatDisplayTime(hour24: number): string {
+  const period = hour24 >= 12 ? 'PM' : 'AM';
+  const hour12 = hour24 % 12 || 12;
+  return `${hour12} ${period}`;
+}
+
 export function ReminderCard({ userId, email }: ReminderProps) {
-  const [reminderTime, setReminderTime] = useState<Dayjs | null>(dayjs());
+  const [hour, setHour] = useState<number>(9); // default to 9
+  const [amPm, setAmPm] = useState<'AM' | 'PM'>('AM');
   const [loading, setLoading] = useState<boolean>(false);
   const [open, setOpen] = useState<boolean>(false);
 
@@ -42,10 +54,11 @@ export function ReminderCard({ userId, email }: ReminderProps) {
           reminderData.length > 0 &&
           reminderData[0].reminder_time
         ) {
-          const [hour, minute] = reminderData[0].reminder_time
-            .split(':')
-            .map(Number);
-          setReminderTime(dayjs().hour(hour).minute(minute));
+          const [hourStr, minuteStr] = reminderData[0].reminder_time.split(':');
+          const hour24 = parseInt(hourStr, 10);
+
+          setHour(hour24 % 12 || 12);  // Convert to 12-hour
+          setAmPm(hour24 >= 12 ? 'PM' : 'AM');
         } else {
           await insertReminderTime(userId, email);
           const newReminder = await getReminderTime(userId);
@@ -55,7 +68,10 @@ export function ReminderCard({ userId, email }: ReminderProps) {
             newReminder.length > 0 &&
             newReminder[0].reminder_time
           ) {
-            setReminderTime(dayjs(newReminder[0].reminder_time));
+            const [hourStr] = newReminder[0].reminder_time.split(':');
+            const hour24 = parseInt(hourStr, 10);
+            setHour(hour24 % 12 || 12);
+            setAmPm(hour24 >= 12 ? 'PM' : 'AM');
           }
         }
       } catch (error) {
@@ -64,13 +80,13 @@ export function ReminderCard({ userId, email }: ReminderProps) {
     };
 
     fetchReminderTime();
-  }, [userId]);
+  }, [userId, email]);
 
   const handleUpdateReminder = async () => {
-    if (!userId || !reminderTime) return;
+    if (!userId) return;
 
     setLoading(true);
-    const formattedTime = reminderTime.format('HH:mm'); // Convert Dayjs object to HH:mm format
+    const formattedTime = formatTime(hour, amPm);  // Convert selected hour/am-pm to "HH:mm"
     const success = await updateReminderTime(userId, formattedTime);
     setLoading(false);
 
@@ -88,6 +104,7 @@ export function ReminderCard({ userId, email }: ReminderProps) {
       </CardHeader>
       <CardContent>
         <div className="flex flex-col items-center gap-4">
+
           {/* Open time picker in a dialog */}
           <Dialog open={open} onOpenChange={setOpen}>
             <DialogTrigger asChild>
@@ -95,23 +112,34 @@ export function ReminderCard({ userId, email }: ReminderProps) {
             </DialogTrigger>
             <DialogContent className="w-auto bg-white p-4 rounded-lg shadow-lg flex flex-col items-center">
               <DialogTitle>Select Reminder Time</DialogTitle>
-              <LocalizationProvider dateAdapter={AdapterDayjs}>
-                <StaticTimePicker
-                  value={reminderTime}
-                  onChange={(newTime) => setReminderTime(newTime)}
-                  shouldDisableTime={(value, view) => {
-                    if (view === 'minutes') {
-                      // Only allow "00" minutes — disable all other minutes
-                      return value.minute() !== 0;
-                    }
-                    return false;
-                  }}
-                  slotProps={{
-                    actionBar: { actions: [] },
-                  }}
-                />
 
-              </LocalizationProvider>
+              <div className="grid grid-cols-4 gap-2 my-4">
+                {Array.from({ length: 12 }, (_, i) => i + 1).map((h) => (
+                  <Button
+                    key={h}
+                    variant={h === hour ? 'default' : 'outline'}
+                    onClick={() => setHour(h)}
+                  >
+                    {h}
+                  </Button>
+                ))}
+              </div>
+
+              <div className="flex gap-4">
+                <Button
+                  variant={amPm === 'AM' ? 'default' : 'outline'}
+                  onClick={() => setAmPm('AM')}
+                >
+                  AM
+                </Button>
+                <Button
+                  variant={amPm === 'PM' ? 'default' : 'outline'}
+                  onClick={() => setAmPm('PM')}
+                >
+                  PM
+                </Button>
+              </div>
+
               <Button className="mt-4 w-full" onClick={() => setOpen(false)}>
                 Confirm Time
               </Button>
@@ -119,8 +147,7 @@ export function ReminderCard({ userId, email }: ReminderProps) {
           </Dialog>
 
           <p className="text-lg font-semibold">
-            Selected Time:{' '}
-            {reminderTime ? reminderTime.format('hh:mm A') : 'Not set'}
+            Selected Time: {hour} {amPm}
           </p>
 
           <Button onClick={handleUpdateReminder} disabled={loading}>

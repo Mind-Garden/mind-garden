@@ -2,6 +2,7 @@
 
 import transporter from "@/lib/transporter";
 import {getSupabaseClient} from "@/utils/supabase/client";
+import {IReminders} from "@/utils/supabase/schema";
 
 // Function to send the actual email
 export async function sendReminderEmail(email: string, subject: string, message: string) {
@@ -39,4 +40,50 @@ async function getLastEntryDate(userId: string, tableName: 'journal_entries' | '
 // Main function to check and send reminders
 export async function checkAndSendReminders(){
 
+}
+
+export async function getReminderTime(userId: string) {
+  const { data, error } = await selectData<IReminders>('reminders', {
+    user_id: userId,
+  });
+
+  if (error) {
+    throw new Error(error.message);
+  }
+
+  return data as unknown as IReminders;
+}
+
+export async function insertReminderTime(userId: string, userEmail: string) {
+  // Get the current time in HH:mm:ss format
+  const reminderTime = new Date().toISOString().substring(11, 19); // Extract HH:mm:ss
+
+  // Check if an entry already exists for this user
+  const { data: existingReminder, error } = await selectData('reminders', {
+    user_id: userId,
+  });
+
+  if (error) {
+    console.error('Error checking existing reminders:', error);
+    return { error };
+  }
+
+  return await insertData('reminders', [
+    {
+      user_id: userId,
+      email: userEmail,
+      reminder_time: reminderTime,
+    },
+  ]);
+}
+
+export async function updateReminderTime(
+  userId: string,
+  newReminderTime: string,
+) {
+  return await updateData(
+    'reminders',
+    { user_id: userId },
+    { reminder_time: newReminderTime },
+  );
 }
