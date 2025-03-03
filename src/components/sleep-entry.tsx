@@ -13,7 +13,7 @@ import {
   insertSleepEntry,
   sleepEntryExists,
 } from '@/actions/data-intake';
-import { getLocalISOString } from '@/lib/utility';
+import { getLocalISOString } from '@/lib/utils';
 
 //UI
 import {

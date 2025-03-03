@@ -1,4 +1,4 @@
-import {undoConversion} from '@/lib/utility';
+import {undoConversion} from '@/lib/utils';
 import {getSupabaseClient} from '@/supabase/client';
 import {
   deleteJournalEntry,

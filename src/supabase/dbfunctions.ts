@@ -1,5 +1,5 @@
 import { getSupabaseClient } from './client';
-import { getLocalISOString } from '@/lib/utility';
+import { getLocalISOString } from '@/lib/utils';
 
 /**
  * Inserts data into a given Supabase table

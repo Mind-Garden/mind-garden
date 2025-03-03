@@ -36,7 +36,7 @@ import {
 import { toast } from 'react-toastify';
 import { IJournalEntries } from '@/supabase/schema';
 
-import { getDate, undoConversion } from '@/lib/utility';
+import { getDate, undoConversion } from '@/lib/utils';
 
 interface NewJournalProps {
   readonly userId: string;

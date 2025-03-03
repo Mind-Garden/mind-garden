@@ -1,4 +1,4 @@
-import {getLocalISOString} from "@/lib/utility";
+import {getLocalISOString} from "@/lib/utils";
 import {insertData, selectData, updateData} from "@/supabase/dbfunctions";
 import {IAttributes, ICategories, IResponses} from "@/supabase/schema";
 
