@@ -1,15 +1,14 @@
+import {undoConversion} from '@/lib/utils';
+import {getSupabaseClient} from '@/supabase/client';
 import {
-  saveJournalEntry,
-  fetchJournalEntries,
-  updateJournalEntry,
   deleteJournalEntry,
+  fetchJournalEntries,
   getRandomPrompt,
-} from '@/utils/supabase/dbfunctions';
+  saveJournalEntry,
+  updateJournalEntry
+} from "@/actions/journal";
 
-import { undoConversion } from '@/lib/utility';
-import { getSupabaseClient } from '@/utils/supabase/client';
-
-jest.mock('@/utils/supabase/client', () => ({
+jest.mock('@/supabase/client', () => ({
   getSupabaseClient: jest.fn(),
 }));
 
@@ -37,8 +36,8 @@ describe('Journal Actions', () => {
       };
       const selectMock = jest
         .fn()
-        .mockResolvedValue({ data: mockData['data'], error: null });
-      const insertMock = jest.fn().mockReturnValue({ select: selectMock });
+        .mockResolvedValue({data: mockData['data'], error: null});
+      const insertMock = jest.fn().mockReturnValue({select: selectMock});
 
       mockSupabaseClient.from.mockReturnValue({
         insert: insertMock,
@@ -64,10 +63,10 @@ describe('Journal Actions', () => {
           },
         ],
       };
-      const mockReturnValue = { data: null, error: { message: 'Error' } };
+      const mockReturnValue = {data: null, error: {message: 'Error'}};
 
       const selectMock = jest.fn().mockResolvedValue(mockReturnValue);
-      const insertMock = jest.fn().mockReturnValue({ select: selectMock });
+      const insertMock = jest.fn().mockReturnValue({select: selectMock});
 
       mockSupabaseClient.from.mockReturnValue({
         insert: insertMock,
@@ -77,7 +76,7 @@ describe('Journal Actions', () => {
         mockData.data[0].journalText,
         mockData.data[0].userId,
       );
-      expect(result).toEqual({ error: mockReturnValue.error.message });
+      expect(result).toEqual({error: mockReturnValue.error.message});
       expect(insertMock).toHaveBeenCalled();
       expect(selectMock).toHaveBeenCalled();
       expect(console.error).toHaveBeenCalledWith(
@@ -118,8 +117,8 @@ describe('Journal Actions', () => {
 
       const matchMock = jest
         .fn()
-        .mockResolvedValue({ data: mockEntries, error: null });
-      const selectMock = jest.fn().mockReturnValue({ match: matchMock });
+        .mockResolvedValue({data: mockEntries, error: null});
+      const selectMock = jest.fn().mockReturnValue({match: matchMock});
 
       mockSupabaseClient.from.mockReturnValue({
         select: selectMock,
@@ -129,19 +128,19 @@ describe('Journal Actions', () => {
 
       expect(mockSupabaseClient.from).toHaveBeenCalledWith('journal_entries');
       expect(selectMock).toHaveBeenCalledWith('*');
-      expect(result).toEqual({ data: mockEntries });
+      expect(result).toEqual({data: mockEntries});
       expect(console.error).not.toHaveBeenCalled();
     });
 
     it('should return error when select fails', async () => {
       console.error = jest.fn();
       const userId = '1';
-      const mockError = { message: 'Database error' };
+      const mockError = {message: 'Database error'};
 
       const matchMock = jest
         .fn()
-        .mockResolvedValue({ data: null, error: mockError });
-      const selectMock = jest.fn().mockReturnValue({ match: matchMock });
+        .mockResolvedValue({data: null, error: mockError});
+      const selectMock = jest.fn().mockReturnValue({match: matchMock});
 
       mockSupabaseClient.from.mockReturnValue({
         select: selectMock,
@@ -151,7 +150,7 @@ describe('Journal Actions', () => {
 
       expect(mockSupabaseClient.from).toHaveBeenCalledWith('journal_entries');
       expect(selectMock).toHaveBeenCalledWith('*');
-      expect(result).toEqual({ error: mockError.message });
+      expect(result).toEqual({error: mockError.message});
       expect(console.error).toHaveBeenCalledWith(
         'Error fetching journal entries:',
         mockError.message,
@@ -191,10 +190,10 @@ describe('Journal Actions', () => {
       const result = await updateJournalEntry(entryId, newEntryText);
 
       expect(mockSupabaseClient.from).toHaveBeenCalledWith('journal_entries');
-      expect(updateMock).toHaveBeenCalledWith({ journal_text: newEntryText });
-      expect(matchMock).toHaveBeenCalledWith({ id: entryId });
+      expect(updateMock).toHaveBeenCalledWith({journal_text: newEntryText});
+      expect(matchMock).toHaveBeenCalledWith({id: entryId});
       expect(selectMock).toHaveBeenCalled();
-      expect(result).toEqual({ data: [mockUpdatedEntry] });
+      expect(result).toEqual({data: [mockUpdatedEntry]});
       expect(console.error).not.toHaveBeenCalled();
     });
 
@@ -202,7 +201,7 @@ describe('Journal Actions', () => {
       console.error = jest.fn();
       const entryId = '1';
       const newEntryText = 'Updated journal entry';
-      const mockError = { message: 'Update error' };
+      const mockError = {message: 'Update error'};
 
       const selectMock = jest.fn().mockResolvedValue({
         data: null,
@@ -224,10 +223,10 @@ describe('Journal Actions', () => {
       const result = await updateJournalEntry(entryId, newEntryText);
 
       expect(mockSupabaseClient.from).toHaveBeenCalledWith('journal_entries');
-      expect(updateMock).toHaveBeenCalledWith({ journal_text: newEntryText });
-      expect(matchMock).toHaveBeenCalledWith({ id: entryId });
+      expect(updateMock).toHaveBeenCalledWith({journal_text: newEntryText});
+      expect(matchMock).toHaveBeenCalledWith({id: entryId});
       expect(selectMock).toHaveBeenCalled();
-      expect(result).toEqual({ error: mockError.message });
+      expect(result).toEqual({error: mockError.message});
       expect(console.error).toHaveBeenCalledWith(
         'Error updating journal_entries:',
         mockError.message,
@@ -252,8 +251,7 @@ describe('Journal Actions', () => {
       const mockTimezoneOffset = 300; // 5 hours in minutes
 
       // Mock the getTimezoneOffset method only
-      jest
-        .spyOn(Date.prototype, 'getTimezoneOffset')
+      jest.spyOn(Date.prototype, 'getTimezoneOffset')
         .mockReturnValue(mockTimezoneOffset);
 
       // Calculate expected: time + offset in ms
@@ -270,8 +268,8 @@ describe('Journal Actions', () => {
     it('should delete the journal entry successfully', async () => {
       const entryId = '1';
 
-      const matchMock = jest.fn().mockReturnValue({ error: null });
-      const deleteMock = jest.fn().mockReturnValue({ match: matchMock });
+      const matchMock = jest.fn().mockReturnValue({error: null});
+      const deleteMock = jest.fn().mockReturnValue({match: matchMock});
 
       mockSupabaseClient.from.mockReturnValue({
         delete: deleteMock,
@@ -290,8 +288,8 @@ describe('Journal Actions', () => {
 
       const matchMock = jest
         .fn()
-        .mockReturnValue({ error: { message: 'Delete error' } });
-      const deleteMock = jest.fn().mockReturnValue({ match: matchMock });
+        .mockReturnValue({error: {message: 'Delete error'}});
+      const deleteMock = jest.fn().mockReturnValue({match: matchMock});
 
       mockSupabaseClient.from.mockReturnValue({
         delete: deleteMock,
@@ -299,7 +297,7 @@ describe('Journal Actions', () => {
 
       const result = await deleteJournalEntry(entryId);
 
-      expect(result.error).toEqual({ message: 'Delete error' });
+      expect(result.error).toEqual({message: 'Delete error'});
 
       expect(deleteMock).toHaveBeenCalled();
       expect(matchMock).toHaveBeenCalled();
@@ -308,28 +306,28 @@ describe('Journal Actions', () => {
 
   describe('Get random prompt', () => {
     it('should fetch the random prompt successfully', async () => {
-      const mockData = { prompt: 'This is an inspirational prompt.' };
+      const mockData = {prompt: 'This is an inspirational prompt.'};
       const rpcMock = jest
         .fn()
-        .mockReturnValue({ data: mockData, error: null });
+        .mockReturnValue({data: mockData, error: null});
       mockSupabaseClient.rpc = rpcMock;
 
       const result = await getRandomPrompt();
 
       expect(mockSupabaseClient.rpc).toHaveBeenCalledWith('get_random_prompt');
-      expect(result).toEqual({ data: mockData });
+      expect(result).toEqual({data: mockData});
     });
 
     it('should fail at fetching the random prompt', async () => {
       const rpcMock = jest
         .fn()
-        .mockReturnValue({ data: null, error: { message: 'Prompt error' } });
+        .mockReturnValue({data: null, error: {message: 'Prompt error'}});
       mockSupabaseClient.rpc = rpcMock;
 
       const result = await getRandomPrompt();
 
       expect(mockSupabaseClient.rpc).toHaveBeenCalledWith('get_random_prompt');
-      expect(result).toEqual({ error: 'Prompt error' });
+      expect(result).toEqual({error: 'Prompt error'});
     });
   });
 });

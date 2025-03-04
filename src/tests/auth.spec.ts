@@ -8,7 +8,7 @@ import {
   forgotPassword,
   authenticateResetCode,
 } from '@/actions/auth';
-import { createClient } from '@/utils/supabase/server';
+import { createClient } from '@/supabase/server';
 import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
 
@@ -22,7 +22,7 @@ jest.mock('next/navigation', () => ({
 }));
 
 // Mock Supabase client
-jest.mock('@/utils/supabase/server', () => ({
+jest.mock('@/supabase/server', () => ({
   createClient: jest.fn(),
 }));
 

@@ -1,10 +1,7 @@
-import {
-  insertSleepEntry,
-  sleepEntryExists,
-} from '@/utils/supabase/dbfunctions';
-import { getSupabaseClient } from '@/utils/supabase/client';
+import { getSupabaseClient } from '@/supabase/client';
+import {insertSleepEntry, sleepEntryExists} from "@/actions/data-intake";
 
-jest.mock('@/utils/supabase/client', () => ({
+jest.mock('@/supabase/client', () => ({
   getSupabaseClient: jest.fn(),
 }));
 

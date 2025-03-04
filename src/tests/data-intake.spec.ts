@@ -1,13 +1,12 @@
+import { getSupabaseClient } from '@/supabase/client';
 import {
   insertResponses,
   selectAllFromAttributes,
   selectAllFromCategories,
-  selectResponsesByDate,
-  updateResponses,
-} from '@/utils/supabase/dbfunctions';
-import { getSupabaseClient } from '@/utils/supabase/client';
+  selectResponsesByDate, updateResponses
+} from "@/actions/data-intake";
 
-jest.mock('@/utils/supabase/client', () => ({
+jest.mock('@/supabase/client', () => ({
   getSupabaseClient: jest.fn(),
 }));
 
