@@ -73,7 +73,7 @@ describe('Sleep Tracker Actions', () => {
       expect(insertMock).toHaveBeenCalled();
       expect(selectMock).toHaveBeenCalled();
       expect(console.error).toHaveBeenCalledWith(
-        `Error inserting into sleep_entries:`,
+        'Error inserting into sleep_entries:',
         mockReturnValue.error.message,
       );
     });
@@ -151,7 +151,7 @@ describe('Sleep Tracker Actions', () => {
       expect(selectMock).toHaveBeenCalled();
       expect(matchMock).toHaveBeenCalled();
       expect(console.error).toHaveBeenCalledWith(
-        `Error selecting from sleep_entries:`,
+        'Error selecting from sleep_entries:',
         mockReturnValue.error.message,
       );
     });

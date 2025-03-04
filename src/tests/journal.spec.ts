@@ -81,7 +81,7 @@ describe('Journal Actions', () => {
       expect(insertMock).toHaveBeenCalled();
       expect(selectMock).toHaveBeenCalled();
       expect(console.error).toHaveBeenCalledWith(
-        `Error inserting into journal_entries:`,
+        'Error inserting into journal_entries:',
         mockReturnValue.error.message,
       );
     });

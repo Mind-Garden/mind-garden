@@ -162,7 +162,7 @@ export async function updateJournalEntry(entryId: string, newEntry: string) {
 export async function selectAllFromCategories(): Promise<Array<ICategories> | null> {
   const { data, error } = await selectData<ICategories>('categories');
   if (error) {
-    console.error(`Error selecting categories:`, error.message);
+    console.error('Error selecting categories:', error.message);
     return null;
   }
   return data as unknown as ICategories[];
