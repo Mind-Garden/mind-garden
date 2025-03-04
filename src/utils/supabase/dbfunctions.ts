@@ -6,6 +6,9 @@ import {
   IJournalEntries,
 } from '@/utils/supabase/schema';
 import { getLocalISOString } from '@/lib/utility';
+import { group } from 'console';
+import { start } from 'repl';
+import { get } from 'http';
 
 /**
  * Inserts data into a given Supabase table
@@ -73,14 +76,22 @@ async function selectData<T>(
   table: string,
   conditions?: object,
   columns: string[] = ['*'],
+  fromDate?: string,
+  toDate?: string
 ) {
   const supabase = getSupabaseClient();
 
+  let query = supabase.from(table).select(columns.join(', '));
+
+  // Add date range conditions if provided
+  if (fromDate && toDate) {
+    query = query.gte('entry_date', fromDate).lte('entry_date', toDate);
+  }
+  query = query.match(conditions ?? {});
+
+
   // Build the query with conditions and selected columns
-  const { data, error } = await supabase
-    .from(table)
-    .select(columns.join(', ')) // Use columns passed or default to '*'
-    .match(conditions ?? {}); // Use conditions (if any)
+  const { data, error } = await query
 
   if (error) {
     console.error(`Error selecting from ${table}:`, error.message);
@@ -109,6 +120,49 @@ export async function fetchJournalEntries(userId: string) {
 
   return { data: data as unknown as IJournalEntries[] };
 }
+
+export async function selectMoodDataByDateRange(userId: string, startDate: string, endDate: string) {
+
+  const table = 'responses'; 
+  const columns = ['scale_rating', 'entry_date'];
+  const conditions = {
+    user_id: userId,
+  };
+
+  const { data, error } = await selectData(table, conditions, columns, startDate, endDate);
+
+  if (error) {
+    console.error("Error fetching mood data:", error.message);
+    return { error: error.message };
+  }
+
+  return { data }
+}
+
+/**
+ * 
+ * @param userId - The user ID whose mood frequency needs to be fetched
+ * @returns a list of dictionaries with scale_rating and count
+ */
+export async function selectMoodFrequency(userId: string, lastMonthDate: string, todaysDate: string) {
+  const supabase = getSupabaseClient();
+
+  //retrieve mood frequency data from the database for the past month starting from today
+  const { data, error } = await supabase.rpc('get_mood_count_by_user',
+    {
+      user_id_param: userId,
+      start_date_param: lastMonthDate,
+      end_date_param: todaysDate
+    });
+
+  if (error) {
+    console.error('Error fetching journal entries:', error.message);
+    return { error: error.message };
+  }
+
+  return { data };
+}
+
 
 /**
  * Updates data in a given Supabase table
