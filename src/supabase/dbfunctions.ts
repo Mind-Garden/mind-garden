@@ -8,14 +8,21 @@ import { getLocalISOString } from '@/lib/utils';
  * @returns - Success response or error
  * This will be a general function for all our insert operations (private to this script)
  */
-export async function insertData<T>(table: string, dataToInsert: T[]) {
+export async function insertData<T>(
+  table: string,
+  dataToInsert: T[],
+  hasEntryDate = true,
+) {
   const supabase = getSupabaseClient();
 
   // Add entry_date to each item in the array
-  const dataWithDate = dataToInsert.map((item) => ({
-    ...item,
-    entry_date: getLocalISOString(),
-  }));
+  let dataWithDate = dataToInsert;
+  if (hasEntryDate) {
+    dataWithDate = dataToInsert.map((item) => ({
+      ...item,
+      entry_date: getLocalISOString(),
+    }));
+  }
 
   const { data, error } = await supabase
     .from(table)
