@@ -1,6 +1,6 @@
 import { redirect } from 'next/navigation';
 
-import { createClient } from '@/utils/supabase/server';
+import { createClient } from '@/supabase/server';
 
 import { Header } from '@/components/header';
 import Footer from '@/components/footer';

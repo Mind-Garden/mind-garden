@@ -2,7 +2,7 @@
 import { redirect } from 'next/navigation';
 
 // Utility
-import { createClient } from '@/utils/supabase/server';
+import { createClient } from '@/supabase/server';
 
 // UI
 import Footer from '@/components/footer';

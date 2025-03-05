@@ -1,15 +1,14 @@
+import { undoConversion } from '@/lib/utils';
+import { getSupabaseClient } from '@/supabase/client';
 import {
-  saveJournalEntry,
-  fetchJournalEntries,
-  updateJournalEntry,
   deleteJournalEntry,
+  fetchJournalEntries,
   getRandomPrompt,
-} from '@/utils/supabase/dbfunctions';
+  saveJournalEntry,
+  updateJournalEntry,
+} from '@/actions/journal';
 
-import { undoConversion } from '@/lib/utility';
-import { getSupabaseClient } from '@/utils/supabase/client';
-
-jest.mock('@/utils/supabase/client', () => ({
+jest.mock('@/supabase/client', () => ({
   getSupabaseClient: jest.fn(),
 }));
 
