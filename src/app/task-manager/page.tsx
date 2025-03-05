@@ -35,8 +35,8 @@ export default async function Home() {
           </h1>
         </div>
 
-          < TaskManager userId={userId} />
-        </main>
+        <TaskManager userId={userId} />
+      </main>
 
       <Footer />
     </div>

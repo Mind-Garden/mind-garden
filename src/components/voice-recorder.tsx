@@ -10,13 +10,13 @@ interface VoiceRecorderProps {
 
 declare const window: any;
 
-export default function VoiceRecorder({ 
-  onTranscriptComplete, 
+export default function VoiceRecorder({
+  onTranscriptComplete,
   onTranscriptChange,
-  isProcessing = false 
+  isProcessing = false,
 }: VoiceRecorderProps) {
   const [isRecording, setIsRecording] = useState(false);
-  const [transcript, setTranscript] = useState("");
+  const [transcript, setTranscript] = useState('');
   const recognitionRef = useRef<any>(null);
 
   const startRecording = () => {
@@ -45,8 +45,8 @@ export default function VoiceRecorder({
     if (transcript.trim()) {
       onTranscriptComplete(transcript);
     }
-    setTranscript("");
-    onTranscriptChange?.("");
+    setTranscript('');
+    onTranscriptChange?.('');
   };
 
   const handleToggleRecording = () => {
