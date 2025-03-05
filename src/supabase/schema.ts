@@ -38,3 +38,11 @@ export interface ICategories {
   id: string;
   name: string;
 }
+
+export interface ITask {
+  id: string;
+  user_id: string;
+  description: string;
+  is_completed: boolean;
+  created_at: string;
+};
