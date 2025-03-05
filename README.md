@@ -198,3 +198,9 @@ Setting up code scan/code review
 3. In the CLI type, `npx jest 'dbfunctions.spec.ts'`
 4. If you wish to run it with test coverage type, `npx jest --coverage 'dbfunctions.spec.ts'`
 5. If you wish to run it with test coverage for a specific directory type, `npm run test:coverage --path='x'` where `x` is the directory for your test file, i.e. `'src/utils/supabse'`
+
+## Running Docker
+
+1. Install the latest version of Docker in your computer.
+2. In the root directory of the project using a CLI, type `docker-compose up -d --build`
+3. In a web browser type `http://localhost:3000/`
