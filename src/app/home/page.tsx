@@ -44,7 +44,7 @@ export default async function Home() {
         <div className="mb-8">
           <Dashboard />
         </div>
-      
+
         {/* MoodFlow */}
         <div className="mb-8">
           <MoodFlow userId={userId} />

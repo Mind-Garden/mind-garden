@@ -9,10 +9,7 @@ import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 // Utility
-import {
-  insertSleepEntry,
-  sleepEntryExists,
-} from '@/actions/data-intake';
+import { insertSleepEntry, sleepEntryExists } from '@/actions/data-intake';
 import { getLocalISOString } from '@/lib/utils';
 
 //UI

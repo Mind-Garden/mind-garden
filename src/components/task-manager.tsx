@@ -2,14 +2,19 @@
 import { useState, useRef, useEffect } from 'react';
 import { Card } from '@/components/ui/card';
 import { Mic, Plus, CircleStop, Loader2 } from 'lucide-react';
-import { Tooltip, TooltipContent, TooltipTrigger, TooltipProvider } from '@/components/ui/tooltip';
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+  TooltipProvider,
+} from '@/components/ui/tooltip';
 import { extractTasksFromTranscript } from '@/actions/todos';
 
 declare const window: any;
 
 export default function TaskManager() {
   const [isRecording, setIsRecording] = useState(false);
-  const [transcript, setTranscript] = useState("");
+  const [transcript, setTranscript] = useState('');
   const [isProcessing, setIsProcessing] = useState(false);
   const [tasks, setTasks] = useState<string[]>([]);
   const recognitionRef = useRef<any>(null);
@@ -25,7 +30,7 @@ export default function TaskManager() {
       const transcripts = Array.from(event.results)
         .map((result: any) => result[0].transcript)
         .join(' ');
-      
+
       setTranscript(transcripts);
     };
 
@@ -37,7 +42,7 @@ export default function TaskManager() {
       recognitionRef.current.stop();
     }
     setIsRecording(false);
-    
+
     // Start processing if transcript is not empty
     if (transcript.trim()) {
       processTranscript();
@@ -50,8 +55,7 @@ export default function TaskManager() {
       // Extract tasks from transcript
       const extractedTasks = await extractTasksFromTranscript(transcript);
 
-
-      setTasks(prevTasks => [...extractedTasks, ...prevTasks]);
+      setTasks((prevTasks) => [...extractedTasks, ...prevTasks]);
     } catch (error) {
       console.error('Error processing transcript:', error);
     } finally {
@@ -77,10 +81,12 @@ export default function TaskManager() {
 
   return (
     <div className="flex-1 flex flex-col items-center justify-center space-y-4">
-      <p className="text-gray-500 text-sm text-center">Press record and tell me about your tasks for today.</p>
+      <p className="text-gray-500 text-sm text-center">
+        Press record and tell me about your tasks for today.
+      </p>
       <Card className="bg-white/60 backdrop-blur-sm rounded-full border-none shadow-lg flex items-center w-1/2 max-w-md p-4 relative">
         <div className="absolute left-0 right-0 flex justify-center">
-          <button 
+          <button
             onClick={handleToggleRecording}
             disabled={isProcessing}
             className={`p-2 rounded-full transition-all duration-300 transform hover:scale-105 ${isRecording ? 'bg-red-50' : 'hover:bg-blue-50'} ${isProcessing ? 'opacity-50 cursor-not-allowed' : ''}`}
@@ -99,7 +105,7 @@ export default function TaskManager() {
           <TooltipProvider>
             <Tooltip>
               <TooltipTrigger asChild>
-                <button 
+                <button
                   className="p-2 rounded-full transition-all duration-300 transform hover:scale-105 hover:bg-green-50"
                   aria-label="Add task manually"
                 >
@@ -114,12 +120,12 @@ export default function TaskManager() {
         </div>
       </Card>
 
-      
-      
       {transcript && !isProcessing && (
-        <p className="text-gray-700 text-sm text-center bg-white/80 p-2 rounded-lg shadow">{transcript}</p>
+        <p className="text-gray-700 text-sm text-center bg-white/80 p-2 rounded-lg shadow">
+          {transcript}
+        </p>
       )}
-      
+
       {tasks.length > 0 && (
         <div className="w-1/2 max-w-md bg-white/80 rounded-lg shadow p-4">
           <h3 className="text-lg font-semibold mb-2">Extracted Tasks:</h3>

@@ -21,14 +21,14 @@ export function getLocalISOString(date = new Date()) {
 
 export function getGreetingText(): string {
   const currentTime = new Date().getHours();
-  let greetingText = "";
+  let greetingText = '';
 
   if (currentTime < 12) {
-    greetingText = "Good Morning";
+    greetingText = 'Good Morning';
   } else if (currentTime < 18) {
-    greetingText = "Good Afternoon";
+    greetingText = 'Good Afternoon';
   } else {
-    greetingText = "Good Evening";
+    greetingText = 'Good Evening';
   }
 
   return greetingText;
