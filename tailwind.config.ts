@@ -56,6 +56,11 @@ export default {
         md: 'calc(var(--radius) - 2px)',
         sm: 'calc(var(--radius) - 4px)',
       },
+      fontFamily: {
+        title: 'var(--font-pacifico)',
+        header: 'var(--font-dosis)',
+        body: 'var(--font-mulish)',
+      },
     },
   },
   plugins: [require('tailwindcss-animate')],

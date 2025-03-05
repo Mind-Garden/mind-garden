@@ -74,6 +74,8 @@ export interface MoodCountData {
 export interface IReminders {
   id: string;
   user_id: string;
-  email: string;
-  reminder_time: Date;
+  reminder_time: string;
+  journal_reminders: boolean;
+  data_intake_reminders: boolean;
+  activity_reminders: boolean;
 }
