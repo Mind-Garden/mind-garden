@@ -77,6 +77,7 @@ export default function TaskManager() {
 
   return (
     <div className="flex-1 flex flex-col items-center justify-center space-y-4">
+      <p className="text-gray-500 text-sm text-center">Press record and tell me about your tasks for today.</p>
       <Card className="bg-white/60 backdrop-blur-sm rounded-full border-none shadow-lg flex items-center w-1/2 max-w-md p-4 relative">
         <div className="absolute left-0 right-0 flex justify-center">
           <button 
@@ -112,6 +113,8 @@ export default function TaskManager() {
           </TooltipProvider>
         </div>
       </Card>
+
+      
       
       {transcript && !isProcessing && (
         <p className="text-gray-700 text-sm text-center bg-white/80 p-2 rounded-lg shadow">{transcript}</p>

@@ -33,9 +33,6 @@ export default async function Home() {
             <h1 className="text-3xl font-bold mb-2 opacity-50">
               {getGreetingText()}, {profileData?.first_name}.
             </h1>
-            <p className="text-lg text-muted-foreground">
-              You have 3 tasks to complete today.
-            </p>
           </div>
 
           < TaskManager />
