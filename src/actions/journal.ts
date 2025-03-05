@@ -1,6 +1,6 @@
-import {getSupabaseClient} from "@/supabase/client";
-import {insertData, selectData, updateData} from "@/supabase/dbfunctions";
-import {IJournalEntries} from "@/supabase/schema";
+import { getSupabaseClient } from '@/supabase/client';
+import { insertData, selectData, updateData } from '@/supabase/dbfunctions';
+import { IJournalEntries } from '@/supabase/schema';
 
 /**
  * Saves a journal entry to the database
@@ -10,7 +10,7 @@ import {IJournalEntries} from "@/supabase/schema";
  */
 export async function saveJournalEntry(entry: string, userId: string) {
   if (!entry.trim()) return; // Prevent empty entries
-  const {data, error} = await insertData('journal_entries', [
+  const { data, error } = await insertData('journal_entries', [
     {
       user_id: userId,
       journal_text: entry,
@@ -19,10 +19,10 @@ export async function saveJournalEntry(entry: string, userId: string) {
 
   if (error) {
     console.error('Error saving journal entry:', error.message);
-    return {error: error.message};
+    return { error: error.message };
   }
 
-  return {data};
+  return { data };
 }
 
 /**
@@ -31,18 +31,18 @@ export async function saveJournalEntry(entry: string, userId: string) {
  * @returns - The journal entries data or error
  */
 export async function fetchJournalEntries(userId: string) {
-  const {data, error} = await selectData(
+  const { data, error } = await selectData(
     'journal_entries',
-    {user_id: userId},
+    { user_id: userId },
     ['*'],
   );
 
   if (error) {
     console.error('Error fetching journal entries:', error.message);
-    return {error: error.message};
+    return { error: error.message };
   }
 
-  return {data: data as unknown as IJournalEntries[]};
+  return { data: data as unknown as IJournalEntries[] };
 }
 
 /**
@@ -56,8 +56,8 @@ export async function updateJournalEntry(entryId: string, newEntry: string) {
 
   return await updateData(
     'journal_entries',
-    {id: entryId},
-    {journal_text: newEntry},
+    { id: entryId },
+    { journal_text: newEntry },
   );
 }
 
@@ -70,7 +70,7 @@ export async function deleteJournalEntry(id: string) {
   const result = await supabase
     .from('journal_entries')
     .delete()
-    .match({id: id});
+    .match({ id: id });
 
   return result;
 }
@@ -81,11 +81,11 @@ export async function deleteJournalEntry(id: string) {
 export async function getRandomPrompt() {
   const supabase = getSupabaseClient();
 
-  const {data, error} = await supabase.rpc('get_random_prompt');
+  const { data, error } = await supabase.rpc('get_random_prompt');
 
   if (error) {
-    return {error: error.message};
+    return { error: error.message };
   }
 
-  return {data};
+  return { data };
 }
