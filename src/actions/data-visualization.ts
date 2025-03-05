@@ -1,3 +1,4 @@
+import { getSupabaseClient } from '@/supabase/client';
 import {selectData} from "@/supabase/dbfunctions";
 
 
@@ -18,3 +19,28 @@ export async function selectMoodDataByDateRange(userId: string, startDate: strin
   
     return { data }
   }
+
+    /**
+     * 
+     * @param userId - The user ID whose mood frequency needs to be fetched
+     * @returns a list of dictionaries with scale_rating and count
+     */
+    export async function selectMoodFrequency(userId: string, lastMonthDate: string, todaysDate: string) {
+      const supabase = getSupabaseClient();
+    
+      //retrieve mood frequency data from the database for the past month starting from today
+      const { data, error } = await supabase.rpc('get_mood_count_by_user',
+        {
+          user_id_param: userId,
+          start_date_param: lastMonthDate,
+          end_date_param: todaysDate
+        });
+    
+      if (error) {
+        console.error('Error fetching journal entries:', error.message);
+        return { error: error.message };
+      }
+    
+      return { data };
+    }
+  

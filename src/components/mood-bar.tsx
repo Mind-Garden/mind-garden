@@ -1,7 +1,7 @@
 "use client"
 
 import { Card, CardDescription, CardTitle } from "@/components/ui/card"
-import { selectMoodFrequency } from "@/supabase/dbfunctions"
+import { selectMoodFrequency } from "@/actions/data-visualization"
 import { useState, useEffect } from "react"
 import { getLocalISOString } from '@/lib/utils';
 import ScaleIcon from "./data-intake/scale-icon"
