@@ -1,11 +1,11 @@
 import { redirect } from 'next/navigation';
-import { createClient } from '@/utils/supabase/server';
+import { createClient } from '@/supabase/server';
 import Footer from '@/components/footer';
 import DataIntakeForm from '@/components/data-intake/data-intake-form';
 import {
   selectAllFromAttributes,
   selectAllFromCategories,
-} from '@/utils/supabase/dbfunctions';
+} from '@/actions/data-intake';
 import { Header } from '@/components/header';
 
 export default async function Dashboard() {

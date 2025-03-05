@@ -13,8 +13,8 @@ import {
     Legend,
 } from "chart.js"
 import { Card, CardContent, CardDescription, CardTitle } from "@/components/ui/card"
-import { selectMoodDataByDateRange } from "@/utils/supabase/dbfunctions"
-import { getLocalISOString } from '@/lib/utility';
+import { selectMoodDataByDateRange } from "@/actions/data-visualization"
+import { getLocalISOString } from '@/lib/utils';
 
 // Register ChartJS components
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend)
