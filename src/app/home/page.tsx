@@ -3,6 +3,9 @@ import { createClient } from '@/supabase/server';
 import Footer from '@/components/footer';
 import { Header } from '@/components/header';
 import Dashboard from '@/components/dashboard';
+import MoodFlow from '@/components/mood-flow';
+import MoodBar from '@/components/mood-bar';
+import { use } from 'react';
 
 export default async function Home() {
   const supabase = await createClient();
@@ -36,7 +39,20 @@ export default async function Home() {
             Cultivate your daily habits and track your progress.
           </p>
         </div>
-        <Dashboard />
+        {/* Content */}
+        {/* Dashboard */}
+        <div className="mb-8">
+          <Dashboard />
+        </div>
+      
+        {/* MoodFlow */}
+        <div className="mb-8">
+          <MoodFlow userId={userId} />
+        </div>
+        {/* MoodBar */}
+        <div>
+          <MoodBar userId={userId} />
+        </div>
       </main>
 
       <Footer />
