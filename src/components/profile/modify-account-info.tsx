@@ -1,5 +1,6 @@
 'use client';
 
+import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import {
@@ -14,11 +15,13 @@ import { modifyAccount } from '@/actions/auth';
 import { useRef } from 'react';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { Loader2 } from 'lucide-react';
 
 export default function ModifyAccount(props: {
   profileData: any;
   userId: string;
 }) {
+  const [isLoading, setIsLoading] = useState(false);
   const emailRef = useRef<HTMLInputElement>(null);
   const firstNameRef = useRef<HTMLInputElement>(null);
   const lastNameRef = useRef<HTMLInputElement>(null);
@@ -26,16 +29,23 @@ export default function ModifyAccount(props: {
   const handleSubmit = async () => {
     // Check if the ref is not null before using it
     if (firstNameRef.current && lastNameRef.current && emailRef.current) {
-      const result = await modifyAccount(
-        firstNameRef.current.value,
-        lastNameRef.current.value,
-        emailRef.current.value,
-        props.userId,
-      );
-      if (result?.error) {
-        toast.error(result.error);
-      } else {
-        toast.success('Profile updated successfully!');
+      try {
+        setIsLoading(true);
+        const result = await modifyAccount(
+          firstNameRef.current.value,
+          lastNameRef.current.value,
+          emailRef.current.value,
+          props.userId,
+        );
+        if (result?.error) {
+          toast.error(result.error);
+        } else {
+          toast.success('Profile updated successfully!');
+        }
+      } catch (error) {
+        toast.error('An error occurred while updating your profile.');
+      } finally {
+        setIsLoading(false);
       }
     }
   };
@@ -55,6 +65,7 @@ export default function ModifyAccount(props: {
             id="firstName"
             defaultValue={props.profileData?.first_name}
             ref={firstNameRef}
+            disabled={isLoading}
           />
         </div>
         <div className="space-y-2">
@@ -65,6 +76,7 @@ export default function ModifyAccount(props: {
             id="lastName"
             defaultValue={props.profileData?.last_name}
             ref={lastNameRef}
+            disabled={isLoading}
           />
         </div>
         <div className="space-y-2">
@@ -76,11 +88,21 @@ export default function ModifyAccount(props: {
             type="email"
             defaultValue={props.profileData?.email}
             ref={emailRef}
+            disabled={isLoading}
           />
         </div>
       </CardContent>
       <CardFooter>
-        <Button onClick={() => handleSubmit()}>Update Profile</Button>
+        <Button onClick={() => handleSubmit()} disabled={isLoading}>
+          {isLoading ? (
+            <>
+              <Loader2 className="h-4 w-4 animate-spin" />
+              Updating...
+            </>
+          ) : (
+            'Update Profile'
+          )}
+        </Button>
       </CardFooter>
     </Card>
   );

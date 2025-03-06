@@ -18,6 +18,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@/components/ui/dialog';
+import { Trash2 } from 'lucide-react';
 import { useState } from 'react';
 
 export default function DeleteAccount(props: { userId: string }) {
@@ -39,7 +40,9 @@ export default function DeleteAccount(props: { userId: string }) {
       <CardFooter>
         <Dialog open={open} onOpenChange={setOpen}>
           <DialogTrigger asChild>
-            <Button variant="destructive">Delete Account</Button>
+            <Button variant="destructive">
+              Delete Account <Trash2 className="w-6 h-6" />
+            </Button>
           </DialogTrigger>
           <DialogContent>
             <DialogHeader>

@@ -1,9 +1,25 @@
+'use server';
+
+import { createClient } from '@/supabase/server';
 import { getSupabaseClient } from '@/supabase/client';
-import {selectData} from "@/supabase/dbfunctions";
+import { selectData } from '@/supabase/dbfunctions';
 
+export async function getDataHeatmap(userId: string) {
+  const supabase = await createClient();
 
-export async function selectMoodDataByDateRange(userId: string, startDate: string, endDate: string) {
-  const table = 'responses'; 
+  const result = await supabase.rpc('get_heatmap_data', {
+    user_id_param: userId,
+  });
+
+  return result;
+}
+
+export async function selectMoodDataByDateRange(
+  userId: string,
+  startDate: string,
+  endDate: string,
+) {
+  const table = 'responses';
   const columns = ['scale_rating', 'entry_date'];
   const conditions = {
     user_id: userId,
@@ -34,9 +50,17 @@ export async function selectMoodFrequency(userId: string, lastMonthDate: string,
       start_date_param: lastMonthDate,
       end_date_param: todaysDate
     });
+=======
+  const { data, error } = await selectData(
+    table,
+    conditions,
+    columns,
+    startDate,
+    endDate,
+  );
 
   if (error) {
-    console.error('Error fetching journal entries:', error.message);
+    console.error('Error fetching mood data:', error.message);
     return { error: error.message };
   }
 
@@ -59,4 +83,4 @@ export async function selectSleepDataByDateRange(userId: string, startDate: stri
 
   return { data }
 }
-  
+

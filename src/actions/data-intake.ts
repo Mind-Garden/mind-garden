@@ -1,6 +1,6 @@
-import {getLocalISOString} from "@/lib/utils";
-import {insertData, selectData, updateData} from "@/supabase/dbfunctions";
-import {IAttributes, ICategories, IResponses} from "@/supabase/schema";
+import { getLocalISOString } from '@/lib/utils';
+import { insertData, selectData, updateData } from '@/supabase/dbfunctions';
+import { IAttributes, ICategories, IResponses } from '@/supabase/schema';
 
 /**
  * Fetches all categories from the database.
@@ -9,7 +9,7 @@ import {IAttributes, ICategories, IResponses} from "@/supabase/schema";
 export async function selectAllFromCategories(): Promise<Array<ICategories> | null> {
   const { data, error } = await selectData<ICategories>('categories');
   if (error) {
-    console.error(`Error selecting categories:`, error.message);
+    console.error('Error selecting categories:', error.message);
     return null;
   }
   return data as unknown as ICategories[];
@@ -90,7 +90,7 @@ export async function updateResponses(
   userId: string,
   scaleRating: number,
 ): Promise<void> {
-  const entryDate = new Date().toISOString().split('T')[0];
+  const entryDate = getLocalISOString();
 
   const { error } = await updateData(
     'responses',

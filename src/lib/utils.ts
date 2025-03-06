@@ -1,4 +1,5 @@
 import { clsx, type ClassValue } from 'clsx';
+import { get } from 'http';
 import { twMerge } from 'tailwind-merge';
 
 export function cn(...inputs: ClassValue[]) {
@@ -69,4 +70,19 @@ export const getTimeAMPM = (time: string) => {
   const isPM = parseInt(hour) >= 12;
   const formattedHour = parseInt(hour) % 12 || 12;
   return `${formattedHour}:${minute} ${isPM ? "PM" : "AM"}`;
+}
+
+export function getGreetingText(): string {
+  const currentTime = getDate().getHours();
+  let greetingText = '';
+
+  if (currentTime < 12) {
+    greetingText = 'Good Morning';
+  } else if (currentTime < 18) {
+    greetingText = 'Good Afternoon';
+  } else {
+    greetingText = 'Good Evening';
+  }
+
+  return greetingText;
 }
