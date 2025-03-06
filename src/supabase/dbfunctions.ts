@@ -86,5 +86,3 @@ export async function updateData<T>(
     return { data };
   }
 }
-
-

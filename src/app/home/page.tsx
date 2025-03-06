@@ -36,7 +36,7 @@ export default async function Home() {
             Cultivate your daily habits and track your progress.
           </p>
         </div>
-        <Dashboard />
+        <Dashboard userId={userId}/>
       </main>
 
       <Footer />
