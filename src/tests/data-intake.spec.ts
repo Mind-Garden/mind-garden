@@ -3,8 +3,9 @@ import {
   insertResponses,
   selectAllFromAttributes,
   selectAllFromCategories,
-  selectResponsesByDate, updateResponses
-} from "@/actions/data-intake";
+  selectResponsesByDate,
+  updateResponses,
+} from '@/actions/data-intake';
 
 jest.mock('@/supabase/client', () => ({
   getSupabaseClient: jest.fn(),

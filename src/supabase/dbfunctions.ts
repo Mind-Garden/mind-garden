@@ -8,14 +8,21 @@ import { getLocalISOString } from '@/lib/utils';
  * @returns - Success response or error
  * This will be a general function for all our insert operations (private to this script)
  */
-export async function insertData<T>(table: string, dataToInsert: T[]) {
+export async function insertData<T>(
+  table: string,
+  dataToInsert: T[],
+  hasEntryDate = true,
+) {
   const supabase = getSupabaseClient();
 
   // Add entry_date to each item in the array
-  const dataWithDate = dataToInsert.map((item) => ({
-    ...item,
-    entry_date: getLocalISOString(),
-  }));
+  let dataWithDate = dataToInsert;
+  if (hasEntryDate) {
+    dataWithDate = dataToInsert.map((item) => ({
+      ...item,
+      entry_date: getLocalISOString(),
+    }));
+  }
 
   const { data, error } = await supabase
     .from(table)
@@ -42,14 +49,21 @@ export async function selectData<T>(
   table: string,
   conditions?: object,
   columns: string[] = ['*'],
+  fromDate?: string,
+  toDate?: string,
 ) {
   const supabase = getSupabaseClient();
 
+  let query = supabase.from(table).select(columns.join(', '));
+
+  // Add date range conditions if provided
+  if (fromDate && toDate) {
+    query = query.gte('entry_date', fromDate).lte('entry_date', toDate);
+  }
+  query = query.match(conditions ?? {});
+
   // Build the query with conditions and selected columns
-  const { data, error } = await supabase
-    .from(table)
-    .select(columns.join(', ')) // Use columns passed or default to '*'
-    .match(conditions ?? {}); // Use conditions (if any)
+  const { data, error } = await query;
 
   if (error) {
     console.error(`Error selecting from ${table}:`, error.message);
