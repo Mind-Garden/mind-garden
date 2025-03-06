@@ -13,6 +13,7 @@ import { Button } from '@/components/ui/button';
 import { LoaderCircle } from 'lucide-react';
 import { IAttributes, ICategories } from '@/supabase/schema';
 import ScaleIcon from '@/components/data-intake/scale-icon';
+import { getLocalISOString } from '@/lib/utils';
 
 interface DataIntakeFormProps {
   userId: string;
@@ -39,11 +40,7 @@ function DataIntakeForm({
   const fetchResponses = useCallback(async () => {
     setLoadingSelection(true); // Show loading state during re-fetch
     try {
-      const response = await selectResponsesByDate(
-        userId,
-        new Date().toISOString().split('T')[0],
-      );
-
+      const response = await selectResponsesByDate(userId, getLocalISOString());
       setCurrentSelection(new Set(response?.attribute_ids ?? []));
       setScaleSelection(response?.scale_rating ?? null);
       setResponseId(response?.id ?? null);
