@@ -56,11 +56,11 @@ export const getSleepDuration = (start: string, end: string) => {
 
 export const getBarColour = (duration: number): string => { 
   if (duration < 6) {
-    return "#ff4c4c";
+    return "#d9d9d9";
   } else if (duration >= 6 && duration <= 8) {
-    return "#ffcc00";
+    return "#83e3c6";
   } else {
-    return "#4caf50";
+    return "#2ebb61";
   }
 }
 
