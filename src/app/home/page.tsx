@@ -6,7 +6,7 @@ import Dashboard from '@/components/dashboard';
 import MoodFlow from '@/components/mood-flow';
 import MoodBar from '@/components/mood-bar';
 import SleepChart from '@/components/sleep-chart';
-import { use } from 'react';
+import AIResponse from '@/components/ai-response';
 
 export default async function Home() {
   const supabase = await createClient();
@@ -43,6 +43,12 @@ export default async function Home() {
 
         {/* Content */}
         {/* Dashboard */}
+        <div className="mb-8">
+          <AIResponse />
+        </div>
+        <div className="mb-8">
+          <AIResponse />
+        </div>
         <div className="mb-8">
           <Dashboard userId={userId} />
         </div>
