@@ -23,7 +23,8 @@ import VoiceRecorder from '@/components/voice-recorder';
 import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Input } from '@/components/ui/input';
-import { isToday, parseISO } from 'date-fns';
+import { isSameDay, parseISO } from 'date-fns';
+import { getDate } from '@/lib/utils';
 import { activateFireworks } from '@/lib/fireworks';
 import { Progress } from '@/components/ui/progress';
 import { Separator } from '@/components/ui/separator';
@@ -257,7 +258,7 @@ export default function TaskManager({ userId }: TaskManagerProps) {
                     {tasks
                       .filter(
                         (task) =>
-                          isToday(parseISO(task.created_at)) ||
+                          isSameDay(getDate(), parseISO(task.created_at)) ||
                           task.is_completed,
                       )
                       .map((task) => (
@@ -310,7 +311,7 @@ export default function TaskManager({ userId }: TaskManagerProps) {
                     {tasks
                       .filter(
                         (task) =>
-                          !isToday(parseISO(task.created_at)) &&
+                          !isSameDay(getDate(), parseISO(task.created_at)) &&
                           !task.is_completed,
                       )
                       .map((task) => (
