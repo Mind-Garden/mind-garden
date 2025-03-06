@@ -21,12 +21,12 @@ export function getLocalISOString(date = new Date()) {
 }
 
 export const convertTo24Hour = (time: string): number => {
-  const [hourPart, minutePart] = time.split(":");
+  const [hourPart, minutePart] = time.split(':');
   let hour = parseInt(hourPart, 10);
   const minutes = parseInt(minutePart, 10) / 60; // Convert minutes to decimal
 
-  const isPM = time.toUpperCase().includes("PM");
-  const isAM = time.toUpperCase().includes("AM");
+  const isPM = time.toUpperCase().includes('PM');
+  const isAM = time.toUpperCase().includes('AM');
 
   if (isPM && hour !== 12) hour += 12; // Convert 1 PM - 11 PM to 13 - 23
   if (isAM && hour === 12) hour = 0;
@@ -41,13 +41,13 @@ export const convertTo24Hour = (time: string): number => {
 export const formatHour = (hour: number) => {
   // Convert back to a normal 12-hour format while accounting for the 6PM–6PM shift
   let adjustedHour = hour;
-  
+
   if (hour >= 24) adjustedHour -= 24; // Convert hours like 30 → 6 AM, 36 → 12 PM
-  
-  const suffix = adjustedHour >= 12 ? "PM" : "AM";
+
+  const suffix = adjustedHour >= 12 ? 'PM' : 'AM';
   let formattedHour = adjustedHour % 12;
   if (formattedHour === 0) formattedHour = 12; // Handle 12 AM / 12 PM correctly
-  
+
   return `${formattedHour}${suffix}`;
 };
 
@@ -55,22 +55,22 @@ export const getSleepDuration = (start: string, end: string) => {
   return convertTo24Hour(end) - convertTo24Hour(start);
 };
 
-export const getBarColour = (duration: number): string => { 
+export const getBarColour = (duration: number): string => {
   if (duration < 6) {
-    return "#d9d9d9";
+    return '#d9d9d9';
   } else if (duration >= 6 && duration <= 8) {
-    return "#83e3c6";
+    return '#83e3c6';
   } else {
-    return "#2ebb61";
+    return '#2ebb61';
   }
-}
+};
 
 export const getTimeAMPM = (time: string) => {
-  const [hour, minute] = time.split(":");
+  const [hour, minute] = time.split(':');
   const isPM = parseInt(hour) >= 12;
   const formattedHour = parseInt(hour) % 12 || 12;
-  return `${formattedHour}:${minute} ${isPM ? "PM" : "AM"}`;
-}
+  return `${formattedHour}:${minute} ${isPM ? 'PM' : 'AM'}`;
+};
 
 export function getGreetingText(): string {
   const currentTime = getDate().getHours();

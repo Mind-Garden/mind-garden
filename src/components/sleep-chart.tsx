@@ -1,57 +1,91 @@
-"use client"
-import { useState, useEffect } from "react"
-import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, Cell } from "recharts";
-import { Card, CardContent, CardDescription, CardTitle } from "@/components/ui/card"
-import { getLocalISOString, getSleepDuration, convertTo24Hour, formatHour, getBarColour, getTimeAMPM } from '@/lib/utils';
-import { selectSleepDataByDateRange } from "@/actions/data-visualization";
+'use client';
+import { useState, useEffect } from 'react';
+import {
+  BarChart,
+  Bar,
+  XAxis,
+  YAxis,
+  Tooltip,
+  ResponsiveContainer,
+  Cell,
+} from 'recharts';
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardTitle,
+} from '@/components/ui/card';
+import {
+  getLocalISOString,
+  getSleepDuration,
+  convertTo24Hour,
+  formatHour,
+  getBarColour,
+  getTimeAMPM,
+} from '@/lib/utils';
+import { selectSleepDataByDateRange } from '@/actions/data-visualization';
 
 interface SleepDataPoint {
-  entry_date: string
-  start: string
-  end: string
+  entry_date: string;
+  start: string;
+  end: string;
 }
 
 interface ProcessedSleepDataPoint {
-  date: string
-  start: string
-  end: string
-  start24Format: number
-  sleepDuration: number
-}   
-
-interface SleepChartProps {
-  userId: string
-  title?: string
+  date: string;
+  start: string;
+  end: string;
+  start24Format: number;
+  sleepDuration: number;
 }
 
-export default function SleepChart({ userId, title = "Sleep Chart" }: Readonly<SleepChartProps>) {
-  const [sleepData, setSleepData] = useState<ProcessedSleepDataPoint[]>([])
+interface SleepChartProps {
+  userId: string;
+  title?: string;
+}
+
+export default function SleepChart({
+  userId,
+  title = 'Sleep Chart',
+}: Readonly<SleepChartProps>) {
+  const [sleepData, setSleepData] = useState<ProcessedSleepDataPoint[]>([]);
 
   const todaysDate = getLocalISOString();
-  const lastMonthDate = getLocalISOString(new Date(new Date().setMonth(new Date().getMonth() - 1)));
+  const lastMonthDate = getLocalISOString(
+    new Date(new Date().setMonth(new Date().getMonth() - 1)),
+  );
 
   useEffect(() => {
     const fetchSleepData = async () => {
       // Fetch sleep data from the last month
-      const response = await selectSleepDataByDateRange(userId, lastMonthDate, todaysDate)
-      if (Array.isArray(response.data) && response.data.every(item => 'entry_date' in item && 'start' in item && 'end' in item)) {
-        const sleepData = response.data as SleepDataPoint[]
-        const processedData = sleepData.map(item => {
+      const response = await selectSleepDataByDateRange(
+        userId,
+        lastMonthDate,
+        todaysDate,
+      );
+      if (
+        Array.isArray(response.data) &&
+        response.data.every(
+          (item) => 'entry_date' in item && 'start' in item && 'end' in item,
+        )
+      ) {
+        const sleepData = response.data as SleepDataPoint[];
+        const processedData = sleepData.map((item) => {
           return {
             date: item.entry_date,
             start: item.start,
             end: item.end,
             start24Format: convertTo24Hour(item.start),
-            sleepDuration: getSleepDuration(item.start, item.end)
-          }
-        })
-        setSleepData(processedData)
+            sleepDuration: getSleepDuration(item.start, item.end),
+          };
+        });
+        setSleepData(processedData);
       } else {
-        console.error("Unexpected response data format", response.data)
+        console.error('Unexpected response data format', response.data);
       }
-    }
-    fetchSleepData()
-  }, [])
+    };
+    fetchSleepData();
+  }, []);
 
   const CustomTooltip = ({ active, payload, label }: any) => {
     if (active && payload && payload.length) {
@@ -74,13 +108,13 @@ export default function SleepChart({ userId, title = "Sleep Chart" }: Readonly<S
   const chartOptions = {
     margin: { top: 20, right: 20, left: 30, bottom: 20 },
     xAxis: {
-      dataKey: "date",
+      dataKey: 'date',
       tick: { fontSize: 12 },
       axisLine: true,
       tickLine: false,
     },
     yAxis: {
-      type: "number" as const,
+      type: 'number' as const,
       domain: [18, 42],
       tickFormatter: formatHour,
       allowDataOverflow: true,
@@ -89,19 +123,19 @@ export default function SleepChart({ userId, title = "Sleep Chart" }: Readonly<S
       tickLine: false,
     },
     barStyles: {
-      start: { 
-        dataKey: "start24Format",
-        stackId: "a",
-        fill: "transparent" 
+      start: {
+        dataKey: 'start24Format',
+        stackId: 'a',
+        fill: 'transparent',
       },
-      sleepDuration: { 
-        dataKey: "sleepDuration",
-        stackId: "a",
-        fill: "#ff8c8c",
+      sleepDuration: {
+        dataKey: 'sleepDuration',
+        stackId: 'a',
+        fill: '#ff8c8c',
         radius: [10, 10, 10, 10] as [number, number, number, number],
       },
-    }
-  }
+    },
+  };
 
   return (
     <Card className="bg-white backdrop-blur-sm rounded-2xl border-none">
@@ -109,7 +143,7 @@ export default function SleepChart({ userId, title = "Sleep Chart" }: Readonly<S
         {title}
       </CardTitle>
       <CardDescription className="text-center text-muted-foreground">
-          from {lastMonthDate} to {todaysDate}
+        from {lastMonthDate} to {todaysDate}
       </CardDescription>
       <CardContent>
         <ResponsiveContainer width="100%" height={600}>
@@ -118,11 +152,12 @@ export default function SleepChart({ userId, title = "Sleep Chart" }: Readonly<S
             <YAxis {...chartOptions.yAxis} />
             <Tooltip content={<CustomTooltip />} />
             <Bar {...chartOptions.barStyles.start} />
-            <Bar
-              {...chartOptions.barStyles.sleepDuration}
-            >
+            <Bar {...chartOptions.barStyles.sleepDuration}>
               {sleepData.map((entry, index) => (
-                <Cell key={`cell-${index}`} fill={getBarColour(entry.sleepDuration)} />
+                <Cell
+                  key={`cell-${index}`}
+                  fill={getBarColour(entry.sleepDuration)}
+                />
               ))}
             </Bar>
           </BarChart>
@@ -130,4 +165,4 @@ export default function SleepChart({ userId, title = "Sleep Chart" }: Readonly<S
       </CardContent>
     </Card>
   );
-  }
+}
