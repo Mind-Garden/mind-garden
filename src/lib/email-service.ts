@@ -10,18 +10,20 @@ const transporter = nodemailer.createTransport({
   },
 });
 
-async function sendReminderEmail(email: string, subject: string, message: string) {
+async function sendReminderEmail(email: string, subject: string, text: string, html: string) {
   try {
     await transporter.sendMail({
       from: `"Mind Garden" <${process.env.SMTP_EMAIL}>`,
       to: email,
       subject: subject,
-      text: message,
+      text: text,
+      html: html,
     });
     console.log(`Email sent to ${email}`);
   } catch (error) {
     console.error(`Failed to send email to ${email}:`, error);
   }
 }
+
 
 export default sendReminderEmail;

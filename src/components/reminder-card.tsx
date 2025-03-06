@@ -211,7 +211,7 @@ function ReminderCard({ userId }: ReminderCardProps) {
             </div>
 
             <div className="flex items-center justify-between">
-              <p className="font-body font-medium">Data Intake Reminders</p>
+              <p className="font-body font-medium">Habit/Sleep Form Reminders</p>
               <Switch checked={dataIntakeReminders} onCheckedChange={setDataIntakeReminders} />
             </div>
 

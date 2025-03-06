@@ -48,3 +48,37 @@ export function convertToLocalTime(utcTime: string): string {
 
   return `${localHours}:${localMinutes}:${localSeconds}`;
 }
+
+export function daysAgo(dateString: string): number {
+  const inputDate = new Date(`${dateString}T00:00:00.000Z`);  // Ensure input is treated as UTC midnight
+  const now = new Date();
+
+  // Get today's date in UTC (set time to midnight UTC)
+  const todayUTC = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate()));
+
+  // Calculate the difference in milliseconds
+  const diffMs = todayUTC.getTime() - inputDate.getTime();
+
+  // Convert milliseconds to days
+  return Math.floor(diffMs / (1000 * 60 * 60 * 24));
+}
+
+export function getLatestDate(date1: string | null, date2: string | null): string | null {
+  if (date1 && !date2)
+    return date1;
+  else if (!date1 && date2)
+    return date2;
+  else if (!date1 && !date2)
+    return null;
+
+  // Parse the date strings into Date objects
+  const parsedDate1 = new Date(date1!);
+  const parsedDate2 = new Date(date2!);
+
+  // Compare the two dates
+  if (parsedDate1 > parsedDate2) {
+    return date1;
+  } else {
+    return date2;
+  }
+}
