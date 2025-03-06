@@ -6,11 +6,11 @@ import { Button } from '@/components/ui/button';
 import HabitHeatmap from '@/components/heatmap';
 import { User, Moon, NotebookPen, ListCheck } from 'lucide-react';
 
-interface HeatmapProps {
+interface DashboardProps {
   readonly userId: string;
 }
 
-export default function Dashboard( { userId }: HeatmapProps ) {
+export default function Dashboard( { userId }: DashboardProps ) {
   const router = useRouter();
 
   return (
