@@ -10,12 +10,12 @@ interface DashboardProps {
   readonly userId: string;
 }
 
-export default function Dashboard( { userId }: DashboardProps ) {
+export default function Dashboard({ userId }: DashboardProps) {
   const router = useRouter();
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-4 gap-4 max-w-6xl mx-auto">
-      <HabitHeatmap userId={userId}/>
+      <HabitHeatmap userId={userId} />
       {/* Daily Data Intake */}
       <Card className="p-5 bg-white/50 dark:bg-black/20 backdrop-blur-sm rounded-2xl border-none shadow-lg hover:shadow-xl transition-transform hover:scale-105">
         <div className="flex flex-col h-full">
