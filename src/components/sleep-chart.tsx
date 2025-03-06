@@ -5,8 +5,6 @@ import { Card, CardContent, CardDescription, CardTitle } from "@/components/ui/c
 import { getLocalISOString, getSleepDuration, convertTo24Hour, formatHour, getBarColour, getTimeAMPM } from '@/lib/utils';
 import { selectSleepDataByDateRange } from "@/actions/data-visualization";
 
-const COLOURS = ['#ff4c4c', '#ffcc00', '#4caf50']; // Red, Yellow, Green
-
 interface SleepDataPoint {
   entry_date: string
   start: string
