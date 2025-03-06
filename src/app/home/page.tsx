@@ -39,11 +39,11 @@ export default async function Home() {
             Cultivate your daily habits and track your progress.
           </p>
         </div>
-        <Dashboard userId={userId}/>
+
         {/* Content */}
         {/* Dashboard */}
         <div className="mb-8">
-          <Dashboard />
+          <Dashboard userId={userId} />
         </div>
 
         {/* MoodFlow */}
