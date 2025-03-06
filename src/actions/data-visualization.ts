@@ -61,7 +61,34 @@ export async function selectMoodFrequency(
   });
 
   if (error) {
-    console.error('Error fetching journal entries:', error.message);
+    console.error('Error fetching mood data:', error.message);
+    return { error: error.message };
+  }
+
+  return { data };
+}
+
+export async function selectSleepDataByDateRange(
+  userId: string,
+  startDate: string,
+  endDate: string,
+) {
+  const table = 'sleep_entries';
+  const columns = ['entry_date', 'start', 'end'];
+  const conditions = {
+    user_id: userId,
+  };
+
+  const { data, error } = await selectData(
+    table,
+    conditions,
+    columns,
+    startDate,
+    endDate,
+  );
+
+  if (error) {
+    console.error('Error fetching sleep data:', error.message);
     return { error: error.message };
   }
 

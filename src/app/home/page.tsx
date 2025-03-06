@@ -5,6 +5,7 @@ import { Header } from '@/components/header';
 import Dashboard from '@/components/dashboard';
 import MoodFlow from '@/components/mood-flow';
 import MoodBar from '@/components/mood-bar';
+import SleepChart from '@/components/sleep-chart';
 import { use } from 'react';
 
 export default async function Home() {
@@ -53,6 +54,9 @@ export default async function Home() {
         {/* MoodBar */}
         <div>
           <MoodBar userId={userId} />
+        </div>
+        <div className="pt-10 pb-10">
+          <SleepChart userId={userId} />
         </div>
       </main>
 
