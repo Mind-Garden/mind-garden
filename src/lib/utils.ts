@@ -63,3 +63,10 @@ export const getBarColour = (duration: number): string => {
     return "#4caf50";
   }
 }
+
+export const getTimeAMPM = (time: string) => {
+  const [hour, minute] = time.split(":");
+  const isPM = parseInt(hour) >= 12;
+  const formattedHour = parseInt(hour) % 12 || 12;
+  return `${formattedHour}:${minute} ${isPM ? "PM" : "AM"}`;
+}

@@ -1,10 +1,11 @@
 "use client"
 import { useState, useEffect } from "react"
-import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer } from "recharts";
+import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, Cell } from "recharts";
 import { Card, CardContent, CardDescription, CardTitle } from "@/components/ui/card"
-import { getLocalISOString, getSleepDuration, convertTo24Hour, formatHour, getBarColour } from '@/lib/utils';
+import { getLocalISOString, getSleepDuration, convertTo24Hour, formatHour, getBarColour, getTimeAMPM } from '@/lib/utils';
 import { selectSleepDataByDateRange } from "@/actions/data-visualization";
-import { start } from "repl";
+
+const COLOURS = ['#ff4c4c', '#ffcc00', '#4caf50']; // Red, Yellow, Green
 
 interface SleepDataPoint {
   entry_date: string
@@ -58,8 +59,9 @@ export default function SleepChart({ userId, title = "Sleep Chart" }: Readonly<S
     if (active && payload && payload.length) {
       const data = payload[0].payload;
 
-      const startTime = data?.start ?? "N/A"; 
-      const endTime = data?.end ?? "N/A";
+      const startTime = getTimeAMPM(data.start);
+      const endTime = getTimeAMPM(data.end);
+
       return (
         <div className="bg-white p-2 shadow-md rounded-md">
           <p className="text-sm font-semibold text-gray-800">{`${label}`}</p>
@@ -118,9 +120,13 @@ export default function SleepChart({ userId, title = "Sleep Chart" }: Readonly<S
             <YAxis {...chartOptions.yAxis} />
             <Tooltip content={<CustomTooltip />} />
             <Bar {...chartOptions.barStyles.start} />
-            <Bar 
-                {...chartOptions.barStyles.sleepDuration}
-                 />
+            <Bar
+              {...chartOptions.barStyles.sleepDuration}
+            >
+              {sleepData.map((entry, index) => (
+                <Cell key={`cell-${index}`} fill={getBarColour(entry.sleepDuration)} />
+              ))}
+            </Bar>
           </BarChart>
         </ResponsiveContainer>
       </CardContent>
