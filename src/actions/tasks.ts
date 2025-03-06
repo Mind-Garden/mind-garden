@@ -1,3 +1,4 @@
+import { getDate } from '@/lib/utils';
 import { getSupabaseClient } from '@/supabase/client';
 import { insertData, selectData, updateData } from '@/supabase/dbfunctions';
 import { ITask } from '@/supabase/schema';
@@ -81,7 +82,7 @@ export async function addTasks(userId: string, descriptions: string[]) {
     user_id: userId,
     description,
     is_completed: false,
-    created_at: new Date().toISOString(),
+    created_at: getDate(),
   }));
 
   const { data, error } = await insertData<(typeof tasksToInsert)[0]>(

@@ -2,7 +2,7 @@
 import { useState, useEffect } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
-import { Plus, Check, Trash2, X } from 'lucide-react';
+import { Plus, Check, Trash2, X, HistoryIcon } from 'lucide-react';
 import { Broom } from '@phosphor-icons/react';
 import {
   Tooltip,
@@ -21,8 +21,12 @@ import { toast } from 'react-toastify';
 import { ITask } from '@/supabase/schema';
 import VoiceRecorder from '@/components/voice-recorder';
 import { Button } from '@/components/ui/button';
-import { Checkbox } from './ui/checkbox';
-import { Input } from './ui/input';
+import { Checkbox } from '@/components/ui/checkbox';
+import { Input } from '@/components/ui/input';
+import { isToday, parseISO } from 'date-fns';
+import { activateFireworks } from '@/lib/fireworks';
+import { Progress } from '@/components/ui/progress';
+import { Separator } from '@/components/ui/separator';
 
 interface TaskManagerProps {
   userId: string;
@@ -40,6 +44,12 @@ export default function TaskManager({ userId }: TaskManagerProps) {
   const [manualTask, setManualTask] = useState('');
   const [isAddingTask, setIsAddingTask] = useState(false);
   const [transcript, setTranscript] = useState('');
+
+  useEffect(() => {
+    if (tasks.length > 0 && tasks.every((task) => task.is_completed)) {
+      activateFireworks();
+    }
+  }, [tasks]);
 
   const processTranscript = async (transcript: string) => {
     setIsProcessing(true);
@@ -128,6 +138,12 @@ export default function TaskManager({ userId }: TaskManagerProps) {
     setTasks((prevTasks) => prevTasks.filter((task) => task.id !== taskId));
   };
 
+  const calculateProgress = () => {
+    if (tasks.length === 0) return 0;
+    const completedTasks = tasks.filter((task) => task.is_completed).length;
+    return (completedTasks / tasks.length) * 100;
+  };
+
   return (
     <div className="flex-1 flex flex-col items-center justify-center space-y-4">
       <p className="text-gray-500 text-sm text-center">
@@ -214,45 +230,124 @@ export default function TaskManager({ userId }: TaskManagerProps) {
       )}
 
       {/* Task List */}
-      <Card className="w-full max-w-md rounded-2xl">
-        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2"></CardHeader>
+      <Card className="w-full max-w-md rounded-2xl bg-white/30 backdrop-blur-sm border-none">
+        <CardHeader className="flex flex-col items-start justify-between space-y-3 pb-4">
+          <p className="text-gray-500 text-sm">
+            You have {tasks.filter((task) => !task.is_completed).length}{' '}
+            {tasks.filter((task) => !task.is_completed).length === 1
+              ? 'task'
+              : 'tasks'}{' '}
+            remaining
+          </p>
+          <Progress
+            value={calculateProgress()}
+            className="w-full bg-white/30"
+          />
+          <Separator className="mt-3 mb-2 bg-black" />
+        </CardHeader>
+
         <CardContent>
           {tasks.length > 0 ? (
-            <div className="space-y-2">
-              <AnimatePresence>
-                {tasks.map((task) => (
-                  <motion.div
-                    key={task.id}
-                    initial="hidden"
-                    animate="visible"
-                    exit="exit"
-                    variants={taskVariants}
-                    className="flex flex-col space-y-1 p-2 bg-gray-50 rounded-lg hover:bg-gray-100 transition w-full"
-                  >
-                    <div className="flex items-center space-x-2">
-                      <Checkbox
-                        checked={task.is_completed}
-                        onCheckedChange={() =>
-                          handleToggleComplete(task.id, task.is_completed)
-                        }
-                      />
-                      <span
-                        className={`flex-1 text-sm ${task.is_completed ? 'line-through text-muted-foreground' : ''}`}
-                      >
-                        {task.description}
-                      </span>
-                      <Button
-                        variant="ghost"
-                        size="icon"
-                        className="text-red-500 hover:text-red-700 hover:bg-red-50"
-                        onClick={() => handleDeleteTask(task.id)}
-                      >
-                        <Trash2 className="w-4 h-4" />
-                      </Button>
-                    </div>
-                  </motion.div>
-                ))}
-              </AnimatePresence>
+            <div className="space-y-4">
+              {/* Filter Today's Tasks */}
+              <div>
+                <h3 className="text-lg font-semibold mb-2">Current Tasks</h3>
+                <div className="space-y-2">
+                  <AnimatePresence>
+                    {tasks
+                      .filter(
+                        (task) =>
+                          isToday(parseISO(task.created_at)) ||
+                          task.is_completed,
+                      )
+                      .map((task) => (
+                        <motion.div
+                          key={task.id}
+                          initial="hidden"
+                          animate="visible"
+                          exit="exit"
+                          variants={taskVariants}
+                          className="flex flex-col space-y-1 p-2 bg-gray-50 rounded-lg hover:bg-gray-100 transition w-full"
+                        >
+                          <div className="flex items-center space-x-2">
+                            <Checkbox
+                              checked={task.is_completed}
+                              onCheckedChange={() =>
+                                handleToggleComplete(task.id, task.is_completed)
+                              }
+                            />
+                            <span
+                              className={`flex-1 text-sm ${task.is_completed ? 'line-through text-muted-foreground' : ''}`}
+                            >
+                              {task.description}
+                            </span>
+                            <Button
+                              variant="ghost"
+                              size="icon"
+                              className="text-red-500 hover:text-red-700 hover:bg-red-100"
+                              onClick={() => handleDeleteTask(task.id)}
+                            >
+                              <Trash2 className="w-4 h-4" />
+                            </Button>
+                          </div>
+                        </motion.div>
+                      ))}
+                  </AnimatePresence>
+                </div>
+              </div>
+
+              {/* Filter Previously Uncompleted Items */}
+              <div>
+                <div className="flex items-center space-x-2 mb-2 pt-4">
+                  <HistoryIcon className="w-5 h-5 text-gray-500" />
+                  <h3 className="text-lg font-semibold">
+                    Previously uncompleted items
+                  </h3>
+                </div>
+
+                <div className="space-y-2">
+                  <AnimatePresence>
+                    {tasks
+                      .filter(
+                        (task) =>
+                          !isToday(parseISO(task.created_at)) &&
+                          !task.is_completed,
+                      )
+                      .map((task) => (
+                        <motion.div
+                          key={task.id}
+                          initial="hidden"
+                          animate="visible"
+                          exit="exit"
+                          variants={taskVariants}
+                          className="flex flex-col space-y-1 p-2 bg-gray-50 rounded-lg hover:bg-gray-100 transition w-full"
+                        >
+                          <div className="flex items-center space-x-2">
+                            <Checkbox
+                              checked={task.is_completed}
+                              onCheckedChange={() =>
+                                handleToggleComplete(task.id, task.is_completed)
+                              }
+                            />
+                            <span
+                              className={`flex-1 text-sm ${task.is_completed ? 'line-through text-muted-foreground' : ''}`}
+                            >
+                              {task.description}
+                            </span>
+                            <Button
+                              variant="ghost"
+                              size="icon"
+                              className="text-red-500 hover:text-red-700 hover:bg-red-100"
+                              onClick={() => handleDeleteTask(task.id)}
+                            >
+                              <Trash2 className="w-4 h-4" />
+                            </Button>
+                          </div>
+                        </motion.div>
+                      ))}
+                  </AnimatePresence>
+                </div>
+              </div>
             </div>
           ) : (
             <div className="text-center text-gray-500 py-4">
