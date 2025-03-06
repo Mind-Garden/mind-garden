@@ -5,7 +5,11 @@ import { ITask } from '@/supabase/schema';
 
 const LLM_API_URL = 'http://localhost:11434/api/chat';
 
-async function fetchTasksFromTranscript(transcript: string): Promise<string> {
+async function fetchResponse(
+  transcript: string,
+  staticPrompt = '',
+  modelToUse = 'llama3.2:1b',
+): Promise<string> {
   try {
     const response = await fetch(LLM_API_URL, {
       method: 'POST',
@@ -13,11 +17,11 @@ async function fetchTasksFromTranscript(transcript: string): Promise<string> {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        model: 'llama3.2:1b',
+        model: modelToUse,
         messages: [
           {
             role: 'user',
-            content: `Summarize all the following tasks in a dashed list: ${transcript}.`,
+            content: `${staticPrompt} ${transcript}.`,
           },
         ],
         stream: false,
@@ -33,6 +37,17 @@ async function fetchTasksFromTranscript(transcript: string): Promise<string> {
   } catch (error) {
     throw new Error('AI service is currently unavailable');
   }
+}
+
+async function fetchTasksFromTranscript(transcript: string): Promise<string> {
+  const staticPrompt = 'Summarize all the following tasks in a dashed list:';
+  return fetchResponse(transcript, staticPrompt);
+}
+
+export async function fetchMoodResponse(transcript: string): Promise<string> {
+  const staticPrompt =
+    'Please analyze my sleep patterns and provide: 1. A short summary of trends in my sleep schedule. 2. A couple of actionable suggestions for improving my sleep quality. Keep the response brief and to the point. Dont give me the responses in MD just normal text: ';
+  return fetchResponse(transcript, staticPrompt);
 }
 
 /**
