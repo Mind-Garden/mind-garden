@@ -1,9 +1,9 @@
 import { redirect } from 'next/navigation';
 
 import { createClient } from '@/supabase/server';
-import ModifyAccount from '@/components/modify-account-info';
-import ModifyPassword from '@/components/modify-password';
-import DeleteAccount from '@/components/delete-account';
+import ModifyAccount from '@/components/profile/modify-account-info';
+import ModifyPassword from '@/components/profile/modify-password';
+import DeleteAccount from '@/components/profile/delete-account';
 import Footer from '@/components/footer';
 import { Header } from '@/components/header';
 
