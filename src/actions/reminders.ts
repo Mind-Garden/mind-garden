@@ -20,26 +20,6 @@ import {
   NO_USAGE_TEXT
 } from "@/lib/email-templates";
 
-// Helper function to get the last entry date
-async function getLastEntryDate(
-  userId: string, tableName: 'journal_entries' | 'responses' | 'sleep_entries'
-): Promise<string | null> {
-  const supabase = getSupabaseClient();
-  const {data, error} = await supabase
-    .from(tableName)
-    .select('entry_date')
-    .eq('user_id', userId)
-    .order('entry_date', {ascending: false})
-    .limit(1);
-
-  if (error) {
-    console.error(`Error fetching ${tableName} for user ${userId}:`, error);
-    return null;
-  }
-
-  return data?.[0]?.entry_date ?? null;
-}
-
 export async function getReminders(userId: string): Promise<IReminders | null> {
   const {data, error} = await selectData<IReminders>('reminders', {
     user_id: userId,
