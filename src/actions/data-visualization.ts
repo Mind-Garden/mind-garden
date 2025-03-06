@@ -1,5 +1,18 @@
+'use server';
+
+import { createClient } from '@/supabase/server';
 import { getSupabaseClient } from '@/supabase/client';
 import { selectData } from '@/supabase/dbfunctions';
+
+export async function getDataHeatmap(userId: string) {
+  const supabase = await createClient();
+
+  const result = await supabase.rpc('get_heatmap_data', {
+    user_id_param: userId,
+  });
+
+  return result;
+}
 
 export async function selectMoodDataByDateRange(
   userId: string,
