@@ -26,6 +26,7 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
+import { LoaderCircle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
 interface SleepTrackerProps {
@@ -34,16 +35,20 @@ interface SleepTrackerProps {
 
 export function SleepEntryCard({ userId }: SleepTrackerProps) {
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
   const [startTime, setStartTime] = useState<string>('');
   const [endTime, setEndTime] = useState<string>('');
   const [entryExists, setEntryExists] = useState<boolean | null>(null);
   const [todayEntry, setTodayEntry] = useState<ISleepEntries | null>(null);
 
   const getEntry = async () => {
+    setLoading(true);
     const entryDate = getLocalISOString();
-    const {data, error} = await selectSleepEntryByDate(userId, entryDate);
+    const { data, error } = await selectSleepEntryByDate(userId, entryDate);
     if (error) {
       toast.warn('Error checking existing sleep entry!');
+      setError(error);
+      setLoading(false);
       return;
     }
     if (data) {
@@ -55,13 +60,22 @@ export function SleepEntryCard({ userId }: SleepTrackerProps) {
     } else {
       setEntryExists(false);
     }
+    setLoading(false);
   };
 
   useEffect(() => {
-    if(userId) {
+    if (userId) {
       getEntry();
     }
   }, [userId]);
+
+  if (loading)
+    return (
+      <div className="flex items-center justify-center min-h-screen">
+        <LoaderCircle className="h-12 w-12 text-gray-500 animate-spin" />
+      </div>
+    );
+  if (error) return <div>Error: {error}</div>;
 
   const handleSaveEntry = async (entryId?: string) => {
     // don't allow empty inserts
@@ -76,8 +90,8 @@ export function SleepEntryCard({ userId }: SleepTrackerProps) {
     }
 
     const result = entryId
-    ? await updateSleepEntry(entryId, startTime, endTime)
-    : await insertSleepEntry(startTime, endTime, userId);
+      ? await updateSleepEntry(entryId, startTime, endTime)
+      : await insertSleepEntry(startTime, endTime, userId);
 
     if (result?.error) {
       toast.warn('Error saving sleep entry!');
@@ -87,7 +101,7 @@ export function SleepEntryCard({ userId }: SleepTrackerProps) {
     toast.success(`Sleep entry ${entryId ? 'updated' : 'saved'} successfully!`);
 
     if (result?.data && result.data.length > 0) {
-      setTodayEntry(result.data[0]); 
+      setTodayEntry(result.data[0]);
       setEntryExists(true);
     }
   };
@@ -131,16 +145,20 @@ export function SleepEntryCard({ userId }: SleepTrackerProps) {
           </div>
         </CardContent>
         {entryExists && (
-            <div className="text-muted-foreground pl-6 pb-5">
-              <p>You’ve already logged a sleep entry for today.</p>
-            </div>
-          )}
+          <div className="text-muted-foreground pl-6 pb-5">
+            <p>You’ve already logged a sleep entry for today.</p>
+          </div>
+        )}
         {/* Footer */}
         <CardFooter>
           {!entryExists ? (
             <Button onClick={() => handleSaveEntry()}>Save Sleep Entry</Button>
           ) : (
-            todayEntry?.id && <Button onClick={() => handleSaveEntry(todayEntry.id)}>Update Sleep Entry</Button>
+            todayEntry?.id && (
+              <Button onClick={() => handleSaveEntry(todayEntry.id)}>
+                Update Sleep Entry
+              </Button>
+            )
           )}
         </CardFooter>
       </Card>
