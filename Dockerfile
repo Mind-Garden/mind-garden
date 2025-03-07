@@ -8,7 +8,7 @@ RUN npm i --force
 
 COPY . .
 
-EXPOSE 3000
+EXPOSE 4000
 
 # Start the app
 CMD ["npm", "run", "dev"]
