@@ -204,4 +204,4 @@ Setting up code scan/code review
 1. Install the latest version of Docker in your computer.
 2. From the team's notion page, go to `Docs` and under `Docker Setup`, copy the two lines and paste it into your .env file.
 3. In the root directory of the project using a CLI, type `docker-compose up -d --build`
-4. In a web browser type `http://localhost:4000/`
+4. In a web browser type `http://localhost:3000/`
