@@ -46,9 +46,7 @@ export default async function Home() {
         <div className="mb-8">
           <AIResponse />
         </div>
-        <div className="mb-8">
-          <AIResponse />
-        </div>
+
         <div className="mb-8">
           <Dashboard userId={userId} />
         </div>
