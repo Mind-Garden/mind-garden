@@ -104,8 +104,8 @@ For this project, we are leveraging modern technologies to ensure scalability, m
      - Given that I am a logged-in user, and viewing my list of tasks, when I click the "Add Task" button, then the system shows an input field to add a new task.
    - **As a user, I want to be able to delete a task so that I can keep my task list relevant, or if I make a mistake.**
      - Given that I am a logged-in user, and that I am viewing my task list, when I click the "Delete" button next to a task, then the system removes that task, and I will no longer be able to view it.
-   - **As a user, I want to be able to reorder my tasks so that I can prioritize them based on importance or urgency.**
-     - Given that I am a logged-in user, and that I am viewing my task list, when I click and drag a task to a new position, then the system updates the order of tasks and saves the order.
+   - **As a user, I want to be able to see previously uncompleted tasks so that I can review and prioritize tasks that were not completed on days that they were created.**
+     - Given that I am a logged-in user, and that I am viewing my task list, when I have not completed a task from yesterday, it will show up under "Previously uncompleted items".
    - **As a user, I want to be able to mark tasks as complete, so that I can track my progress and stay motivated.**
      - Given that I am a logged-in user, and that I am viewing my task list, when I click the checkbox button next to a task, then the task is visually marked as complete (strikethrough text).
 5. **Reminders**

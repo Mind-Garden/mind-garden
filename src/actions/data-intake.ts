@@ -90,7 +90,7 @@ export async function updateResponses(
   userId: string,
   scaleRating: number,
 ): Promise<void> {
-  const entryDate = new Date().toISOString().split('T')[0];
+  const entryDate = getLocalISOString();
 
   const { error } = await updateData(
     'responses',
