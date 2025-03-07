@@ -5,12 +5,40 @@ import { ITask } from '@/supabase/schema';
 
 const LLM_API_URL = 'http://localhost:11434/api/chat';
 
-async function fetchResponse(
+const promptionary: { [key: string]: string } = {
+  'summarize tasks': 'Summarize all the following tasks in a dashed list:',
+  'summarize mood':
+    'Please analyze my sleep patterns and provide: 1. A short summary of trends in my sleep schedule. 2. A couple of actionable suggestions for improving my sleep quality. Keep the response brief and to the point. Dont give me the responses in MD just normal text: ',
+  'summarize sleep':
+    'Give me a concise summary of my sleep and not in how to improve it based off my average sleep duration. Dont give me the responses in MD just normal text. This is my average sleep duration: ',
+};
+
+/**
+ * Fetches a response from the LLM API
+ *
+ * @param {string} transcript the user's transcript
+ * @param {string} promptType the type of prompt to use
+ * @param {string} modelToUse the model to use
+ * @returns {string} the response from the LLM API
+ *
+ *  The following are the possible prompt types:
+ *
+ * 'summarize tasks': 'Summarize all the following tasks in a dashed list:',
+ *
+ * 'summarize mood': 'Please analyze my sleep patterns and provide: 1. A short summary of trends in my sleep schedule. 2. A couple of actionable suggestions for improving my sleep quality. Keep the response brief and to the point. Dont give me the responses in MD just normal text: ',
+ *
+ * 'summarize sleep': 'Please give me input and advice on my sleep. This is my average sleep duration: '
+ *
+ *
+ *
+ */
+export async function fetchResponse(
   transcript: string,
-  staticPrompt = '',
+  promptType = '',
   modelToUse = 'llama3.2:1b',
 ): Promise<string> {
   try {
+    const staticPrompt = promptionary[promptType as string];
     const response = await fetch(LLM_API_URL, {
       method: 'POST',
       headers: {
@@ -39,17 +67,6 @@ async function fetchResponse(
   }
 }
 
-async function fetchTasksFromTranscript(transcript: string): Promise<string> {
-  const staticPrompt = 'Summarize all the following tasks in a dashed list:';
-  return fetchResponse(transcript, staticPrompt);
-}
-
-export async function fetchMoodResponse(transcript: string): Promise<string> {
-  const staticPrompt =
-    'Please analyze my sleep patterns and provide: 1. A short summary of trends in my sleep schedule. 2. A couple of actionable suggestions for improving my sleep quality. Keep the response brief and to the point. Dont give me the responses in MD just normal text: ';
-  return fetchResponse(transcript, staticPrompt);
-}
-
 /**
  * Parse the tasks from the text response.
  *
@@ -66,7 +83,7 @@ function parseTasksFromText(tasksText: string): string[] {
 export async function extractTasksFromTranscript(
   transcript: string,
 ): Promise<string[]> {
-  const tasksText = await fetchTasksFromTranscript(transcript);
+  const tasksText = await fetchResponse(transcript, 'summarize tasks');
   return parseTasksFromText(tasksText);
 }
 

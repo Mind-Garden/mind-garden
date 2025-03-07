@@ -4,18 +4,20 @@ import { useState, useEffect, useRef } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Sparkles } from 'lucide-react';
-import { fetchMoodResponse } from '@/actions/tasks';
-import { set } from 'date-fns';
+import { fetchResponse } from '@/actions/tasks';
+import { summarizeData } from '@/actions/ai-data-analysis';
 
 interface AIResponseProps {
+  readonly userId: string;
   readonly data?: any;
   readonly title?: string;
   readonly messageDuration?: number; // How long each fallback message stays visible (ms)
 }
 
 export default function AIResponse({
+  userId,
   data,
-  title = 'Your Mood Insights',
+  title = 'Summary',
   messageDuration = 5000, // 5 seconds default
 }: AIResponseProps) {
   const [summaryText, setSummaryText] = useState('');
@@ -64,40 +66,17 @@ export default function AIResponse({
     async function fetchAISummary() {
       setIsLoading(true);
       try {
-        const response = await fetchMoodResponse(`[  
-  {  
-    "entry_date": "2024-03-03",  
-    "sleep_start": "22:30:00",  
-    "sleep_end": "06:45:00"  
-  },  
-  {  
-    "entry_date": "2024-03-02",  
-    "sleep_start": "23:00:00",  
-    "sleep_end": "07:15:00"  
-  },  
-  {  
-    "entry_date": "2024-03-01",  
-    "sleep_start": "21:45:00",  
-    "sleep_end": "05:30:00"  
-  }  
-]`);
+        const response = await summarizeData(userId, 'sleep');
         setSummaryText(response);
         setHasError(false);
         setIsLoading(false);
       } catch (error) {
         console.error('Error fetching AI summary:', error);
         setHasError(true);
-        setSummaryText(''); // Set the summary text as empty in case of error
       }
     }
 
     fetchAISummary();
-
-    return () => {
-      // Clean up any timers when component unmounts
-      if (messageTimer.current) clearTimeout(messageTimer.current);
-      if (typingTimer.current) clearTimeout(typingTimer.current);
-    };
   }, []);
 
   // Determine what text to show
