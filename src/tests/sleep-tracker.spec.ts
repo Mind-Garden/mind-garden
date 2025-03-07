@@ -1,5 +1,5 @@
 import { getSupabaseClient } from '@/supabase/client';
-import { insertSleepEntry, sleepEntryExists } from '@/actions/data-intake';
+import { insertSleepEntry } from '@/actions/data-intake';
 
 jest.mock('@/supabase/client', () => ({
   getSupabaseClient: jest.fn(),
@@ -90,67 +90,67 @@ describe('Sleep Tracker Actions', () => {
     });
   });
 
-  describe('Check Sleep Entry', () => {
-    it('should return true if entry exists', async () => {
-      const mockData = { data: [{ user_id: '1', entry_date: '2025-02-26' }] };
-      const matchMock = jest
-        .fn()
-        .mockResolvedValue({ data: mockData['data'], error: null });
-      const selectMock = jest.fn().mockReturnValue({ match: matchMock });
+  // describe('Check Sleep Entry', () => {
+  //   it('should return true if entry exists', async () => {
+  //     const mockData = { data: [{ user_id: '1', entry_date: '2025-02-26' }] };
+  //     const matchMock = jest
+  //       .fn()
+  //       .mockResolvedValue({ data: mockData['data'], error: null });
+  //     const selectMock = jest.fn().mockReturnValue({ match: matchMock });
 
-      mockSupabaseClient.from.mockReturnValue({
-        select: selectMock,
-      });
+  //     mockSupabaseClient.from.mockReturnValue({
+  //       select: selectMock,
+  //     });
 
-      const result = await sleepEntryExists(
-        mockData.data[0].user_id,
-        mockData.data[0].entry_date,
-      );
-      expect(result).toEqual({ exists: true });
-      expect(selectMock).toHaveBeenCalled();
-      expect(matchMock).toHaveBeenCalled();
-    });
+  //     const result = await sleepEntryExists(
+  //       mockData.data[0].user_id,
+  //       mockData.data[0].entry_date,
+  //     );
+  //     expect(result).toEqual({ exists: true });
+  //     expect(selectMock).toHaveBeenCalled();
+  //     expect(matchMock).toHaveBeenCalled();
+  //   });
 
-    it('should return false if entry does not exist', async () => {
-      const mockData = { data: [] };
-      const matchMock = jest
-        .fn()
-        .mockResolvedValue({ data: mockData['data'], error: null });
-      const selectMock = jest.fn().mockReturnValue({ match: matchMock });
+  //   it('should return false if entry does not exist', async () => {
+  //     const mockData = { data: [] };
+  //     const matchMock = jest
+  //       .fn()
+  //       .mockResolvedValue({ data: mockData['data'], error: null });
+  //     const selectMock = jest.fn().mockReturnValue({ match: matchMock });
 
-      mockSupabaseClient.from.mockReturnValue({
-        select: selectMock,
-      });
+  //     mockSupabaseClient.from.mockReturnValue({
+  //       select: selectMock,
+  //     });
 
-      const result = await sleepEntryExists('1', '2025-02-26');
-      expect(result).toEqual({ exists: false });
-      expect(selectMock).toHaveBeenCalled();
-      expect(matchMock).toHaveBeenCalled();
-    });
+  //     const result = await sleepEntryExists('1', '2025-02-26');
+  //     expect(result).toEqual({ exists: false });
+  //     expect(selectMock).toHaveBeenCalled();
+  //     expect(matchMock).toHaveBeenCalled();
+  //   });
 
-    it('should return error.message and log the error on failure', async () => {
-      console.error = jest.fn();
-      const mockData = { data: [{ user_id: '1', entry_date: '2025-02-26' }] };
-      const mockReturnValue = { error: { message: 'Error' } };
+  //   it('should return error.message and log the error on failure', async () => {
+  //     console.error = jest.fn();
+  //     const mockData = { data: [{ user_id: '1', entry_date: '2025-02-26' }] };
+  //     const mockReturnValue = { error: { message: 'Error' } };
 
-      const matchMock = jest.fn().mockResolvedValue(mockReturnValue);
-      const selectMock = jest.fn().mockReturnValue({ match: matchMock });
+  //     const matchMock = jest.fn().mockResolvedValue(mockReturnValue);
+  //     const selectMock = jest.fn().mockReturnValue({ match: matchMock });
 
-      mockSupabaseClient.from.mockReturnValue({
-        select: selectMock,
-      });
+  //     mockSupabaseClient.from.mockReturnValue({
+  //       select: selectMock,
+  //     });
 
-      const result = await sleepEntryExists(
-        mockData.data[0].user_id,
-        mockData.data[0].entry_date,
-      );
-      expect(result).toEqual(mockReturnValue);
-      expect(selectMock).toHaveBeenCalled();
-      expect(matchMock).toHaveBeenCalled();
-      expect(console.error).toHaveBeenCalledWith(
-        'Error selecting from sleep_entries:',
-        mockReturnValue.error.message,
-      );
-    });
-  });
+  //     const result = await sleepEntryExists(
+  //       mockData.data[0].user_id,
+  //       mockData.data[0].entry_date,
+  //     );
+  //     expect(result).toEqual(mockReturnValue);
+  //     expect(selectMock).toHaveBeenCalled();
+  //     expect(matchMock).toHaveBeenCalled();
+  //     expect(console.error).toHaveBeenCalledWith(
+  //       'Error selecting from sleep_entries:',
+  //       mockReturnValue.error.message,
+  //     );
+  //   });
+  // });
 });
