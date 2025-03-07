@@ -1,7 +1,12 @@
-import {getLocalISOString} from "@/lib/utils";
-import {insertData, selectData, updateData} from "@/supabase/dbfunctions";
-import {IAttributes, ICategories, IResponses, ISleepEntries} from "@/supabase/schema";
-import e from "express";
+import { getLocalISOString } from '@/lib/utils';
+import { insertData, selectData, updateData } from '@/supabase/dbfunctions';
+import {
+  IAttributes,
+  ICategories,
+  IResponses,
+  ISleepEntries,
+} from '@/supabase/schema';
+import e from 'express';
 
 /**
  * Fetches all categories from the database.
@@ -149,11 +154,13 @@ export async function selectSleepEntryByDate(
 
   if (error) {
     console.error('Error selecting sleep entry by date:', error.message);
-    return {data: null, error: error.message};
+    return { data: null, error: error.message };
   }
-  return {data: data.length > 0 ? (data[0] as unknown as ISleepEntries) : null, error: null};
+  return {
+    data: data.length > 0 ? (data[0] as unknown as ISleepEntries) : null,
+    error: null,
+  };
 }
-
 
 /**
  * Updates sleep entry by entry ID.
@@ -162,8 +169,12 @@ export async function selectSleepEntryByDate(
  * @param endTime - New end time
  * @returns - sleep entry on success or error
  */
-export async function updateSleepEntry(entryId: string, startTime: string, endTime: string) {
-  if (!startTime.trim() || !endTime.trim()) return; // Prevent empty entries 
+export async function updateSleepEntry(
+  entryId: string,
+  startTime: string,
+  endTime: string,
+) {
+  if (!startTime.trim() || !endTime.trim()) return; // Prevent empty entries
 
   return await updateData(
     'sleep_entries',
