@@ -1,6 +1,7 @@
-import { getLocalISOString } from '@/lib/utils';
-import { insertData, selectData, updateData } from '@/supabase/dbfunctions';
-import { IAttributes, ICategories, IResponses } from '@/supabase/schema';
+import {getLocalISOString} from "@/lib/utils";
+import {insertData, selectData, updateData} from "@/supabase/dbfunctions";
+import {IAttributes, ICategories, IResponses, ISleepEntries} from "@/supabase/schema";
+import e from "express";
 
 /**
  * Fetches all categories from the database.
@@ -132,23 +133,41 @@ export async function insertSleepEntry(
 }
 
 /**
- * Fetches sleep entries by user ID and entry date.
+ * Fetches sleep entry by user ID and entry date.
  * @param userId - The user's ID
- * @param entryDate - The date of the sleep entry
+ * @param entryDate - The date of the responses
+ * @returns - sleep entry or null
  */
-export async function sleepEntryExists(userId: string, entryDate: string) {
-  const { data: existingEntry, error } = await selectData('sleep_entries', {
+export async function selectSleepEntryByDate(
+  userId: string,
+  entryDate: string,
+) {
+  const { data, error } = await selectData('sleep_entries', {
     user_id: userId,
     entry_date: entryDate,
   });
 
   if (error) {
-    console.error('Error checking existing sleep entry:', error);
-    return { error };
+    console.error('Error selecting sleep entry by date:', error.message);
+    return {data: null, error: error.message};
   }
+  return {data: data.length > 0 ? (data[0] as unknown as ISleepEntries) : null, error: null};
+}
 
-  if (existingEntry && existingEntry.length > 0) {
-    return { exists: true };
-  }
-  return { exists: false };
+
+/**
+ * Updates sleep entry by entry ID.
+ * @param entryID - The sleep entry's ID
+ * @param startTime - New start time
+ * @param endTime - New end time
+ * @returns - sleep entry on success or error
+ */
+export async function updateSleepEntry(entryId: string, startTime: string, endTime: string) {
+  if (!startTime.trim() || !endTime.trim()) return; // Prevent empty entries 
+
+  return await updateData(
+    'sleep_entries',
+    { id: entryId },
+    { start: startTime, end: endTime },
+  );
 }

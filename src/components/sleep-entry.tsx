@@ -9,8 +9,13 @@ import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 // Utility
-import { insertSleepEntry, sleepEntryExists } from '@/actions/data-intake';
+import {
+  insertSleepEntry,
+  selectSleepEntryByDate,
+  updateSleepEntry,
+} from '@/actions/data-intake';
 import { getLocalISOString } from '@/lib/utils';
+import { ISleepEntries } from '@/supabase/schema';
 
 //UI
 import {
@@ -28,25 +33,37 @@ interface SleepTrackerProps {
 }
 
 export function SleepEntryCard({ userId }: SleepTrackerProps) {
+  const [loading, setLoading] = useState(true);
   const [startTime, setStartTime] = useState<string>('');
   const [endTime, setEndTime] = useState<string>('');
   const [entryExists, setEntryExists] = useState<boolean | null>(null);
+  const [todayEntry, setTodayEntry] = useState<ISleepEntries | null>(null);
 
-  const checkEntryExists = async () => {
+  const getEntry = async () => {
     const entryDate = getLocalISOString();
-    const { exists, error } = await sleepEntryExists(userId, entryDate);
+    const {data, error} = await selectSleepEntryByDate(userId, entryDate);
     if (error) {
       toast.warn('Error checking existing sleep entry!');
       return;
     }
-    setEntryExists(exists);
+    if (data) {
+      setTodayEntry(data);
+      setEntryExists(true);
+
+      setStartTime(data.start);
+      setEndTime(data.end);
+    } else {
+      setEntryExists(false);
+    }
   };
 
   useEffect(() => {
-    checkEntryExists();
+    if(userId) {
+      getEntry();
+    }
   }, [userId]);
 
-  const handleInsert = async () => {
+  const handleSaveEntry = async (entryId?: string) => {
     // don't allow empty inserts
     if (!startTime.trim() || !endTime.trim()) {
       toast.warn('Both start and end times are required!');
@@ -58,20 +75,21 @@ export function SleepEntryCard({ userId }: SleepTrackerProps) {
       return;
     }
 
-    if (entryExists) {
-      toast.warn('Sleep entry already exists for today!');
-      return;
-    }
-    const result = await insertSleepEntry(startTime, endTime, userId);
+    const result = entryId
+    ? await updateSleepEntry(entryId, startTime, endTime)
+    : await insertSleepEntry(startTime, endTime, userId);
 
     if (result?.error) {
       toast.warn('Error saving sleep entry!');
       return;
     }
 
-    toast.success('Sleep entry saved successfully!');
+    toast.success(`Sleep entry ${entryId ? 'updated' : 'saved'} successfully!`);
 
-    checkEntryExists();
+    if (result?.data && result.data.length > 0) {
+      setTodayEntry(result.data[0]); 
+      setEntryExists(true);
+    }
   };
 
   return (
@@ -93,38 +111,36 @@ export function SleepEntryCard({ userId }: SleepTrackerProps) {
 
         {/* Content */}
         <CardContent className="space-y-10">
-          {entryExists ? (
-            <div className="text-center">
-              <p>Entry has been completed for today.</p>
-            </div>
-          ) : (
-            <>
-              <div className="space-y-2">
-                <label>Start Time: </label>
-                <input
-                  type="time"
-                  step="60"
-                  value={startTime}
-                  onChange={(e) => setStartTime(e.target.value)}
-                />
-              </div>
-              <div className="space-y-2">
-                <label>End Time: </label>
-                <input
-                  type="time"
-                  step="60"
-                  value={endTime}
-                  onChange={(e) => setEndTime(e.target.value)}
-                />
-              </div>
-            </>
-          )}
+          <div className="space-y-2">
+            <label>Start Time: </label>
+            <input
+              type="time"
+              step="60"
+              value={startTime}
+              onChange={(e) => setStartTime(e.target.value)}
+            />
+          </div>
+          <div className="space-y-2">
+            <label>End Time: </label>
+            <input
+              type="time"
+              step="60"
+              value={endTime}
+              onChange={(e) => setEndTime(e.target.value)}
+            />
+          </div>
         </CardContent>
-
+        {entryExists && (
+            <div className="text-muted-foreground pl-6 pb-5">
+              <p>You’ve already logged a sleep entry for today.</p>
+            </div>
+          )}
         {/* Footer */}
         <CardFooter>
-          {!entryExists && (
-            <Button onClick={handleInsert}>Save Sleep Entry</Button>
+          {!entryExists ? (
+            <Button onClick={() => handleSaveEntry()}>Save Sleep Entry</Button>
+          ) : (
+            todayEntry?.id && <Button onClick={() => handleSaveEntry(todayEntry.id)}>Update Sleep Entry</Button>
           )}
         </CardFooter>
       </Card>
