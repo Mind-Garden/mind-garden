@@ -4,7 +4,7 @@
 import { useEffect, useState } from 'react';
 
 // Third party imports
-import { Moon, Clock } from 'lucide-react';
+import { Moon, Clock, LoaderCircle } from 'lucide-react';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -26,7 +26,6 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
-import { LoaderCircle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
 interface SleepTrackerProps {
