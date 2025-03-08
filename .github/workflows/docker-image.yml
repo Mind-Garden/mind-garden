@@ -22,6 +22,12 @@ jobs:
             sudo chmod +x /usr/local/bin/docker-compose
             docker-compose --version
 
+      - name: Create .env File
+        run: |
+          echo "NEXT_PUBLIC_SUPABASE_URL=${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}" >> .env
+          echo "NEXT_PUBLIC_SUPABASE_ANON_KEY=${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY }}" >> .env
+        shell: bash
+
       - name: Log in to Docker Hub
         uses: docker/login-action@v3
         with:
