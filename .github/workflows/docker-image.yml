@@ -11,11 +11,6 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v4
 
-      - name: Set up Docker CLI
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y docker.io
-
       - name: Install Docker using Docker's official script
         run: |
           curl -fsSL https://get.docker.com -o get-docker.sh
