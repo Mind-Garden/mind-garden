@@ -40,5 +40,6 @@ jobs:
 
       - name: Push Image to Docker Hub
         run: |
+          docker image ls
           docker tag mind-garden-front-and-back:latest mindgarden/mind-garden:latest
           docker push mindgarden/mind-garden:latest
