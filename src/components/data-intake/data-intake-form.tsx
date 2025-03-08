@@ -6,25 +6,38 @@ import {
   insertResponses,
   selectResponsesByDate,
   updateResponses,
+  addUserHabit, // New function to add habits to user's list
+  getAddedCategories,
 } from '@/actions/data-intake';
 import AttributeIcon from '@/components/data-intake/attribute-icon';
 import ToggleButton from '@/components/data-intake/toggle-button';
 import { Button } from '@/components/ui/button';
-import { LoaderCircle } from 'lucide-react';
-import { IAttributes, ICategories } from '@/supabase/schema';
+import { LoaderCircle, Plus } from 'lucide-react';
+import type {
+  IAttributes,
+  ICategories,
+  IPersonalizedCategories,
+  IAddedCategory,
+} from '@/supabase/schema';
 import ScaleIcon from '@/components/data-intake/scale-icon';
-import { getLocalISOString } from '@/lib/utils';
+import AddHabitDialog from '@/components/data-intake/add-habit';
+import { toast } from 'react-toastify';
+import { MinusCircle, PlusCircle } from 'lucide-react';
+import QuantityTrackerSimple from './quantity-tracker';
+import YesNoForm from './yes-no-form';
 
 interface DataIntakeFormProps {
   userId: string;
   categories: Array<ICategories>;
   attributes: Array<IAttributes>;
+  personalizedCategories: Array<IPersonalizedCategories>;
 }
 
 function DataIntakeForm({
   userId,
   categories,
   attributes,
+  personalizedCategories,
 }: DataIntakeFormProps) {
   const [currentSelection, setCurrentSelection] = useState<Set<string>>(
     new Set(),
@@ -35,16 +48,28 @@ function DataIntakeForm({
   const [completedForm, setCompletedForm] = useState(false);
   const [scaleSelection, setScaleSelection] = useState<number | null>(null);
   const [scaleError, setScaleError] = useState(false);
+  const [showAddHabitDialog, setShowAddHabitDialog] = useState(false);
+  const [addedCategories, setAddedCategories] = useState<IAddedCategory[]>();
+  const [smoking, setSmoking] = useState(0);
+  const [drinks, setDrinks] = useState(0);
+  // const smoking = 0;
 
   // Fetch function extracted
   const fetchResponses = useCallback(async () => {
     setLoadingSelection(true); // Show loading state during re-fetch
     try {
-      const response = await selectResponsesByDate(userId, getLocalISOString());
+      const response = await selectResponsesByDate(
+        userId,
+        new Date().toISOString().split('T')[0],
+      );
+
       setCurrentSelection(new Set(response?.attribute_ids ?? []));
       setScaleSelection(response?.scale_rating ?? null);
       setResponseId(response?.id ?? null);
       setCompletedForm(!!response);
+
+      const added = await getAddedCategories(userId);
+      if (added) setAddedCategories(added);
     } catch (err) {
       console.error('Error fetching table data:', err);
     } finally {
@@ -80,6 +105,30 @@ function DataIntakeForm({
     });
   }, []);
 
+  // const updateAddedCategories = (newCategory: string, newTracking: string) => {
+  //   if(addedCategories){
+  //     const habitArray = [...addedCategories.added_habits, newCategory]
+  //     const trackingArray = [...addedCategories.tracking_method, newTracking]
+  //     const newAddedCat = {user: userId, added_habits: habitArray, tracking_method: trackingArray}
+  //     setAddedCategories(newAddedCat);
+  //   }
+  const handleSmokingIncrement = () => {
+    if (smoking < 100) {
+      setSmoking(smoking + 1);
+    }
+  };
+
+  // Handle decrement
+  const handleSmokingDecrement = () => {
+    if (smoking > 0) {
+      setSmoking(smoking - 1);
+    }
+  };
+  // };
+  const handleSmokingChange = (newValue: number) => {
+    console.log('Updating smoking state to:', newValue);
+    setSmoking(newValue + 1);
+  };
   // Submit handler
   const handleSubmit = async (): Promise<void> => {
     // Prevent multiple submissions at once
@@ -121,6 +170,32 @@ function DataIntakeForm({
     if (scaleSelection) setScaleError(false);
   }, []);
 
+  // Handle adding a new habit
+  const handleAddHabit = async (
+    categoryId: string,
+    trackingMethod: 'boolean' | 'scale',
+  ) => {
+    try {
+      // Call to database to save the new habit
+      // This would add the habit to the user's list of tracked habits
+      const result = await addUserHabit(userId, categoryId, trackingMethod);
+
+      // Refresh the attributes list after adding a new habit
+      // Note: In a real implementation, you might want to update the local state
+      // or trigger a refetch of the attributes list
+      if (result == 'success') {
+        // updateAddedCategories(categoryId, trackingMethod);
+
+        // Close the dialog
+        setShowAddHabitDialog(false);
+      } else {
+        toast.error('You have already added this habit.');
+      }
+    } catch (error) {
+      console.error('Error adding habit:', error);
+    }
+  };
+
   if (loadingSelection) {
     return (
       <div className="flex min-h-screen justify-center items-center">
@@ -150,6 +225,14 @@ function DataIntakeForm({
             )}
           </div>
           <div className="flex items-center gap-4 pr-4">
+            <Button
+              variant="outline"
+              className="rounded-xl bg-transparent border-green-100/50 hover:bg-white/30"
+              onClick={() => setShowAddHabitDialog(true)}
+            >
+              <Plus className="h-4 w-4 mr-2" />
+              Add Habit
+            </Button>
             <Button
               variant="outline"
               className="rounded-xl bg-transparent border-green-100/50 hover:bg-white/30"
@@ -240,8 +323,55 @@ function DataIntakeForm({
               </Card>
             );
           })}
+          {addedCategories &&
+            addedCategories.map((category) => {
+              console.log(category.added_habit);
+              const method = category.tracking_method;
+              const name = personalizedCategories.find(
+                (cat) => cat.id == category.added_habit,
+              )?.name;
+              return (
+                <Card
+                  key={category.id}
+                  className={`bg-white/50 break-inside-avoid backdrop-blur-sm rounded-2xl border-none relative transition-opacity ${
+                    submitting || !scaleSelection
+                      ? 'opacity-50 pointer-events-none'
+                      : 'opacity-100'
+                  }`}
+                >
+                  <CardHeader className="pb-3">
+                    <CardTitle className="text-lg">{name}</CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    {method == 'scale' && name == 'smoking' ? (
+                      <QuantityTrackerSimple
+                        value={smoking}
+                        onChange={setSmoking}
+                      />
+                    ) : method == 'scale' && name == 'alcohol' ? (
+                      <QuantityTrackerSimple
+                        value={drinks}
+                        onChange={setDrinks}
+                      />
+                    ) : method == 'boolean' && name == 'alcohol' ? (
+                      <YesNoForm question="Did you drink today?" />
+                    ) : (
+                      <div> something else </div>
+                    )}
+                  </CardContent>
+                </Card>
+              );
+            })}
         </div>
       </div>
+
+      {/* Add Habit Dialog */}
+      <AddHabitDialog
+        open={showAddHabitDialog}
+        onOpenChange={setShowAddHabitDialog}
+        categories={personalizedCategories}
+        onAddHabit={handleAddHabit}
+      />
     </div>
   );
 }

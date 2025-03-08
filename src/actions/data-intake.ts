@@ -1,6 +1,12 @@
 import { getLocalISOString } from '@/lib/utils';
 import { insertData, selectData, updateData } from '@/supabase/dbfunctions';
-import { IAttributes, ICategories, IResponses } from '@/supabase/schema';
+import {
+  IAttributes,
+  ICategories,
+  IResponses,
+  IPersonalizedCategories,
+  IAddedCategory,
+} from '@/supabase/schema';
 
 /**
  * Fetches all categories from the database.
@@ -151,4 +157,71 @@ export async function sleepEntryExists(userId: string, entryDate: string) {
     return { exists: true };
   }
   return { exists: false };
+}
+
+export async function getPersonalizedCategories() {
+  const { data, error } = await selectData<IPersonalizedCategories>(
+    'personalized_categories',
+  );
+  if (error) {
+    console.error('Error selecting personalized categories:', error.message);
+    return null;
+  }
+  return data as unknown as IPersonalizedCategories[];
+}
+
+export async function addUserHabit(
+  userId: string,
+  categoryId: string,
+  trackingMethod: 'boolean' | 'scale',
+) {
+  const { data, error: selectError } = await selectData(
+    'added_habit',
+    { user_id: userId },
+    ['added_habit', 'tracking_method'],
+  );
+
+  if (selectError) {
+    console.error('Error selecting added habit:', selectError);
+  }
+
+  if (!selectError && data && data.length > 0 && data[0]) {
+    //already exists
+    if (
+      data[0].added_habit == categoryId &&
+      data[0].tracking_method == trackingMethod
+    ) {
+      return 'duplicate';
+    } else {
+      //insert
+      const { error } = await insertData(
+        'added_habit',
+        [
+          {
+            user_id: userId,
+            added_habit: categoryId,
+            tracking_method: trackingMethod,
+          },
+        ],
+        false,
+      );
+
+      if (error) {
+        console.error('Error inserting added habit:', error);
+      } else {
+        return 'success';
+      }
+    }
+  }
+}
+
+export async function getAddedCategories(userId: string) {
+  const { data, error } = await selectData<IAddedCategory>('added_habit', {
+    user_id: userId,
+  });
+  if (error) {
+    console.error('Error selecting added categories:', error.message);
+    return null;
+  }
+  return data as unknown as IAddedCategory[];
 }

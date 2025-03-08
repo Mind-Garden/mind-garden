@@ -39,6 +39,18 @@ export interface ICategories {
   name: string;
 }
 
+export interface IPersonalizedCategories {
+  id: string;
+  name: string;
+}
+
+export interface IAddedCategory {
+  user: string;
+  added_habit: string;
+  tracking_method: string;
+  id: string;
+}
+
 export interface ITask {
   id: string;
   user_id: string;
