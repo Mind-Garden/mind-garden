@@ -2,6 +2,8 @@ name: Docker CD Pipeline
 
 on:
   push:
+    branches:
+      - develop  # Only runs when merged into develop
 
 jobs:
   build-and-push:
