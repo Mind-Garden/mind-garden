@@ -96,25 +96,25 @@ export async function sendReminders(reminderTime: string): Promise<void> {
     if (latestJournalDaysAgo === 0 && latestDataIntakeDaysAgo === 0) continue;
 
     // If it's been >= 2 days for all entry dates, send activity reminder
-    if (activityReminders && (!latestDate || latestDaysAgo >= 2)) {
+    if (activityReminders && (!latestDate || latestDaysAgo! >= 2)) {
       await sendReminderEmail(email, NO_USAGE_SUBJECT, NO_USAGE_TEXT, NO_USAGE_HTML);
       continue;
     }
 
     // Send reminder for both forms
-    if (journalReminders && dataIntakeReminders && (!latestDate || latestDaysAgo >= 1)) {
+    if (journalReminders && dataIntakeReminders && (!latestDate || latestDaysAgo! >= 1)) {
       await sendReminderEmail(email, BOTH_FORMS_INCOMPLETE_SUBJECT, BOTH_FORMS_INCOMPLETE_TEXT, BOTH_FORMS_INCOMPLETE_HTML);
       continue;
     }
 
     // Send reminder for journal
-    if (journalReminders && (!latestJournalEntryDate || latestJournalDaysAgo >= 1)) {
+    if (journalReminders && (!latestJournalEntryDate || latestJournalDaysAgo! >= 1)) {
       await sendReminderEmail(email, JOURNAL_INCOMPLETE_SUBJECT, JOURNAL_INCOMPLETE_TEXT, JOURNAL_INCOMPLETE_HTML);
       continue;
     }
 
     // Send reminder for data intake
-    if (dataIntakeReminders && (!latestDataIntakeEntryDate || latestDataIntakeDaysAgo >= 1)) {
+    if (dataIntakeReminders && (!latestDataIntakeEntryDate || latestDataIntakeDaysAgo! >= 1)) {
       await sendReminderEmail(email, HABIT_FORM_INCOMPLETE_SUBJECT, HABIT_FORM_INCOMPLETE_TEXT, HABIT_FORM_INCOMPLETE_HTML);
     }
   }

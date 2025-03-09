@@ -159,10 +159,6 @@ function ReminderCard({ userId }: ReminderCardProps) {
     <div className="bg-white/50 backdrop-blur-sm rounded-2xl border-none py-4 px-6 min-w-[300px]">
       <p className="font-title text-2xl">Reminders</p>
 
-      <Button onClick={send} className="mt-4">
-        Send Reminders
-      </Button>
-
       {loading ? (
         <div className="flex justify-center items-center py-16">
           <LoaderCircle className="h-8 w-8 animate-spin" />
