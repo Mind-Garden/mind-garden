@@ -56,6 +56,7 @@ describe('Data Visualization', () => {
       });
 
       it('should return an error if the query fails', async () => {
+        console.error = jest.fn();
         const mockError = { message: 'Failed to fetch sleep data' };
         const matchMock = jest
           .fn()
@@ -76,6 +77,10 @@ describe('Data Visualization', () => {
         expect(mockSupabaseClient.from).toHaveBeenCalledWith('sleep_entries');
         expect(selectMock).toHaveBeenCalled();
         expect(result).toEqual({ error: mockError.message });
+        expect(console.error).toHaveBeenCalledWith(
+          'Error selecting from sleep_entries:',
+          mockError.message,
+        );
       });
 
       it('should return empty data when no entries exist in date range', async () => {

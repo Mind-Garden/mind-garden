@@ -88,7 +88,6 @@ export async function selectSleepDataByDateRange(
   );
 
   if (error) {
-    console.error('Error fetching sleep data:', error.message);
     return { error: error.message };
   }
 
