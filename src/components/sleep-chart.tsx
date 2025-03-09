@@ -146,22 +146,26 @@ export default function SleepChart({
         from {lastMonthDate} to {todaysDate}
       </CardDescription>
       <CardContent>
-        <ResponsiveContainer width="100%" height={600}>
-          <BarChart data={sleepData} margin={chartOptions.margin}>
-            <XAxis {...chartOptions.xAxis} />
-            <YAxis {...chartOptions.yAxis} />
-            <Tooltip content={<CustomTooltip />} />
-            <Bar {...chartOptions.barStyles.start} />
-            <Bar {...chartOptions.barStyles.sleepDuration}>
-              {sleepData.map((entry, index) => (
-                <Cell
-                  key={`cell-${index}`}
-                  fill={getBarColour(entry.sleepDuration)}
-                />
-              ))}
-            </Bar>
-          </BarChart>
-        </ResponsiveContainer>
+        {sleepData.length === 0 ? (
+          <div className="h-16 text-center">No data yet! :( </div>
+        ) : (
+          <ResponsiveContainer width="100%" height={600}>
+            <BarChart data={sleepData} margin={chartOptions.margin}>
+              <XAxis {...chartOptions.xAxis} />
+              <YAxis {...chartOptions.yAxis} />
+              <Tooltip content={<CustomTooltip />} />
+              <Bar {...chartOptions.barStyles.start} />
+              <Bar {...chartOptions.barStyles.sleepDuration}>
+                {sleepData.map((entry, index) => (
+                  <Cell
+                    key={`cell-${index}`}
+                    fill={getBarColour(entry.sleepDuration)}
+                  />
+                ))}
+              </Bar>
+            </BarChart>
+          </ResponsiveContainer>
+        )}
       </CardContent>
     </Card>
   );
