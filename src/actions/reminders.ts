@@ -1,5 +1,3 @@
-'use server';
-
 import {getSupabaseClient} from "@/supabase/client";
 import {selectData, updateData} from "@/supabase/dbfunctions";
 import {IReminders, IReminderWithLatestDates} from "@/supabase/schema";
@@ -55,11 +53,12 @@ export async function updateReminders(
 export async function sendReminders(reminderTime: string): Promise<void> {
   const supabase = getSupabaseClient();
 
-  // TODO: See if this can be done without ignoring
   // @ts-ignore
   const {data, error} = await supabase.rpc('get_reminders_with_latest_dates', {
     reminder_time_param: reminderTime
   });
+
+  console.log('data:', data);
 
   if (error) {
     console.error('Failed to fetch reminders:', error);
@@ -87,8 +86,12 @@ export async function sendReminders(reminderTime: string): Promise<void> {
     const latestDate = getLatestDate(latestJournalEntryDate, latestDataIntakeEntryDate);
     const latestDaysAgo = latestDate ? daysAgo(latestDate) : null;
 
+    // Get the number of days ago for each form
+    const latestJournalDaysAgo = latestJournalEntryDate ? daysAgo(latestJournalEntryDate) : null;
+    const latestDataIntakeDaysAgo = latestDataIntakeEntryDate ? daysAgo(latestDataIntakeEntryDate) : null;
+
     // They completed their forms today, so skip
-    if (latestDaysAgo === 0) continue;
+    if (latestJournalDaysAgo === 0 && latestDataIntakeDaysAgo === 0) continue;
 
     // If it's been >= 2 days for all entry dates, send activity reminder
     if (activityReminders && (!latestDate || latestDaysAgo >= 2)) {
@@ -103,13 +106,13 @@ export async function sendReminders(reminderTime: string): Promise<void> {
     }
 
     // Send reminder for journal
-    if (journalReminders && (!latestJournalEntryDate || daysAgo(latestJournalEntryDate) >= 1)) {
+    if (journalReminders && (!latestJournalEntryDate || latestJournalDaysAgo >= 1)) {
       await sendReminderEmail(email, JOURNAL_INCOMPLETE_SUBJECT, JOURNAL_INCOMPLETE_TEXT, JOURNAL_INCOMPLETE_HTML);
       continue;
     }
 
     // Send reminder for data intake
-    if (dataIntakeReminders && (!latestDataIntakeEntryDate || daysAgo(latestDataIntakeEntryDate) >= 1)) {
+    if (dataIntakeReminders && (!latestDataIntakeEntryDate || latestDataIntakeDaysAgo >= 1)) {
       await sendReminderEmail(email, HABIT_FORM_INCOMPLETE_SUBJECT, HABIT_FORM_INCOMPLETE_TEXT, HABIT_FORM_INCOMPLETE_HTML);
     }
   }

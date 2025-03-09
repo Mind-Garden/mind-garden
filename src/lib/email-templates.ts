@@ -98,6 +98,6 @@ The Mind Garden Team
 export const HABIT_FORM_INCOMPLETE_HTML = `
 <p>Hi there,</p>
 <p>This is just a gentle reminder that your habit form for today hasn’t been completed yet. Tracking your habits helps you celebrate progress and stay mindful of your goals — no step is too small.</p>
-<p><a href="${HABITS_LINK}/habits">Complete your habit form here</a></p>
+<p><a href="${HABITS_LINK}/daily-intake">Complete your habit form here</a></p>
 <p>You’ve got this,<br>The Mind Garden Team</p>
 `;

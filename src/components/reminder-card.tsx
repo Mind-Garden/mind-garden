@@ -1,8 +1,8 @@
 'use client';
 
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { IReminders } from "@/supabase/schema";
-import { getReminders, updateReminders } from "@/actions/reminders";
+import {getReminders, sendReminders, updateReminders} from "@/actions/reminders";
 import { convertToLocalTime, convertToUtcTime } from "@/lib/time";
 import { Switch } from "@/components/ui/switch";
 import { Button } from "@/components/ui/button";
@@ -159,6 +159,10 @@ function ReminderCard({ userId }: ReminderCardProps) {
     <div className="bg-white/50 backdrop-blur-sm rounded-2xl border-none py-4 px-6 min-w-[300px]">
       <p className="font-title text-2xl">Reminders</p>
 
+      <Button onClick={send} className="mt-4">
+        Send Reminders
+      </Button>
+
       {loading ? (
         <div className="flex justify-center items-center py-16">
           <LoaderCircle className="h-8 w-8 animate-spin" />
@@ -211,7 +215,7 @@ function ReminderCard({ userId }: ReminderCardProps) {
             </div>
 
             <div className="flex items-center justify-between">
-              <p className="font-body font-medium">Habit/Sleep Form Reminders</p>
+              <p className="font-body font-medium">Habit/Sleep Reminders</p>
               <Switch checked={dataIntakeReminders} onCheckedChange={setDataIntakeReminders} />
             </div>
 
@@ -219,6 +223,12 @@ function ReminderCard({ userId }: ReminderCardProps) {
               <p className="font-body font-medium">Activity Reminders</p>
               <Switch checked={activityReminders} onCheckedChange={setActivityReminders} />
             </div>
+          </div>
+
+          <div className="flex justify-center items-center">
+            <p className={"max-w-sm text-center font-body font-normal text-gray-400"}>
+              Mind Garden will never send you more than one reminder per day.
+            </p>
           </div>
 
           {/* Save button with loading/saved state */}
