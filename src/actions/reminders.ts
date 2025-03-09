@@ -1,3 +1,5 @@
+'use server'
+
 import {getSupabaseClient} from "@/supabase/client";
 import {selectData, updateData} from "@/supabase/dbfunctions";
 import {IReminders, IReminderWithLatestDates} from "@/supabase/schema";
