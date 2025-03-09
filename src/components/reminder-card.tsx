@@ -1,12 +1,16 @@
 'use client';
 
-import React, { useEffect, useState } from "react";
-import { IReminders } from "@/supabase/schema";
-import {getReminders, sendReminders, updateReminders} from "@/actions/reminders";
-import { convertToLocalTime, convertToUtcTime } from "@/lib/time";
-import { Switch } from "@/components/ui/switch";
-import { Button } from "@/components/ui/button";
-import { LoaderCircle } from "lucide-react";
+import React, { useEffect, useState } from 'react';
+import { IReminders } from '@/supabase/schema';
+import {
+  getReminders,
+  sendReminders,
+  updateReminders,
+} from '@/actions/reminders';
+import { convertToLocalTime, convertToUtcTime } from '@/lib/time';
+import { Switch } from '@/components/ui/switch';
+import { Button } from '@/components/ui/button';
+import { LoaderCircle } from 'lucide-react';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -26,7 +30,8 @@ function ReminderCard({ userId }: ReminderCardProps) {
 
   // Toggle states for the three reminder types
   const [journalReminders, setJournalReminders] = useState<boolean>(false);
-  const [dataIntakeReminders, setDataIntakeReminders] = useState<boolean>(false);
+  const [dataIntakeReminders, setDataIntakeReminders] =
+    useState<boolean>(false);
   const [activityReminders, setActivityReminders] = useState<boolean>(false);
 
   // Loading states for data fetching and button interaction
@@ -65,8 +70,10 @@ function ReminderCard({ userId }: ReminderCardProps) {
 
           // Convert and initialize the time selection state
           if (fetchedReminders.reminder_time) {
-            const localTime = convertToLocalTime(fetchedReminders.reminder_time);
-            const [hourStr] = localTime.split(":");
+            const localTime = convertToLocalTime(
+              fetchedReminders.reminder_time,
+            );
+            const [hourStr] = localTime.split(':');
             const hour24 = parseInt(hourStr, 10);
             const initialHour = hour24 % 12 || 12;
             const initialAmPm = hour24 >= 12 ? 'PM' : 'AM';
@@ -98,16 +105,17 @@ function ReminderCard({ userId }: ReminderCardProps) {
   const checkForUnsavedChanges = () => {
     if (!initialState) return;
 
-    const selected24Hour = selectedHour % 12 + (selectedAmPm === 'PM' ? 12 : 0);
-    const initial24Hour = initialState.hour % 12 + (initialState.ampm === 'PM' ? 12 : 0);
+    const selected24Hour =
+      (selectedHour % 12) + (selectedAmPm === 'PM' ? 12 : 0);
+    const initial24Hour =
+      (initialState.hour % 12) + (initialState.ampm === 'PM' ? 12 : 0);
 
-    const isSame = (
+    const isSame =
       selected24Hour === initial24Hour &&
       selectedAmPm === initialState.ampm &&
       journalReminders === initialState.journal &&
       dataIntakeReminders === initialState.dataIntake &&
-      activityReminders === initialState.activity
-    );
+      activityReminders === initialState.activity;
 
     setHasUnsavedChanges(!isSame);
   };
@@ -115,7 +123,13 @@ function ReminderCard({ userId }: ReminderCardProps) {
   // Re-run change detection whenever any relevant state changes
   useEffect(() => {
     checkForUnsavedChanges();
-  }, [selectedHour, selectedAmPm, journalReminders, dataIntakeReminders, activityReminders]);
+  }, [
+    selectedHour,
+    selectedAmPm,
+    journalReminders,
+    dataIntakeReminders,
+    activityReminders,
+  ]);
 
   // Handle saving updated reminder settings to the server
   const handleSubmit = async () => {
@@ -123,7 +137,8 @@ function ReminderCard({ userId }: ReminderCardProps) {
       setButtonLoading(true);
 
       // Convert selected hour to 24-hour time and UTC
-      const selected24Hour = selectedHour % 12 + (selectedAmPm === 'PM' ? 12 : 0);
+      const selected24Hour =
+        (selectedHour % 12) + (selectedAmPm === 'PM' ? 12 : 0);
       const localTime = `${selected24Hour.toString().padStart(2, '0')}:00`;
       const utcTime = convertToUtcTime(localTime);
 
@@ -133,7 +148,7 @@ function ReminderCard({ userId }: ReminderCardProps) {
           utcTime,
           journalReminders,
           dataIntakeReminders,
-          activityReminders
+          activityReminders,
         );
 
         // Sync initial state with current after successful save
@@ -169,7 +184,7 @@ function ReminderCard({ userId }: ReminderCardProps) {
           <div className="space-y-2">
             <p className="font-body font-medium">Select Hour</p>
             <div className="grid grid-cols-4 gap-2">
-              {Array.from({ length: 12 }, (_, i) => i + 1).map(hour => (
+              {Array.from({ length: 12 }, (_, i) => i + 1).map((hour) => (
                 <Button
                   key={hour}
                   variant={hour === selectedHour ? 'default' : 'outline'}
@@ -207,22 +222,35 @@ function ReminderCard({ userId }: ReminderCardProps) {
           <div className="space-y-4">
             <div className="flex items-center justify-between">
               <p className="font-body font-medium">Journal Reminders</p>
-              <Switch checked={journalReminders} onCheckedChange={setJournalReminders} />
+              <Switch
+                checked={journalReminders}
+                onCheckedChange={setJournalReminders}
+              />
             </div>
 
             <div className="flex items-center justify-between">
               <p className="font-body font-medium">Habit/Sleep Reminders</p>
-              <Switch checked={dataIntakeReminders} onCheckedChange={setDataIntakeReminders} />
+              <Switch
+                checked={dataIntakeReminders}
+                onCheckedChange={setDataIntakeReminders}
+              />
             </div>
 
             <div className="flex items-center justify-between">
               <p className="font-body font-medium">Activity Reminders</p>
-              <Switch checked={activityReminders} onCheckedChange={setActivityReminders} />
+              <Switch
+                checked={activityReminders}
+                onCheckedChange={setActivityReminders}
+              />
             </div>
           </div>
 
           <div className="flex justify-center items-center">
-            <p className={"max-w-sm text-center font-body font-normal text-gray-400"}>
+            <p
+              className={
+                'max-w-sm text-center font-body font-normal text-gray-400'
+              }
+            >
               Mind Garden will never send you more than one reminder per day.
             </p>
           </div>

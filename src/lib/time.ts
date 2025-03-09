@@ -4,16 +4,16 @@
  * @returns Time string in "HH:mm:ss" UTC.
  */
 export function convertToUtcTime(localTime: string): string {
-  const [hour, minute, second] = localTime.split(":").map(Number);
+  const [hour, minute, second] = localTime.split(':').map(Number);
 
-  const now = new Date();  // Get current date for context (so we don't lose the date part)
+  const now = new Date(); // Get current date for context (so we don't lose the date part)
   const localDate = new Date(
     now.getFullYear(),
     now.getMonth(),
     now.getDate(),
     hour,
     minute,
-    second ?? 0
+    second ?? 0,
   );
 
   // Use `toISOString()` which always gives UTC time in YYYY-MM-DDTHH:mm:ss.sssZ format.
@@ -29,17 +29,19 @@ export function convertToUtcTime(localTime: string): string {
  * @returns Time string in "HH:mm:ss" local time.
  */
 export function convertToLocalTime(utcTime: string): string {
-  const [hour, minute, second] = utcTime.split(":").map(Number);
+  const [hour, minute, second] = utcTime.split(':').map(Number);
 
-  const now = new Date();  // Get current date (for year, month, day)
-  const utcDate = new Date(Date.UTC(
-    now.getFullYear(),
-    now.getMonth(),
-    now.getDate(),
-    hour,
-    minute,
-    second ?? 0
-  ));
+  const now = new Date(); // Get current date (for year, month, day)
+  const utcDate = new Date(
+    Date.UTC(
+      now.getFullYear(),
+      now.getMonth(),
+      now.getDate(),
+      hour,
+      minute,
+      second ?? 0,
+    ),
+  );
 
   // JavaScript automatically interprets .getHours() as local time
   const localHours = utcDate.getHours().toString().padStart(2, '0');
@@ -50,11 +52,13 @@ export function convertToLocalTime(utcTime: string): string {
 }
 
 export function daysAgo(dateString: string): number {
-  const inputDate = new Date(`${dateString}T00:00:00.000Z`);  // Ensure input is treated as UTC midnight
+  const inputDate = new Date(`${dateString}T00:00:00.000Z`); // Ensure input is treated as UTC midnight
   const now = new Date();
 
   // Get today's date in UTC (set time to midnight UTC)
-  const todayUTC = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate()));
+  const todayUTC = new Date(
+    Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate()),
+  );
 
   // Calculate the difference in milliseconds
   const diffMs = todayUTC.getTime() - inputDate.getTime();
@@ -63,13 +67,13 @@ export function daysAgo(dateString: string): number {
   return Math.floor(diffMs / (1000 * 60 * 60 * 24));
 }
 
-export function getLatestDate(date1: string | null, date2: string | null): string | null {
-  if (date1 && !date2)
-    return date1;
-  else if (!date1 && date2)
-    return date2;
-  else if (!date1 && !date2)
-    return null;
+export function getLatestDate(
+  date1: string | null,
+  date2: string | null,
+): string | null {
+  if (date1 && !date2) return date1;
+  else if (!date1 && date2) return date2;
+  else if (!date1 && !date2) return null;
 
   // Parse the date strings into Date objects
   const parsedDate1 = new Date(date1!);

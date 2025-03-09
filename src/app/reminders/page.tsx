@@ -1,10 +1,10 @@
 import React from 'react';
-import {Header} from '@/components/header';
+import { Header } from '@/components/header';
 import Footer from '@/components/footer';
 import ReminderCard from '@/components/reminder-card';
-import {LoaderCircle} from "lucide-react";
-import {createClient} from "@/supabase/server";
-import {redirect} from "next/navigation";
+import { LoaderCircle } from 'lucide-react';
+import { createClient } from '@/supabase/server';
+import { redirect } from 'next/navigation';
 
 export default async function RemindersPage() {
   const supabase = await createClient();

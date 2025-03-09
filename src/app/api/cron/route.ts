@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import {sendReminders} from "@/actions/reminders";
+import { sendReminders } from '@/actions/reminders';
 
 // This is your Next.js API route handler for the GET request.
 export async function GET(req: NextRequest) {
@@ -13,7 +13,10 @@ export async function GET(req: NextRequest) {
 
   // Validate the hour (ensure it's between 0 and 23, as those are valid 24-hour times)
   if (utcHour === null || isNaN(utcHour) || utcHour < 0 || utcHour > 23) {
-    return NextResponse.json({ error: 'Invalid or missing hour parameter' }, { status: 400 });
+    return NextResponse.json(
+      { error: 'Invalid or missing hour parameter' },
+      { status: 400 },
+    );
   }
 
   const reminderTime = `${utcHour.toString().padStart(2, '0')}:00:00`;
@@ -22,6 +25,6 @@ export async function GET(req: NextRequest) {
 
   // Return a success response to the caller (could be your GitHub Action)
   return NextResponse.json({
-    message: `Reminder job executed for UTC hour ${reminderTime}`
+    message: `Reminder job executed for UTC hour ${reminderTime}`,
   });
 }
