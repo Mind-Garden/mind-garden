@@ -2,11 +2,7 @@
 
 import React, { useEffect, useState } from 'react';
 import { IReminders } from '@/supabase/schema';
-import {
-  getReminders,
-  sendReminders,
-  updateReminders,
-} from '@/actions/reminders';
+import { getReminders, updateReminders } from '@/actions/reminders';
 import { convertToLocalTime, convertToUtcTime } from '@/lib/time';
 import { Switch } from '@/components/ui/switch';
 import { Button } from '@/components/ui/button';

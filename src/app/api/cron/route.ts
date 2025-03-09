@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { sendReminders } from '@/actions/reminders';
+import { sendReminders } from '@/actions/email';
 
 // This is your Next.js API route handler for the GET request.
 export async function GET(req: NextRequest) {

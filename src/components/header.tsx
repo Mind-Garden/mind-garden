@@ -1,6 +1,13 @@
 'use client';
 
-import {LucideIcon, Moon, NotebookPen, ListCheck, Bell, ListTodo} from 'lucide-react';
+import {
+  LucideIcon,
+  Moon,
+  NotebookPen,
+  ListCheck,
+  Bell,
+  ListTodo,
+} from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { ProfileDropdown } from '@/components/profile-dropdown';

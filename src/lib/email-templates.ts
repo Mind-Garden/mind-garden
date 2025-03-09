@@ -82,7 +82,8 @@ export const JOURNAL_INCOMPLETE_HTML = `
 `;
 
 // Reminder 4: Habit Form Incomplete
-export const HABIT_FORM_INCOMPLETE_SUBJECT = 'Don’t Forget to Track Your Habits';
+export const HABIT_FORM_INCOMPLETE_SUBJECT =
+  'Don’t Forget to Track Your Habits';
 
 export const HABIT_FORM_INCOMPLETE_TEXT = `
 Hi there,
