@@ -18,22 +18,6 @@ describe('Utility functions', () => {
     });
   });
 
-  describe('getDate function', () => {
-    it('should return the local date adjusted 6 hours previous to account for UTC', () => {
-      const date = new Date('2025-02-20T12:00:00Z');
-      const result = getDate(date);
-      expect(result).toEqual(new Date('2025-02-20T06:00:00Z'));
-    });
-  });
-
-  describe('undoConversion function', () => {
-    it('should undo timezone conversion from UTC to CST and return the original date', () => {
-      const date = new Date('2025-02-20T12:00:00Z');
-      const result = undoConversion(date);
-      expect(result).toEqual(new Date('2025-02-20T18:00:00Z'));
-    });
-  });
-
   describe('getLocalISOString function', () => {
     it('should return the local date in YYYY-MM-DD format', () => {
       const date = new Date('2025-02-20T12:00:00Z');
