@@ -8,6 +8,7 @@ import {
   Tooltip,
   ResponsiveContainer,
   Cell,
+  CartesianGrid,
 } from 'recharts';
 import {
   Card,
@@ -157,6 +158,7 @@ export default function SleepChart({
         ) : (
           <ResponsiveContainer width="100%" height={600}>
             <BarChart data={sleepData} margin={chartOptions.margin}>
+              <CartesianGrid strokeDasharray="3 3" vertical={false} />
               <XAxis {...chartOptions.xAxis} />
               <YAxis {...chartOptions.yAxis} />
               <Tooltip content={<CustomTooltip />} />
