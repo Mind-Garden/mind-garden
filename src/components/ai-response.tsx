@@ -37,7 +37,7 @@ export default function AIResponse({
 
   // Loading messages
   const loadingMessages = [
-    "Hope you're having a wonderful day! I'm gathering some insights using your data...",
+    'Hope you are having a wonderful day! I am gathering some insights using your data...',
     'Looking at your recent entries to find helpful patterns. Keep tracking - it makes a difference!',
     'Taking a moment to analyze your recent habits. Remember, small steps lead to big changes!',
     'Preparing your personalized insights!',
