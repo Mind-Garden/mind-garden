@@ -14,6 +14,7 @@ import {
   CardContent,
   CardDescription,
   CardTitle,
+  CardHeader,
 } from '@/components/ui/card';
 import {
   getLocalISOString,
@@ -142,10 +143,11 @@ export default function SleepChart({
   };
 
   return (
-    <Card className="bg-white backdrop-blur-sm rounded-2xl border-none">
-      <CardTitle className="text-2xl font-bold mb-2 opacity-50 text-center">
-        {title}
-      </CardTitle>
+    <Card className="bg-white/50 break-inside-avoid backdrop-blur-sm rounded-2xl border-none mb-6 relative transition-opacity">
+      <CardHeader className="pb-3">
+        <CardTitle className="text-3xl text-center">{title}</CardTitle>
+      </CardHeader>
+
       <CardDescription className="text-center text-muted-foreground">
         from {lastMonthDate} to {todaysDate}
       </CardDescription>
