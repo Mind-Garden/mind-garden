@@ -70,3 +70,24 @@ export interface MoodCountData {
   scale_rating: number;
   count: number;
 }
+
+export interface IReminders {
+  id: string;
+  user_id: string;
+  reminder_time: string;
+  journal_reminders: boolean;
+  data_intake_reminders: boolean;
+  activity_reminders: boolean;
+}
+
+export interface IReminderWithLatestDates {
+  id: number;
+  user_id: string;
+  reminder_time: string;
+  journal_reminders: boolean;
+  data_intake_reminders: boolean;
+  activity_reminders: boolean;
+  email: string;
+  latest_journal_entry_date: string | null;
+  latest_data_intake_entry_date: string | null;
+}
