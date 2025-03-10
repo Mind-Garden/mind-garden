@@ -24,20 +24,7 @@ import {
   getTimeAMPM,
 } from '@/lib/utils';
 import { selectSleepDataByDateRange } from '@/actions/data-visualization';
-
-interface SleepDataPoint {
-  entry_date: string;
-  start: string;
-  end: string;
-}
-
-interface ProcessedSleepDataPoint {
-  date: string;
-  start: string;
-  end: string;
-  start24Format: number;
-  sleepDuration: number;
-}
+import { SleepDataPoint, ProcessedSleepDataPoint } from '@/supabase/schema';
 
 interface SleepChartProps {
   userId: string;

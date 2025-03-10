@@ -6,7 +6,8 @@ import Dashboard from '@/components/dashboard';
 import MoodFlow from '@/components/mood-flow';
 import MoodBar from '@/components/mood-bar';
 import SleepChart from '@/components/sleep-chart';
-import { use } from 'react';
+import AIResponse from '@/components/ai-response';
+import HabitHeatmap from '@/components/heatmap';
 
 export default async function Home() {
   const supabase = await createClient();
@@ -43,6 +44,7 @@ export default async function Home() {
 
         {/* Content */}
         {/* Dashboard */}
+
         <div className="mb-8">
           <Dashboard userId={userId} />
         </div>
@@ -54,8 +56,15 @@ export default async function Home() {
         {/* MoodBar */}
         <div>
           <MoodBar userId={userId} />
+          <AIResponse userId={userId} type="mood" title="Mood Summary" />
         </div>
-        <div className="pt-10 pb-10">
+        <div className="mb-8">
+          <HabitHeatmap userId={userId} />
+        </div>
+        <div className="mb-8">
+          <AIResponse userId={userId} type="sleep" title="Sleep Summary" />
+        </div>
+        <div className="mb-8">
           <SleepChart userId={userId} />
         </div>
       </main>

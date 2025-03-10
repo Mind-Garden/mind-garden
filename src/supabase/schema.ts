@@ -46,3 +46,27 @@ export interface ITask {
   is_completed: boolean;
   created_at: string;
 }
+
+export interface SleepDataPoint {
+  entry_date: string;
+  start: string;
+  end: string;
+}
+
+export interface ProcessedSleepDataPoint {
+  date: string;
+  start: string;
+  end: string;
+  start24Format: number;
+  sleepDuration: number;
+}
+
+export interface MoodDistribution {
+  id: string;
+  percentage: number;
+}
+
+export interface MoodCountData {
+  scale_rating: number;
+  count: number;
+}
