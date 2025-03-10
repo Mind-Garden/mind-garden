@@ -15,4 +15,4 @@ jobs:
 
       - name: Call Reminder API
         run: |
-          curl -X GET "https://mindgarden.vercel.app/api/reminder-job?hour=${{ env.utc_hour }}"
+          curl -X GET "https://mindgarden.vercel.app/api/cron?hour=${{ env.utc_hour }}"
