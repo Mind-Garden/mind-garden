@@ -1,3 +1,5 @@
+import { WeekNumberLabel } from 'react-day-picker';
+
 export interface IUsers {
   id: string;
   first_name: string;
@@ -27,6 +29,10 @@ export interface IResponses {
   scale_rating: number;
   attribute_ids?: Array<string>;
   entry_date: string;
+  water: number;
+  study: number;
+  work_hours: number;
+  work_rating: number;
 }
 
 export interface IAttributes {

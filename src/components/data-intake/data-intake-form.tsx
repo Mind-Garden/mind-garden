@@ -16,6 +16,7 @@ import ScaleIcon from '@/components/data-intake/scale-icon';
 import { getLocalISOString } from '@/lib/utils';
 
 import { SleepEntryCard } from '@/components/sleep-entry';
+import CounterCard from '@/components/ui/counter-card';
 
 interface DataIntakeFormProps {
   userId: string;
@@ -37,6 +38,10 @@ function DataIntakeForm({
   const [completedForm, setCompletedForm] = useState(false);
   const [scaleSelection, setScaleSelection] = useState<number | null>(null);
   const [scaleError, setScaleError] = useState(false);
+  const [water, setWater] = useState<number | null>(null);
+  const [study, setStudy] = useState<number | null>(null);
+  const [workHours, setWorkHours] = useState<number | null>(null);
+  const [workRating, setWorkRating] = useState<number | null>(null);
 
   const emotionsCategory = categories.find(
     (category) => category.name === 'emotions',
@@ -54,6 +59,10 @@ function DataIntakeForm({
       setScaleSelection(response?.scale_rating ?? null);
       setResponseId(response?.id ?? null);
       setCompletedForm(!!response);
+      setWater(response?.water ?? null);
+      setStudy(response?.study ?? null);
+      setWorkHours(response?.work_hours ?? null);
+      setWorkRating(response?.work_rating ?? null);
     } catch (err) {
       console.error('Error fetching table data:', err);
     } finally {
@@ -105,7 +114,15 @@ function DataIntakeForm({
     try {
       if (!responseId) {
         // Insert new selection if no previous responses exist
-        await insertResponses(currentSelection, userId, scaleSelection);
+        await insertResponses(
+          currentSelection,
+          userId,
+          scaleSelection,
+          water,
+          study,
+          workHours,
+          workRating,
+        );
       } else {
         // Update if both responses already exist
         await updateResponses(
@@ -113,6 +130,10 @@ function DataIntakeForm({
           currentSelection,
           userId,
           scaleSelection,
+          water,
+          study,
+          workHours,
+          workRating,
         );
       }
       await fetchResponses();
@@ -284,6 +305,35 @@ function DataIntakeForm({
               </Card>
             );
           })}
+        </div>
+        <div className={'columns-1 md:columns-2 space-y-4 pt-6'}>
+          <CounterCard
+            title="study"
+            description="How many hours did you study today?"
+            value={study ?? 0}
+            onChange={setStudy}
+            disabled={submitting || !scaleSelection}
+          />
+          <CounterCard
+            title="water"
+            description="How many cups of water did you drink today?"
+            value={water ?? 0}
+            onChange={setWater}
+            disabled={submitting || !scaleSelection}
+          />
+          <CounterCard
+            title="work"
+            description="How many hours did you work today?"
+            value={workHours ?? 0}
+            onChange={setWorkHours}
+            disabled={submitting || !scaleSelection}
+            showRating={true}
+            ratingQuestion="How would you rate your work day?"
+            ratingValue={workRating ?? 0}
+            onRatingChange={setWorkRating}
+            leftLabel="Poor"
+            rightLabel="Excellent"
+          />
         </div>
         <SleepEntryCard userId={userId}></SleepEntryCard>
       </div>
