@@ -70,15 +70,19 @@ export default function SleepChart({
         )
       ) {
         const sleepData = response.data as SleepDataPoint[];
-        const processedData = sleepData.map((item) => {
-          return {
-            date: item.entry_date,
-            start: item.start,
-            end: item.end,
-            start24Format: convertTo24Hour(item.start),
-            sleepDuration: getSleepDuration(item.start, item.end),
-          };
-        });
+        const processedData = sleepData
+          .map((item) => {
+            return {
+              date: item.entry_date,
+              start: item.start,
+              end: item.end,
+              start24Format: convertTo24Hour(item.start),
+              sleepDuration: getSleepDuration(item.start, item.end),
+            };
+          })
+          .sort(
+            (a, b) => new Date(a.date).getTime() - new Date(b.date).getTime(),
+          );
         setSleepData(processedData);
       } else {
         console.error('Unexpected response data format', response.data);

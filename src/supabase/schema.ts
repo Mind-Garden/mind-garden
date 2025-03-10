@@ -18,6 +18,7 @@ export interface ISleepEntries {
   start: string;
   end: string;
   entry_date: string;
+  quality: number;
 }
 
 export interface IResponses {

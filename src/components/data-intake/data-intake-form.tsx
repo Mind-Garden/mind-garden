@@ -15,6 +15,8 @@ import { IAttributes, ICategories } from '@/supabase/schema';
 import ScaleIcon from '@/components/data-intake/scale-icon';
 import { getLocalISOString } from '@/lib/utils';
 
+import { SleepEntryCard } from '@/components/sleep-entry';
+
 interface DataIntakeFormProps {
   userId: string;
   categories: Array<ICategories>;
@@ -35,6 +37,13 @@ function DataIntakeForm({
   const [completedForm, setCompletedForm] = useState(false);
   const [scaleSelection, setScaleSelection] = useState<number | null>(null);
   const [scaleError, setScaleError] = useState(false);
+
+  const emotionsCategory = categories.find(
+    (category) => category.name === 'emotions',
+  );
+  const otherCategories = categories.filter(
+    (category) => category.name !== 'emotions',
+  );
 
   // Fetch function extracted
   const fetchResponses = useCallback(async () => {
@@ -106,7 +115,6 @@ function DataIntakeForm({
           scaleSelection,
         );
       }
-
       await fetchResponses();
     } catch (error) {
       console.error('Error submitting form:', error);
@@ -197,9 +205,45 @@ function DataIntakeForm({
           )}
         </div>
 
+        {emotionsCategory && (
+          <Card
+            key={emotionsCategory.id}
+            className={`bg-white/50 break-inside-avoid backdrop-blur-sm rounded-2xl border-none mb-6 relative transition-opacity ${
+              submitting || !scaleSelection
+                ? 'opacity-50 pointer-events-none'
+                : 'opacity-100'
+            }`}
+          >
+            <CardHeader className="pb-3">
+              <CardTitle className="text-lg">{emotionsCategory.name}</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="flex flex-wrap justify-center gap-2">
+                {attributesByCategory.get(emotionsCategory.id)?.map((attr) => (
+                  <ToggleButton<string>
+                    key={attr.id}
+                    value={attr.id}
+                    isSelected={currentSelection.has(attr.id)}
+                    onChange={handleToggle}
+                    disabled={submitting || !scaleSelection}
+                  >
+                    <span className="flex items-center gap-0.5">
+                      <AttributeIcon
+                        category={emotionsCategory.name}
+                        attribute={attr.name}
+                      />
+                      {attr.name}
+                    </span>
+                  </ToggleButton>
+                ))}
+              </div>
+            </CardContent>
+          </Card>
+        )}
+
         {/* Card Grid */}
         <div className={'columns-1 md:columns-2 space-y-4'}>
-          {categories.map((category) => {
+          {otherCategories.map((category) => {
             const categoryAttributes =
               attributesByCategory.get(category.id) || [];
             if (categoryAttributes.length === 0) return null;
@@ -241,6 +285,7 @@ function DataIntakeForm({
             );
           })}
         </div>
+        <SleepEntryCard userId={userId}></SleepEntryCard>
       </div>
     </div>
   );

@@ -119,6 +119,7 @@ export async function insertSleepEntry(
   startTime: string,
   endTime: string,
   userId: string,
+  sleepQuality: number,
 ) {
   // Validate inputs
   if (!startTime.trim() || !endTime.trim()) {
@@ -133,6 +134,7 @@ export async function insertSleepEntry(
       entry_date: entryDate,
       start: startTime,
       end: endTime,
+      quality: sleepQuality,
     },
   ]);
 }
@@ -173,12 +175,13 @@ export async function updateSleepEntry(
   entryId: string,
   startTime: string,
   endTime: string,
+  sleepQuality: number,
 ) {
   if (!startTime.trim() || !endTime.trim()) return; // Prevent empty entries
 
   return await updateData(
     'sleep_entries',
     { id: entryId },
-    { start: startTime, end: endTime },
+    { start: startTime, end: endTime, quality: sleepQuality },
   );
 }
