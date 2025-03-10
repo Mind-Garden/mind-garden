@@ -60,3 +60,13 @@ export interface ProcessedSleepDataPoint {
   start24Format: number;
   sleepDuration: number;
 }
+
+export interface MoodDistribution {
+  id: string;
+  percentage: number;
+}
+
+export interface MoodCountData {
+  scale_rating: number;
+  count: number;
+}

@@ -56,12 +56,13 @@ export default async function Home() {
         {/* MoodBar */}
         <div>
           <MoodBar userId={userId} />
+          <AIResponse userId={userId} type="mood" title="Mood Summary" />
         </div>
         <div className="mb-8">
           <HabitHeatmap userId={userId} />
         </div>
         <div className="mb-8">
-          <AIResponse userId={userId} title="Sleep Summary" />
+          <AIResponse userId={userId} type="sleep" title="Sleep Summary" />
         </div>
         <div className="mb-8">
           <SleepChart userId={userId} />

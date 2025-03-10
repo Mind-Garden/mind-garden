@@ -3,7 +3,6 @@ import { useRouter } from 'next/navigation';
 
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import HabitHeatmap from '@/components/heatmap';
 import { User, Moon, NotebookPen, ListCheck } from 'lucide-react';
 
 interface DashboardProps {

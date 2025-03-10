@@ -4,103 +4,106 @@ import { useState, useEffect, useRef } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Sparkles } from 'lucide-react';
-import { fetchResponse } from '@/actions/tasks';
 import { summarizeData } from '@/actions/ai-data-analysis';
+import ReactMarkdown from 'react-markdown';
 
 interface AIResponseProps {
   readonly userId: string;
-  readonly data?: any;
+  readonly type: string;
   readonly title?: string;
-  readonly messageDuration?: number; // How long each fallback message stays visible (ms)
+  readonly messageDuration?: number;
+  readonly id?: string; // Explicit ID for the component
 }
 
 export default function AIResponse({
   userId,
-  data,
+  type,
   title = 'Summary',
-  messageDuration = 5000, // 5 seconds default
+  messageDuration = 5000,
+  id, // Accept ID from props
 }: AIResponseProps) {
+  // Component state
   const [summaryText, setSummaryText] = useState('');
   const [displayText, setDisplayText] = useState('');
-  const [isLoading, setIsLoading] = useState(true);
   const [hasError, setHasError] = useState(false);
-  const [isTyping, setIsTyping] = useState(false);
-  const [currentFallbackIndex, setCurrentFallbackIndex] = useState(0);
+  const [currentLoadingIndex, setCurrentLoadingIndex] = useState(0);
 
-  const typingSpeed = useRef(30); // milliseconds per character
+  // Component-scoped refs
+  const typingSpeed = useRef(30);
   const typingIndex = useRef(0);
-  const messageTimer = useRef<NodeJS.Timeout | null>(null);
   const typingTimer = useRef<NodeJS.Timeout | null>(null);
+  const loadingTimer = useRef<NodeJS.Timeout | null>(null);
+  const contentRef = useRef<HTMLDivElement>(null);
 
-  // Fallback messages that don't reveal AI issues
-  const fallbackMessages = [
-    "Hope you're having a wonderful day! I'm gathering some insights about your mood patterns...",
+  // Loading messages
+  const loadingMessages = [
+    "Hope you're having a wonderful day! I'm gathering some insights using your data...",
     'Looking at your recent entries to find helpful patterns. Keep tracking - it makes a difference!',
     'Taking a moment to analyze your recent habits. Remember, small steps lead to big changes!',
-    'Preparing your personalized insights. Your consistency in tracking is really impressive!',
-    'Analyzing your sleep and mood data. Remember to be kind to yourself today!',
+    'Preparing your personalized insights!',
   ];
+
+  // Clean up function
+  const cleanupTimers = () => {
+    if (typingTimer.current) {
+      clearTimeout(typingTimer.current);
+      typingTimer.current = null;
+    }
+    if (loadingTimer.current) {
+      clearTimeout(loadingTimer.current);
+      loadingTimer.current = null;
+    }
+  };
+
+  // Setup mount tracking
+  useEffect(() => {
+    return () => {
+      cleanupTimers();
+    };
+  }, []);
 
   // Function to rotate to the next message
   const rotateToNextMessage = () => {
-    // Clear any existing rotation timer
-    if (messageTimer.current) {
-      clearTimeout(messageTimer.current);
-      messageTimer.current = null;
-    }
-
-    // Stop any current typing
-    setIsTyping(false);
-
-    // Reset typing state
-    typingIndex.current = 0;
-
-    // Move to next fallback message
-    setCurrentFallbackIndex(
-      (prevIndex) => (prevIndex + 1) % fallbackMessages.length,
+    setCurrentLoadingIndex(
+      (prevIndex) => (prevIndex + 1) % loadingMessages.length,
     );
   };
 
-  // Fetch AI data on component mount
+  // Fetch AI data
   useEffect(() => {
+    const isActive = true;
+
     async function fetchAISummary() {
-      setIsLoading(true);
       try {
-        const response = await summarizeData(userId, 'sleep');
+        const response = await summarizeData(userId, type);
         setSummaryText(response);
         setHasError(false);
-        setIsLoading(false);
       } catch (error) {
-        console.error('Error fetching AI summary:', error);
+        console.error('Error fetching AI summary', error);
         setHasError(true);
       }
     }
 
     fetchAISummary();
-  }, []);
+  }, [userId, type]);
 
-  // Determine what text to show
-  const textToShow =
-    isLoading || hasError || !summaryText
-      ? fallbackMessages[currentFallbackIndex] // show fallback messages when loading or error occurs
-      : summaryText;
-
-  // Typewriter effect - triggered when textToShow changes
+  // Typewriter effect
   useEffect(() => {
-    // Clean up any existing typing timer
-    if (typingTimer.current) {
-      clearTimeout(typingTimer.current);
-      typingTimer.current = null;
-    }
+    const textToShow =
+      hasError || !summaryText
+        ? loadingMessages[currentLoadingIndex]
+        : summaryText;
+
+    // Clean up any existing timers
+    cleanupTimers();
 
     // Reset display and typing state
     setDisplayText('');
-    typingIndex.current = -1;
-    setIsTyping(true);
+    typingIndex.current = 0;
 
     const typeNextCharacter = () => {
       if (typingIndex.current < textToShow.length) {
-        setDisplayText((prev) => prev + textToShow.charAt(typingIndex.current));
+        setDisplayText(textToShow.substring(0, typingIndex.current + 1));
         typingIndex.current += 1;
 
         typingTimer.current = setTimeout(
@@ -109,12 +112,11 @@ export default function AIResponse({
         );
       } else {
         // Typing is complete
-        setIsTyping(false);
         typingTimer.current = null;
 
-        // Now that typing is complete, set timer for next message rotation if we're showing a fallback message
-        if (isLoading || hasError) {
-          messageTimer.current = setTimeout(
+        // Schedule next message if showing loading message
+        if (!summaryText || hasError) {
+          loadingTimer.current = setTimeout(
             rotateToNextMessage,
             messageDuration,
           );
@@ -124,10 +126,8 @@ export default function AIResponse({
 
     typeNextCharacter();
 
-    return () => {
-      if (typingTimer.current) clearTimeout(typingTimer.current);
-    };
-  }, [textToShow, isLoading, hasError, messageDuration]);
+    return cleanupTimers;
+  }, [currentLoadingIndex, hasError, messageDuration, summaryText]);
 
   return (
     <Card className="w-full shadow-md transition-all duration-300 hover:shadow-lg">
@@ -146,13 +146,13 @@ export default function AIResponse({
         </div>
       </CardHeader>
       <CardContent>
-        <div className="prose prose-sm max-w-none dark:prose-invert">
-          <p className="min-h-[100px] text-base leading-relaxed">
-            {displayText}
-            {isTyping && (
-              <span className="ml-1 inline-block h-4 w-2 animate-pulse rounded-sm bg-primary"></span>
-            )}
-          </p>
+        <div
+          className="prose prose-sm max-w-none dark:prose-invert text-base leading-relaxed"
+          ref={contentRef}
+        >
+          <div className="markdown-container">
+            <ReactMarkdown>{displayText}</ReactMarkdown>
+          </div>
         </div>
       </CardContent>
     </Card>

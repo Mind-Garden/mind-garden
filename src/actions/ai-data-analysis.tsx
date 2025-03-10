@@ -4,25 +4,15 @@ import {
   getSleepDuration,
   getAverageTimeElapsed,
 } from '@/lib/utils';
-import { selectSleepDataByDateRange } from '@/actions/data-visualization';
-import { SleepDataPoint } from '@/supabase/schema';
-
-// design
-// i want a function that returns a string based off what is available in our system.
-// it can also return an error but it must return a string
-// possible errors,
-// 1. ai service unavailable
-// 2. no data available to summarize
-// 3. error querying the data base
-
-// function inputs
-// 1. userId
-// 2. what kind of data you want to sumamrize
-
-// the function will query that data, and also return get an AI prompt based on the type of query that you requested
+import {
+  selectSleepDataByDateRange,
+  selectMoodFrequency,
+} from '@/actions/data-visualization';
+import { MoodCountData, SleepDataPoint } from '@/supabase/schema';
 
 const functionary: Record<string, (userId: string) => Promise<string>> = {
   sleep: summarizeSleepData,
+  mood: summarizeMoodData,
 };
 
 export async function summarizeData(
@@ -85,6 +75,48 @@ async function summarizeSleepData(
     }
   } catch (error) {
     console.error('Error summarizing sleep data:', error);
-    throw new Error('Error querying the database');
+    throw new Error('Error with data summarization' + error);
+  }
+}
+
+async function summarizeMoodData(
+  userId: string,
+  todaysDate = getLocalISOString(),
+  lastMonthDate = getLocalISOString(
+    new Date(new Date().setMonth(new Date().getMonth() - 1)),
+  ),
+) {
+  try {
+    const response = await selectMoodFrequency(
+      userId,
+      lastMonthDate,
+      todaysDate,
+    );
+    const moodData = response.data as MoodCountData[];
+
+    // Calculate total count
+    const totalCount = moodData.reduce(
+      (sum, item) => sum + (item.count || 0),
+      0,
+    );
+
+    if (totalCount === 0) {
+      return 'No mood data available to summarize :(';
+    }
+
+    // Convert counts into percentage distribution
+    const moodDistribution = moodData.map((mood) => ({
+      mood_level: mood.scale_rating.toString(),
+      percentage: Math.round((mood.count / totalCount) * 100),
+    }));
+    console.log(JSON.stringify(moodDistribution));
+    const aiResponse = await fetchResponse(
+      JSON.stringify(moodDistribution),
+      'summarize mood',
+    );
+    return aiResponse;
+  } catch (error) {
+    console.error(error);
+    throw new Error('AI service is currently unavailable:' + error);
   }
 }
