@@ -79,6 +79,13 @@ async function summarizeSleepData(
   }
 }
 
+/**
+ * Summarize mood data for the given user from the last month.
+ * @param {string} [todaysDate] - Date string in ISO format. Defaults to today's date.
+ * @param {string} [lastMonthDate] - Date string in ISO format. Defaults to today's date minus one month.
+ * @returns {Promise<string>} - Summary of mood data from the last month.
+ * @throws {Error} - If the AI service is unavailable, or if there is an error querying the database.
+ */
 async function summarizeMoodData(
   userId: string,
   todaysDate = getLocalISOString(),
@@ -109,11 +116,12 @@ async function summarizeMoodData(
       mood_level: mood.scale_rating.toString(),
       percentage: Math.round((mood.count / totalCount) * 100),
     }));
-    console.log(JSON.stringify(moodDistribution));
+
     const aiResponse = await fetchResponse(
       JSON.stringify(moodDistribution),
       'summarize mood',
     );
+
     return aiResponse;
   } catch (error) {
     console.error(error);
