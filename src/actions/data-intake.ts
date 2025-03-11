@@ -6,6 +6,7 @@ import {
   IResponses,
   IPersonalizedCategories,
   IAddedCategory,
+  IAddedResp,
 } from '@/supabase/schema';
 
 /**
@@ -173,45 +174,50 @@ export async function getPersonalizedCategories() {
 export async function addUserHabit(
   userId: string,
   categoryId: string,
-  trackingMethod: 'boolean' | 'scale',
+  trackingMethod: 'boolean' | 'scale' | 'breakfast' | 'lunch' | 'dinner',
 ) {
   const { data, error: selectError } = await selectData(
     'added_habit',
-    { user_id: userId },
+    {
+      user_id: userId,
+      added_habit: categoryId,
+    },
     ['added_habit', 'tracking_method'],
   );
 
   if (selectError) {
     console.error('Error selecting added habit:', selectError);
   }
-
-  if (!selectError && data && data.length > 0 && data[0]) {
-    //already exists
-    if (
-      data[0].added_habit == categoryId &&
-      data[0].tracking_method == trackingMethod
-    ) {
-      return 'duplicate';
-    } else {
-      //insert
-      const { error } = await insertData(
-        'added_habit',
-        [
-          {
-            user_id: userId,
-            added_habit: categoryId,
-            tracking_method: trackingMethod,
-          },
-        ],
-        false,
-      );
-
-      if (error) {
-        console.error('Error inserting added habit:', error);
-      } else {
-        return 'success';
+  if (!selectError) {
+    if (data && data.length != 0) {
+      for (const i in data[0].tracking_method) {
+        if (data[0].tracking_method[i] == trackingMethod) {
+          //already exists
+          return 'duplicate';
+        }
       }
+
+      //update
+      const { error } = await updateData(
+        'added_habit',
+        { user_id: userId, added_habit: categoryId },
+        { tracking_method: [...data[0].tracking_method, trackingMethod] },
+      );
+      return 'success';
     }
+    //insert
+    await insertData(
+      'added_habit',
+      [
+        {
+          user_id: userId,
+          added_habit: categoryId,
+          tracking_method: [trackingMethod],
+        },
+      ],
+      false,
+    );
+    return 'success';
   }
 }
 
@@ -224,4 +230,83 @@ export async function getAddedCategories(userId: string) {
     return null;
   }
   return data as unknown as IAddedCategory[];
+}
+
+export async function insertAddedResp(
+  userId: string,
+  habit: string,
+  trackingValue: Record<string, any>,
+) {
+  const { error } = await insertData('added_habit_responses', [
+    {
+      user_id: userId,
+      habit: habit,
+      tracking_method: trackingValue,
+    },
+  ]);
+
+  if (error) {
+    console.error('Error inserting response:', error);
+  }
+}
+
+export async function getAddedResp(userId: string, entryDate: string) {
+  const { data, error } = await selectData<IAddedResp>(
+    'added_habit_responses',
+    {
+      user_id: userId,
+      entry_date: entryDate,
+    },
+  );
+  console.log('db:' + data);
+  if (error) {
+    console.error('Error selecting added habit responses:', error.message);
+    return null;
+  }
+  return data as unknown as IAddedResp[];
+}
+
+export async function addResp(
+  userId: string,
+  habit: string,
+  trackingValue: Record<string, any>,
+  entryDate: string,
+) {
+  const { data, error: selectError } = await selectData(
+    'added_habit_responses',
+    {
+      user_id: userId,
+      habit: habit,
+    },
+    ['habit', 'tracking_method'],
+  );
+
+  if (selectError) {
+    console.error('Error selecting added habit:', selectError);
+  } else {
+    if (data && data.length != 0) {
+      //update
+      console.log(trackingValue);
+      const { error } = await updateData(
+        'added_habit_responses',
+        { user_id: userId, habit: habit, entry_date: entryDate },
+        { tracking_method: trackingValue },
+      );
+      return 'success';
+    }
+    //insert
+    const { error } = await insertData('added_habit_responses', [
+      {
+        user_id: userId,
+        habit: habit,
+        tracking_method: trackingValue,
+      },
+    ]);
+
+    if (error) {
+      console.error('Error inserting response:', error);
+    }
+
+    return 'success';
+  }
 }

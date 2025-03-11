@@ -47,8 +47,15 @@ export interface IPersonalizedCategories {
 export interface IAddedCategory {
   user: string;
   added_habit: string;
-  tracking_method: string;
+  tracking_method: string[];
+}
+
+export interface IAddedResp {
   id: string;
+  user_id: string;
+  habit: string;
+  tracking_method?: Record<string, any>;
+  entry_date: string;
 }
 
 export interface ITask {

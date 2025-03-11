@@ -8,6 +8,9 @@ import {
   updateResponses,
   addUserHabit, // New function to add habits to user's list
   getAddedCategories,
+  insertAddedResp,
+  getAddedResp,
+  addResp,
 } from '@/actions/data-intake';
 import AttributeIcon from '@/components/data-intake/attribute-icon';
 import ToggleButton from '@/components/data-intake/toggle-button';
@@ -25,6 +28,8 @@ import { toast } from 'react-toastify';
 import { MinusCircle, PlusCircle } from 'lucide-react';
 import QuantityTrackerSimple from './quantity-tracker';
 import YesNoForm from './yes-no-form';
+import SickRating from './sick-rating';
+import { getLocalISOString } from '@/lib/utils';
 
 interface DataIntakeFormProps {
   userId: string;
@@ -52,7 +57,58 @@ function DataIntakeForm({
   const [addedCategories, setAddedCategories] = useState<IAddedCategory[]>();
   const [smoking, setSmoking] = useState(0);
   const [drinks, setDrinks] = useState(0);
+  const [sick, setSick] = useState(0);
+  const [meals, setMeals] = useState(0);
+  const [cooking, setCooking] = useState(0);
+  const [smokingBool, setSmokingBool] = useState<boolean | null>(null);
+  const [drinksBool, setDrinksBool] = useState<boolean | null>(null);
+  const [sickBool, setSickBool] = useState<boolean | null>(null);
+  const [breakfastBool, setBreakfastBool] = useState<boolean | null>(null);
+  const [lunchBool, setLunchBool] = useState<boolean | null>(null);
+  const [dinnerBool, setDinnerBool] = useState<boolean | null>(null);
+  const [breakfastCookingBool, setBreakfastCookingBool] = useState<
+    boolean | null
+  >(null);
+  const [lunchCookingBool, setLunchCookingBool] = useState<boolean | null>(
+    null,
+  );
+  const [dinnerCookingBool, setDinnerCookingBool] = useState<boolean | null>(
+    null,
+  );
   // const smoking = 0;
+
+  const setVars = async (
+    trackingMethod: Record<string, any>,
+    method: string,
+    setScaleFunc: (value: number) => void,
+    setBoolFunc: (value: boolean | null) => void,
+  ) => {
+    if (method == 'scale') {
+      setScaleFunc(trackingMethod[method]);
+    } else if (method == 'boolean') {
+      setBoolFunc(trackingMethod[method]);
+    }
+  };
+
+  const setFoodVars = async (
+    trackingMethod: Record<string, any>,
+    method: string,
+    setScaleFunc: (value: number) => void,
+    setBreakFunc: (value: boolean | null) => void,
+    setLunchFunc: (value: boolean | null) => void,
+    setDinnerFunc: (value: boolean | null) => void,
+  ) => {
+    console.log(trackingMethod);
+    if (method == 'scale') {
+      setScaleFunc(trackingMethod[method]);
+    } else if (method == 'breakfast') {
+      setBreakFunc(trackingMethod[method]);
+    } else if (method == 'lunch') {
+      setLunchFunc(trackingMethod[method]);
+    } else if (method == 'dinner') {
+      setDinnerFunc(trackingMethod[method]);
+    }
+  };
 
   // Fetch function extracted
   const fetchResponses = useCallback(async () => {
@@ -62,6 +118,46 @@ function DataIntakeForm({
         userId,
         new Date().toISOString().split('T')[0],
       );
+
+      const addedResponse = await getAddedResp(userId, getLocalISOString());
+      console.log(getLocalISOString());
+      if (addedResponse) {
+        console.log(addedResponse);
+        for (const resp of addedResponse) {
+          const name = personalizedCategories.find(
+            (cat) => cat.id == resp.habit,
+          )?.name;
+          const trackingMethod = resp.tracking_method as Record<string, any>;
+          for (const method in trackingMethod) {
+            console.log(method);
+            if (name == 'smoking') {
+              setVars(trackingMethod, method, setSmoking, setSmokingBool);
+            } else if (name == 'alcohol') {
+              setVars(trackingMethod, method, setDrinks, setDrinksBool);
+            } else if (name == 'sick') {
+              setVars(trackingMethod, method, setSick, setSickBool);
+            } else if (name == 'meal') {
+              setFoodVars(
+                trackingMethod,
+                method,
+                setMeals,
+                setBreakfastBool,
+                setLunchBool,
+                setDinnerBool,
+              );
+            } else if (name == 'cooking') {
+              setFoodVars(
+                trackingMethod,
+                method,
+                setMeals,
+                setBreakfastCookingBool,
+                setLunchCookingBool,
+                setDinnerCookingBool,
+              );
+            }
+          }
+        }
+      }
 
       setCurrentSelection(new Set(response?.attribute_ids ?? []));
       setScaleSelection(response?.scale_rating ?? null);
@@ -105,30 +201,79 @@ function DataIntakeForm({
     });
   }, []);
 
-  // const updateAddedCategories = (newCategory: string, newTracking: string) => {
-  //   if(addedCategories){
-  //     const habitArray = [...addedCategories.added_habits, newCategory]
-  //     const trackingArray = [...addedCategories.tracking_method, newTracking]
-  //     const newAddedCat = {user: userId, added_habits: habitArray, tracking_method: trackingArray}
-  //     setAddedCategories(newAddedCat);
-  //   }
-  const handleSmokingIncrement = () => {
-    if (smoking < 100) {
-      setSmoking(smoking + 1);
-    }
+  const updateAddedCategories = (newCategory: string, newTracking: string) => {
+    setAddedCategories((prevCategories) => {
+      // Check if the category already exists
+      const existingCategory = prevCategories?.find(
+        (cat) => cat.added_habit === newCategory,
+      );
+
+      if (existingCategory) {
+        // Update existing category
+        return prevCategories?.map((cat) =>
+          cat.added_habit === newCategory
+            ? {
+                ...cat,
+                tracking_method: [
+                  ...new Set([...cat.tracking_method, newTracking]),
+                ], // Prevent duplicates
+              }
+            : cat,
+        );
+      } else if (prevCategories) {
+        // Add new category
+        return [
+          ...prevCategories,
+          {
+            user: userId,
+            added_habit: newCategory,
+            tracking_method: [newTracking],
+          },
+        ];
+      }
+    });
   };
 
-  // Handle decrement
-  const handleSmokingDecrement = () => {
-    if (smoking > 0) {
-      setSmoking(smoking - 1);
+  const insertHabit = async (
+    added_habit: string,
+    trackingMethod: string[],
+    scaleValue: number,
+    boolValue: boolean | null,
+  ) => {
+    let responses = {};
+    for (const method of trackingMethod) {
+      if (method == 'scale') {
+        responses = { ...responses, scale: scaleValue };
+      } else {
+        responses = { ...responses, boolean: boolValue };
+      }
     }
+    await addResp(userId, added_habit, responses, getLocalISOString());
   };
-  // };
-  const handleSmokingChange = (newValue: number) => {
-    console.log('Updating smoking state to:', newValue);
-    setSmoking(newValue + 1);
+
+  const insertHabitFood = async (
+    added_habit: string,
+    trackingMethod: string[],
+    scaleValue: number,
+    breakfastValue: boolean | null,
+    lunchValue: boolean | null,
+    dinnerValue: boolean | null,
+  ) => {
+    let responses = {};
+    for (const method of trackingMethod) {
+      if (method == 'scale') {
+        responses = { ...responses, scale: scaleValue };
+      } else if (method == 'breakfast') {
+        responses = { ...responses, breakfast: breakfastValue };
+      } else if (method == 'lunch') {
+        responses = { ...responses, lunch: lunchValue };
+      } else if (method == 'dinner') {
+        responses = { ...responses, dinner: dinnerValue };
+      }
+    }
+    await addResp(userId, added_habit, responses, getLocalISOString());
   };
+
   // Submit handler
   const handleSubmit = async (): Promise<void> => {
     // Prevent multiple submissions at once
@@ -141,6 +286,54 @@ function DataIntakeForm({
 
     setSubmitting(true);
     setScaleError(false);
+
+    //insert new rows.
+    addedCategories?.map((category) => {
+      console.log(category);
+      const name = personalizedCategories.find(
+        (cat) => cat.id == category.added_habit,
+      )?.name;
+      if (name == 'smoking') {
+        insertHabit(
+          category.added_habit,
+          category.tracking_method,
+          smoking,
+          smokingBool,
+        );
+      } else if (name == 'alcohol') {
+        insertHabit(
+          category.added_habit,
+          category.tracking_method,
+          drinks,
+          drinksBool,
+        );
+      } else if (name == 'meal') {
+        insertHabitFood(
+          category.added_habit,
+          category.tracking_method,
+          meals,
+          breakfastBool,
+          lunchBool,
+          dinnerBool,
+        );
+      } else if (name == 'cooking') {
+        insertHabitFood(
+          category.added_habit,
+          category.tracking_method,
+          meals,
+          breakfastCookingBool,
+          lunchCookingBool,
+          dinnerCookingBool,
+        );
+      } else if (name == 'sick') {
+        insertHabit(
+          category.added_habit,
+          category.tracking_method,
+          sick,
+          sickBool,
+        );
+      }
+    });
 
     try {
       if (!responseId) {
@@ -173,18 +366,20 @@ function DataIntakeForm({
   // Handle adding a new habit
   const handleAddHabit = async (
     categoryId: string,
-    trackingMethod: 'boolean' | 'scale',
+    trackingMethod: 'boolean' | 'scale' | 'breakfast' | 'lunch' | 'dinner',
   ) => {
     try {
       // Call to database to save the new habit
       // This would add the habit to the user's list of tracked habits
       const result = await addUserHabit(userId, categoryId, trackingMethod);
-
+      if (result && result != 'duplicate') {
+        console.log('result' + result);
+      }
       // Refresh the attributes list after adding a new habit
       // Note: In a real implementation, you might want to update the local state
       // or trigger a refetch of the attributes list
-      if (result == 'success') {
-        // updateAddedCategories(categoryId, trackingMethod);
+      if (result != 'duplicate') {
+        updateAddedCategories(categoryId, trackingMethod);
 
         // Close the dialog
         setShowAddHabitDialog(false);
@@ -325,14 +520,13 @@ function DataIntakeForm({
           })}
           {addedCategories &&
             addedCategories.map((category) => {
-              console.log(category.added_habit);
-              const method = category.tracking_method;
+              const methods = category.tracking_method;
               const name = personalizedCategories.find(
                 (cat) => cat.id == category.added_habit,
               )?.name;
               return (
                 <Card
-                  key={category.id}
+                  key={name} // Single card per name
                   className={`bg-white/50 break-inside-avoid backdrop-blur-sm rounded-2xl border-none relative transition-opacity ${
                     submitting || !scaleSelection
                       ? 'opacity-50 pointer-events-none'
@@ -342,22 +536,133 @@ function DataIntakeForm({
                   <CardHeader className="pb-3">
                     <CardTitle className="text-lg">{name}</CardTitle>
                   </CardHeader>
-                  <CardContent>
-                    {method == 'scale' && name == 'smoking' ? (
-                      <QuantityTrackerSimple
-                        value={smoking}
-                        onChange={setSmoking}
-                      />
-                    ) : method == 'scale' && name == 'alcohol' ? (
-                      <QuantityTrackerSimple
-                        value={drinks}
-                        onChange={setDrinks}
-                      />
-                    ) : method == 'boolean' && name == 'alcohol' ? (
-                      <YesNoForm question="Did you drink today?" />
-                    ) : (
-                      <div> something else </div>
-                    )}
+                  <CardContent className="space-y-4">
+                    {methods.map((method) => {
+                      if (method === 'scale' && name === 'smoking') {
+                        return (
+                          <QuantityTrackerSimple
+                            key={method + name}
+                            value={smoking}
+                            onChange={setSmoking}
+                            question="How many cigarettes today?"
+                          />
+                        );
+                      } else if (method === 'scale' && name === 'alcohol') {
+                        return (
+                          <QuantityTrackerSimple
+                            key={method + name}
+                            value={drinks}
+                            onChange={setDrinks}
+                            question="How many drinks today?"
+                          />
+                        );
+                      } else if (method === 'scale' && name === 'meal') {
+                        return (
+                          <QuantityTrackerSimple
+                            key={method + name}
+                            value={meals}
+                            onChange={setMeals}
+                            question="How many meals today?"
+                          />
+                        );
+                      } else if (method === 'scale' && name === 'cooking') {
+                        return (
+                          <QuantityTrackerSimple
+                            key={method + name}
+                            value={cooking}
+                            onChange={setCooking}
+                            question="How many home-cooked meals today?"
+                          />
+                        );
+                      } else if (method === 'scale' && name === 'sick') {
+                        return (
+                          <SickRating key={method + name} onChange={setSick} />
+                        );
+                      } else if (method === 'boolean' && name === 'alcohol') {
+                        return (
+                          <YesNoForm
+                            key={method + name}
+                            question="Did you drink today?"
+                            onChange={setDrinksBool}
+                            initialValue={drinksBool}
+                          />
+                        );
+                      } else if (method === 'boolean' && name === 'smoking') {
+                        return (
+                          <YesNoForm
+                            key={method + name}
+                            question="Did you smoke today?"
+                            onChange={setSmokingBool}
+                            initialValue={smokingBool}
+                          />
+                        );
+                      } else if (method === 'boolean' && name === 'sick') {
+                        return (
+                          <YesNoForm
+                            key={method + name}
+                            question="Were you sick today?"
+                            onChange={setSickBool}
+                            initialValue={sickBool}
+                          />
+                        );
+                      } else if (method === 'breakfast' && name === 'meal') {
+                        return (
+                          <YesNoForm
+                            key={method + name}
+                            question="Did you eat breakfast today?"
+                            onChange={setBreakfastBool}
+                            initialValue={breakfastBool}
+                          />
+                        );
+                      } else if (method === 'lunch' && name === 'meal') {
+                        return (
+                          <YesNoForm
+                            key={method + name}
+                            question="Did you eat lunch today?"
+                            onChange={setLunchBool}
+                            initialValue={lunchBool}
+                          />
+                        );
+                      } else if (method === 'dinner' && name === 'meal') {
+                        return (
+                          <YesNoForm
+                            key={method + name}
+                            question="Did you eat dinner today?"
+                            onChange={setDinnerBool}
+                            initialValue={dinnerBool}
+                          />
+                        );
+                      } else if (method === 'breakfast' && name === 'cooking') {
+                        return (
+                          <YesNoForm
+                            key={method + name}
+                            question="Did you make breakfast today?"
+                            onChange={setBreakfastCookingBool}
+                            initialValue={breakfastCookingBool}
+                          />
+                        );
+                      } else if (method === 'lunch' && name === 'cooking') {
+                        return (
+                          <YesNoForm
+                            key={method + name}
+                            question="Did you make lunch today?"
+                            onChange={setLunchCookingBool}
+                            initialValue={lunchCookingBool}
+                          />
+                        );
+                      } else if (method === 'dinner' && name === 'cooking') {
+                        return (
+                          <YesNoForm
+                            key={method + name}
+                            question="Did you make dinner today?"
+                            onChange={setDinnerCookingBool}
+                            initialValue={dinnerCookingBool}
+                          />
+                        );
+                      } else {
+                        return <div key={method + name}> Something else </div>;
+                      }
+                    })}
                   </CardContent>
                 </Card>
               );

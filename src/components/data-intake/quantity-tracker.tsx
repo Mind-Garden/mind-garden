@@ -9,6 +9,7 @@ interface QuantityTrackerProps {
   max?: number;
   disabled?: boolean;
   onChange: (value: number) => void;
+  question: string;
 }
 
 export default function QuantityTrackerSimple({
@@ -17,6 +18,7 @@ export default function QuantityTrackerSimple({
   max = 100,
   disabled = false,
   onChange,
+  question,
 }: QuantityTrackerProps) {
   // Handle increment
   const increment = () => {
@@ -33,8 +35,10 @@ export default function QuantityTrackerSimple({
   };
 
   return (
-    <div className="flex flex-col items-center gap-4">
-      <div className="flex items-center gap-3">
+    <div className="flex items-center justify-between py-2 px-3 bg-white/5 backdrop-blur-sm rounded-xl">
+      <span className="text-sm font-medium">{question}</span>
+
+      <div className="flex items-center">
         <Button
           variant="ghost"
           size="icon"
@@ -46,7 +50,7 @@ export default function QuantityTrackerSimple({
           <span className="sr-only">Decrease</span>
         </Button>
 
-        <span className="text-2xl font-medium w-8 text-center">{value}</span>
+        <span className="text-m font-medium w-9 text-center">{value}</span>
 
         <Button
           variant="ghost"
