@@ -1,12 +1,8 @@
 name: 'Run Reminder Job'
 
 on:
-  push:
-
-# on:
-#   schedule:
-#     - cron: '0 * * * *' # Runs every hour, on the hour
-#   workflow_dispatch: # Allows manual triggering from GitHub Actions UI
+  schedule:
+    - cron: '0 * * * *' # Runs every hour, on the hour
 
 jobs:
   run-reminder:
