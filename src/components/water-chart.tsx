@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import LineGraph, { type DataPoint } from '@/components/line-graph';
+import LineGraph, { type DataPoint } from '@/components/ui/line-graph';
 import { selectWaterDataByDateRange } from '@/actions/data-visualization';
 import { getLocalISOString } from '@/lib/utils';
 import { LoaderCircle } from 'lucide-react';
@@ -38,9 +38,9 @@ export default function WaterChart({ userId }: Readonly<WaterChartProps>) {
         const filteredData: DataPoint[] = response.data
           .map((item: any) => ({
             entry_date: item.entry_date,
-            value: item.water, // Map 'water' to 'value'
+            value: item.water,
           }))
-          .filter((item: DataPoint) => item.value !== null); // Filter out null values
+          .filter((item: DataPoint) => item.value !== null);
 
         setData(filteredData);
         setLoading(false);

@@ -231,7 +231,7 @@ function DataIntakeForm({
             </p>
           )}
         </div>
-
+        {/* Emotions Category */}
         {emotionsCategory && (
           <Card
             key={emotionsCategory.id}
@@ -270,6 +270,7 @@ function DataIntakeForm({
 
         {/* Card Grid */}
         <div className={'columns-1 md:columns-2 space-y-4'}>
+          {/* School Category Card */}
           {schoolCategory && (
             <Card
               key={schoolCategory.id}
@@ -327,6 +328,7 @@ function DataIntakeForm({
             </Card>
           )}
 
+          {/* Work Category Card */}
           {workCategory && (
             <Card
               key={workCategory.id}
@@ -384,6 +386,7 @@ function DataIntakeForm({
             </Card>
           )}
 
+          {/* Water Intake Card*/}
           <CounterCard
             title="water"
             description="How many cups of water did you drink today?"

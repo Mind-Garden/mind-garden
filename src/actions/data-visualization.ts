@@ -187,6 +187,13 @@ export async function selectStudyDataByDateRange(
   return { data };
 }
 
+/**
+ *
+ * @param userId - The user ID whose study data needs to be fetched
+ * @param lastMonthDate - start of date range
+ * @param todaysDate - end of date range
+ * @returns a list of dictionaries with entry_date and water (number of cups)
+ */
 export async function selectWaterDataByDateRange(
   userId: string,
   startDate: string,
