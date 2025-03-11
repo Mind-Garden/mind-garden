@@ -1,28 +1,6 @@
-import { NextRequest, NextResponse } from 'next/server';
-import { GET } from '@/app/api/cron/route';
-import {
-  sendReminders,
-  getReminders,
-  updateReminders,
-} from '@/actions/reminders';
+import { getReminders, updateReminders } from '@/actions/reminders';
 import { getSupabaseClient } from '@/supabase/client';
 import { selectData, updateData } from '@/supabase/dbfunctions';
-import sendReminderEmail from '@/lib/email-service';
-import { daysAgo, getLatestDate } from '@/lib/time';
-import {
-  BOTH_FORMS_INCOMPLETE_HTML,
-  BOTH_FORMS_INCOMPLETE_SUBJECT,
-  BOTH_FORMS_INCOMPLETE_TEXT,
-  HABIT_FORM_INCOMPLETE_HTML,
-  HABIT_FORM_INCOMPLETE_SUBJECT,
-  HABIT_FORM_INCOMPLETE_TEXT,
-  JOURNAL_INCOMPLETE_HTML,
-  JOURNAL_INCOMPLETE_SUBJECT,
-  JOURNAL_INCOMPLETE_TEXT,
-  NO_USAGE_HTML,
-  NO_USAGE_SUBJECT,
-  NO_USAGE_TEXT,
-} from '@/lib/email-templates';
 
 jest.mock('@/supabase/dbfunctions');
 jest.mock('@/lib/email-service');
