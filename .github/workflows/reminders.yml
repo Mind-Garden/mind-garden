@@ -3,20 +3,22 @@ name: 'Run Reminder Job'
 on:
   schedule:
     - cron: '0 * * * *' # Runs every hour, on the hour
+  workflow_dispatch:
+
 
 jobs:
   run-reminder:
-      name: Send Reminder to User Emails
-      runs-on: ubuntu-latest
-      
-      strategy:
-        fail-fast: false
+    name: Send Reminder to User Emails
+    runs-on: ubuntu-latest
 
-      steps:
-        - name: Get current UTC hour
-          id: time
-          run: echo "utc_hour=$(date -u +'%H')" >> $GITHUB_ENV
+    strategy:
+      fail-fast: false
 
-        - name: Call Reminder API
-          run: |
-            curl -X GET "https://mindgarden.vercel.app/api/cron?hour=${{ env.utc_hour }}"
+    steps:
+      - name: Get current UTC hour
+        id: time
+        run: echo "utc_hour=$(date -u +'%H')" >> $GITHUB_ENV
+
+      - name: Call Reminder API
+        run: |
+          curl -X GET "https://mindgarden.vercel.app/api/cron?hour=${{ env.utc_hour }}"
