@@ -133,8 +133,10 @@ export async function selectDataByRange(
 
 /**
  *
- * @param userId - The user ID whose mood frequency needs to be fetched
- * @returns a list of dictionaries with scale_rating and count
+ * @param userId - The user ID whose work data needs to be fetched
+ * @param lastMonthDate - start of date range
+ * @param todaysDate - end of date range
+ * @returns a list of dictionaries with entry_date, rating, hours and attributes
  */
 export async function selectWorkDataByDateRange(
   userId: string,
@@ -143,7 +145,6 @@ export async function selectWorkDataByDateRange(
 ) {
   const supabase = getSupabaseClient();
 
-  //retrieve mood frequency data from the database for the past month starting from today
   const { data, error } = await supabase.rpc('get_work_data_attributes', {
     user_id_param: userId,
     start_date_param: lastMonthDate,
@@ -160,8 +161,10 @@ export async function selectWorkDataByDateRange(
 
 /**
  *
- * @param userId - The user ID whose mood frequency needs to be fetched
- * @returns a list of dictionaries with scale_rating and count
+ * @param userId - The user ID whose study data needs to be fetched
+ * @param lastMonthDate - start of date range
+ * @param todaysDate - end of date range
+ * @returns a list of dictionaries with entry_date, rating, hours and attributes
  */
 export async function selectStudyDataByDateRange(
   userId: string,
@@ -170,7 +173,6 @@ export async function selectStudyDataByDateRange(
 ) {
   const supabase = getSupabaseClient();
 
-  //retrieve mood frequency data from the database for the past month starting from today
   const { data, error } = await supabase.rpc('get_study_data_attributes', {
     user_id_param: userId,
     start_date_param: lastMonthDate,
@@ -179,6 +181,32 @@ export async function selectStudyDataByDateRange(
 
   if (error) {
     console.error('Error fetching study data:', error.message);
+    return { error: error.message };
+  }
+
+  return { data };
+}
+
+export async function selectWaterDataByDateRange(
+  userId: string,
+  startDate: string,
+  endDate: string,
+) {
+  const table = 'responses';
+  const columns = ['entry_date', 'water'];
+  const conditions = {
+    user_id: userId,
+  };
+
+  const { data, error } = await selectData(
+    table,
+    conditions,
+    columns,
+    startDate,
+    endDate,
+  );
+
+  if (error) {
     return { error: error.message };
   }
 

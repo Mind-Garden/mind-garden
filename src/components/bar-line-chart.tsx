@@ -91,100 +91,108 @@ export default function BarLineChart({
       </CardHeader>
       <CardContent>
         <div className="h-[400px] w-full">
-          <ResponsiveContainer width="100%" height="100%">
-            <ComposedChart data={data}>
-              <CartesianGrid
-                strokeDasharray="3 3"
-                vertical={false}
-                stroke="grey"
-              />
-              <XAxis dataKey="entry_date" tickLine={false} />
-              <YAxis
-                yAxisId="left"
-                orientation="left"
-                domain={[0, 10]}
-                label={{ value: 'Hours', angle: -90, position: 'insideLeft' }}
-                tickLine={false}
-              />
-              <YAxis
-                yAxisId="right"
-                orientation="right"
-                domain={[0, 5]}
-                label={{ value: 'Rating', angle: 90, position: 'insideRight' }}
-                tickLine={false}
-              />
-              <Tooltip
-                content={({ active, payload }) => {
-                  if (active && payload && payload.length) {
-                    const entry = payload[0].payload;
-                    return (
-                      <div className="rounded-lg border bg-background p-2 shadow-sm">
-                        <div className="grid grid-cols-2 gap-2">
-                          <div className="flex flex-col">
-                            <span className="text-xs text-muted-foreground">
-                              Date
-                            </span>
-                            <span className="font-bold">
-                              {entry.entry_date}
-                            </span>
-                          </div>
-                          <div className="flex flex-col">
-                            <span className="text-xs text-muted-foreground">
-                              {type === 'work'
-                                ? 'Hours Worked'
-                                : 'Hours Studied'}
-                            </span>
-                            <span className="font-bold">
-                              {entry[`${type}_hours`] ?? 'N/A'}
-                            </span>
-                          </div>
-                          <div className="flex flex-col">
-                            <span className="text-xs text-muted-foreground">
-                              Day Rating
-                            </span>
-                            <span className="font-bold">
-                              {entry[`${type}_rating`] !== null
-                                ? `${entry[`${type}_rating`]} / 5`
-                                : 'N/A'}
-                            </span>
-                          </div>
-                          <div className="flex flex-col">
-                            <span className="text-xs text-muted-foreground">
-                              Tags
-                            </span>
-                            <span className="font-bold">
-                              {entry.tags.length > 0
-                                ? entry.tags.join(', ')
-                                : 'None'}
-                            </span>
+          {data.length === 0 ? (
+            <div className="h-16 text-center">No data yet! :( </div>
+          ) : (
+            <ResponsiveContainer width="100%" height="100%">
+              <ComposedChart data={data}>
+                <CartesianGrid
+                  strokeDasharray="3 3"
+                  vertical={false}
+                  stroke="grey"
+                />
+                <XAxis dataKey="entry_date" tickLine={false} />
+                <YAxis
+                  yAxisId="left"
+                  orientation="left"
+                  domain={[0, 10]}
+                  label={{ value: 'Hours', angle: -90, position: 'insideLeft' }}
+                  tickLine={false}
+                />
+                <YAxis
+                  yAxisId="right"
+                  orientation="right"
+                  domain={[0, 5]}
+                  label={{
+                    value: 'Rating',
+                    angle: 90,
+                    position: 'insideRight',
+                  }}
+                  tickLine={false}
+                />
+                <Tooltip
+                  content={({ active, payload }) => {
+                    if (active && payload && payload.length) {
+                      const entry = payload[0].payload;
+                      return (
+                        <div className="rounded-lg border bg-background p-2 shadow-sm">
+                          <div className="grid grid-cols-2 gap-2">
+                            <div className="flex flex-col">
+                              <span className="text-xs text-muted-foreground">
+                                Date
+                              </span>
+                              <span className="font-bold">
+                                {entry.entry_date}
+                              </span>
+                            </div>
+                            <div className="flex flex-col">
+                              <span className="text-xs text-muted-foreground">
+                                {type === 'work'
+                                  ? 'Hours Worked'
+                                  : 'Hours Studied'}
+                              </span>
+                              <span className="font-bold">
+                                {entry[`${type}_hours`] ?? 'N/A'}
+                              </span>
+                            </div>
+                            <div className="flex flex-col">
+                              <span className="text-xs text-muted-foreground">
+                                Day Rating
+                              </span>
+                              <span className="font-bold">
+                                {entry[`${type}_rating`] !== null
+                                  ? `${entry[`${type}_rating`]} / 5`
+                                  : 'N/A'}
+                              </span>
+                            </div>
+                            <div className="flex flex-col">
+                              <span className="text-xs text-muted-foreground">
+                                Tags
+                              </span>
+                              <span className="font-bold">
+                                {entry.tags.length > 0
+                                  ? entry.tags.join(', ')
+                                  : 'None'}
+                              </span>
+                            </div>
                           </div>
                         </div>
-                      </div>
-                    );
-                  }
-                  return null;
-                }}
-              />
-              <Legend />
-              <Bar
-                dataKey={`${type}_hours`}
-                fill="#83e3c6"
-                yAxisId="left"
-                name="Hours Worked"
-                radius={[10, 10, 0, 0]}
-              />
-              <Line
-                type="monotone"
-                dataKey={`${type}_rating`}
-                stroke="#2ebb61"
-                yAxisId="right"
-                name="Satisfaction Rating"
-                strokeWidth={2}
-                dot={{ r: 4 }}
-                activeDot={{ r: 6 }}
-              />
-            </ComposedChart>
-          </ResponsiveContainer>
+                      );
+                    }
+                    return null;
+                  }}
+                />
+                <Legend />
+                <Bar
+                  dataKey={`${type}_hours`}
+                  fill="#83e3c6"
+                  yAxisId="left"
+                  name={type === 'study' ? 'Hours Studied' : 'Hours Worked'}
+                  radius={[10, 10, 0, 0]}
+                />
+                <Line
+                  type="monotone"
+                  dataKey={`${type}_rating`}
+                  stroke="#2ebb61"
+                  yAxisId="right"
+                  name="Satisfaction Rating"
+                  strokeWidth={2}
+                  dot={{ r: 4 }}
+                  activeDot={{ r: 6 }}
+                />
+              </ComposedChart>
+            </ResponsiveContainer>
+          )}
         </div>
 
         <div className="mt-4 flex flex-wrap gap-2">

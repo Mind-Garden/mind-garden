@@ -7,6 +7,7 @@ import MoodFlow from '@/components/mood-flow';
 import MoodBar from '@/components/mood-bar';
 import SleepChart from '@/components/sleep-chart';
 import BarLineChart from '@/components/bar-line-chart';
+import WaterChart from '@/components/water-chart';
 
 export default async function Home() {
   const supabase = await createClient();
@@ -63,6 +64,9 @@ export default async function Home() {
         </div>
         <div className="pt-10 pb-10">
           <BarLineChart userId={userId} type="study" />
+        </div>
+        <div className="pt-10 pb-10">
+          <WaterChart userId={userId} />
         </div>
       </main>
 
