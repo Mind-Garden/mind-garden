@@ -5,6 +5,8 @@ import { redirect } from 'next/navigation';
 
 import { createClient } from '@/supabase/server';
 
+import { insertReminders } from '@/actions/reminders';
+
 export async function login(formData: FormData) {
   const supabase = await createClient();
 
@@ -33,7 +35,7 @@ export async function signup(formData: FormData) {
   const lastNameError = validateName(formData.get('lastName'), 'Last name');
   if (lastNameError) return lastNameError;
 
-  const data = {
+  const userData = {
     email: formData.get('email') as string,
     password: formData.get('password') as string,
     options: {
@@ -44,10 +46,14 @@ export async function signup(formData: FormData) {
     },
   };
 
-  const { error } = await supabase.auth.signUp(data);
+  const { data, error } = await supabase.auth.signUp(userData);
 
   if (error) {
     return { error: error.message };
+  }
+
+  if (data.user?.id) {
+    await insertReminders(data.user?.id);
   }
 
   revalidatePath('/', 'layout');

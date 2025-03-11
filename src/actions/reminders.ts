@@ -1,4 +1,4 @@
-import { selectData, updateData } from '@/supabase/dbfunctions';
+import { selectData, insertData, updateData } from '@/supabase/dbfunctions';
 import { IReminders } from '@/supabase/schema';
 
 export async function getReminders(userId: string): Promise<IReminders | null> {
@@ -12,6 +12,26 @@ export async function getReminders(userId: string): Promise<IReminders | null> {
   }
 
   return data[0] as unknown as IReminders;
+}
+
+export async function insertReminders(userId: string): Promise<void> {
+  const { error } = await insertData(
+    'reminders',
+    [
+      {
+        user_id: userId,
+        reminder_time: '07:00',
+        journal_reminders: false,
+        data_intake_reminders: false,
+        activity_reminders: false,
+      },
+    ],
+    false,
+  );
+
+  if (error) {
+    console.error('Error inserting reminder:', error);
+  }
 }
 
 export async function updateReminders(
