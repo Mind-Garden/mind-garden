@@ -5,7 +5,6 @@ import { selectMoodFrequency } from '@/actions/data-visualization';
 import { useState, useEffect } from 'react';
 import { getLocalISOString } from '@/lib/utils';
 import { MoodCountData, MoodDistribution } from '@/supabase/schema';
-import ScaleIcon from './data-intake/scale-icon';
 
 // Define mood types with their properties
 const moodTypes = [
