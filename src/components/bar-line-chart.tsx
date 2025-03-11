@@ -20,6 +20,7 @@ import {
   CardTitle,
 } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
+import { LoaderCircle } from 'lucide-react';
 
 import { getLocalISOString } from '@/lib/utils';
 import { selectDataByRange } from '@/actions/data-visualization';
@@ -33,49 +34,50 @@ interface BarLineDataPoint {
 
 interface BarLineChartProps {
   userId: string;
-  type: string;
 }
 
-export default function BarLineChart({
-  userId,
-  type,
-}: Readonly<BarLineChartProps>) {
+export default function BarLineChart({ userId }: Readonly<BarLineChartProps>) {
   const [data, setData] = useState<BarLineDataPoint[]>([]);
+  const [type, setType] = useState('work');
+  const [loading, setLoading] = useState(true);
 
   const todaysDate = getLocalISOString();
   const lastMonthDate = getLocalISOString(
     new Date(new Date().setMonth(new Date().getMonth() - 1)),
   );
 
+  const fetchData = async () => {
+    setLoading(true);
+    const response = await selectDataByRange(
+      userId,
+      lastMonthDate,
+      todaysDate,
+      type,
+    );
+    if (
+      Array.isArray(response) &&
+      response.every(
+        (item: any) =>
+          'entry_date' in item &&
+          ((type === 'work' && 'work_rating' in item && 'work_hours' in item) ||
+            (type === 'study' &&
+              'study_rating' in item &&
+              'study_hours' in item)) &&
+          'tags' in item,
+      )
+    ) {
+      setData(response);
+      setLoading(false);
+    } else {
+      console.error('Unexpected response data format', response);
+    }
+  };
+
   useEffect(() => {
-    const fetchData = async () => {
-      // Fetch sleep data from the last month
-      const response = await selectDataByRange(
-        userId,
-        lastMonthDate,
-        todaysDate,
-        type,
-      );
-      console.log(response);
-      if (
-        Array.isArray(response) &&
-        response.every(
-          (item: any) =>
-            'entry_date' in item &&
-            ((type === 'work' &&
-              'work_rating' in item &&
-              'work_hours' in item) ||
-              (type === 'study' &&
-                'study_rating' in item &&
-                'study_hours' in item)) &&
-            'tags' in item,
-        )
-      ) {
-        setData(response);
-      } else {
-        console.error('Unexpected response data format', response);
-      }
-    };
+    fetchData();
+  }, [type]);
+
+  useEffect(() => {
     fetchData();
   }, []);
 
@@ -91,7 +93,11 @@ export default function BarLineChart({
       </CardHeader>
       <CardContent>
         <div className="h-[400px] w-full">
-          {data.length === 0 ? (
+          {loading ? (
+            <div className="flex items-center justify-center h-[400px]">
+              <LoaderCircle className="h-12 w-12 text-gray-500 animate-spin" />
+            </div>
+          ) : data.length === 0 ? (
             <div className="h-16 text-center">No data yet! :( </div>
           ) : (
             <ResponsiveContainer width="100%" height="100%">
@@ -196,14 +202,21 @@ export default function BarLineChart({
         </div>
 
         <div className="mt-4 flex flex-wrap gap-2">
-          <Button variant="outline" size="sm" className="text-xs">
-            Last 7 Days
+          <Button
+            variant="outline"
+            size="sm"
+            className="text-xs"
+            onClick={() => setType('work')}
+          >
+            Work
           </Button>
-          <Button variant="outline" size="sm" className="text-xs">
-            Last 30 Days
-          </Button>
-          <Button variant="outline" size="sm" className="text-xs">
-            This Month
+          <Button
+            variant="outline"
+            size="sm"
+            className="text-xs"
+            onClick={() => setType('study')}
+          >
+            School
           </Button>
         </div>
       </CardContent>

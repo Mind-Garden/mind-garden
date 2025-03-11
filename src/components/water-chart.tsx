@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import LineGraph, { type DataPoint } from '@/components/line-graph';
 import { selectWaterDataByDateRange } from '@/actions/data-visualization';
 import { getLocalISOString } from '@/lib/utils';
+import { LoaderCircle } from 'lucide-react';
 
 interface WaterChartProps {
   userId: string;
@@ -54,10 +55,12 @@ export default function WaterChart({ userId }: Readonly<WaterChartProps>) {
   return (
     <div className="container mx-auto py-8">
       {loading ? (
-        <div className="flex h-[300px] items-center justify-center rounded-lg border bg-card">
-          <p>Loading data...</p>
+        <div className="flex items-center justify-center h-[400px]">
+          <LoaderCircle className="h-12 w-12 text-gray-500 animate-spin" />
         </div>
-      ) : data.length > 0 ? (
+      ) : !data || data.length === 0 ? (
+        <div className="h-16 text-center">No data yet! :( </div>
+      ) : (
         <LineGraph
           data={data}
           title="Water Intake History"
@@ -65,10 +68,6 @@ export default function WaterChart({ userId }: Readonly<WaterChartProps>) {
           tooltipLabel="Cups of Water"
           color="hsl(215, 70%, 60%)"
         />
-      ) : (
-        <div className="flex h-[300px] items-center justify-center rounded-lg border bg-card">
-          <p>No data available for the selected period.</p>
-        </div>
       )}
     </div>
   );

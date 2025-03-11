@@ -9,7 +9,7 @@ import {
   Tooltip,
   CartesianGrid,
 } from 'recharts';
-import { Card, CardContent } from '@/components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 
 export interface DataPoint {
   entry_date: string;
@@ -57,9 +57,11 @@ export default function LineGraph({
   height = 300,
 }: LineGraphProps) {
   return (
-    <div className="w-full rounded-lg border bg-card p-4 shadow-sm">
-      {title && <h3 className="mb-4 text-lg font-medium">{title}</h3>}
-      <div className={`h-[${height}px]`}>
+    <Card className="bg-white/50 break-inside-avoid backdrop-blur-sm rounded-2xl border-none mb-6 relative transition-opacity">
+      <CardHeader className="pb-3">
+        <CardTitle className="text-3xl text-center">{title}</CardTitle>
+      </CardHeader>
+      <CardContent className="h-[400px]">
         <ResponsiveContainer width="100%" height="100%">
           <LineChart
             data={data}
@@ -99,7 +101,7 @@ export default function LineGraph({
             />
           </LineChart>
         </ResponsiveContainer>
-      </div>
-    </div>
+      </CardContent>
+    </Card>
   );
 }

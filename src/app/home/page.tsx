@@ -60,10 +60,7 @@ export default async function Home() {
           <SleepChart userId={userId} />
         </div>
         <div className="pt-10 pb-10">
-          <BarLineChart userId={userId} type="work" />
-        </div>
-        <div className="pt-10 pb-10">
-          <BarLineChart userId={userId} type="study" />
+          <BarLineChart userId={userId} />
         </div>
         <div className="pt-10 pb-10">
           <WaterChart userId={userId} />
