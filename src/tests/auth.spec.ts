@@ -371,6 +371,29 @@ describe('Auth Functions', () => {
       });
       expect(mockSupabaseClient.from).not.toHaveBeenCalled();
     });
+
+    it('should return email error when invalid email is provided', async () => {
+      const result = await modifyAccount(
+        'John',
+        'Smith',
+        'invalid-email',
+        'user123',
+      );
+
+      expect(result).toEqual({
+        error: 'Invalid email format',
+      });
+      expect(mockSupabaseClient.from).not.toHaveBeenCalled();
+    });
+
+    it('should return email is required error when email is not provided', async () => {
+      const result = await modifyAccount('John', 'Smith', '', 'user123');
+
+      expect(result).toEqual({
+        error: 'Email is required',
+      });
+      expect(mockSupabaseClient.from).not.toHaveBeenCalled();
+    });
   });
 
   describe('modifyPassword', () => {

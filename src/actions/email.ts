@@ -31,8 +31,6 @@ export async function sendReminders(reminderTime: string): Promise<void> {
     },
   );
 
-  console.log('data:', data);
-
   if (error) {
     console.error('Failed to fetch reminders:', error);
     return;
