@@ -4,7 +4,7 @@ import { Card, CardDescription, CardTitle } from '@/components/ui/card';
 import { selectMoodFrequency } from '@/actions/data-visualization';
 import { useState, useEffect } from 'react';
 import { getLocalISOString } from '@/lib/utils';
-import ScaleIcon from './data-intake/scale-icon';
+import { MoodCountData, MoodDistribution } from '@/supabase/schema';
 
 // Define mood types with their properties
 const moodTypes = [
@@ -39,16 +39,6 @@ const moodTypes = [
     label: 'Terrible',
   },
 ];
-
-interface MoodDistribution {
-  id: string;
-  percentage: number;
-}
-
-interface MoodCountData {
-  scale_rating: number;
-  count: number;
-}
 
 interface MoodBarProps {
   // Array of mood distribution data with id and percentage

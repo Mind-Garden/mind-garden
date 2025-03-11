@@ -1,5 +1,4 @@
 import { clsx, type ClassValue } from 'clsx';
-import { get } from 'http';
 import { twMerge } from 'tailwind-merge';
 
 export function cn(...inputs: ClassValue[]) {
@@ -99,3 +98,24 @@ export function getGreetingText(): string {
 
   return greetingText;
 }
+
+export function getTimeElapsed(start: Date, end: Date): number {
+  return Math.round((end.getTime() - start.getTime()) / 1000);
+}
+
+export const getTimeDifference = (start: string, end: string): number => {
+  const startTime = convertTo24Hour(start);
+  const endTime = convertTo24Hour(end);
+
+  let duration = endTime - startTime;
+  if (duration < 0) duration += 24; // Handle overnight durations
+
+  return duration;
+};
+
+export const getAverageTimeElapsed = (times: number[]): number => {
+  if (times.length === 0) return 0;
+
+  const total = times.reduce((sum, time) => sum + time, 0);
+  return total / times.length;
+};
