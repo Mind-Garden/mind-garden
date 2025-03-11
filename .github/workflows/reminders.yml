@@ -1,7 +1,6 @@
 name: 'Run Reminder Job'
 
 on:
-  push:
   schedule:
     - cron: '0 * * * *' # Runs every hour, on the hour
   workflow_dispatch:
@@ -16,6 +15,12 @@ jobs:
       fail-fast: false
 
     steps:
+      - name: Create .env File
+        run: |
+          echo "SMTP_EMAIL=${{ secrets.SMTP_EMAIL }}" >> .env
+          echo "SMTP_PASSWORD=${{ secrets.SMTP_PASSWORD }}" >> .env
+        shell: bash
+
       - name: Get current UTC hour
         id: time
         run: echo "utc_hour=$(date -u +'%H')" >> $GITHUB_ENV
