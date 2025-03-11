@@ -53,8 +53,6 @@ export default function WaterChart({ userId }: Readonly<WaterChartProps>) {
 
   return (
     <div className="container mx-auto py-8">
-      <h1 className="mb-6 text-2xl font-bold">Tracking Dashboard</h1>
-
       {loading ? (
         <div className="flex h-[300px] items-center justify-center rounded-lg border bg-card">
           <p>Loading data...</p>
@@ -62,11 +60,10 @@ export default function WaterChart({ userId }: Readonly<WaterChartProps>) {
       ) : data.length > 0 ? (
         <LineGraph
           data={data}
-          title="Data Tracking - Last 30 Days"
-          yAxisLabel="Value"
-          tooltipLabel="Value"
+          title="Water Intake History"
+          yAxisLabel="Cups of Water"
+          tooltipLabel="Cups of Water"
           color="hsl(215, 70%, 60%)"
-          valueFormatter={(value) => `${value.toFixed(1)}`}
         />
       ) : (
         <div className="flex h-[300px] items-center justify-center rounded-lg border bg-card">

@@ -25,10 +25,9 @@ export interface LineGraphProps {
   tooltipLabel?: string;
   showGrid?: boolean;
   height?: number;
-  valueFormatter?: (value: number) => string;
 }
 
-const CustomTooltip = ({ active, payload, label, valueFormatter }: any) => {
+const CustomTooltip = ({ active, payload, label, tooltipLabel }: any) => {
   if (active && payload && payload.length) {
     return (
       <Card>
@@ -37,7 +36,7 @@ const CustomTooltip = ({ active, payload, label, valueFormatter }: any) => {
             {new Date(label).toLocaleDateString()}
           </p>
           <p className="text-sm text-muted-foreground">
-            Value: {valueFormatter(payload[0].value)}
+            {tooltipLabel}: {payload[0].value}
           </p>
         </CardContent>
       </Card>
@@ -56,7 +55,6 @@ export default function LineGraph({
   tooltipLabel = 'Value',
   showGrid = true,
   height = 300,
-  valueFormatter = (value: number) => `${value}`,
 }: LineGraphProps) {
   return (
     <div className="w-full rounded-lg border bg-card p-4 shadow-sm">
@@ -75,15 +73,9 @@ export default function LineGraph({
             {showGrid && (
               <CartesianGrid strokeDasharray="3 3" vertical={false} />
             )}
-            <XAxis
-              dataKey="entry_date"
-              tickLine={false}
-              axisLine={false}
-              tickMargin={8}
-            />
+            <XAxis dataKey="entry_date" tickLine={false} tickMargin={8} />
             <YAxis
               tickLine={false}
-              axisLine={false}
               tickMargin={8}
               label={{
                 value: yAxisLabel,
@@ -92,9 +84,7 @@ export default function LineGraph({
                 style: { textAnchor: 'middle' },
               }}
             />
-            <Tooltip
-              content={<CustomTooltip valueFormatter={valueFormatter} />}
-            />
+            <Tooltip content={<CustomTooltip tooltipLabel={tooltipLabel} />} />
             <Line
               type="monotone"
               dataKey="value"
