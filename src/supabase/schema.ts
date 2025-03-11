@@ -30,9 +30,10 @@ export interface IResponses {
   attribute_ids?: Array<string>;
   entry_date: string;
   water: number;
-  study: number;
   work_hours: number;
   work_rating: number;
+  study_hours: number;
+  study_rating: number;
 }
 
 export interface IAttributes {

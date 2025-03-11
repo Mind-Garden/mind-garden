@@ -40,7 +40,8 @@ function DataIntakeForm({
   const [scaleSelection, setScaleSelection] = useState<number | null>(null);
   const [scaleError, setScaleError] = useState(false);
   const [water, setWater] = useState<number | null>(null);
-  const [study, setStudy] = useState<number | null>(null);
+  const [studyHours, setStudyHours] = useState<number | null>(null);
+  const [studyRating, setStudyRating] = useState<number | null>(null);
   const [workHours, setWorkHours] = useState<number | null>(null);
   const [workRating, setWorkRating] = useState<number | null>(null);
 
@@ -62,7 +63,8 @@ function DataIntakeForm({
       setResponseId(response?.id ?? null);
       setCompletedForm(!!response);
       setWater(response?.water ?? null);
-      setStudy(response?.study ?? null);
+      setStudyHours(response?.study_hours ?? null);
+      setStudyRating(response?.study_rating ?? null);
       setWorkHours(response?.work_hours ?? null);
       setWorkRating(response?.work_rating ?? null);
     } catch (err) {
@@ -121,9 +123,10 @@ function DataIntakeForm({
           userId,
           scaleSelection,
           water,
-          study,
           workHours,
           workRating,
+          studyHours,
+          studyRating,
         );
       } else {
         // Update if both responses already exist
@@ -133,9 +136,10 @@ function DataIntakeForm({
           userId,
           scaleSelection,
           water,
-          study,
           workHours,
           workRating,
+          studyHours,
+          studyRating,
         );
       }
       await fetchResponses();
@@ -284,9 +288,20 @@ function DataIntakeForm({
               <CardContent>
                 <div className="space-y-3 pt-4 pb-4">
                   <Counter
-                    value={study ?? 0}
-                    onChange={setStudy}
+                    value={studyHours ?? 0}
+                    onChange={setStudyHours}
                     disabled={submitting || !scaleSelection}
+                  />
+                </div>
+                <div className="space-y-3 border-t pt-4 pb-4">
+                  <label className="text-sm font-medium">
+                    {'How would you rate your school day?'}
+                  </label>
+                  <RatingScale
+                    value={studyRating ?? 0}
+                    onChange={setStudyRating}
+                    leftLabel="Poor"
+                    rightLabel="Excellent"
                   />
                 </div>
                 <div className="flex flex-wrap justify-center gap-2 border-t pt-4">
@@ -311,13 +326,7 @@ function DataIntakeForm({
               </CardContent>
             </Card>
           )}
-          <CounterCard
-            title="water"
-            description="How many cups of water did you drink today?"
-            value={water ?? 0}
-            onChange={setWater}
-            disabled={submitting || !scaleSelection}
-          />
+
           {workCategory && (
             <Card
               key={workCategory.id}
@@ -374,6 +383,14 @@ function DataIntakeForm({
               </CardContent>
             </Card>
           )}
+
+          <CounterCard
+            title="water"
+            description="How many cups of water did you drink today?"
+            value={water ?? 0}
+            onChange={setWater}
+            disabled={submitting || !scaleSelection}
+          />
         </div>
       </div>
     </div>

@@ -70,9 +70,10 @@ export async function insertResponses(
   userId: string,
   scaleRating: number,
   amountWater?: number | null,
-  hoursStudied?: number | null,
   workHours?: number | null,
   workRating?: number | null,
+  studyHours?: number | null,
+  studyRating?: number | null,
 ): Promise<void> {
   const responseData: any = {
     user_id: userId,
@@ -82,7 +83,8 @@ export async function insertResponses(
 
   // Add nullable fields only if they are provided (not undefined)
   if (amountWater !== undefined) responseData.water = amountWater;
-  if (hoursStudied !== undefined) responseData.study = hoursStudied;
+  if (studyHours !== undefined) responseData.study_hours = studyHours;
+  if (studyRating !== undefined) responseData.study_rating = studyRating;
   if (workHours !== undefined) responseData.work_hours = workHours;
   if (workRating !== undefined) responseData.work_rating = workRating;
 
@@ -106,9 +108,10 @@ export async function updateResponses(
   userId: string,
   scaleRating: number,
   amountWater?: number | null,
-  hoursStudied?: number | null,
   workHours?: number | null,
   workRating?: number | null,
+  studyHours?: number | null,
+  studyRating?: number | null,
 ): Promise<void> {
   const entryDate = getLocalISOString();
 
@@ -118,9 +121,10 @@ export async function updateResponses(
   };
 
   if (amountWater !== undefined) updateFields.water = amountWater;
-  if (hoursStudied !== undefined) updateFields.study = hoursStudied;
   if (workHours !== undefined) updateFields.work_hours = workHours;
   if (workRating !== undefined) updateFields.work_rating = workRating;
+  if (studyHours !== undefined) updateFields.study_hours = studyHours;
+  if (studyRating !== undefined) updateFields.study_rating = studyRating;
 
   const { error } = await updateData(
     'responses',

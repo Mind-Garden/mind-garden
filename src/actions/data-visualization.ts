@@ -94,6 +94,43 @@ export async function selectSleepDataByDateRange(
   return { data };
 }
 
+const barLineFunctionary: Record<
+  string,
+  (
+    userId: string,
+    lastMonthDate: string,
+    todaysDate: string,
+  ) => Promise<{ data: any; error?: string } | { error: string }>
+> = {
+  work: selectWorkDataByDateRange,
+  study: selectStudyDataByDateRange,
+};
+
+function hasData(result: any): result is { data: any } {
+  return 'data' in result && result.data !== undefined;
+}
+
+export async function selectDataByRange(
+  userId: string,
+  lastMonthDate: string,
+  todaysDate: string,
+  type: string,
+): Promise<any> {
+  const functionToCall = barLineFunctionary[type];
+
+  if (!functionToCall) {
+    throw new Error('Invalid query type');
+  }
+
+  const result = await functionToCall(userId, lastMonthDate, todaysDate);
+
+  if (!hasData(result)) {
+    throw new Error(`Error fetching data: ${result.error}`);
+  }
+
+  return result.data;
+}
+
 /**
  *
  * @param userId - The user ID whose mood frequency needs to be fetched
@@ -115,6 +152,33 @@ export async function selectWorkDataByDateRange(
 
   if (error) {
     console.error('Error fetching work data:', error.message);
+    return { error: error.message };
+  }
+
+  return { data };
+}
+
+/**
+ *
+ * @param userId - The user ID whose mood frequency needs to be fetched
+ * @returns a list of dictionaries with scale_rating and count
+ */
+export async function selectStudyDataByDateRange(
+  userId: string,
+  lastMonthDate: string,
+  todaysDate: string,
+) {
+  const supabase = getSupabaseClient();
+
+  //retrieve mood frequency data from the database for the past month starting from today
+  const { data, error } = await supabase.rpc('get_study_data_attributes', {
+    user_id_param: userId,
+    start_date_param: lastMonthDate,
+    end_date_param: todaysDate,
+  });
+
+  if (error) {
+    console.error('Error fetching study data:', error.message);
     return { error: error.message };
   }
 

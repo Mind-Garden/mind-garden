@@ -22,21 +22,25 @@ import {
 import { Button } from '@/components/ui/button';
 
 import { getLocalISOString } from '@/lib/utils';
-import { selectWorkDataByDateRange } from '@/actions/data-visualization';
+import { selectDataByRange } from '@/actions/data-visualization';
 
-interface WorkDataPoint {
+interface BarLineDataPoint {
   entry_date: string;
-  work_rating: number;
-  work_hours: number;
+  rating: number;
+  hours: number;
   tags: Array<string>;
 }
 
-interface WorkChartProps {
+interface BarLineChartProps {
   userId: string;
+  type: string;
 }
 
-export default function WorkChart({ userId }: Readonly<WorkChartProps>) {
-  const [workData, setWorkData] = useState<WorkDataPoint[]>([]);
+export default function BarLineChart({
+  userId,
+  type,
+}: Readonly<BarLineChartProps>) {
+  const [data, setData] = useState<BarLineDataPoint[]>([]);
 
   const todaysDate = getLocalISOString();
   const lastMonthDate = getLocalISOString(
@@ -44,45 +48,51 @@ export default function WorkChart({ userId }: Readonly<WorkChartProps>) {
   );
 
   useEffect(() => {
-    const fetchSleepData = async () => {
+    const fetchData = async () => {
       // Fetch sleep data from the last month
-      const response = await selectWorkDataByDateRange(
+      const response = await selectDataByRange(
         userId,
         lastMonthDate,
         todaysDate,
+        type,
       );
       console.log(response);
       if (
-        Array.isArray(response.data) &&
-        response.data.every(
-          (item) =>
+        Array.isArray(response) &&
+        response.every(
+          (item: any) =>
             'entry_date' in item &&
-            'work_rating' in item &&
-            'work_hours' in item &&
+            ((type === 'work' &&
+              'work_rating' in item &&
+              'work_hours' in item) ||
+              (type === 'study' &&
+                'study_rating' in item &&
+                'study_hours' in item)) &&
             'tags' in item,
         )
       ) {
-        const workData = response.data as WorkDataPoint[];
-        setWorkData(workData);
+        setData(response);
       } else {
-        console.error('Unexpected response data format', response.data);
+        console.error('Unexpected response data format', response);
       }
     };
-    fetchSleepData();
+    fetchData();
   }, []);
 
   return (
     <Card className="bg-white/50 break-inside-avoid backdrop-blur-sm rounded-2xl border-none mb-6 relative transition-opacity">
       <CardHeader className="pb-3">
-        <CardTitle className="text-3xl text-center">Work Hours</CardTitle>
+        <CardTitle className="text-3xl text-center">
+          {type === 'study' ? 'school day' : `${type} day`}
+        </CardTitle>
         <CardDescription className="text-center">
-          Visualizing your work hours and satisfaction ratings{' '}
+          Visualizing your {type} hours and satisfaction ratings{' '}
         </CardDescription>
       </CardHeader>
       <CardContent>
         <div className="h-[400px] w-full">
           <ResponsiveContainer width="100%" height="100%">
-            <ComposedChart data={workData}>
+            <ComposedChart data={data}>
               <CartesianGrid
                 strokeDasharray="3 3"
                 vertical={false}
@@ -106,6 +116,7 @@ export default function WorkChart({ userId }: Readonly<WorkChartProps>) {
               <Tooltip
                 content={({ active, payload }) => {
                   if (active && payload && payload.length) {
+                    const entry = payload[0].payload;
                     return (
                       <div className="rounded-lg border bg-background p-2 shadow-sm">
                         <div className="grid grid-cols-2 gap-2">
@@ -114,24 +125,26 @@ export default function WorkChart({ userId }: Readonly<WorkChartProps>) {
                               Date
                             </span>
                             <span className="font-bold">
-                              {payload[0].payload.entry_date}
+                              {entry.entry_date}
                             </span>
                           </div>
                           <div className="flex flex-col">
                             <span className="text-xs text-muted-foreground">
-                              Hours
+                              {type === 'work'
+                                ? 'Hours Worked'
+                                : 'Hours Studied'}
                             </span>
                             <span className="font-bold">
-                              {payload[0].payload.work_hours ?? 'N/A'}
+                              {entry[`${type}_hours`] ?? 'N/A'}
                             </span>
                           </div>
                           <div className="flex flex-col">
                             <span className="text-xs text-muted-foreground">
-                              Rating
+                              Day Rating
                             </span>
                             <span className="font-bold">
-                              {payload[0].payload.work_rating !== null
-                                ? `${payload[0].payload.work_rating}/5`
+                              {entry[`${type}_rating`] !== null
+                                ? `${entry[`${type}_rating`]} / 5`
                                 : 'N/A'}
                             </span>
                           </div>
@@ -140,8 +153,8 @@ export default function WorkChart({ userId }: Readonly<WorkChartProps>) {
                               Tags
                             </span>
                             <span className="font-bold">
-                              {payload[0].payload.tags.length > 0
-                                ? payload[0].payload.tags.join(', ')
+                              {entry.tags.length > 0
+                                ? entry.tags.join(', ')
                                 : 'None'}
                             </span>
                           </div>
@@ -154,7 +167,7 @@ export default function WorkChart({ userId }: Readonly<WorkChartProps>) {
               />
               <Legend />
               <Bar
-                dataKey="work_hours"
+                dataKey={`${type}_hours`}
                 fill="#83e3c6"
                 yAxisId="left"
                 name="Hours Worked"
@@ -162,7 +175,7 @@ export default function WorkChart({ userId }: Readonly<WorkChartProps>) {
               />
               <Line
                 type="monotone"
-                dataKey="work_rating"
+                dataKey={`${type}_rating`}
                 stroke="#2ebb61"
                 yAxisId="right"
                 name="Satisfaction Rating"
