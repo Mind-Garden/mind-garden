@@ -1,0 +1,33 @@
+name: 'Run Reminder Job'
+
+on:
+  schedule:
+    - cron: '0 * * * *' # Runs every hour, on the hour
+  workflow_dispatch: # Allows manual triggering from GitHub Actions UI
+
+jobs:
+  run-reminder:
+      name: Send Reminder to User Emails
+      runs-on: ubuntu-latest
+      permissions:
+        # required for all workflows
+        security-events: write
+
+        # required to fetch internal or private CodeQL packs
+        packages: read
+
+        # only required for workflows in private repositories
+        actions: read
+        contents: read
+      
+      strategy:
+        fail-fast: false
+
+      steps:
+        - name: Get current UTC hour
+          id: time
+          run: echo "utc_hour=$(date -u +'%H')" >> $GITHUB_ENV
+
+        - name: Call Reminder API
+          run: |
+            curl -X GET "https://mindgarden.vercel.app/api/cron?hour=${{ env.utc_hour }}"
