@@ -1,4 +1,4 @@
-require('dotenv').config({ path: '.env.test' });
+require('dotenv').config({ path: '.env' });
 
 import { createClient } from '@supabase/supabase-js';
 
