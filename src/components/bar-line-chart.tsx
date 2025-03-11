@@ -16,6 +16,7 @@ import {
   Card,
   CardContent,
   CardDescription,
+  CardFooter,
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
@@ -200,7 +201,8 @@ export default function BarLineChart({ userId }: Readonly<BarLineChartProps>) {
             </ResponsiveContainer>
           )}
         </div>
-
+      </CardContent>
+      <CardFooter>
         <div className="mt-4 flex flex-wrap gap-2">
           <Button
             variant="outline"
@@ -219,7 +221,7 @@ export default function BarLineChart({ userId }: Readonly<BarLineChartProps>) {
             School
           </Button>
         </div>
-      </CardContent>
+      </CardFooter>
     </Card>
   );
 }
