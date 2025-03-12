@@ -248,7 +248,7 @@ export default function HabitHeatmapGrid({ userId }: HeatmapProps) {
   return (
     <div className="w-full max-w-3xl mx-auto p-4">
       <div className="flex items-center justify-between mb-6">
-        <h2 className="text-2xl font-bold">Habit Tracker</h2>
+        <h2 className="text-2xl font-bold">Added Habit Tracker</h2>
         <div className="flex items-center space-x-4">
           <Button variant="outline" size="icon" onClick={previousMonth}>
             <ChevronLeft className="h-4 w-4" />

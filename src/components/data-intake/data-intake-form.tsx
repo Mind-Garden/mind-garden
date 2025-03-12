@@ -74,7 +74,6 @@ function DataIntakeForm({
   const [dinnerCookingBool, setDinnerCookingBool] = useState<boolean | null>(
     null,
   );
-  // const smoking = 0;
 
   const setVars = async (
     trackingMethod: Record<string, any>,
