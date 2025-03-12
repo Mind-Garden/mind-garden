@@ -69,14 +69,26 @@ export async function insertResponses(
   attributeIds: Set<string>,
   userId: string,
   scaleRating: number,
+  amountWater?: number | null,
+  workHours?: number | null,
+  workRating?: number | null,
+  studyHours?: number | null,
+  studyRating?: number | null,
 ): Promise<void> {
-  const { error } = await insertData('responses', [
-    {
-      user_id: userId,
-      attribute_ids: Array.from(attributeIds),
-      scale_rating: scaleRating,
-    },
-  ]);
+  const responseData: any = {
+    user_id: userId,
+    attribute_ids: Array.from(attributeIds),
+    scale_rating: scaleRating,
+  };
+
+  // Add nullable fields only if they are provided (not undefined)
+  if (amountWater !== undefined) responseData.water = amountWater;
+  if (studyHours !== undefined) responseData.study_hours = studyHours;
+  if (studyRating !== undefined) responseData.study_rating = studyRating;
+  if (workHours !== undefined) responseData.work_hours = workHours;
+  if (workRating !== undefined) responseData.work_rating = workRating;
+
+  const { error } = await insertData('responses', [responseData]);
 
   if (error) {
     console.error('Error inserting response:', error);
@@ -95,13 +107,29 @@ export async function updateResponses(
   attributeIds: Set<string>,
   userId: string,
   scaleRating: number,
+  amountWater?: number | null,
+  workHours?: number | null,
+  workRating?: number | null,
+  studyHours?: number | null,
+  studyRating?: number | null,
 ): Promise<void> {
   const entryDate = getLocalISOString();
+
+  const updateFields: Record<string, any> = {
+    attribute_ids: Array.from(attributeIds),
+    scale_rating: scaleRating,
+  };
+
+  if (amountWater !== undefined) updateFields.water = amountWater;
+  if (workHours !== undefined) updateFields.work_hours = workHours;
+  if (workRating !== undefined) updateFields.work_rating = workRating;
+  if (studyHours !== undefined) updateFields.study_hours = studyHours;
+  if (studyRating !== undefined) updateFields.study_rating = studyRating;
 
   const { error } = await updateData(
     'responses',
     { id: responseId, user_id: userId, entry_date: entryDate },
-    { attribute_ids: Array.from(attributeIds), scale_rating: scaleRating },
+    updateFields,
   );
 
   if (error) {
@@ -119,6 +147,7 @@ export async function insertSleepEntry(
   startTime: string,
   endTime: string,
   userId: string,
+  sleepQuality: number,
 ) {
   // Validate inputs
   if (!startTime.trim() || !endTime.trim()) {
@@ -133,6 +162,7 @@ export async function insertSleepEntry(
       entry_date: entryDate,
       start: startTime,
       end: endTime,
+      quality: sleepQuality,
     },
   ]);
 }
@@ -173,12 +203,13 @@ export async function updateSleepEntry(
   entryId: string,
   startTime: string,
   endTime: string,
+  sleepQuality: number,
 ) {
   if (!startTime.trim() || !endTime.trim()) return; // Prevent empty entries
 
   return await updateData(
     'sleep_entries',
     { id: entryId },
-    { start: startTime, end: endTime },
+    { start: startTime, end: endTime, quality: sleepQuality },
   );
 }
