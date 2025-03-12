@@ -277,6 +277,7 @@ export async function addResp(
     {
       user_id: userId,
       habit: habit,
+      entry_date: entryDate,
     },
     ['habit', 'tracking_method'],
   );
@@ -286,7 +287,6 @@ export async function addResp(
   } else {
     if (data && data.length != 0) {
       //update
-      console.log(trackingValue);
       const { error } = await updateData(
         'added_habit_responses',
         { user_id: userId, habit: habit, entry_date: entryDate },
@@ -309,4 +309,23 @@ export async function addResp(
 
     return 'success';
   }
+}
+
+export async function getAllAddedRespCategory(
+  userId: string,
+  category: string,
+) {
+  const { data, error } = await selectData<IAddedResp>(
+    'added_habit_responses',
+    {
+      user_id: userId,
+      habit: category,
+    },
+  );
+  console.log('db:' + data);
+  if (error) {
+    console.error('Error selecting added habit responses:', error.message);
+    return null;
+  }
+  return data as unknown as IAddedResp[];
 }

@@ -8,7 +8,6 @@ import {
   updateResponses,
   addUserHabit, // New function to add habits to user's list
   getAddedCategories,
-  insertAddedResp,
   getAddedResp,
   addResp,
 } from '@/actions/data-intake';
@@ -120,9 +119,7 @@ function DataIntakeForm({
       );
 
       const addedResponse = await getAddedResp(userId, getLocalISOString());
-      console.log(getLocalISOString());
       if (addedResponse) {
-        console.log(addedResponse);
         for (const resp of addedResponse) {
           const name = personalizedCategories.find(
             (cat) => cat.id == resp.habit,
