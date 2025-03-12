@@ -189,9 +189,10 @@ export async function addUserHabit(
     console.error('Error selecting added habit:', selectError);
   }
   if (!selectError) {
-    if (data && data.length != 0) {
-      for (const i in data[0].tracking_method) {
-        if (data[0].tracking_method[i] == trackingMethod) {
+    if (data && data.length != 0 && 'tracking_method' in data[0]) {
+      const tracking_method = data[0].tracking_method as string[];
+      for (const i in tracking_method) {
+        if (tracking_method[i] == trackingMethod) {
           //already exists
           return 'duplicate';
         }
@@ -201,7 +202,7 @@ export async function addUserHabit(
       const { error } = await updateData(
         'added_habit',
         { user_id: userId, added_habit: categoryId },
-        { tracking_method: [...data[0].tracking_method, trackingMethod] },
+        { tracking_method: [...tracking_method, trackingMethod] },
       );
       return 'success';
     }
