@@ -92,29 +92,28 @@ export default function Dashboard({ userId }: DashboardProps) {
             >
               Settings →
             </Button>
-      {/* Reminders */}
-      <Card className="p-5 bg-white/50 dark:bg-black/20 backdrop-blur-sm rounded-2xl border-none shadow-lg hover:shadow-xl transition-transform hover:scale-105">
-        <div className="flex flex-col h-full">
-          <div className="p-3 bg-blue-100 dark:bg-blue-900/50 rounded-xl w-fit">
-            <Bell className="h-5 w-5 text-blue-600 dark:text-blue-400" />
           </div>
-          <h3 className="text-lg font-medium mt-3">Reminders</h3>
-          <p className="text-sm text-muted-foreground mt-1">
-            Customize your reminders
-          </p>
-          <Button
-            onClick={() => router.push('/reminders')}
-            variant="ghost"
-            className="mt-auto justify-start px-0 hover:bg-transparent hover:text-primary"
-          >
-            Settings →
-          </Button>
-        </div>
-      </Card>
+        </Card>
+        {/* Reminders */}
+        <Card className="p-5 bg-white/50 dark:bg-black/20 backdrop-blur-sm rounded-2xl border-none shadow-lg hover:shadow-xl transition-transform hover:scale-105">
+          <div className="flex flex-col h-full">
+            <div className="p-3 bg-blue-100 dark:bg-blue-900/50 rounded-xl w-fit">
+              <Bell className="h-5 w-5 text-blue-600 dark:text-blue-400" />
+            </div>
+            <h3 className="text-lg font-medium mt-3">Reminders</h3>
+            <p className="text-sm text-muted-foreground mt-1">
+              Customize your reminders
+            </p>
+            <Button
+              onClick={() => router.push('/reminders')}
+              variant="ghost"
+              className="mt-auto justify-start px-0 hover:bg-transparent hover:text-primary"
+            >
+              Settings →
+            </Button>
           </div>
         </Card>
       </div>
-      <HabitHeatmap userId={userId} />
       <HabitHeatmapGrid userId={userId} />
     </div>
   );

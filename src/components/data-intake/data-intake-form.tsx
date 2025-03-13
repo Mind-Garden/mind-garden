@@ -664,7 +664,7 @@ function DataIntakeForm({
         )}
 
         {/* Card Grid */}
-        <div className={'columns-1 md:columns-2 space-y-4'}>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           {/* School Category Card */}
           {schoolCategory && (
             <Card
