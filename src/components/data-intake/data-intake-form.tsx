@@ -29,6 +29,10 @@ import YesNoForm from './yes-no-form';
 import SickRating from './sick-rating';
 import { getLocalISOString } from '@/lib/utils';
 
+import CounterCard from '@/components/ui/counter-card';
+import Counter from '@/components/ui/counter';
+import { RatingScale } from '@/components/ui/rating-scale';
+
 interface DataIntakeFormProps {
   userId: string;
   categories: Array<ICategories>;
@@ -106,6 +110,19 @@ function DataIntakeForm({
       setDinnerFunc(trackingMethod[method]);
     }
   };
+  const [water, setWater] = useState<number | null>(null);
+  const [studyHours, setStudyHours] = useState<number | null>(null);
+  const [studyRating, setStudyRating] = useState<number | null>(null);
+  const [workHours, setWorkHours] = useState<number | null>(null);
+  const [workRating, setWorkRating] = useState<number | null>(null);
+
+  const emotionsCategory = categories.find(
+    (category) => category.name === 'emotions',
+  );
+  const workCategory = categories.find((category) => category.name === 'work');
+  const schoolCategory = categories.find(
+    (category) => category.name === 'school',
+  );
 
   // Fetch function extracted
   const fetchResponses = useCallback(async () => {
@@ -167,6 +184,11 @@ function DataIntakeForm({
 
       const added = await getAddedCategories(userId);
       if (added) setAddedCategories(added);
+      setWater(response?.water ?? null);
+      setStudyHours(response?.study_hours ?? null);
+      setStudyRating(response?.study_rating ?? null);
+      setWorkHours(response?.work_hours ?? null);
+      setWorkRating(response?.work_rating ?? null);
     } catch (err) {
       console.error('Error fetching table data:', err);
     } finally {
@@ -339,7 +361,16 @@ function DataIntakeForm({
     try {
       if (!responseId) {
         // Insert new selection if no previous responses exist
-        await insertResponses(currentSelection, userId, scaleSelection);
+        await insertResponses(
+          currentSelection,
+          userId,
+          scaleSelection,
+          water,
+          workHours,
+          workRating,
+          studyHours,
+          studyRating,
+        );
       } else {
         // Update if both responses already exist
         await updateResponses(
@@ -347,9 +378,13 @@ function DataIntakeForm({
           currentSelection,
           userId,
           scaleSelection,
+          water,
+          workHours,
+          workRating,
+          studyHours,
+          studyRating,
         );
       }
-
       await fetchResponses();
     } catch (error) {
       console.error('Error submitting form:', error);
@@ -570,7 +605,7 @@ function DataIntakeForm({
         <div
           className={`flex flex-col items-center py-4 bg-white/50 rounded-full mb-6 z-10 transition-opacity ${submitting ? 'opacity-50' : 'opacity-100'}`}
         >
-          <p className="font-bold text-xl">Rate your day:</p>
+          <p className="font-bold text-xl">Rate Your Day:</p>
           <div className="flex justify-center gap-4 mt-2">
             {[1, 2, 3, 4, 5].map((rating) => (
               <ToggleButton<number>
@@ -591,50 +626,169 @@ function DataIntakeForm({
             </p>
           )}
         </div>
+        {/* Emotions Category */}
+        {emotionsCategory && (
+          <Card
+            key={emotionsCategory.id}
+            className={`bg-white/50 break-inside-avoid backdrop-blur-sm rounded-2xl border-none mb-6 relative transition-opacity ${
+              submitting || !scaleSelection
+                ? 'opacity-50 pointer-events-none'
+                : 'opacity-100'
+            }`}
+          >
+            <CardHeader className="pb-3">
+              <CardTitle className="text-lg">{emotionsCategory.name}</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="flex flex-wrap justify-center gap-2">
+                {attributesByCategory.get(emotionsCategory.id)?.map((attr) => (
+                  <ToggleButton<string>
+                    key={attr.id}
+                    value={attr.id}
+                    isSelected={currentSelection.has(attr.id)}
+                    onChange={handleToggle}
+                    disabled={submitting || !scaleSelection}
+                  >
+                    <span className="flex items-center gap-0.5">
+                      <AttributeIcon
+                        category={emotionsCategory.name}
+                        attribute={attr.name}
+                      />
+                      {attr.name}
+                    </span>
+                  </ToggleButton>
+                ))}
+              </div>
+            </CardContent>
+          </Card>
+        )}
 
         {/* Card Grid */}
         <div className={'columns-1 md:columns-2 space-y-4'}>
-          {categories.map((category) => {
-            const categoryAttributes =
-              attributesByCategory.get(category.id) || [];
-            if (categoryAttributes.length === 0) return null;
+          {/* School Category Card */}
+          {schoolCategory && (
+            <Card
+              key={schoolCategory.id}
+              className={`bg-white/50 break-inside-avoid backdrop-blur-sm rounded-2xl border-none mb-6 relative transition-opacity ${
+                submitting || !scaleSelection
+                  ? 'opacity-50 pointer-events-none'
+                  : 'opacity-100'
+              }`}
+            >
+              <CardHeader className="pb-3">
+                <CardTitle className="text-lg">{schoolCategory.name}</CardTitle>
+                <p className="text-sm text-muted-foreground mt-1">
+                  {'How many hours did you study today?'}
+                </p>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-3 pt-4 pb-4">
+                  <Counter
+                    value={studyHours ?? 0}
+                    onChange={setStudyHours}
+                    disabled={submitting || !scaleSelection}
+                  />
+                </div>
+                <div className="space-y-3 border-t pt-4 pb-4">
+                  <label className="text-sm font-medium">
+                    {'How would you rate your school day?'}
+                  </label>
+                  <RatingScale
+                    value={studyRating ?? 0}
+                    onChange={setStudyRating}
+                    leftLabel="Poor"
+                    rightLabel="Excellent"
+                  />
+                </div>
+                <div className="flex flex-wrap justify-center gap-2 border-t pt-4">
+                  {attributesByCategory.get(schoolCategory.id)?.map((attr) => (
+                    <ToggleButton<string>
+                      key={attr.id}
+                      value={attr.id}
+                      isSelected={currentSelection.has(attr.id)}
+                      onChange={handleToggle}
+                      disabled={submitting || !scaleSelection}
+                    >
+                      <span className="flex items-center gap-0.5">
+                        <AttributeIcon
+                          category={schoolCategory.name}
+                          attribute={attr.name}
+                        />
+                        {attr.name}
+                      </span>
+                    </ToggleButton>
+                  ))}
+                </div>
+              </CardContent>
+            </Card>
+          )}
 
-            return (
-              <Card
-                key={category.id}
-                className={`bg-white/50 break-inside-avoid backdrop-blur-sm rounded-2xl border-none relative transition-opacity ${
-                  submitting || !scaleSelection
-                    ? 'opacity-50 pointer-events-none'
-                    : 'opacity-100'
-                }`}
-              >
-                <CardHeader className="pb-3">
-                  <CardTitle className="text-lg">{category.name}</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <div className="flex flex-wrap justify-center gap-2">
-                    {categoryAttributes.map((attr: IAttributes) => (
-                      <ToggleButton<string>
-                        key={attr.id}
-                        value={attr.id}
-                        isSelected={currentSelection.has(attr.id)}
-                        onChange={handleToggle}
-                        disabled={submitting || !scaleSelection}
-                      >
-                        <span className="flex items-center gap-0.5">
-                          <AttributeIcon
-                            category={category.name}
-                            attribute={attr.name}
-                          />
-                          {attr.name}
-                        </span>
-                      </ToggleButton>
-                    ))}
-                  </div>
-                </CardContent>
-              </Card>
-            );
-          })}
+          {/* Work Category Card */}
+          {workCategory && (
+            <Card
+              key={workCategory.id}
+              className={`bg-white/50 break-inside-avoid backdrop-blur-sm rounded-2xl border-none mb-6 relative transition-opacity ${
+                submitting || !scaleSelection
+                  ? 'opacity-50 pointer-events-none'
+                  : 'opacity-100'
+              }`}
+            >
+              <CardHeader className="pb-3">
+                <CardTitle className="text-lg">{workCategory.name}</CardTitle>
+                <p className="text-sm text-muted-foreground mt-1">
+                  {'How many hours did you work today?'}
+                </p>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-3 pt-4 pb-4">
+                  <Counter
+                    value={workHours ?? 0}
+                    onChange={setWorkHours}
+                    disabled={submitting || !scaleSelection}
+                  />
+                </div>
+                <div className="space-y-3 border-t pt-4 pb-4">
+                  <label className="text-sm font-medium">
+                    {'How would you rate your work day?'}
+                  </label>
+                  <RatingScale
+                    value={workRating ?? 0}
+                    onChange={setWorkRating}
+                    leftLabel="Poor"
+                    rightLabel="Excellent"
+                  />
+                </div>
+                <div className="flex flex-wrap justify-center gap-2 border-t pt-4">
+                  {attributesByCategory.get(workCategory.id)?.map((attr) => (
+                    <ToggleButton<string>
+                      key={attr.id}
+                      value={attr.id}
+                      isSelected={currentSelection.has(attr.id)}
+                      onChange={handleToggle}
+                      disabled={submitting || !scaleSelection}
+                    >
+                      <span className="flex items-center gap-0.5">
+                        <AttributeIcon
+                          category={workCategory.name}
+                          attribute={attr.name}
+                        />
+                        {attr.name}
+                      </span>
+                    </ToggleButton>
+                  ))}
+                </div>
+              </CardContent>
+            </Card>
+          )}
+
+          {/* Water Intake Card*/}
+          <CounterCard
+            title="water"
+            description="How many cups of water did you drink today?"
+            value={water ?? 0}
+            onChange={setWater}
+            disabled={submitting || !scaleSelection}
+          />
           {addedCategories &&
             addedCategories.map((category) => {
               const name = personalizedCategories.find(

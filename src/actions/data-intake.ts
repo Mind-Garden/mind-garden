@@ -7,7 +7,9 @@ import {
   IPersonalizedCategories,
   IAddedCategory,
   IAddedResp,
+  ISleepEntries,
 } from '@/supabase/schema';
+import e from 'express';
 
 /**
  * Fetches all categories from the database.
@@ -70,14 +72,26 @@ export async function insertResponses(
   attributeIds: Set<string>,
   userId: string,
   scaleRating: number,
+  amountWater?: number | null,
+  workHours?: number | null,
+  workRating?: number | null,
+  studyHours?: number | null,
+  studyRating?: number | null,
 ): Promise<void> {
-  const { error } = await insertData('responses', [
-    {
-      user_id: userId,
-      attribute_ids: Array.from(attributeIds),
-      scale_rating: scaleRating,
-    },
-  ]);
+  const responseData: any = {
+    user_id: userId,
+    attribute_ids: Array.from(attributeIds),
+    scale_rating: scaleRating,
+  };
+
+  // Add nullable fields only if they are provided (not undefined)
+  if (amountWater !== undefined) responseData.water = amountWater;
+  if (studyHours !== undefined) responseData.study_hours = studyHours;
+  if (studyRating !== undefined) responseData.study_rating = studyRating;
+  if (workHours !== undefined) responseData.work_hours = workHours;
+  if (workRating !== undefined) responseData.work_rating = workRating;
+
+  const { error } = await insertData('responses', [responseData]);
 
   if (error) {
     console.error('Error inserting response:', error);
@@ -96,13 +110,29 @@ export async function updateResponses(
   attributeIds: Set<string>,
   userId: string,
   scaleRating: number,
+  amountWater?: number | null,
+  workHours?: number | null,
+  workRating?: number | null,
+  studyHours?: number | null,
+  studyRating?: number | null,
 ): Promise<void> {
   const entryDate = getLocalISOString();
+
+  const updateFields: Record<string, any> = {
+    attribute_ids: Array.from(attributeIds),
+    scale_rating: scaleRating,
+  };
+
+  if (amountWater !== undefined) updateFields.water = amountWater;
+  if (workHours !== undefined) updateFields.work_hours = workHours;
+  if (workRating !== undefined) updateFields.work_rating = workRating;
+  if (studyHours !== undefined) updateFields.study_hours = studyHours;
+  if (studyRating !== undefined) updateFields.study_rating = studyRating;
 
   const { error } = await updateData(
     'responses',
     { id: responseId, user_id: userId, entry_date: entryDate },
-    { attribute_ids: Array.from(attributeIds), scale_rating: scaleRating },
+    updateFields,
   );
 
   if (error) {
@@ -120,6 +150,7 @@ export async function insertSleepEntry(
   startTime: string,
   endTime: string,
   userId: string,
+  sleepQuality: number,
 ) {
   // Validate inputs
   if (!startTime.trim() || !endTime.trim()) {
@@ -134,30 +165,56 @@ export async function insertSleepEntry(
       entry_date: entryDate,
       start: startTime,
       end: endTime,
+      quality: sleepQuality,
     },
   ]);
 }
 
 /**
- * Fetches sleep entries by user ID and entry date.
+ * Fetches sleep entry by user ID and entry date.
  * @param userId - The user's ID
- * @param entryDate - The date of the sleep entry
+ * @param entryDate - The date of the responses
+ * @returns - sleep entry or null
  */
-export async function sleepEntryExists(userId: string, entryDate: string) {
-  const { data: existingEntry, error } = await selectData('sleep_entries', {
+export async function selectSleepEntryByDate(
+  userId: string,
+  entryDate: string,
+) {
+  const { data, error } = await selectData('sleep_entries', {
     user_id: userId,
     entry_date: entryDate,
   });
 
   if (error) {
-    console.error('Error checking existing sleep entry:', error);
-    return { error };
+    console.error('Error selecting sleep entry by date:', error.message);
+    return { data: null, error: error.message };
   }
+  return {
+    data: data.length > 0 ? (data[0] as unknown as ISleepEntries) : null,
+    error: null,
+  };
+}
 
-  if (existingEntry && existingEntry.length > 0) {
-    return { exists: true };
-  }
-  return { exists: false };
+/**
+ * Updates sleep entry by entry ID.
+ * @param entryID - The sleep entry's ID
+ * @param startTime - New start time
+ * @param endTime - New end time
+ * @returns - sleep entry on success or error
+ */
+export async function updateSleepEntry(
+  entryId: string,
+  startTime: string,
+  endTime: string,
+  sleepQuality: number,
+) {
+  if (!startTime.trim() || !endTime.trim()) return; // Prevent empty entries
+
+  return await updateData(
+    'sleep_entries',
+    { id: entryId },
+    { start: startTime, end: endTime, quality: sleepQuality },
+  );
 }
 
 export async function getPersonalizedCategories() {

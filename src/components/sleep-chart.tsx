@@ -8,12 +8,14 @@ import {
   Tooltip,
   ResponsiveContainer,
   Cell,
+  CartesianGrid,
 } from 'recharts';
 import {
   Card,
   CardContent,
   CardDescription,
   CardTitle,
+  CardHeader,
 } from '@/components/ui/card';
 import {
   getLocalISOString,
@@ -24,20 +26,7 @@ import {
   getTimeAMPM,
 } from '@/lib/utils';
 import { selectSleepDataByDateRange } from '@/actions/data-visualization';
-
-interface SleepDataPoint {
-  entry_date: string;
-  start: string;
-  end: string;
-}
-
-interface ProcessedSleepDataPoint {
-  date: string;
-  start: string;
-  end: string;
-  start24Format: number;
-  sleepDuration: number;
-}
+import { SleepDataPoint, ProcessedSleepDataPoint } from '@/supabase/schema';
 
 interface SleepChartProps {
   userId: string;
@@ -70,15 +59,19 @@ export default function SleepChart({
         )
       ) {
         const sleepData = response.data as SleepDataPoint[];
-        const processedData = sleepData.map((item) => {
-          return {
-            date: item.entry_date,
-            start: item.start,
-            end: item.end,
-            start24Format: convertTo24Hour(item.start),
-            sleepDuration: getSleepDuration(item.start, item.end),
-          };
-        });
+        const processedData = sleepData
+          .map((item) => {
+            return {
+              date: item.entry_date,
+              start: item.start,
+              end: item.end,
+              start24Format: convertTo24Hour(item.start),
+              sleepDuration: getSleepDuration(item.start, item.end),
+            };
+          })
+          .sort(
+            (a, b) => new Date(a.date).getTime() - new Date(b.date).getTime(),
+          );
         setSleepData(processedData);
       } else {
         console.error('Unexpected response data format', response.data);
@@ -138,30 +131,36 @@ export default function SleepChart({
   };
 
   return (
-    <Card className="bg-white backdrop-blur-sm rounded-2xl border-none">
-      <CardTitle className="text-2xl font-bold mb-2 opacity-50 text-center">
-        {title}
-      </CardTitle>
+    <Card className="bg-white/50 break-inside-avoid backdrop-blur-sm rounded-2xl border-none mb-6 relative transition-opacity">
+      <CardHeader className="pb-3">
+        <CardTitle className="text-3xl text-center">{title}</CardTitle>
+      </CardHeader>
+
       <CardDescription className="text-center text-muted-foreground">
         from {lastMonthDate} to {todaysDate}
       </CardDescription>
       <CardContent>
-        <ResponsiveContainer width="100%" height={600}>
-          <BarChart data={sleepData} margin={chartOptions.margin}>
-            <XAxis {...chartOptions.xAxis} />
-            <YAxis {...chartOptions.yAxis} />
-            <Tooltip content={<CustomTooltip />} />
-            <Bar {...chartOptions.barStyles.start} />
-            <Bar {...chartOptions.barStyles.sleepDuration}>
-              {sleepData.map((entry, index) => (
-                <Cell
-                  key={`cell-${index}`}
-                  fill={getBarColour(entry.sleepDuration)}
-                />
-              ))}
-            </Bar>
-          </BarChart>
-        </ResponsiveContainer>
+        {sleepData.length === 0 ? (
+          <div className="h-16 text-center">No data yet! :( </div>
+        ) : (
+          <ResponsiveContainer width="100%" height={600}>
+            <BarChart data={sleepData} margin={chartOptions.margin}>
+              <CartesianGrid strokeDasharray="3 3" vertical={false} />
+              <XAxis {...chartOptions.xAxis} />
+              <YAxis {...chartOptions.yAxis} />
+              <Tooltip content={<CustomTooltip />} />
+              <Bar {...chartOptions.barStyles.start} />
+              <Bar {...chartOptions.barStyles.sleepDuration}>
+                {sleepData.map((entry, index) => (
+                  <Cell
+                    key={`cell-${index}`}
+                    fill={getBarColour(entry.sleepDuration)}
+                  />
+                ))}
+              </Bar>
+            </BarChart>
+          </ResponsiveContainer>
+        )}
       </CardContent>
     </Card>
   );

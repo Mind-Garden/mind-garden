@@ -5,6 +5,7 @@ import {
   Moon,
   NotebookPen,
   ListCheck,
+  Bell,
   ListTodo,
 } from 'lucide-react';
 import { useRouter } from 'next/navigation';
@@ -29,6 +30,11 @@ export function Header() {
 
   // List of navigation items - easy to add more
   const navItems: NavItem[] = [
+    {
+      icon: Bell,
+      path: '/reminders',
+      label: 'Reminders',
+    },
     {
       icon: ListTodo,
       path: '/task-manager',

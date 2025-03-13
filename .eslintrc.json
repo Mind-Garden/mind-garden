@@ -15,8 +15,8 @@
   },
   "plugins": ["@typescript-eslint", "unused-imports"],
   "rules": {
-    "quotes": ["error", "single"], // we want to force semicolons
-    "semi": ["error", "always"], // we use 2 spaces to indent our code
+    "quotes": ["error", "single"],
+    "semi": ["error", "always"],
     "no-multi-spaces": ["error"],
     "indent": "off",
     "@typescript-eslint/no-explicit-any": "off",
