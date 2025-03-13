@@ -91,6 +91,8 @@ export default function HabitHeatmapGrid({ userId }: HeatmapProps) {
               resp.added_habit,
             );
 
+            console.log('kjdf: ' + resp.tracking_method);
+
             if (name) {
               boolResp = { ...boolResp, [name]: catResp };
             }
@@ -158,14 +160,16 @@ export default function HabitHeatmapGrid({ userId }: HeatmapProps) {
           console.log(category);
           if (category.tracking_method.includes('breakfast')) {
             out = [...out, 'breakfast'];
-          } else if (category.tracking_method.includes('lunch')) {
+          }
+          if (category.tracking_method.includes('lunch')) {
             out = [...out, 'lunch'];
-          } else if (category.tracking_method.includes('dinner')) {
+          }
+          if (category.tracking_method.includes('dinner')) {
             out = [...out, 'dinner'];
           }
         }
       }
-      console.log(out);
+      console.log('methods' + out);
       return out;
     }
     return ['boolean']; // Default for other categories

@@ -24,7 +24,6 @@ import type {
 import ScaleIcon from '@/components/data-intake/scale-icon';
 import AddHabitDialog from '@/components/data-intake/add-habit';
 import { toast } from 'react-toastify';
-import { MinusCircle, PlusCircle } from 'lucide-react';
 import QuantityTrackerSimple from './quantity-tracker';
 import YesNoForm from './yes-no-form';
 import SickRating from './sick-rating';
@@ -112,49 +111,55 @@ function DataIntakeForm({
   const fetchResponses = useCallback(async () => {
     setLoadingSelection(true); // Show loading state during re-fetch
     try {
-      const response = await selectResponsesByDate(
-        userId,
-        new Date().toISOString().split('T')[0],
-      );
+      const today = new Date().toISOString().split('T')[0];
 
+      const response = await selectResponsesByDate(userId, today);
       const addedResponse = await getAddedResp(userId, getLocalISOString());
+
       if (addedResponse) {
         for (const resp of addedResponse) {
           const name = personalizedCategories.find(
             (cat) => cat.id == resp.habit,
           )?.name;
           const trackingMethod = resp.tracking_method as Record<string, any>;
+
           for (const method in trackingMethod) {
             console.log(method);
-            if (name == 'smoking') {
-              setVars(trackingMethod, method, setSmoking, setSmokingBool);
-            } else if (name == 'alcohol') {
-              setVars(trackingMethod, method, setDrinks, setDrinksBool);
-            } else if (name == 'sick') {
-              setVars(trackingMethod, method, setSick, setSickBool);
-            } else if (name == 'meal') {
-              setFoodVars(
-                trackingMethod,
-                method,
-                setMeals,
-                setBreakfastBool,
-                setLunchBool,
-                setDinnerBool,
-              );
-            } else if (name == 'cooking') {
-              setFoodVars(
-                trackingMethod,
-                method,
-                setMeals,
-                setBreakfastCookingBool,
-                setLunchCookingBool,
-                setDinnerCookingBool,
-              );
+
+            switch (name) {
+              case 'smoking':
+                setVars(trackingMethod, method, setSmoking, setSmokingBool);
+                break;
+              case 'alcohol':
+                setVars(trackingMethod, method, setDrinks, setDrinksBool);
+                break;
+              case 'sick':
+                setVars(trackingMethod, method, setSick, setSickBool);
+                break;
+              case 'meal':
+                setFoodVars(
+                  trackingMethod,
+                  method,
+                  setMeals,
+                  setBreakfastBool,
+                  setLunchBool,
+                  setDinnerBool,
+                );
+                break;
+              case 'cooking':
+                setFoodVars(
+                  trackingMethod,
+                  method,
+                  setMeals,
+                  setBreakfastCookingBool,
+                  setLunchCookingBool,
+                  setDinnerCookingBool,
+                );
+                break;
             }
           }
         }
       }
-
       setCurrentSelection(new Set(response?.attribute_ids ?? []));
       setScaleSelection(response?.scale_rating ?? null);
       setResponseId(response?.id ?? null);
@@ -387,6 +392,122 @@ function DataIntakeForm({
     }
   };
 
+  const renderTrackerComponent = (method: string, name: string | undefined) => {
+    const trackerMap: Record<string, any> = {
+      'scale:smoking': (
+        <QuantityTrackerSimple
+          key={method + name}
+          value={smoking}
+          onChange={setSmoking}
+          question="How many cigarettes today?"
+        />
+      ),
+      'scale:alcohol': (
+        <QuantityTrackerSimple
+          key={method + name}
+          value={drinks}
+          onChange={setDrinks}
+          question="How many drinks today?"
+        />
+      ),
+      'scale:meal': (
+        <QuantityTrackerSimple
+          key={method + name}
+          value={meals}
+          onChange={setMeals}
+          question="How many meals today?"
+        />
+      ),
+      'scale:cooking': (
+        <QuantityTrackerSimple
+          key={method + name}
+          value={cooking}
+          onChange={setCooking}
+          question="How many home-cooked meals today?"
+        />
+      ),
+      'scale:sick': <SickRating key={method + name} onChange={setSick} />,
+      'boolean:alcohol': (
+        <YesNoForm
+          key={method + name}
+          question="Did you drink today?"
+          onChange={setDrinksBool}
+          initialValue={drinksBool}
+        />
+      ),
+      'boolean:smoking': (
+        <YesNoForm
+          key={method + name}
+          question="Did you smoke today?"
+          onChange={setSmokingBool}
+          initialValue={smokingBool}
+        />
+      ),
+      'boolean:sick': (
+        <YesNoForm
+          key={method + name}
+          question="Were you sick today?"
+          onChange={setSickBool}
+          initialValue={sickBool}
+        />
+      ),
+      'breakfast:meal': (
+        <YesNoForm
+          key={method + name}
+          question="Did you eat breakfast today?"
+          onChange={setBreakfastBool}
+          initialValue={breakfastBool}
+        />
+      ),
+      'lunch:meal': (
+        <YesNoForm
+          key={method + name}
+          question="Did you eat lunch today?"
+          onChange={setLunchBool}
+          initialValue={lunchBool}
+        />
+      ),
+      'dinner:meal': (
+        <YesNoForm
+          key={method + name}
+          question="Did you eat dinner today?"
+          onChange={setDinnerBool}
+          initialValue={dinnerBool}
+        />
+      ),
+      'breakfast:cooking': (
+        <YesNoForm
+          key={method + name}
+          question="Did you make breakfast today?"
+          onChange={setBreakfastCookingBool}
+          initialValue={breakfastCookingBool}
+        />
+      ),
+      'lunch:cooking': (
+        <YesNoForm
+          key={method + name}
+          question="Did you make lunch today?"
+          onChange={setLunchCookingBool}
+          initialValue={lunchCookingBool}
+        />
+      ),
+      'dinner:cooking': (
+        <YesNoForm
+          key={method + name}
+          question="Did you make dinner today?"
+          onChange={setDinnerCookingBool}
+          initialValue={dinnerCookingBool}
+        />
+      ),
+    };
+
+    return (
+      trackerMap[`${method}:${name}`] || (
+        <div key={method + name}>Something else</div>
+      )
+    );
+  };
+
   if (loadingSelection) {
     return (
       <div className="flex min-h-screen justify-center items-center">
@@ -516,13 +637,14 @@ function DataIntakeForm({
           })}
           {addedCategories &&
             addedCategories.map((category) => {
-              const methods = category.tracking_method;
               const name = personalizedCategories.find(
                 (cat) => cat.id == category.added_habit,
               )?.name;
+              const methods = category.tracking_method;
+
               return (
                 <Card
-                  key={name} // Single card per name
+                  key={name}
                   className={`bg-white/50 break-inside-avoid backdrop-blur-sm rounded-2xl border-none relative transition-opacity ${
                     submitting || !scaleSelection
                       ? 'opacity-50 pointer-events-none'
@@ -533,132 +655,9 @@ function DataIntakeForm({
                     <CardTitle className="text-lg">{name}</CardTitle>
                   </CardHeader>
                   <CardContent className="space-y-4">
-                    {methods.map((method) => {
-                      if (method === 'scale' && name === 'smoking') {
-                        return (
-                          <QuantityTrackerSimple
-                            key={method + name}
-                            value={smoking}
-                            onChange={setSmoking}
-                            question="How many cigarettes today?"
-                          />
-                        );
-                      } else if (method === 'scale' && name === 'alcohol') {
-                        return (
-                          <QuantityTrackerSimple
-                            key={method + name}
-                            value={drinks}
-                            onChange={setDrinks}
-                            question="How many drinks today?"
-                          />
-                        );
-                      } else if (method === 'scale' && name === 'meal') {
-                        return (
-                          <QuantityTrackerSimple
-                            key={method + name}
-                            value={meals}
-                            onChange={setMeals}
-                            question="How many meals today?"
-                          />
-                        );
-                      } else if (method === 'scale' && name === 'cooking') {
-                        return (
-                          <QuantityTrackerSimple
-                            key={method + name}
-                            value={cooking}
-                            onChange={setCooking}
-                            question="How many home-cooked meals today?"
-                          />
-                        );
-                      } else if (method === 'scale' && name === 'sick') {
-                        return (
-                          <SickRating key={method + name} onChange={setSick} />
-                        );
-                      } else if (method === 'boolean' && name === 'alcohol') {
-                        return (
-                          <YesNoForm
-                            key={method + name}
-                            question="Did you drink today?"
-                            onChange={setDrinksBool}
-                            initialValue={drinksBool}
-                          />
-                        );
-                      } else if (method === 'boolean' && name === 'smoking') {
-                        return (
-                          <YesNoForm
-                            key={method + name}
-                            question="Did you smoke today?"
-                            onChange={setSmokingBool}
-                            initialValue={smokingBool}
-                          />
-                        );
-                      } else if (method === 'boolean' && name === 'sick') {
-                        return (
-                          <YesNoForm
-                            key={method + name}
-                            question="Were you sick today?"
-                            onChange={setSickBool}
-                            initialValue={sickBool}
-                          />
-                        );
-                      } else if (method === 'breakfast' && name === 'meal') {
-                        return (
-                          <YesNoForm
-                            key={method + name}
-                            question="Did you eat breakfast today?"
-                            onChange={setBreakfastBool}
-                            initialValue={breakfastBool}
-                          />
-                        );
-                      } else if (method === 'lunch' && name === 'meal') {
-                        return (
-                          <YesNoForm
-                            key={method + name}
-                            question="Did you eat lunch today?"
-                            onChange={setLunchBool}
-                            initialValue={lunchBool}
-                          />
-                        );
-                      } else if (method === 'dinner' && name === 'meal') {
-                        return (
-                          <YesNoForm
-                            key={method + name}
-                            question="Did you eat dinner today?"
-                            onChange={setDinnerBool}
-                            initialValue={dinnerBool}
-                          />
-                        );
-                      } else if (method === 'breakfast' && name === 'cooking') {
-                        return (
-                          <YesNoForm
-                            key={method + name}
-                            question="Did you make breakfast today?"
-                            onChange={setBreakfastCookingBool}
-                            initialValue={breakfastCookingBool}
-                          />
-                        );
-                      } else if (method === 'lunch' && name === 'cooking') {
-                        return (
-                          <YesNoForm
-                            key={method + name}
-                            question="Did you make lunch today?"
-                            onChange={setLunchCookingBool}
-                            initialValue={lunchCookingBool}
-                          />
-                        );
-                      } else if (method === 'dinner' && name === 'cooking') {
-                        return (
-                          <YesNoForm
-                            key={method + name}
-                            question="Did you make dinner today?"
-                            onChange={setDinnerCookingBool}
-                            initialValue={dinnerCookingBool}
-                          />
-                        );
-                      } else {
-                        return <div key={method + name}> Something else </div>;
-                      }
-                    })}
+                    {methods.map((method) =>
+                      renderTrackerComponent(method, name),
+                    )}
                   </CardContent>
                 </Card>
               );

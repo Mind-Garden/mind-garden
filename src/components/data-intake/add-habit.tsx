@@ -31,6 +31,33 @@ interface AddHabitDialogProps {
   ) => void;
 }
 
+const trackingOptions: Record<string, { value: string; label: string }[]> = {
+  smoking: [
+    { value: 'boolean', label: 'Did you smoke today?' },
+    { value: 'scale', label: 'How many cigarettes did you have?' },
+  ],
+  alcohol: [
+    { value: 'boolean', label: 'Did you drink today?' },
+    { value: 'scale', label: 'How many drinks did you have?' },
+  ],
+  sick: [
+    { value: 'boolean', label: 'Were you sick today?' },
+    { value: 'scale', label: 'How sick did you feel today?' },
+  ],
+  meal: [
+    { value: 'breakfast', label: 'Did you eat breakfast?' },
+    { value: 'lunch', label: 'Did you eat lunch?' },
+    { value: 'dinner', label: 'Did you eat dinner?' },
+    { value: 'scale', label: 'How many meals did you have today?' },
+  ],
+  cooking: [
+    { value: 'breakfast', label: 'Did you make breakfast?' },
+    { value: 'lunch', label: 'Did you make lunch?' },
+    { value: 'dinner', label: 'Did you make dinner?' },
+    { value: 'scale', label: 'How many meals did you cook today?' },
+  ],
+};
+
 export default function AddHabitDialog({
   open,
   onOpenChange,
@@ -44,22 +71,21 @@ export default function AddHabitDialog({
   const [error, setError] = useState('');
 
   const handleSubmit = () => {
-    // Validate inputs
-
     if (!selectedCategory) {
       setError('Please select a category');
       return;
     }
 
-    // Call the onAddHabit function with the form data
     onAddHabit(selectedCategory, trackingMethod);
-
-    // Reset form
     onOpenChange(false);
     setSelectedCategory('');
     setTrackingMethod('boolean');
     setError('');
   };
+
+  const selectedCategoryName =
+    categories.find((category) => category.id === selectedCategory)?.name || '';
+  const options = trackingOptions[selectedCategoryName] || [];
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
@@ -89,156 +115,35 @@ export default function AddHabitDialog({
               </SelectContent>
             </Select>
           </div>
-          {selectedCategory ? (
+          {selectedCategory && (
             <div className="grid gap-2">
               <Label>Tracking Method</Label>
               <RadioGroup
                 value={trackingMethod}
                 onValueChange={(value) =>
-                  setTrackingMethod(
-                    value as
-                      | 'boolean'
-                      | 'scale'
-                      | 'breakfast'
-                      | 'lunch'
-                      | 'dinner',
-                  )
+                  setTrackingMethod(value as typeof trackingMethod)
                 }
                 className="flex flex-col space-y-1"
               >
-                <div className="flex items-center space-x-2">
-                  {categories.find(
-                    (category) =>
-                      category.id === selectedCategory &&
-                      category.name === 'smoking',
-                  ) ? (
-                    <div>
-                      <div className="mb-1">
-                        <RadioGroupItem value="boolean" id="tracking-boolean" />
-                        <Label className="ml-1" htmlFor="tracking-boolean">
-                          Did you smoke today?
-                        </Label>
-                      </div>
-                      <RadioGroupItem value="scale" id="tracking-scale" />
-                      <Label className="ml-1" htmlFor="tracking-scale">
-                        How many cigarettes did you have?
+                {options.length > 0 ? (
+                  options.map(({ value, label }) => (
+                    <div key={value} className="mb-1">
+                      <RadioGroupItem value={value} id={`tracking-${value}`} />
+                      <Label className="ml-1" htmlFor={`tracking-${value}`}>
+                        {label}
                       </Label>
                     </div>
-                  ) : categories.find(
-                      (category) =>
-                        category.id === selectedCategory &&
-                        category.name === 'alcohol',
-                    ) ? (
-                    <div>
-                      <div className="mb-1">
-                        <RadioGroupItem value="boolean" id="tracking-boolean" />
-                        <Label className="ml-1" htmlFor="tracking-boolean">
-                          Did you drink today?
-                        </Label>
-                      </div>
-                      <RadioGroupItem value="scale" id="tracking-scale" />
-                      <Label className="ml-1" htmlFor="tracking-scale">
-                        How many drinks did you have?
-                      </Label>
-                    </div>
-                  ) : categories.find(
-                      (category) =>
-                        category.id === selectedCategory &&
-                        category.name === 'sick',
-                    ) ? (
-                    <div>
-                      <div className="mb-1">
-                        <RadioGroupItem value="boolean" id="tracking-boolean" />
-                        <Label className="ml-1" htmlFor="tracking-boolean">
-                          Were you sick today?
-                        </Label>
-                      </div>
-                      <RadioGroupItem value="scale" id="tracking-scale" />
-                      <Label className="ml-1" htmlFor="tracking-scale">
-                        How sick did you feel today?
-                      </Label>
-                    </div>
-                  ) : categories.find(
-                      (category) =>
-                        category.id === selectedCategory &&
-                        category.name === 'meal',
-                    ) ? (
-                    <div>
-                      <div className="mb-1">
-                        <RadioGroupItem
-                          value="breakfast"
-                          id="tracking-breakfast"
-                        />
-                        <Label className="ml-1" htmlFor="tracking-boolean">
-                          Did you eat breakfast?
-                        </Label>
-                      </div>
-                      <div className="mb-1">
-                        <RadioGroupItem value="lunch" id="tracking-lunch" />
-                        <Label className="ml-1" htmlFor="tracking-boolean">
-                          Did you eat lunch?
-                        </Label>
-                      </div>
-                      <div className="mb-1">
-                        <RadioGroupItem value="dinner" id="tracking-dinner" />
-                        <Label className="ml-1" htmlFor="tracking-boolean">
-                          Did you eat dinner?
-                        </Label>
-                      </div>
-                      <RadioGroupItem value="scale" id="tracking-scale" />
-                      <Label className="ml-1" htmlFor="tracking-scale">
-                        How many meals did you have today?
-                      </Label>
-                    </div>
-                  ) : categories.find(
-                      (category) =>
-                        category.id === selectedCategory &&
-                        category.name === 'cooking',
-                    ) ? (
-                    <div>
-                      <div className="mb-1">
-                        <RadioGroupItem
-                          value="breakfast"
-                          id="tracking-breakfast"
-                        />
-                        <Label className="ml-1" htmlFor="tracking-boolean">
-                          Did you make breakfast?
-                        </Label>
-                      </div>
-                      <div className="mb-1">
-                        <RadioGroupItem value="lunch" id="tracking-lunch" />
-                        <Label className="ml-1" htmlFor="tracking-boolean">
-                          Did you make lunch?
-                        </Label>
-                      </div>
-                      <div className="mb-1">
-                        <RadioGroupItem value="dinner" id="tracking-dinner" />
-                        <Label className="ml-1" htmlFor="tracking-boolean">
-                          Did you make dinner?
-                        </Label>
-                      </div>
-                      <RadioGroupItem value="scale" id="tracking-scale" />
-                      <Label className="ml-1" htmlFor="tracking-scale">
-                        How many meals did you cook today?
-                      </Label>
-                    </div>
-                  ) : (
-                    <Label htmlFor="tracking-boolean">
-                      Please choose a category.
-                    </Label>
-                  )}
-                </div>
+                  ))
+                ) : (
+                  <Label>Please choose a category.</Label>
+                )}
               </RadioGroup>
             </div>
-          ) : (
-            <div></div>
           )}
           {error && <p className="text-sm text-red-500">{error}</p>}
         </div>
         <DialogFooter>
-          <Button variant="outline" onClick={() => onOpenChange(false)}>
-            Cancel
-          </Button>
+          <Button onClick={() => onOpenChange(false)}>Cancel</Button>
           <Button onClick={handleSubmit}>Add Habit</Button>
         </DialogFooter>
       </DialogContent>

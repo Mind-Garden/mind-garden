@@ -14,18 +14,15 @@ interface YesNoFormProps {
 
 export default function YesNoForm({
   question,
-  initialValue,
+  initialValue = null,
   onChange,
   disabled = false,
 }: YesNoFormProps) {
-  const [selected, setSelected] = useState<boolean | null>(
-    initialValue ?? null,
-  );
-  const [submitting, setSubmitting] = useState(false);
+  const [selected, setSelected] = useState<boolean | null>(initialValue);
 
-  const handleSubmit = async (select: boolean | null) => {
-    onChange(select ?? null);
-    setSelected(select ?? null);
+  const handleSelection = (value: boolean | null) => {
+    setSelected(value);
+    onChange(value);
   };
 
   return (
@@ -33,37 +30,34 @@ export default function YesNoForm({
       <span className="text-sm font-medium">{question}</span>
 
       <div className="flex items-center gap-3 ml-3">
-        {selected == true ? (
-          <span className="text-s mr-1">Yes</span>
-        ) : selected == false ? (
-          <span className="text-s mr-1">No</span>
-        ) : (
-          <span className="text-m"></span>
-        )}
+        <span className="text-sm mr-1">
+          {selected !== null ? (selected ? 'Yes' : 'No') : ''}
+        </span>
+
         <Button
           variant="ghost"
           size="sm"
           className={cn(
-            'flex items-center rounded-md transition-all bg-transparent px-1',
-            selected === true ? 'text-green-700' : '',
+            'flex items-center rounded-md transition-all px-1',
+            selected === true ? 'text-green-700' : 'text-gray-500',
           )}
-          onClick={() => handleSubmit(true)}
-          disabled={disabled || submitting}
+          onClick={() => handleSelection(true)}
+          disabled={disabled}
         >
-          <CheckCircle2 className="h-3 w-3 text-black-500 mr-1" />
+          <CheckCircle2 className="h-3 w-3 mr-1" />
         </Button>
 
         <Button
           variant="ghost"
           size="sm"
           className={cn(
-            'flex items-center rounded-md transition-all bg-transparent px-1',
-            selected === false ? 'text-red-700' : '',
+            'flex items-center rounded-md transition-all px-1',
+            selected === false ? 'text-red-700' : 'text-gray-500',
           )}
-          onClick={() => handleSubmit(false)}
-          disabled={disabled || submitting}
+          onClick={() => handleSelection(false)}
+          disabled={disabled}
         >
-          <XCircle className="h-3 w-3 text-black-500 mr-1" />
+          <XCircle className="h-3 w-3 mr-1" />
         </Button>
       </div>
     </div>
