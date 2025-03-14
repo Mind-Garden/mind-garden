@@ -18,8 +18,10 @@ import {
   Brain,
   ChevronDown,
   Calendar,
+  Eye,
+  EyeOff,
 } from 'lucide-react';
-import { WordRotate } from '@/components/magicui/word-rotate';
+import { TypingAnimation } from '@/components/magicui/typing-animation';
 import Footer from '@/components/footer';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -37,11 +39,11 @@ export default function Home() {
   const [isLogin, setIsLogin] = useState(true);
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const [passwordVisible, setPasswordVisible] = useState(false);
   const [siteUrl, setSiteUrl] = useState(
     process.env.NEXT_PUBLIC_SITE_URL || '',
   );
   const [showAuthForm, setShowAuthForm] = useState(false);
-
   const heroRef = useRef(null);
   const authRef = useRef<HTMLElement>(null);
   const isAuthInView = useInView(authRef, { once: false, amount: 0.3 });
@@ -64,6 +66,7 @@ export default function Home() {
   const opacity = useTransform(scrollYProgress, [0, 0.5], [1, 0]);
   const scale = useTransform(scrollYProgress, [0, 0.5], [1, 0.9]);
   const y = useTransform(scrollYProgress, [0, 0.5], [0, 50]);
+  const [index, setIndex] = useState(0);
 
   /**
    * Handles authentication by calling the appropriate function
@@ -118,6 +121,28 @@ export default function Home() {
     setTimeout(() => setShowAuthForm(true), 500);
   };
 
+  const words = [
+    'Mental Wellness',
+    'Growth',
+    'Mindfulness',
+    'Balance',
+    'Resilience',
+    'Well-being',
+    'Potential',
+    'Focus',
+    'Happiness',
+    'Strength',
+    'Self-awareness',
+  ];
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setIndex((prevIndex) => (prevIndex + 1) % words.length);
+    }, 3000); // Change word every 3 seconds
+
+    return () => clearInterval(interval);
+  }, []);
+
   return (
     <div className="w-full min-h-screen overflow-x-hidden relative font-sans">
       {/* Path Morphing Navigation */}
@@ -152,26 +177,17 @@ export default function Home() {
               Mind Garden
             </h1>
           </div>
-          <div className="text-2xl text-gray-600 dark:text-gray-300 flex justify-center items-center mt-2">
-            <span className="mr-2 z-1">Cultivate Your</span>
-            <span className="text-4xl font-bold text-emerald-500 inline-flex items-center">
-              <WordRotate
-                className="inline-block"
-                words={[
-                  'Mental Wellness',
-                  'Growth',
-                  'Mindfulness',
-                  'Balance',
-                  'Resilience',
-                  'Well-being',
-                  'Potential',
-                  'Focus',
-                  'Happiness',
-                  'Strength',
-                  'Self-awareness',
-                ]}
-              />
-            </span>
+          {/* Animated Slogan */}
+          <div className="text-slate-600 flex flex-col md:flex-row items-center">
+            <span className="mr-2 text-slate-500 text-2xl">Cultivate Your</span>
+            <TypingAnimation
+              className="inline-block font-semibold text-2xl"
+              duration={100}
+              delay={500}
+              key={words[index]} // Forces re-render for new word
+            >
+              {words[index]}
+            </TypingAnimation>
           </div>
         </motion.div>
 
@@ -910,7 +926,7 @@ export default function Home() {
                           <Input
                             id="password"
                             name="password"
-                            type="password"
+                            type={passwordVisible ? 'text' : 'password'}
                             placeholder={
                               isLogin
                                 ? 'Enter your password'
@@ -918,6 +934,13 @@ export default function Home() {
                             }
                             className="pl-12 h-12 text-lg bg-white/80 dark:bg-gray-800/80 border-gray-200 dark:border-gray-700 focus:ring-2 focus:ring-emerald-500 dark:focus:ring-emerald-600"
                           />
+                          <button
+                            type="button"
+                            onClick={() => setPasswordVisible(!passwordVisible)}
+                            className="absolute right-5 top-3 h-5 w-5 text-slate-400 hover:text-slate-600 transition-colors"
+                          >
+                            {passwordVisible ? <EyeOff /> : <Eye />}
+                          </button>
                         </div>
                       </div>
 
