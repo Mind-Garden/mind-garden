@@ -5,8 +5,6 @@ import { redirect } from 'next/navigation';
 
 import { createClient } from '@/supabase/server';
 
-import { insertReminders } from '@/actions/reminders';
-
 export async function login(formData: FormData) {
   const supabase = await createClient();
 
@@ -50,10 +48,6 @@ export async function signup(formData: FormData) {
 
   if (error) {
     return { error: error.message };
-  }
-
-  if (data.user?.id) {
-    await insertReminders(data.user?.id);
   }
 
   revalidatePath('/', 'layout');

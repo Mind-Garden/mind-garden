@@ -5,7 +5,6 @@ on:
     - cron: '0 * * * *' # Runs every hour, on the hour
   workflow_dispatch:
 
-
 jobs:
   run-reminder:
     name: Send Reminder to User Emails

@@ -15,18 +15,20 @@ async function sendReminderEmail(
   subject: string,
   text: string,
   html: string,
-) {
+): Promise<string | null> {
   try {
-    await transporter.sendMail({
+    const info = await transporter.sendMail({
       from: `"Mind Garden" <${process.env.SMTP_EMAIL}>`,
       to: email,
-      subject: subject,
-      text: text,
-      html: html,
+      subject,
+      text,
+      html,
     });
-    console.log(`Email sent to ${email}`);
+    console.log(`Email sent to ${email} with messageId: ${info.messageId}`);
+    return info.messageId; // Return messageId for verification
   } catch (error) {
     console.error(`Failed to send email to ${email}:`, error);
+    return null; // Return null on failure
   }
 }
 
