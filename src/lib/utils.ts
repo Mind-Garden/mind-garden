@@ -37,6 +37,19 @@ export const convertTo24Hour = (time: string): number => {
   return result;
 };
 
+export const convertTo24HourSleepEntry = (timeStr: string) => {
+  const [time, period] = timeStr.split(' ');
+  const [hoursStr, minutes] = time.split(':').map(Number);
+
+  let hours = hoursStr;
+
+  if (period === 'PM' && hours < 12) hours += 12;
+  if (period === 'AM' && hours === 12) hours = 0;
+
+  // Ensure two-digit format for hours and minutes
+  return `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}`;
+};
+
 export const formatHour = (hour: number) => {
   // Convert back to a normal 12-hour format while accounting for the 6PM–6PM shift
   let adjustedHour = hour;
@@ -85,20 +98,6 @@ export function getGreetingText(): string {
 
   return greetingText;
 }
-
-export function getTimeElapsed(start: Date, end: Date): number {
-  return Math.round((end.getTime() - start.getTime()) / 1000);
-}
-
-export const getTimeDifference = (start: string, end: string): number => {
-  const startTime = convertTo24Hour(start);
-  const endTime = convertTo24Hour(end);
-
-  let duration = endTime - startTime;
-  if (duration < 0) duration += 24; // Handle overnight durations
-
-  return duration;
-};
 
 export const getAverageTimeElapsed = (times: number[]): number => {
   if (times.length === 0) return 0;

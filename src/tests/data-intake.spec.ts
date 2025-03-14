@@ -6,6 +6,7 @@ import {
   selectResponsesByDate,
   updateResponses,
 } from '@/actions/data-intake';
+import { Exo_2 } from 'next/font/google';
 
 jest.mock('@/supabase/client', () => ({
   getSupabaseClient: jest.fn(),
@@ -170,6 +171,32 @@ describe('Data Intake Actions', () => {
         insertResponses(new Set(['attr1']), 'user123', 5),
       ).resolves.toBeUndefined();
     });
+
+    it('should successfully insert responses with optional fields', async () => {
+      const selectMock = jest
+        .fn()
+        .mockResolvedValue({ data: [{}], error: null });
+      const insertMock = jest.fn().mockReturnValue({ select: selectMock });
+
+      mockSupabaseClient.from.mockReturnValue({
+        insert: insertMock,
+      });
+
+      await expect(
+        insertResponses(
+          new Set(['attr1', 'attr2']),
+          'user123',
+          3,
+          4,
+          6,
+          2,
+          5,
+          1,
+        ),
+      ).resolves.toBeUndefined();
+      expect(selectMock).toHaveBeenCalled();
+      expect(insertMock).toHaveBeenCalled();
+    });
   });
 
   describe('updateResponses', () => {
@@ -177,6 +204,11 @@ describe('Data Intake Actions', () => {
     const userId = 'user123';
     const attributeIds = ['attr1', 'attr2'];
     const scaleRating = 5;
+    const water = 4;
+    const workHours = 3;
+    const workRating = 2;
+    const studyHours = 2;
+    const studyRating = 4;
 
     it('should successfully update responses', async () => {
       const matchMock = jest.fn().mockReturnThis();
@@ -223,6 +255,49 @@ describe('Data Intake Actions', () => {
       await expect(
         updateResponses(responseId, new Set(attributeIds), userId, scaleRating),
       ).resolves.toBeUndefined();
+    });
+
+    it('should successfully insert responses with optional fields', async () => {
+      const matchMock = jest.fn().mockReturnThis();
+      const selectMock = jest
+        .fn()
+        .mockResolvedValue({ data: [{}], error: null });
+      const updateMock = jest
+        .fn()
+        .mockReturnValue({ match: matchMock, select: selectMock });
+
+      mockSupabaseClient.from.mockReturnValue({
+        update: updateMock,
+      });
+
+      await expect(
+        updateResponses(
+          responseId,
+          new Set(attributeIds),
+          userId,
+          scaleRating,
+          water,
+          workHours,
+          workRating,
+          studyHours,
+          studyRating,
+        ),
+      ).resolves.toBeUndefined();
+      expect(mockSupabaseClient.from).toHaveBeenCalledWith('responses');
+      expect(updateMock).toHaveBeenCalledWith({
+        attribute_ids: attributeIds,
+        scale_rating: scaleRating,
+        water: water,
+        work_hours: workHours,
+        work_rating: workRating,
+        study_hours: studyHours,
+        study_rating: studyRating,
+      });
+      expect(matchMock).toHaveBeenCalledWith({
+        id: responseId,
+        user_id: userId,
+        entry_date: expect.any(String),
+      });
     });
   });
 });

@@ -19,7 +19,7 @@ import {
 } from '@/actions/tasks';
 import { toast } from 'react-toastify';
 import { ITask } from '@/supabase/schema';
-import VoiceRecorder from '@/components/voice-recorder';
+import VoiceRecorder from '@/components/tasks/voice-recorder';
 import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Input } from '@/components/ui/input';
@@ -146,7 +146,7 @@ export default function TaskManager({ userId }: TaskManagerProps) {
   };
 
   return (
-    <div className="flex-1 flex flex-col items-center justify-center space-y-4">
+    <div className="font-body flex-1 flex flex-col items-center justify-center space-y-4">
       <p className="text-gray-500 text-sm text-center">
         Press record and tell me about your tasks for today.
       </p>

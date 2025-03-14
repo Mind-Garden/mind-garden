@@ -4,6 +4,9 @@ import {
   IAttributes,
   ICategories,
   IResponses,
+  IPersonalizedCategories,
+  IAddedCategory,
+  IAddedResp,
   ISleepEntries,
 } from '@/supabase/schema';
 import e from 'express';
@@ -69,14 +72,26 @@ export async function insertResponses(
   attributeIds: Set<string>,
   userId: string,
   scaleRating: number,
+  amountWater?: number | null,
+  workHours?: number | null,
+  workRating?: number | null,
+  studyHours?: number | null,
+  studyRating?: number | null,
 ): Promise<void> {
-  const { error } = await insertData('responses', [
-    {
-      user_id: userId,
-      attribute_ids: Array.from(attributeIds),
-      scale_rating: scaleRating,
-    },
-  ]);
+  const responseData: any = {
+    user_id: userId,
+    attribute_ids: Array.from(attributeIds),
+    scale_rating: scaleRating,
+  };
+
+  // Add nullable fields only if they are provided (not undefined)
+  if (amountWater !== undefined) responseData.water = amountWater;
+  if (studyHours !== undefined) responseData.study_hours = studyHours;
+  if (studyRating !== undefined) responseData.study_rating = studyRating;
+  if (workHours !== undefined) responseData.work_hours = workHours;
+  if (workRating !== undefined) responseData.work_rating = workRating;
+
+  const { error } = await insertData('responses', [responseData]);
 
   if (error) {
     console.error('Error inserting response:', error);
@@ -95,13 +110,29 @@ export async function updateResponses(
   attributeIds: Set<string>,
   userId: string,
   scaleRating: number,
+  amountWater?: number | null,
+  workHours?: number | null,
+  workRating?: number | null,
+  studyHours?: number | null,
+  studyRating?: number | null,
 ): Promise<void> {
   const entryDate = getLocalISOString();
+
+  const updateFields: Record<string, any> = {
+    attribute_ids: Array.from(attributeIds),
+    scale_rating: scaleRating,
+  };
+
+  if (amountWater !== undefined) updateFields.water = amountWater;
+  if (workHours !== undefined) updateFields.work_hours = workHours;
+  if (workRating !== undefined) updateFields.work_rating = workRating;
+  if (studyHours !== undefined) updateFields.study_hours = studyHours;
+  if (studyRating !== undefined) updateFields.study_rating = studyRating;
 
   const { error } = await updateData(
     'responses',
     { id: responseId, user_id: userId, entry_date: entryDate },
-    { attribute_ids: Array.from(attributeIds), scale_rating: scaleRating },
+    updateFields,
   );
 
   if (error) {
@@ -119,6 +150,7 @@ export async function insertSleepEntry(
   startTime: string,
   endTime: string,
   userId: string,
+  sleepQuality: number,
 ) {
   // Validate inputs
   if (!startTime.trim() || !endTime.trim()) {
@@ -133,6 +165,7 @@ export async function insertSleepEntry(
       entry_date: entryDate,
       start: startTime,
       end: endTime,
+      quality: sleepQuality,
     },
   ]);
 }
@@ -173,12 +206,185 @@ export async function updateSleepEntry(
   entryId: string,
   startTime: string,
   endTime: string,
+  sleepQuality: number,
 ) {
   if (!startTime.trim() || !endTime.trim()) return; // Prevent empty entries
 
   return await updateData(
     'sleep_entries',
     { id: entryId },
-    { start: startTime, end: endTime },
+    { start: startTime, end: endTime, quality: sleepQuality },
   );
+}
+
+export async function getPersonalizedCategories() {
+  const { data, error } = await selectData<IPersonalizedCategories>(
+    'personalized_categories',
+  );
+  if (error) {
+    console.error('Error selecting personalized categories:', error.message);
+    return null;
+  }
+  return data as unknown as IPersonalizedCategories[];
+}
+
+export async function addUserHabit(
+  userId: string,
+  categoryId: string,
+  trackingMethod: 'boolean' | 'scale' | 'breakfast' | 'lunch' | 'dinner',
+) {
+  const { data, error: selectError } = await selectData(
+    'added_habit',
+    {
+      user_id: userId,
+      added_habit: categoryId,
+    },
+    ['added_habit', 'tracking_method'],
+  );
+
+  if (selectError) {
+    console.error('Error selecting added habit:', selectError);
+    return null;
+  }
+  if (!selectError) {
+    if (data && data.length != 0 && 'tracking_method' in data[0]) {
+      const tracking_method = data[0].tracking_method as string[];
+      for (const i in tracking_method) {
+        if (tracking_method[i] == trackingMethod) {
+          //already exists
+          return 'duplicate';
+        }
+      }
+
+      //update
+      const { error } = await updateData(
+        'added_habit',
+        { user_id: userId, added_habit: categoryId },
+        { tracking_method: [...tracking_method, trackingMethod] },
+      );
+
+      if (error) {
+        console.error('error updating added user habits: ' + error);
+        return null;
+      }
+      return 'success';
+    }
+
+    //insert
+    const { error } = await insertData(
+      'added_habit',
+      [
+        {
+          user_id: userId,
+          added_habit: categoryId,
+          tracking_method: [trackingMethod],
+        },
+      ],
+      false,
+    );
+
+    if (error) {
+      console.error('Error inserting response:', error);
+      return null;
+    }
+
+    return 'success';
+  }
+}
+
+export async function getAddedCategories(userId: string) {
+  const { data, error } = await selectData<IAddedCategory>('added_habit', {
+    user_id: userId,
+  });
+  if (error) {
+    console.error('Error selecting added categories:', error.message);
+    return null;
+  }
+  return data as unknown as IAddedCategory[];
+}
+
+export async function getAddedResp(userId: string, entryDate: string) {
+  const { data, error } = await selectData<IAddedResp>(
+    'added_habit_responses',
+    {
+      user_id: userId,
+      entry_date: entryDate,
+    },
+  );
+  console.log('db:' + data);
+  if (error) {
+    console.error('Error selecting added habit responses:', error.message);
+    return null;
+  }
+  return data as unknown as IAddedResp[];
+}
+
+export async function addResp(
+  userId: string,
+  habit: string,
+  trackingValue: Record<string, any>,
+  entryDate: string,
+) {
+  const { data, error: selectError } = await selectData(
+    'added_habit_responses',
+    {
+      user_id: userId,
+      habit: habit,
+      entry_date: entryDate,
+    },
+    ['habit', 'tracking_method'],
+  );
+
+  if (selectError) {
+    console.error('Error selecting added habit:', selectError);
+    return null;
+  } else {
+    if (data && data.length != 0) {
+      //update
+      const { error } = await updateData(
+        'added_habit_responses',
+        { user_id: userId, habit: habit, entry_date: entryDate },
+        { tracking_method: trackingValue },
+      );
+      if (error) {
+        console.error('Error updating habit:', error);
+        return null;
+      }
+      return 'success';
+    }
+    //insert
+    const { error } = await insertData('added_habit_responses', [
+      {
+        user_id: userId,
+        habit: habit,
+        tracking_method: trackingValue,
+      },
+    ]);
+
+    if (error) {
+      console.error('Error inserting response:', error);
+      return null;
+    }
+
+    return 'success';
+  }
+}
+
+export async function getAllAddedRespCategory(
+  userId: string,
+  category: string,
+) {
+  const { data, error } = await selectData<IAddedResp>(
+    'added_habit_responses',
+    {
+      user_id: userId,
+      habit: category,
+    },
+  );
+  console.log('db:' + data);
+  if (error) {
+    console.error('Error selecting added habit responses:', error.message);
+    return null;
+  }
+  return data as unknown as IAddedResp[];
 }
