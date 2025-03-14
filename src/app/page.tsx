@@ -97,7 +97,7 @@ export default function Home() {
           Mind Garden
         </h1>
 
-        {/* Animated Slogan */}
+        {/* Animated Slogans */}
         <div className="text-slate-600 flex flex-col md:flex-row items-center">
           <span className="mr-2 text-slate-500 text-2xl">Cultivate Your</span>
           <TypingAnimation
