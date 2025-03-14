@@ -31,45 +31,51 @@ export default function PathMorphingNav({ featuresRef }: PathMorphingNavProps) {
   // Use scroll progress to control the animation
   const { scrollYProgress } = useScroll({
     target: featuresRef,
-    offset: ['start start', 'end end'],
+    offset: ['start 25%', 'end 25%'], // Ensures the section is tracked properly
   });
 
-  // Change the active index based on scroll position
   useEffect(() => {
-    console.log('Yelloq');
     const unsubscribe = scrollYProgress.on('change', (value) => {
+      // Dynamically divide the scroll progress into equal sections
       const sectionSize = 1 / pathKeys.length;
+
+      // Calculate the new index based on scroll position
       const newIndex = Math.min(
         pathKeys.length - 1,
-        Math.floor(value / sectionSize),
+        Math.round(value / sectionSize), // Use rounding instead of flooring
       );
 
       if (newIndex !== activeIndex) {
         setActiveIndex(newIndex);
       }
 
-      // Calculate progress within the current section
-      const sectionProgress = (value % sectionSize) / sectionSize;
-      progress.set(sectionProgress);
+      // Ensure smooth transitions between icons
+      const normalizedProgress = (value - newIndex * sectionSize) / sectionSize;
+      progress.set(Math.max(0, Math.min(1, normalizedProgress))); // Clamp values between 0 and 1
     });
 
     return unsubscribe;
   }, [activeIndex, pathKeys.length, progress, scrollYProgress]);
 
   return (
-    <div className="fixed top-6 left-6 z-50 flex items-center gap-3 bg-white/80 dark:bg-gray-900/80 backdrop-blur-md p-3 rounded-full shadow-lg">
-      <div className=" w-10 h-10">
+    <div className="fixed top-1/2 left-6 -translate-y-1/2 z-50 flex items-center gap-6 bg-white/90 dark:bg-gray-900/90 backdrop-blur-md p-6 rounded-2xl shadow-2xl w-auto max-w-[30vw]">
+      <div className="w-[10vw] h-[10vw] max-w-20 max-h-20">
+        {' '}
+        {/* Responsive size */}
         <motion.img
           key={activeIndex}
           src={paths[pathKeys[activeIndex]]}
           alt={featureLabels[activeIndex]}
           className="w-full h-full object-contain"
           style={{
-            filter: `drop-shadow(0px 0px 5px ${featureColors[activeIndex]})`,
+            filter: `drop-shadow(0px 0px 15px ${featureColors[activeIndex]})`,
+            transition: 'filter 0.3s ease-out', // Smooth transition for filter
           }}
         />
       </div>
-      <div className="font-medium text-sm">{featureLabels[activeIndex]}</div>
+      <div className="text-xl font-semibold text-gray-900 dark:text-white">
+        {featureLabels[activeIndex]}
+      </div>
     </div>
   );
 }
