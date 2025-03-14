@@ -1,0 +1,27 @@
+<?xml version="1.0" ?>
+<!-- Uploaded to: SVG Repo, www.svgrepo.com, Generator: SVG Repo Mixer Tools -->
+<svg width="800px" height="800px" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+<g data-name="13_Write" id="_13_Write">
+<path d="M56,62H11a1,1,0,0,1-1-1V6a1,1,0,0,1,1-1H56a1,1,0,0,1,1,1V61A1,1,0,0,1,56,62Z" style="fill:#0455bf"/>
+<path d="M57,59A44,44,0,0,1,13,15V5H11a1,1,0,0,0-1,1V61a1,1,0,0,0,1,1H56a1,1,0,0,0,1-1V59Z" style="fill:#004787"/>
+<path d="M50,56H6a1,1,0,0,1-1-1V3A1,1,0,0,1,6,2H44a1,1,0,0,1,.707.293l6,6A1,1,0,0,1,51,9V55A1,1,0,0,1,50,56Z" style="fill:#fdfeff"/>
+<rect height="2" style="fill:#febc00" width="26.032" x="14.984" y="16"/>
+<rect height="2" style="fill:#febc00" width="16.016" x="14.984" y="24"/>
+<rect height="2" style="fill:#febc00" width="17.016" x="14.984" y="32"/>
+<rect height="2" style="fill:#febc00" width="12.016" x="14.984" y="40"/>
+<rect height="2" style="fill:#febc00" width="2" x="33" y="24"/>
+<rect height="2" style="fill:#febc00" width="2" x="37" y="24"/>
+<path d="M51,13H40V2h4.414L51,8.586Z" style="fill:#d6e8f2"/>
+<path d="M56.586,20.5a2.079,2.079,0,0,0-1.474.611l-.737.737L52.163,24.06,51,25.223V34.07l5.586-5.586L57,28.07V20.56A2.078,2.078,0,0,0,56.586,20.5Z" style="fill:#004787"/>
+<polygon points="39.629 39.543 39.146 41.5 41.103 41.018 44.79 40.28 51 34.07 51 25.223 40.366 35.857 39.629 39.543" style="fill:#dfeaef"/>
+<path d="M58.061,25.009l-4.424-4.424,1.475-1.474a2.084,2.084,0,0,1,2.949,0l1.475,1.474a2.087,2.087,0,0,1,0,2.95Z" style="fill:#f74e0c"/>
+<path d="M58.8,19.848l-.737-.737a2.084,2.084,0,0,0-2.949,0l-1.475,1.474.738.738,1.474-1.475A2.086,2.086,0,0,1,58.8,19.848Z" style="fill:#cc2600"/>
+<rect height="6.256" style="fill:#f74e0c" transform="translate(-7.135 43.115) rotate(-45)" width="16.683" x="40.135" y="27.042"/>
+<rect height="2.085" style="fill:#febc00" transform="translate(-7.135 43.115) rotate(-45)" width="16.683" x="40.135" y="29.128"/>
+<rect height="2.085" style="fill:#f74e0c" transform="translate(-6.524 41.64) rotate(-45)" width="16.683" x="38.66" y="27.653"/>
+<rect height="6.256" style="fill:#dfeaef" transform="translate(-0.131 46.016) rotate(-45)" width="3.128" x="53.917" y="20.038"/>
+<path d="M55.112,23.535a2.085,2.085,0,0,1,0-2.95h0l-.737-.737L52.163,22.06l4.423,4.424.738-.738Z" style="fill:#c3d6dd"/>
+<polygon points="41.103 39.018 39.629 37.543 40.366 33.857 44.79 38.28 41.103 39.018" style="fill:#f7d694"/>
+<polygon points="39.629 37.543 39.146 39.5 41.103 39.018 39.629 37.543" style="fill:#f74e0c"/>
+</g>
+</svg>
