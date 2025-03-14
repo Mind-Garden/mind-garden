@@ -10,11 +10,12 @@ import {
   getAverageTimeElapsed,
 } from '@/lib/utils'; // replace with the actual path of your file
 
+afterEach(() => {
+  // Restore global Date to its original state after each test
+  jest.restoreAllMocks();
+});
+
 describe('Utility functions', () => {
-  afterEach(() => {
-    // Restore global Date to its original state after each test
-    jest.restoreAllMocks();
-  });
   describe('cn function', () => {
     it('should merge class names', () => {
       const result = cn('class1', 'class2', 'class3');
@@ -57,14 +58,16 @@ describe('Utility functions', () => {
       const morningDate = new Date('2025-02-20T08:00:00');
       const afternoonDate = new Date('2025-02-20T14:00:00');
       const eveningDate = new Date('2025-02-20T20:00:00');
-
-      global.Date = jest.fn(() => morningDate) as any; // Mock Date
+      // Spy on Date.now() and mock the time for morning
+      jest.spyOn(global.Date, 'now').mockReturnValue(morningDate.getTime());
       expect(getGreetingText()).toBe('Good Morning');
 
-      global.Date = jest.fn(() => afternoonDate) as any; // Mock Date
+      // Mock Date for afternoon
+      jest.spyOn(global.Date, 'now').mockReturnValue(afternoonDate.getTime());
       expect(getGreetingText()).toBe('Good Afternoon');
 
-      global.Date = jest.fn(() => eveningDate) as any; // Mock Date
+      // Mock Date for evening
+      jest.spyOn(global.Date, 'now').mockReturnValue(eveningDate.getTime());
       expect(getGreetingText()).toBe('Good Evening');
     });
   });
