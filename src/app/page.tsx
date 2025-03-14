@@ -97,7 +97,7 @@ export default function Home() {
           Mind Garden
         </h1>
 
-        {/* Animated Slogans */}
+        {/* Animated Slogan */}
         <div className="text-slate-600 flex flex-col md:flex-row items-center">
           <span className="mr-2 text-slate-500 text-2xl">Cultivate Your</span>
           <TypingAnimation
@@ -242,7 +242,7 @@ export default function Home() {
             <div className="text-center pt-4">
               <p className="text-base text-slate-600">
                 {isLogin
-                  ? 'Do you not have an account yet?'
+                  ? 'Don\'t have an account?'
                   : 'Already have an account?'}{' '}
                 <button
                   type="button"
