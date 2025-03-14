@@ -47,6 +47,9 @@ export async function fetchTasks(userId: string) {
  * @returns The inserted tasks or error
  */
 export async function addTasks(userId: string, descriptions: string[]) {
+  if (descriptions.length === 0) {
+    return { error: 'Tasks list is empty' };
+  }
   const tasksToInsert = descriptions.map((description) => ({
     user_id: userId,
     description,

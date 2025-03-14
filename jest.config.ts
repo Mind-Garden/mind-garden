@@ -9,4 +9,5 @@ export default {
   },
   collectCoverage: true,
   coverageReporters: ['json', 'lcov', 'text', 'clover'],
+  setupFiles: ['<rootDir>/jest.setup.ts'],
 };

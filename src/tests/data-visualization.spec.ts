@@ -1,5 +1,6 @@
 import { getSupabaseClient } from '@/supabase/client';
 import {
+
   selectMoodDataByDateRange,
   selectMoodFrequency,
   selectSleepDataByDateRange,
@@ -10,6 +11,7 @@ import {
 } from '@/actions/data-visualization';
 import {
   convertTo24Hour,
+  convertTo24HourSleepEntry,
   formatHour,
   getSleepDuration,
   getBarColour,
@@ -151,6 +153,24 @@ describe('Data Visualization', () => {
       it('should handle lowercase AM/PM correctly', () => {
         expect(convertTo24Hour('6:00 am')).toBe(30);
         expect(convertTo24Hour('6:00 pm')).toBe(18);
+      });
+    });
+
+    describe('convertTo24HourSleepEntry', () => {
+      it('should convert AM times correctly', () => {
+        expect(convertTo24HourSleepEntry('12:00 AM')).toBe('00:00');
+        expect(convertTo24HourSleepEntry('1:30 AM')).toBe('01:30');
+        expect(convertTo24HourSleepEntry('11:59 AM')).toBe('11:59');
+      });
+
+      it('should convert PM times correctly', () => {
+        expect(convertTo24HourSleepEntry('12:00 PM')).toBe('12:00');
+        expect(convertTo24HourSleepEntry('1:30 PM')).toBe('13:30');
+        expect(convertTo24HourSleepEntry('11:59 PM')).toBe('23:59');
+      });
+
+      it('should handle edge cases', () => {
+        expect(convertTo24HourSleepEntry('00:00 AM')).toBe('00:00'); // Invalid input format, should still work
       });
     });
 
@@ -308,12 +328,11 @@ describe('Data Visualization', () => {
           { scale_rating: 4, count: 8 },
           { scale_rating: 5, count: 3 },
         ];
-
         mockSupabaseClient.rpc.mockResolvedValue({
           data: mockData,
           error: null,
         });
-
+        
         const result = await selectMoodFrequency(
           userId,
           lastMonthDate,
@@ -327,9 +346,11 @@ describe('Data Visualization', () => {
             start_date_param: lastMonthDate,
             end_date_param: todaysDate,
           },
+
         );
         expect(result).toEqual({ data: mockData });
       });
+
 
       it('should return an error if the RPC call fails', async () => {
         console.error = jest.fn();
