@@ -55,20 +55,21 @@ describe('Utility functions', () => {
 
   describe('getGreetingText function', () => {
     it('should return the correct greeting based on the current time', () => {
-      const morningDate = new Date('2025-03-13T06:00:00Z'); // 6 AM
-      const afternoonDate = new Date('2025-03-13T12:00:00Z'); // 12 PM
-      const eveningDate = new Date('2025-03-13T18:00:00Z'); // 6 PM
-      // Spy on Date.now() and mock the time for morning
-      jest.spyOn(global.Date, 'now').mockReturnValue(morningDate.getTime());
+      // Spy on Date.prototype.getHours
+      const getHoursSpy = jest.spyOn(Date.prototype, 'getHours');
+
+      // Mock different times for the test
+      getHoursSpy.mockReturnValue(6); // Mocking morning time (6 AM)
       expect(getGreetingText()).toBe('Good Morning');
 
-      // Mock Date for afternoon
-      jest.spyOn(global.Date, 'now').mockReturnValue(afternoonDate.getTime());
+      getHoursSpy.mockReturnValue(12); // Mocking afternoon time (12 PM)
       expect(getGreetingText()).toBe('Good Afternoon');
 
-      // Mock Date for evening
-      jest.spyOn(global.Date, 'now').mockReturnValue(eveningDate.getTime());
+      getHoursSpy.mockReturnValue(18); // Mocking evening time (6 PM)
       expect(getGreetingText()).toBe('Good Evening');
+
+      // Restore the original implementation after the test
+      getHoursSpy.mockRestore();
     });
   });
 
