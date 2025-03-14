@@ -103,7 +103,7 @@ export default function PathDrawing() {
           initial={{ pathLength: 0, opacity: 0 }}
           animate={{ pathLength: 1, opacity: 1 }}
           transition={{
-            duration: 3,
+            duration: 5,
             ease: 'easeInOut',
           }}
         />
@@ -126,9 +126,9 @@ export default function PathDrawing() {
                 }}
                 transition={{
                   delay: point.delay,
-                  duration: 2,
+                  duration: 5,
                   repeat: Number.POSITIVE_INFINITY,
-                  repeatDelay: 1,
+                  repeatDelay: 0.25,
                 }}
               />
 
@@ -169,7 +169,7 @@ export default function PathDrawing() {
                 opacity: [1, 0.7, 1],
               }}
               transition={{
-                delay: 1.6,
+                delay: 5,
                 duration: 1.5,
                 repeat: Number.POSITIVE_INFINITY,
                 repeatDelay: 0.5,
@@ -220,7 +220,7 @@ export default function PathDrawing() {
             }}
             transition={{
               repeat: Infinity,
-              duration: 1.5,
+              duration: 0.5,
               repeatType: 'reverse',
             }}
           />
