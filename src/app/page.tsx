@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState, useRef } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { login, signup, forgotPassword } from '@/actions/auth';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
@@ -12,27 +13,55 @@ import {
   Lock,
   Mail,
   User,
-  ArrowRight,
-  EyeOff,
-  Eye,
+  ChevronDown,
 } from 'lucide-react';
+import { WordRotate } from '@/components/magicui/word-rotate';
 import Footer from '@/components/footer';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { TypingAnimation } from '@/components/magicui/typing-animation';
+import {
+  motion,
+  useScroll,
+  useTransform,
+  useInView,
+  AnimatePresence,
+} from 'framer-motion';
+import PathMorphingNav from '@/components/path-morphing-nav';
 
 export default function Home() {
   const [isLogin, setIsLogin] = useState(true);
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-  const emailRef = useRef<HTMLInputElement>(null);
-  const [passwordVisible, setPasswordVisible] = useState(false);
-  const [index, setIndex] = useState(0);
+  const [siteUrl, setSiteUrl] = useState(
+    process.env.NEXT_PUBLIC_SITE_URL || '',
+  );
+  const [showAuthForm, setShowAuthForm] = useState(false);
 
-  useEffect(() => {
-    setError('');
-  }, [isLogin]);
+  const heroRef = useRef(null);
+  const authRef = useRef<HTMLElement>(null);
+  const isAuthInView = useInView(authRef, { once: false, amount: 0.3 });
+  // Inside your Home component:
+  const featuresRef = useRef<HTMLDivElement>(null);
+  const isFeaturesInView = useInView(featuresRef, { amount: 0.5 });
 
+  const { scrollYProgress } = useScroll({
+    target: heroRef,
+    offset: ['start start', 'end start'],
+  });
+
+  const opacity = useTransform(scrollYProgress, [0, 0.5], [1, 0]);
+  const scale = useTransform(scrollYProgress, [0, 0.5], [1, 0.9]);
+  const y = useTransform(scrollYProgress, [0, 0.5], [0, 50]);
+
+  /**
+   * Handles authentication by calling the appropriate function
+   * (login or signup) based on the value of isLogin. If the
+   * authentication is successful, it resets the error message.
+   * If there is an error, it stores the error message in the
+   * error state.
+   * @param {FormData} formData - The form data to be passed to
+   * the authentication function
+   */
   const handleAuth = async (formData: FormData) => {
     setIsLoading(true);
     try {
@@ -49,218 +78,360 @@ export default function Home() {
       return toast.warn('Please enter your email first.');
     }
 
-    setIsLoading(true);
-    const { error } = await forgotPassword(email, window.location.origin);
-    setIsLoading(false);
-
-    error
-      ? toast.warn('Please try again later.')
-      : toast.success('Password reset email sent successfully.');
+    try {
+      const { error, success } = await forgotPassword(email, siteUrl);
+      if (error) {
+        toast.warn('Please try again later.');
+      } else {
+        toast.success('Password reset email sent successfully.');
+      }
+    } finally {
+      setIsLoading(false);
+    }
   };
 
-  const words = [
-    'Mental Wellness',
-    'Growth',
-    'Mindfulness',
-    'Balance',
-    'Resilience',
-    'Well-being',
-    'Potential',
-    'Focus',
-    'Happiness',
-    'Strength',
-    'Self-awareness',
-  ];
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setIndex((prevIndex) => (prevIndex + 1) % words.length);
-    }, 3000); // Change word every 3 seconds
-
-    return () => clearInterval(interval);
-  }, []);
+  const scrollToAuth = () => {
+    authRef.current?.scrollIntoView({ behavior: 'smooth' });
+    setTimeout(() => setShowAuthForm(true), 500);
+  };
 
   return (
-    <div className="font-body min-h-screen w-full flex flex-col items-center px-4 py-12 bg-gradient-to-br ">
-      <div className="w-full max-w-lg flex flex-col items-center text-center space-y-6 mb-12">
-        {/* Logo Section */}
-        <div className="flex justify-center">
-          <img
-            src="/logo.png"
-            alt="Mind Garden Logo"
-            className="h-24 w-auto mb-2 transition-transform duration-300 hover:scale-105"
-          />
-        </div>
+    <div className="w-full min-h-screen overflow-x-hidden relative">
+      {/* Path Morphing Navigation */}
+      {isFeaturesInView && <PathMorphingNav featuresRef={featuresRef} />}
 
-        {/* Brand Name */}
-        <h1 className="text-6xl md:text-7xl font-extrabold text-slate-800 font-title tracking-tight pb-8 transition-transform duration-300 hover:scale-105">
-          Mind Garden
-        </h1>
+      {/* Animated Background */}
+      <div className="fixed inset-0 -z-10 bg-gradient-to-b from-green-50 to-blue-50"></div>
 
-        {/* Animated Slogan */}
-        <div className="text-slate-600 flex flex-col md:flex-row items-center">
-          <span className="mr-2 text-slate-500 text-2xl">Cultivate Your</span>
-          <TypingAnimation
-            className="inline-block font-semibold text-2xl"
-            duration={100}
-            delay={500}
-            key={words[index]} // Forces re-render for new word
-          >
-            {words[index]}
-          </TypingAnimation>
-        </div>
-      </div>
+      {/* Hero Section */}
+      <motion.section
+        ref={heroRef}
+        className="h-screen flex flex-col items-center justify-center relative"
+        style={{ opacity, scale, y }}
+      >
+        {/* Title, logo, and tagline */}
+        <motion.div
+          className="text-center relative z-10"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 0.2 }}
+        >
+          <div className="flex items-center justify-center">
+            <motion.img
+              src="/logo.png"
+              alt="Mind Garden Logo"
+              className="h-20 w-auto mb-4 mr-7"
+              initial={{ rotate: -10, scale: 0.8 }}
+              animate={{ rotate: 0, scale: 1 }}
+              transition={{ duration: 0.6, delay: 0.4, type: 'spring' }}
+            />
+            <h1 className="text-7xl md:text-8xl font-bold bg-gradient-to-r from-green-400 to-blue-400 text-transparent bg-clip-text mb-4">
+              Mind Garden
+            </h1>
+          </div>
+          <div className="text-2xl text-gray-600 flex justify-center items-center">
+            <span className="mr-2">Cultivate Your</span>
+            <span className="text-4xl font-bold text-green-500 inline-flex items-center">
+              <WordRotate
+                className="inline-block"
+                words={[
+                  'Mental Wellness',
+                  'Growth',
+                  'Mindfulness',
+                  'Balance',
+                  'Resilience',
+                  'Well-being',
+                  'Potential',
+                  'Focus',
+                  'Happiness',
+                  'Strength',
+                  'Self-awareness',
+                ]}
+              />
+            </span>
+          </div>
+        </motion.div>
 
-      <Card className="w-full max-w-md shadow-lg border-0 bg-white/50 backdrop-blur-sm rounded-2xl">
-        <CardContent className="p-8">
-          {error && (
-            <div className="mb-6 bg-red-50 border border-red-200 rounded-lg p-4 flex items-center gap-3">
-              <CircleAlert className="h-5 w-5 flex-shrink-0 text-red-600" />
-              <p className="text-red-600 text-base">{error}</p>
-            </div>
-          )}
-
-          <form
-            onSubmit={async (e) => {
-              e.preventDefault();
-              await handleAuth(new FormData(e.currentTarget));
+        {/* Scroll down indicator */}
+        <motion.div
+          className="absolute bottom-10 left-1/2 transform -translate-x-1/2 cursor-pointer z-20 "
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 1.2, duration: 0.8 }}
+          onClick={scrollToAuth}
+        >
+          <motion.div
+            animate={{ y: [0, 10, 0] }}
+            transition={{
+              duration: 1.5,
+              repeat: Number.POSITIVE_INFINITY,
+              ease: 'easeInOut',
             }}
-            className="space-y-6"
+            className="flex flex-col items-center"
           >
-            {!isLogin && (
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <div className="space-y-2">
-                  <Label htmlFor="firstName" className="text-base font-medium">
-                    First Name
-                  </Label>
-                  <div className="relative">
-                    <User className="absolute left-3 top-3 h-5 w-5 text-slate-400" />
-                    <Input
-                      id="firstName"
-                      name="firstName"
-                      placeholder="First Name"
-                      className="pl-10 h-12 text-base"
-                      required
-                    />
-                  </div>
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor="lastName" className="text-base font-medium">
-                    Last Name
-                  </Label>
-                  <div className="relative">
-                    <User className="absolute left-3 top-3 h-5 w-5 text-slate-400" />
-                    <Input
-                      id="lastName"
-                      name="lastName"
-                      placeholder="Last Name"
-                      className="pl-10 h-12 text-base"
-                      required
-                    />
-                  </div>
-                </div>
-              </div>
-            )}
+            <p className="text-gray-600 mb-2">Get Started</p>
+            <ChevronDown className="h-6 w-6 text-green-500" />
+          </motion.div>
+        </motion.div>
+      </motion.section>
 
-            <div className="space-y-2">
-              <Label htmlFor="email" className="text-base font-medium">
-                Email
-              </Label>
-              <div className="relative">
-                <Mail className="absolute left-3 top-3 h-5 w-5 text-slate-400" />
-                <Input
-                  id="email"
-                  name="email"
-                  type="email"
-                  ref={emailRef}
-                  placeholder="you@example.com"
-                  className="pl-10 h-12 text-base"
-                  required
-                />
-              </div>
-            </div>
+      {/* New Section - Features/Benefits */}
+      <section ref={featuresRef} className="py-24 px-4 bg-gradient-to-b">
+        <div className="max-w-6xl mx-auto">
+          <motion.h2
+            className="text-4xl md:text-5xl font-bold text-center mb-16 bg-gradient-to-r from-green-500 to-blue-500 text-transparent bg-clip-text"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+          >
+            How Mind Garden Helps You Thrive
+          </motion.h2>
 
-            <div className="space-y-2">
-              <div className="flex justify-between items-center">
-                <Label htmlFor="password" className="text-base font-medium">
-                  Password
-                </Label>
-                {isLogin && (
-                  <button
-                    type="button"
-                    className="text-base text-primary hover:text-primary/80 transition-colors"
-                    onClick={handleForgotPassword}
-                  >
-                    Forgot password?
-                  </button>
-                )}
-              </div>
-              <div className="relative">
-                <Lock className="absolute left-3 top-3 h-5 w-5 text-slate-400" />
-                <Input
-                  id="password"
-                  name="password"
-                  type={passwordVisible ? 'text' : 'password'}
-                  placeholder={
-                    isLogin ? 'Enter your password' : 'Create a strong password'
-                  }
-                  className="pl-10 h-12 text-base pr-10"
-                  required
-                />
-                <button
-                  type="button"
-                  onClick={() => setPasswordVisible(!passwordVisible)}
-                  className="absolute right-5 top-3 h-5 w-5 text-slate-400 hover:text-slate-600 transition-colors"
-                >
-                  {passwordVisible ? <EyeOff /> : <Eye />}
-                </button>
-              </div>
-            </div>
-
-            <Button
-              type="submit"
-              disabled={isLoading}
-              className="w-full h-12 mt-4 transition-all duration-300 relative overflow-hidden text-base font-medium"
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
+            {/* Feature 1 */}
+            <motion.div
+              className="bg-white/70 backdrop-blur-sm p-8 rounded-2xl shadow-lg relative"
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6 }}
+              viewport={{ once: true, amount: 0.3 }}
             >
-              {isLoading ? (
-                <span className="flex items-center justify-center gap-2 absolute inset-0 transition-transform duration-300">
-                  <LoaderCircle className="h-5 w-5 animate-spin" />
-                  <span>
-                    {isLogin
-                      ? 'Unlocking your garden...'
-                      : 'Sprouting your account...'}
-                  </span>
-                </span>
-              ) : (
-                <span className="flex items-center justify-center gap-2 absolute inset-0 transition-transform duration-300">
-                  <span>{isLogin ? 'Log in' : 'Create account'}</span>
-                  <ArrowRight className="h-5 w-5" />
-                </span>
-              )}
-            </Button>
-
-            <div className="text-center pt-4">
-              <p className="text-base text-slate-600">
-                {isLogin
-                  ? // prettier-ignore
-                    'Don\'t have an account?'
-                  : 'Already have an account?'}{' '}
-                <button
-                  type="button"
-                  onClick={() => setIsLogin(!isLogin)}
-                  className="text-primary hover:text-primary/80 font-medium transition-colors"
-                >
-                  {isLogin ? 'Sign up' : 'Log in'}
-                </button>
+              <div className="h-16 w-16 bg-green-100 rounded-full flex items-center justify-center mb-6">
+                {/* Icon here */}
+              </div>
+              <h3 className="text-2xl font-bold mb-4 text-gray-800">
+                Daily Mindfulness
+              </h3>
+              <p className="text-gray-600">
+                Build a consistent practice with guided meditations tailored to
+                your needs and schedule.
               </p>
-            </div>
-          </form>
-        </CardContent>
-      </Card>
+            </motion.div>
 
-      <div className="mt-8">
-        <Footer />
-      </div>
+            {/* Add 2 more feature cards with similar structure */}
+          </div>
+        </div>
+      </section>
+
+      {/* Authentication Section */}
+      <section
+        ref={authRef}
+        className="min-h-screen flex flex-col items-center justify-center py-16 px-4 relative"
+      >
+        <motion.div
+          initial={{ opacity: 0, y: 50 }}
+          animate={isAuthInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 50 }}
+          transition={{ duration: 0.8 }}
+          className="w-full max-w-2xl relative"
+        >
+          <AnimatePresence mode="wait">
+            {showAuthForm ? (
+              <motion.div
+                key="auth-form"
+                initial={{ opacity: 0, scale: 0.95 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, scale: 0.95 }}
+                transition={{ duration: 0.4 }}
+              >
+                <Card className="w-full backdrop-blur-sm bg-white/60 shadow-xl border-0 rounded-2xl relative">
+                  <CardContent className="space-y-8 p-12">
+                    <form
+                      onSubmit={async (e) => {
+                        e.preventDefault();
+                        const formData = new FormData(e.currentTarget);
+                        await handleAuth(formData);
+                      }}
+                      className="space-y-8"
+                    >
+                      {/* Error message */}
+                      {error && (
+                        <motion.div
+                          initial={{ opacity: 0, y: -10 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          className="bg-red-50 border border-red-200 rounded-lg p-6 flex items-center space-x-3"
+                        >
+                          <CircleAlert className="h-6 w-6 text-red-600" />
+                          <p className="text-base text-red-600">{error}</p>
+                        </motion.div>
+                      )}
+
+                      {/* First and Last Name for signup only */}
+                      {!isLogin && (
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                          <div className="space-y-3">
+                            <Label htmlFor="firstName" className="text-base">
+                              First Name
+                            </Label>
+                            <div className="relative">
+                              <User className="absolute left-4 top-3.5 h-5 w-5 text-gray-400" />
+                              <Input
+                                id="firstName"
+                                name="firstName"
+                                placeholder="John"
+                                className="pl-12 h-12 text-lg"
+                                required
+                              />
+                            </div>
+                          </div>
+                          <div className="space-y-3">
+                            <Label htmlFor="lastName" className="text-base">
+                              Last Name
+                            </Label>
+                            <div className="relative">
+                              <User className="absolute left-4 top-3.5 h-5 w-5 text-gray-400" />
+                              <Input
+                                id="lastName"
+                                name="lastName"
+                                placeholder="Doe"
+                                className="pl-12 h-12 text-lg"
+                                required
+                              />
+                            </div>
+                          </div>
+                        </div>
+                      )}
+
+                      {/* Email */}
+                      <div className="space-y-3">
+                        <Label htmlFor="email" className="text-base">
+                          Email
+                        </Label>
+                        <div className="relative">
+                          <Mail className="absolute left-4 top-3.5 h-5 w-5 text-gray-400" />
+                          <Input
+                            id="email"
+                            name="email"
+                            type="email"
+                            placeholder="john.doe@example.com"
+                            className="pl-12 h-12 text-lg"
+                            required
+                          />
+                        </div>
+                      </div>
+
+                      {/* Password */}
+                      <div className="space-y-3">
+                        <div className="flex items-center justify-between">
+                          <Label htmlFor="password" className="text-base">
+                            Password
+                          </Label>
+                          {isLogin && (
+                            <button
+                              className="text-base text-green-600 hover:text-green-700 transition-colors"
+                              type="button"
+                              onClick={handleForgotPassword}
+                            >
+                              Forgot password?
+                            </button>
+                          )}
+                        </div>
+                        <div className="relative">
+                          <Lock className="absolute left-4 top-3.5 h-5 w-5 text-gray-400" />
+                          <Input
+                            id="password"
+                            name="password"
+                            type="password"
+                            placeholder={
+                              isLogin
+                                ? 'Enter your password'
+                                : 'Create a strong password'
+                            }
+                            className="pl-12 h-12 text-lg"
+                          />
+                        </div>
+                      </div>
+
+                      {/* Submit auth button for login or signup */}
+                      <motion.div
+                        whileHover={{ scale: 1.02 }}
+                        whileTap={{ scale: 0.98 }}
+                      >
+                        <Button
+                          type="submit"
+                          disabled={isLoading}
+                          className="w-full h-12 text-lg bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 text-white shadow-lg hover:shadow-xl transition-all duration-200"
+                        >
+                          {isLoading ? (
+                            <>
+                              <LoaderCircle className="h-5 w-5 animate-spin mr-2" />
+                              <span>
+                                {isLogin
+                                  ? 'Unlocking your garden..'
+                                  : 'Sprouting your account...'}
+                              </span>
+                            </>
+                          ) : (
+                            <span>{isLogin ? 'Log in' : 'Sign up'}</span>
+                          )}
+                        </Button>
+                      </motion.div>
+
+                      {/* Toggle between login and signup */}
+                      <div className="text-center">
+                        <span className="text-base text-gray-600">
+                          {isLogin
+                            ? "Don't have an account?"
+                            : 'Already have an account?'}
+                        </span>{' '}
+                        <button
+                          type="button"
+                          onClick={() => setIsLogin(!isLogin)}
+                          className="text-base text-green-600 hover:text-green-700 font-medium transition-colors"
+                        >
+                          {isLogin ? 'Sign up' : 'Log in'}
+                        </button>
+                      </div>
+                    </form>
+                  </CardContent>
+                </Card>
+              </motion.div>
+            ) : (
+              <motion.div
+                key="get-started"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.4 }}
+                className="text-center relative"
+              >
+                <motion.h2
+                  className="text-4xl font-bold mb-6 bg-gradient-to-r from-green-600 to-blue-600 text-transparent bg-clip-text"
+                  initial={{ y: 20 }}
+                  animate={{ y: 0 }}
+                  transition={{ duration: 0.6 }}
+                >
+                  Begin Your Journey Today
+                </motion.h2>
+                <motion.p
+                  className="text-xl text-gray-600 mb-8 max-w-lg mx-auto"
+                  initial={{ y: 20, opacity: 0 }}
+                  animate={{ y: 0, opacity: 1 }}
+                  transition={{ duration: 0.6, delay: 0.2 }}
+                >
+                  Join thousands of others who have transformed their mental
+                  well-being with Mind Garden.
+                </motion.p>
+                <motion.div
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  initial={{ y: 20, opacity: 0 }}
+                  animate={{ y: 0, opacity: 1 }}
+                  transition={{ duration: 0.6, delay: 0.4 }}
+                >
+                  <Button
+                    onClick={() => setShowAuthForm(true)}
+                    className="h-14 px-8 text-lg bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 text-white shadow-lg hover:shadow-xl transition-all duration-200"
+                  >
+                    Get Started
+                  </Button>
+                </motion.div>
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </motion.div>
+      </section>
+
+      <Footer />
     </div>
   );
 }
