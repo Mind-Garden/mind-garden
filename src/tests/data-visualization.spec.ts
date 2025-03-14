@@ -7,6 +7,7 @@ import {
   selectWorkDataByDateRange,
   selectStudyDataByDateRange,
   selectWaterDataByDateRange,
+  getDataHeatmap,
 } from '@/actions/data-visualization';
 import {
   convertTo24Hour,
@@ -596,6 +597,29 @@ describe('Data Visualization', () => {
           expect(matchMock).toHaveBeenCalled();
         });
       });
+    });
+  });
+  describe('Heat map', () => {
+    it('should fetch the heat map data successfully', async () => {
+      const mockData = {
+        date: 'today',
+        journal_text: 'text',
+        start: '10',
+        scale_rating: '1',
+      };
+
+      const rpcMock = jest
+        .fn()
+        .mockReturnValue({ data: mockData, error: null });
+      mockSupabaseClient.rpc = rpcMock;
+
+      mockSupabaseClient.from.mockReturnValue({
+        rpc: rpcMock,
+      });
+
+      const result = await getDataHeatmap('1');
+
+      expect(result.data).toEqual({ data: mockData });
     });
   });
 });
