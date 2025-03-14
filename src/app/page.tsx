@@ -242,7 +242,7 @@ export default function Home() {
             <div className="text-center pt-4">
               <p className="text-base text-slate-600">
                 {isLogin
-                  ? "Don't have an account?"
+                  ? 'Do you not have an account yet?'
                   : 'Already have an account?'}{' '}
                 <button
                   type="button"

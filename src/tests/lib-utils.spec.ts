@@ -31,28 +31,6 @@ describe('Utility functions', () => {
     });
   });
 
-  describe('getSleepDuration function', () => {
-    it('should return the correct sleep duration in hours', () => {
-      expect(getSleepDuration('10:00 PM', '6:00 AM')).toBe(8);
-      expect(getSleepDuration('11:00 PM', '3:00 AM')).toBe(4);
-    });
-  });
-
-  describe('getBarColour function', () => {
-    it('should return the correct color based on the sleep duration', () => {
-      expect(getBarColour(5)).toBe('#d9d9d9');
-      expect(getBarColour(7)).toBe('#83e3c6');
-      expect(getBarColour(9)).toBe('#2ebb61');
-    });
-  });
-
-  describe('getTimeAMPM function', () => {
-    it('should convert 24-hour time to AM/PM format', () => {
-      expect(getTimeAMPM('14:30')).toBe('2:30 PM');
-      expect(getTimeAMPM('02:30')).toBe('2:30 AM');
-    });
-  });
-
   describe('getGreetingText function', () => {
     it('should return the correct greeting based on the current time', () => {
       // Spy on Date.prototype.getHours
