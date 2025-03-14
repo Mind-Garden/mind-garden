@@ -1,13 +1,4 @@
 import { getSupabaseClient } from '@/supabase/client';
-import {
-  getPersonalizedCategories,
-  addUserHabit,
-  getAddedCategories,
-  insertAddedResp,
-  getAddedResp,
-  addResp,
-  getAllAddedRespCategory,
-} from '@/actions/data-intake';
 import { selectSleepDataByDateRange } from '@/actions/data-visualization';
 import {
   convertTo24Hour,

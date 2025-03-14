@@ -244,6 +244,7 @@ export async function addUserHabit(
 
   if (selectError) {
     console.error('Error selecting added habit:', selectError);
+    return null;
   }
   if (!selectError) {
     if (data && data.length != 0 && 'tracking_method' in data[0]) {
@@ -261,10 +262,16 @@ export async function addUserHabit(
         { user_id: userId, added_habit: categoryId },
         { tracking_method: [...tracking_method, trackingMethod] },
       );
+
+      if (error) {
+        console.error('error updating added user habits: ' + error);
+        return null;
+      }
       return 'success';
     }
+
     //insert
-    await insertData(
+    const { error } = await insertData(
       'added_habit',
       [
         {
@@ -275,6 +282,12 @@ export async function addUserHabit(
       ],
       false,
     );
+
+    if (error) {
+      console.error('Error inserting response:', error);
+      return null;
+    }
+
     return 'success';
   }
 }
@@ -288,24 +301,6 @@ export async function getAddedCategories(userId: string) {
     return null;
   }
   return data as unknown as IAddedCategory[];
-}
-
-export async function insertAddedResp(
-  userId: string,
-  habit: string,
-  trackingValue: Record<string, any>,
-) {
-  const { error } = await insertData('added_habit_responses', [
-    {
-      user_id: userId,
-      habit: habit,
-      tracking_method: trackingValue,
-    },
-  ]);
-
-  if (error) {
-    console.error('Error inserting response:', error);
-  }
 }
 
 export async function getAddedResp(userId: string, entryDate: string) {
@@ -342,6 +337,7 @@ export async function addResp(
 
   if (selectError) {
     console.error('Error selecting added habit:', selectError);
+    return null;
   } else {
     if (data && data.length != 0) {
       //update
@@ -350,6 +346,10 @@ export async function addResp(
         { user_id: userId, habit: habit, entry_date: entryDate },
         { tracking_method: trackingValue },
       );
+      if (error) {
+        console.error('Error updating habit:', error);
+        return null;
+      }
       return 'success';
     }
     //insert
@@ -363,6 +363,7 @@ export async function addResp(
 
     if (error) {
       console.error('Error inserting response:', error);
+      return null;
     }
 
     return 'success';
