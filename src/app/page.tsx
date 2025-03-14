@@ -147,12 +147,12 @@ export default function Home() {
               animate={{ rotate: 0, scale: 1 }}
               transition={{ duration: 0.6, delay: 0.4, type: 'spring' }}
             />
-            <h1 className="text-7xl md:text-8xl font-bold bg-gradient-to-r from-emerald-400 to-blue-500 text-transparent bg-clip-text mb-4 tracking-tight">
+            <h1 className="p-10 font-title text-7xl md:text-8xl font-bold bg-gradient-to-r from-emerald-400 to-blue-500 text-transparent bg-clip-text mb-4 tracking-tight z-2">
               Mind Garden
             </h1>
           </div>
           <div className="text-2xl text-gray-600 dark:text-gray-300 flex justify-center items-center mt-2">
-            <span className="mr-2">Cultivate Your</span>
+            <span className="mr-2 z-1">Cultivate Your</span>
             <span className="text-4xl font-bold text-emerald-500 inline-flex items-center">
               <WordRotate
                 className="inline-block"
@@ -209,7 +209,7 @@ export default function Home() {
         {/* Content Wrapper */}
         <div className="relative max-w-6xl mx-auto z-10 px-4">
           <motion.h2
-            className="text-4xl md:text-5xl font-bold text-center mb-24 bg-gradient-to-r from-emerald-400 to-blue-500 text-transparent bg-clip-text tracking-tight"
+            className="pb-6 text-4xl md:text-5xl font-bold text-center mb-24 bg-gradient-to-r from-emerald-400 to-blue-500 text-transparent bg-clip-text tracking-tight"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
@@ -974,7 +974,7 @@ export default function Home() {
                 className="text-center relative"
               >
                 <motion.h2
-                  className="text-4xl font-bold mb-6 bg-gradient-to-r from-emerald-500 to-blue-500 text-transparent bg-clip-text"
+                  className="pb-4 text-4xl font-bold mb-6 bg-gradient-to-r from-emerald-500 to-blue-500 text-transparent bg-clip-text"
                   initial={{ y: 20 }}
                   animate={{ y: 0 }}
                   transition={{ duration: 0.6 }}
