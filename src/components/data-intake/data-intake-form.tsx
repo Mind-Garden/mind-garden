@@ -128,9 +128,7 @@ function DataIntakeForm({
   const fetchResponses = useCallback(async () => {
     setLoadingSelection(true); // Show loading state during re-fetch
     try {
-      const today = new Date().toISOString().split('T')[0];
-
-      const response = await selectResponsesByDate(userId, today);
+      const response = await selectResponsesByDate(userId, getLocalISOString());
       const addedResponse = await getAddedResp(userId, getLocalISOString());
 
       if (addedResponse) {
