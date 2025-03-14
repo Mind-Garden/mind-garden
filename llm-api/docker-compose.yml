@@ -2,16 +2,6 @@ services:
   ollama:
     build: .
     container_name: ollama
-    deploy:
-      resources:
-        reservations:
-          # will get skipped if you dont have these resources
-          devices:
-            - driver: nvidia
-              count: all
-              capabilities: [gpu]
-    environment:
-      - NVIDIA_VISIBLE_DEVICES=all
     ports:
       - '11434:11434'
     volumes:

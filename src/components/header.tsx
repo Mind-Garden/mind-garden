@@ -5,6 +5,7 @@ import {
   Moon,
   NotebookPen,
   ListCheck,
+  Bell,
   ListTodo,
 } from 'lucide-react';
 import { useRouter } from 'next/navigation';
@@ -30,6 +31,11 @@ export function Header() {
   // List of navigation items - easy to add more
   const navItems: NavItem[] = [
     {
+      icon: Bell,
+      path: '/reminders',
+      label: 'Reminders',
+    },
+    {
       icon: ListTodo,
       path: '/task-manager',
       label: 'Task Manager',
@@ -52,7 +58,7 @@ export function Header() {
   ];
 
   return (
-    <header className="border-b bg-white/50 backdrop-blur-sm mt-4 mx-4 rounded-full border-none">
+    <header className="font-body border-b bg-white/50 backdrop-blur-sm mt-4 mx-4 rounded-full border-none">
       <div className="container mx-auto px-4 h-16 flex items-center justify-between">
         {/* Logo */}
         <div className="flex items-center">
@@ -63,7 +69,9 @@ export function Header() {
             onClick={() => router.push('/home')}
             style={{ cursor: 'pointer' }}
           />
-          <p className="text-2xl font-semibold text-green-700">Mind Garden</p>
+          <p className="text-2xl font-extrabold text-slate-800 font-title">
+            Mind Garden
+          </p>
         </div>
         <div className="flex items-center gap-4">
           {/* Navigation buttons generated from navItems array */}

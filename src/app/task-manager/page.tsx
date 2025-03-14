@@ -3,7 +3,7 @@ import { createClient } from '@/supabase/server';
 import Footer from '@/components/footer';
 import { Header } from '@/components/header';
 import { getGreetingText } from '@/lib/utils';
-import TaskManager from '@/components/task-manager';
+import TaskManager from '@/components/tasks/task-manager';
 
 export default async function Home() {
   const supabase = await createClient();

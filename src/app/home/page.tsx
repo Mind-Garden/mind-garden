@@ -6,6 +6,8 @@ import Dashboard from '@/components/dashboard';
 import MoodFlow from '@/components/mood-flow';
 import MoodBar from '@/components/mood-bar';
 import SleepChart from '@/components/sleep-chart';
+import BarLineChart from '@/components/bar-line-chart';
+import WaterChart from '@/components/water-chart';
 import AIResponse from '@/components/ai-response';
 import HabitHeatmap from '@/components/heatmap';
 
@@ -66,6 +68,12 @@ export default async function Home() {
         </div>
         <div className="mb-8">
           <SleepChart userId={userId} />
+        </div>
+        <div className="pt-10 pb-10">
+          <BarLineChart userId={userId} />
+        </div>
+        <div className="pt-10 pb-10">
+          <WaterChart userId={userId} />
         </div>
       </main>
 

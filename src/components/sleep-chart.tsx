@@ -8,12 +8,14 @@ import {
   Tooltip,
   ResponsiveContainer,
   Cell,
+  CartesianGrid,
 } from 'recharts';
 import {
   Card,
   CardContent,
   CardDescription,
   CardTitle,
+  CardHeader,
 } from '@/components/ui/card';
 import {
   getLocalISOString,
@@ -57,15 +59,19 @@ export default function SleepChart({
         )
       ) {
         const sleepData = response.data as SleepDataPoint[];
-        const processedData = sleepData.map((item) => {
-          return {
-            date: item.entry_date,
-            start: item.start,
-            end: item.end,
-            start24Format: convertTo24Hour(item.start),
-            sleepDuration: getSleepDuration(item.start, item.end),
-          };
-        });
+        const processedData = sleepData
+          .map((item) => {
+            return {
+              date: item.entry_date,
+              start: item.start,
+              end: item.end,
+              start24Format: convertTo24Hour(item.start),
+              sleepDuration: getSleepDuration(item.start, item.end),
+            };
+          })
+          .sort(
+            (a, b) => new Date(a.date).getTime() - new Date(b.date).getTime(),
+          );
         setSleepData(processedData);
       } else {
         console.error('Unexpected response data format', response.data);
@@ -125,10 +131,11 @@ export default function SleepChart({
   };
 
   return (
-    <Card className="bg-white backdrop-blur-sm rounded-2xl border-none">
-      <CardTitle className="text-2xl font-bold mb-2 opacity-50 text-center">
-        {title}
-      </CardTitle>
+    <Card className="bg-white/50 break-inside-avoid backdrop-blur-sm rounded-2xl border-none mb-6 relative transition-opacity">
+      <CardHeader className="pb-3">
+        <CardTitle className="text-3xl text-center">{title}</CardTitle>
+      </CardHeader>
+
       <CardDescription className="text-center text-muted-foreground">
         from {lastMonthDate} to {todaysDate}
       </CardDescription>
@@ -138,6 +145,7 @@ export default function SleepChart({
         ) : (
           <ResponsiveContainer width="100%" height={600}>
             <BarChart data={sleepData} margin={chartOptions.margin}>
+              <CartesianGrid strokeDasharray="3 3" vertical={false} />
               <XAxis {...chartOptions.xAxis} />
               <YAxis {...chartOptions.yAxis} />
               <Tooltip content={<CustomTooltip />} />

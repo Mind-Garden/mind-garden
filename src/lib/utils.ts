@@ -1,5 +1,4 @@
 import { clsx, type ClassValue } from 'clsx';
-import { get } from 'http';
 import { twMerge } from 'tailwind-merge';
 
 export function cn(...inputs: ClassValue[]) {
@@ -36,6 +35,19 @@ export const convertTo24Hour = (time: string): number => {
   if (result < 18) result += 24;
 
   return result;
+};
+
+export const convertTo24HourSleepEntry = (timeStr: string) => {
+  const [time, period] = timeStr.split(' ');
+  const [hoursStr, minutes] = time.split(':').map(Number);
+
+  let hours = hoursStr;
+
+  if (period === 'PM' && hours < 12) hours += 12;
+  if (period === 'AM' && hours === 12) hours = 0;
+
+  // Ensure two-digit format for hours and minutes
+  return `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}`;
 };
 
 export const formatHour = (hour: number) => {
