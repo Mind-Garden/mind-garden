@@ -11,6 +11,10 @@ import {
 } from '@/lib/utils'; // replace with the actual path of your file
 
 describe('Utility functions', () => {
+  afterEach(() => {
+    // Restore global Date to its original state after each test
+    jest.restoreAllMocks();
+  });
   describe('cn function', () => {
     it('should merge class names', () => {
       const result = cn('class1', 'class2', 'class3');
