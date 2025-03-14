@@ -6,7 +6,6 @@ dotenv.config();
 
 describe('Reminders Integration Test', () => {
   let testUserId: string = '';
-  let smtpTransporter: any;
 
   beforeAll(async () => {
     const formData = {
@@ -39,6 +38,30 @@ describe('Reminders Integration Test', () => {
     await updateReminders(testUserId, '10:00:00', false, true, true);
     const result = await getReminders(testUserId);
 
+    expect(result).toEqual(
+      expect.objectContaining({
+        reminder_time: '10:00:00',
+        journal_reminders: false,
+        data_intake_reminders: true,
+        activity_reminders: true,
+      }),
+    );
+  });
+
+  it('should fail to update reminder data', async () => {
+    const error = await updateReminders(
+      testUserId,
+      '27:00:00',
+      false,
+      false,
+      false,
+    );
+    const result = await getReminders(testUserId);
+
+    expect(error).not.toBeNull;
+    expect(error.error).toEqual(
+      'date/time field value out of range: "27:00:00"',
+    );
     expect(result).toEqual(
       expect.objectContaining({
         reminder_time: '10:00:00',

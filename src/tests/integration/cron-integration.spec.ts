@@ -8,7 +8,7 @@ describe('Reminder API Integration Tests', () => {
   beforeAll(async () => {
     // Create a test user
     const { data, error } = await supabase.auth.signUp({
-      email: `testuser${Date.now()}@example.com`,
+      email: 'testuser@example.com',
       password: 'TestPassword123!',
     });
 
@@ -46,7 +46,7 @@ describe('Reminder API Integration Tests', () => {
 
   it('should return 400 when hour parameter is out of range (too high)', async () => {
     const request = new NextRequest(
-      new URL('https://example.com/api/cron?hour=24'),
+      new URL('https://example.com/api/cron?hour=27'),
     );
     const response = await GET(request);
     const body = await response.json();
