@@ -1,4 +1,4 @@
-import { fetchResponse } from '@/actions/tasks';
+import { fetchResponse } from '@/actions/ai-fetch';
 import {
   getLocalISOString,
   getSleepDuration,
@@ -102,10 +102,7 @@ async function summarizeMoodData(
     const moodData = response.data as MoodCountData[];
 
     // Calculate total count
-    const totalCount = moodData.reduce(
-      (sum, item) => sum + (item.count || 0),
-      0,
-    );
+    const totalCount = moodData.reduce((sum, item) => sum + item.count, 0);
 
     if (totalCount === 0) {
       return 'No mood data available to summarize :(';
