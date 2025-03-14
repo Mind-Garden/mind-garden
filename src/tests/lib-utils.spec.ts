@@ -55,9 +55,9 @@ describe('Utility functions', () => {
 
   describe('getGreetingText function', () => {
     it('should return the correct greeting based on the current time', () => {
-      const morningDate = new Date('2025-02-20T08:00:00');
-      const afternoonDate = new Date('2025-02-20T14:00:00');
-      const eveningDate = new Date('2025-02-20T20:00:00');
+      const morningDate = new Date('2025-03-13T06:00:00Z'); // 6 AM
+      const afternoonDate = new Date('2025-03-13T12:00:00Z'); // 12 PM
+      const eveningDate = new Date('2025-03-13T18:00:00Z'); // 6 PM
       // Spy on Date.now() and mock the time for morning
       jest.spyOn(global.Date, 'now').mockReturnValue(morningDate.getTime());
       expect(getGreetingText()).toBe('Good Morning');
