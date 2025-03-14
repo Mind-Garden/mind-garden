@@ -5,7 +5,7 @@ import { getSupabaseClient } from '@/supabase/client';
 import { selectData } from '@/supabase/dbfunctions';
 
 export async function getDataHeatmap(userId: string) {
-  const supabase = await createClient();
+  const supabase = getSupabaseClient();
 
   const result = await supabase.rpc('get_heatmap_data', {
     user_id_param: userId,

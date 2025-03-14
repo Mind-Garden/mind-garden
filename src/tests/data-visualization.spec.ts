@@ -601,6 +601,7 @@ describe('Data Visualization', () => {
   });
   describe('Heat map', () => {
     it('should fetch the heat map data successfully', async () => {
+      // Mock data to return
       const mockData = {
         date: 'today',
         journal_text: 'text',
@@ -608,18 +609,18 @@ describe('Data Visualization', () => {
         scale_rating: '1',
       };
 
-      const rpcMock = jest
-        .fn()
-        .mockReturnValue({ data: mockData, error: null });
-      mockSupabaseClient.rpc = rpcMock;
-
-      mockSupabaseClient.from.mockReturnValue({
-        rpc: rpcMock,
+      const userId = '1';
+      mockSupabaseClient.rpc.mockResolvedValue({
+        data: mockData,
+        error: null,
       });
 
-      const result = await getDataHeatmap('1');
+      const result = await getDataHeatmap(userId);
 
-      expect(result.data).toEqual({ data: mockData });
+      expect(mockSupabaseClient.rpc).toHaveBeenCalledWith('get_heatmap_data', {
+        user_id_param: userId,
+      });
+      expect(result.data).toEqual(mockData);
     });
   });
 });
