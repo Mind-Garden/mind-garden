@@ -1,6 +1,5 @@
 import { getSupabaseClient } from '@/supabase/client';
 import {
-
   selectMoodDataByDateRange,
   selectMoodFrequency,
   selectSleepDataByDateRange,
@@ -332,7 +331,7 @@ describe('Data Visualization', () => {
           data: mockData,
           error: null,
         });
-        
+
         const result = await selectMoodFrequency(
           userId,
           lastMonthDate,
@@ -346,11 +345,9 @@ describe('Data Visualization', () => {
             start_date_param: lastMonthDate,
             end_date_param: todaysDate,
           },
-
         );
         expect(result).toEqual({ data: mockData });
       });
-
 
       it('should return an error if the RPC call fails', async () => {
         console.error = jest.fn();
