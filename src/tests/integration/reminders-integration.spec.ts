@@ -1,5 +1,4 @@
 import { getReminders, updateReminders } from '@/actions/reminders';
-import nodemailer from 'nodemailer';
 import dotenv from 'dotenv';
 import supabase from '../../../jest.setup';
 
@@ -30,17 +29,6 @@ describe('Reminders Integration Test', () => {
     if (data) {
       testUserId = data.user?.id;
     }
-
-    // Set up SMTP transport with real credentials
-    smtpTransporter = nodemailer.createTransport({
-      host: process.env.SMTP_HOST,
-      port: parseInt(process.env.SMTP_PORT || '587', 10),
-      secure: false, // Change to `true` if using SSL
-      auth: {
-        user: process.env.SMTP_EMAIL,
-        pass: process.env.SMTP_PASSWORD,
-      },
-    });
   });
 
   afterAll(async () => {
