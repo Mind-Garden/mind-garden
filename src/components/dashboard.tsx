@@ -3,9 +3,14 @@ import { useRouter } from 'next/navigation';
 
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import HabitHeatmap from '@/components/heatmap';
-import HabitHeatmapGrid from './habit-heatmap';
-import { User, Moon, NotebookPen, ListCheck, Bell } from 'lucide-react';
+import {
+  User,
+  Moon,
+  NotebookPen,
+  ListCheck,
+  Bell,
+  ListTodo,
+} from 'lucide-react';
 
 interface DashboardProps {
   readonly userId: string;
@@ -77,23 +82,26 @@ export default function Dashboard({ userId }: DashboardProps) {
           </div>
         </Card>
 
-        {/* Profile */}
+        {/* To-Do List */}
         <Card className="p-5 bg-white/50 dark:bg-black/20 backdrop-blur-sm rounded-2xl border-none shadow-lg hover:shadow-xl transition-transform hover:scale-105">
           <div className="flex flex-col h-full">
-            <div className="p-3 bg-sky-100 dark:bg-sky-900/50 rounded-xl w-fit">
-              <User className="h-5 w-5 text-sky-600 dark:text-sky-400" />
+            <div className="p-3 bg-blue-100 dark:bg-blue-900/50 rounded-xl w-fit">
+              <ListTodo className="h-5 w-5 text-blue-600 dark:text-blue-400" />
             </div>
-            <h3 className="text-lg font-medium mt-3">Profile</h3>
-            <p className="text-sm text-muted-foreground mt-1">Your account</p>
+            <h3 className="text-lg font-medium mt-3">To-Do List</h3>
+            <p className="text-sm text-muted-foreground mt-1">
+              Organize your tasks
+            </p>
             <Button
-              onClick={() => router.push('/profile')}
+              onClick={() => router.push('/task-manager')}
               variant="ghost"
               className="mt-auto justify-start px-0 hover:bg-transparent hover:text-primary"
             >
-              Settings →
+              Task Manager →
             </Button>
           </div>
         </Card>
+
         {/* Reminders */}
         <Card className="p-5 bg-white/50 dark:bg-black/20 backdrop-blur-sm rounded-2xl border-none shadow-lg hover:shadow-xl transition-transform hover:scale-105">
           <div className="flex flex-col h-full">
@@ -106,6 +114,23 @@ export default function Dashboard({ userId }: DashboardProps) {
             </p>
             <Button
               onClick={() => router.push('/reminders')}
+              variant="ghost"
+              className="mt-auto justify-start px-0 hover:bg-transparent hover:text-primary"
+            >
+              Reminders →
+            </Button>
+          </div>
+        </Card>
+        {/* Profile */}
+        <Card className="p-5 bg-white/50 dark:bg-black/20 backdrop-blur-sm rounded-2xl border-none shadow-lg hover:shadow-xl transition-transform hover:scale-105">
+          <div className="flex flex-col h-full">
+            <div className="p-3 bg-sky-100 dark:bg-sky-900/50 rounded-xl w-fit">
+              <User className="h-5 w-5 text-sky-600 dark:text-sky-400" />
+            </div>
+            <h3 className="text-lg font-medium mt-3">Profile</h3>
+            <p className="text-sm text-muted-foreground mt-1">Your account</p>
+            <Button
+              onClick={() => router.push('/profile')}
               variant="ghost"
               className="mt-auto justify-start px-0 hover:bg-transparent hover:text-primary"
             >

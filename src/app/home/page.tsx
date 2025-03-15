@@ -10,15 +10,12 @@ import {
   CardTitle,
 } from '@/components/ui/card';
 import Dashboard from '@/components/dashboard';
-import MoodFlow from '@/components/mood-flow';
-import MoodBar from '@/components/mood-bar';
-import SleepChart from '@/components/sleep-chart';
 import BarLineChart from '@/components/bar-line-chart';
 import WaterChart from '@/components/water-chart';
-import AIResponse from '@/components/ai-response';
 import HabitHeatmap from '@/components/heatmap';
 import { MoveRight } from 'lucide-react';
 import HabitHeatmapGrid from '@/components/habit-heatmap';
+import HealthDashboard from '@/components/health-dashboard';
 
 export default async function Home() {
   const supabase = await createClient();
@@ -40,7 +37,7 @@ export default async function Home() {
   }
 
   return (
-    <div className="min-h-screen flex flex-col bg-gradient-to-b from-background to-muted">
+    <div className="min-h-screen flex flex-col">
       <Header />
 
       <main className="flex-1 container mx-auto px-4 py-8">
@@ -80,64 +77,27 @@ export default async function Home() {
 
           {/* Right Column */}
           <div className="space-y-6 lg:col-span-7">
+            {/* Mood Section */}
+            <Card className="overflow-hidden border-none shadow-md">
+              <CardHeader className="bg-gradient-to-r from-blue-50 to-green-50 dark:from-blue-950/20 dark:to-green-950/20">
+                <CardTitle>Mood and Sleep Summaries</CardTitle>
+                <CardDescription>
+                  Gain insights into your well-being
+                </CardDescription>
+              </CardHeader>
+              <CardContent className="p-6 space-y-6">
+                <HealthDashboard userId={userId} />
+              </CardContent>
+            </Card>
             {/* Habit Tracker Swiper */}
             <Card className="overflow-hidden border-none shadow-md">
               <CardHeader className="bg-gradient-to-r from-blue-50 to-green-50 dark:from-blue-950/20 dark:to-green-950/20">
                 <div className="flex items-center justify-between">
                   <CardTitle>Habit Trackers</CardTitle>
-                  <div className="flex items-center text-sm text-muted-foreground">
-                    <span>Swipe for more</span>
-                    <MoveRight className="ml-1 h-4 w-4" />
-                  </div>
                 </div>
               </CardHeader>
               <CardContent className="p-6">
                 <HabitHeatmapGrid userId={userId} />
-              </CardContent>
-            </Card>
-
-            {/* Mood Section */}
-            <Card className="overflow-hidden border-none shadow-md">
-              <CardHeader className="bg-gradient-to-r from-blue-50 to-green-50 dark:from-blue-950/20 dark:to-green-950/20">
-                <CardTitle>Mood Analysis</CardTitle>
-                <CardDescription>Track your emotional patterns</CardDescription>
-              </CardHeader>
-              <CardContent className="p-6 space-y-6">
-                <div className="grid gap-6 md:grid-cols-2">
-                  <div className="md:col-span-1">
-                    <MoodFlow userId={userId} />
-                  </div>
-                  <div className="md:col-span-1">
-                    <MoodBar userId={userId} />
-                  </div>
-                </div>
-                <div className="pt-4 border-t">
-                  <AIResponse
-                    userId={userId}
-                    type="mood"
-                    title="Mood Summary"
-                  />
-                </div>
-              </CardContent>
-            </Card>
-
-            {/* Sleep Section */}
-            <Card className="overflow-hidden border-none shadow-md">
-              <CardHeader className="bg-gradient-to-r from-blue-50 to-green-50 dark:from-blue-950/20 dark:to-green-950/20">
-                <CardTitle>Sleep Analysis</CardTitle>
-                <CardDescription>
-                  Your sleep patterns and insights
-                </CardDescription>
-              </CardHeader>
-              <CardContent className="p-6 space-y-6">
-                <SleepChart userId={userId} />
-                <div className="pt-4 border-t">
-                  <AIResponse
-                    userId={userId}
-                    type="sleep"
-                    title="Sleep Summary"
-                  />
-                </div>
               </CardContent>
             </Card>
 
