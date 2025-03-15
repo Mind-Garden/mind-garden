@@ -33,7 +33,7 @@ export async function signup(formData: FormData) {
   const lastNameError = validateName(formData.get('lastName'), 'Last name');
   if (lastNameError) return lastNameError;
 
-  const data = {
+  const userData = {
     email: formData.get('email') as string,
     password: formData.get('password') as string,
     options: {
@@ -44,7 +44,7 @@ export async function signup(formData: FormData) {
     },
   };
 
-  const { error } = await supabase.auth.signUp(data);
+  const { error } = await supabase.auth.signUp(userData);
 
   if (error) {
     return { error: error.message };

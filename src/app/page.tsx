@@ -242,7 +242,8 @@ export default function Home() {
             <div className="text-center pt-4">
               <p className="text-base text-slate-600">
                 {isLogin
-                  ? 'Don\'t have an account?'
+                  ? // prettier-ignore
+                    'Don\'t have an account?'
                   : 'Already have an account?'}{' '}
                 <button
                   type="button"
