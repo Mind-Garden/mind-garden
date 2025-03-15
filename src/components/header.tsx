@@ -31,16 +31,6 @@ export function Header() {
   // List of navigation items - easy to add more
   const navItems: NavItem[] = [
     {
-      icon: Bell,
-      path: '/reminders',
-      label: 'Reminders',
-    },
-    {
-      icon: ListTodo,
-      path: '/task-manager',
-      label: 'Task Manager',
-    },
-    {
       icon: ListCheck,
       path: '/daily-intake',
       label: 'Daily Intake',
@@ -54,6 +44,16 @@ export function Header() {
       icon: Moon,
       path: '/sleep-tracker',
       label: 'Sleep Tracker',
+    },
+    {
+      icon: ListTodo,
+      path: '/task-manager',
+      label: 'Task Manager',
+    },
+    {
+      icon: Bell,
+      path: '/reminders',
+      label: 'Reminders',
     },
   ];
 

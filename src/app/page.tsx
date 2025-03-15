@@ -148,9 +148,6 @@ export default function Home() {
       {/* Path Morphing Navigation */}
       {isFeaturesInView ? <PathMorphingNav featuresRef={featuresRef} /> : null}
 
-      {/* Animated Background */}
-      <div className="fixed inset-0 -z-10 bg-gradient-to-b from-slate-50 to-blue-50 dark:from-slate-900 dark:to-blue-950"></div>
-
       {/* Hero Section */}
       <motion.section
         ref={heroRef}
@@ -465,7 +462,7 @@ export default function Home() {
                           day. The team meeting went better than expected, and I
                           felt confident presenting my ideas. Other than that, I
                           had a good time with my girlfriend today. We went for
-                          a walk around park and the weather was beautiful.
+                          a walk around the park and the weather was beautiful.
                         </p>
                       </div>
 
