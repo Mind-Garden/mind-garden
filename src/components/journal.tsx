@@ -1,19 +1,12 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { motion } from 'framer-motion';
 
 import { Calendar } from '@/components/ui/calendar';
 import { Button } from '@/components/ui/button';
 import { TextArea } from '@/components/ui/textarea';
-import {
-  Card,
-  CardContent,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from '@/components/ui/card';
 import { ScrollArea } from '@/components/ui/scroll-area';
-import { Badge } from './ui/badge';
 
 import {
   PenLine,
@@ -24,6 +17,7 @@ import {
   Edit,
   NotebookPen,
   LoaderCircle,
+  BookOpen,
 } from 'lucide-react';
 
 import { RandomPromptCard } from './random-prompt-card';
@@ -34,7 +28,7 @@ import {
   updateJournalEntry,
 } from '@/actions/journal';
 import { toast } from 'react-toastify';
-import { IJournalEntries } from '@/supabase/schema';
+import type { IJournalEntries } from '@/supabase/schema';
 
 import { getDate, undoConversion } from '@/lib/utils';
 
@@ -90,7 +84,7 @@ export default function NewJournal({ userId }: NewJournalProps) {
   if (loading)
     return (
       <div className="flex items-center justify-center min-h-screen">
-        <LoaderCircle className="h-12 w-12 text-gray-500 animate-spin" />
+        <LoaderCircle className="h-12 w-12 text-blue-500 animate-spin" />
       </div>
     );
   if (error) return <div>Error: {error}</div>;
@@ -193,157 +187,273 @@ export default function NewJournal({ userId }: NewJournalProps) {
     }
   };
 
+  // Format date for display
+  const formattedDate = undoConversion(date).toLocaleDateString('en-US', {
+    month: 'long',
+    day: 'numeric',
+    year: 'numeric',
+  });
+
   return (
-    <div className="max-w-7xl mx-auto p-4 md:p-8 space-y-6">
+    <div className="max-w-7xl mx-auto p-4 md:p-8 space-y-8">
       {/* First Row */}
-      <div className="grid md:grid-cols-2 gap-6">
+      <div className="grid md:grid-cols-2 gap-8">
         {/* Calendar Card */}
-        <Card className="bg-white/50 backdrop-blur-sm rounded-2xl border-none">
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <CalendarDays className="w-5 h-5" />
-              Your Journal Calendar
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <Calendar
-              mode="single"
-              selected={undoConversion(date)}
-              onSelect={(date: Date | undefined) => date && setDate(date)}
-              className="rounded-md flex items-center justify-center"
-              components={{
-                DayContent: ({ date: dayDate }: { date: Date }) => {
-                  const count = getEntriesCount(dayDate);
-                  return (
-                    <div className="relative w-full h-full p-2">
-                      <span>{dayDate.getDate()}</span>
-                      {count > 0 && (
-                        <Badge
-                          variant="destructive"
-                          className="absolute -top-2 -right-2 h-5 w-5 p-0 flex items-center justify-center rounded-full text-[10px] z-50"
-                        >
-                          {count}
-                        </Badge>
-                      )}
-                    </div>
-                  );
-                },
-              }}
-            />
-          </CardContent>
-        </Card>
+        <div className="relative bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-6 overflow-hidden flex justify-center">
+          <motion.div
+            initial={{ opacity: 0.5, scale: 0.8 }}
+            animate={{
+              opacity: [0.5, 1, 0.5],
+              scale: [0.8, 1, 0.8],
+            }}
+            transition={{ duration: 5, repeat: Infinity, ease: 'easeInOut' }}
+            className="absolute top-0 right-0 w-32 h-32 bg-blue-100 dark:bg-blue-900/30 rounded-full opacity-70"
+          />
+          <motion.div
+            initial={{ opacity: 0.4, scale: 0.7 }}
+            animate={{
+              opacity: [0.4, 1, 0.4],
+              scale: [0.7, 1.1, 0.7],
+              y: [50, 55, 50],
+            }}
+            transition={{
+              duration: 3,
+              repeat: Infinity,
+              repeatType: 'reverse',
+              ease: 'easeInOut',
+            }}
+            className="absolute bottom-0 left-0 w-32 h-32 bg-blue-100 dark:bg-blue-900/30 rounded-full opacity-70"
+          />
+
+          <motion.div
+            initial={{ opacity: 0.4, scale: 0.7, x: 100, y: 50 }}
+            animate={{
+              opacity: [0.4, 1, 0.4],
+              scale: [0.7, 1.1, 0.7],
+              y: [50, 55, 50],
+            }}
+            transition={{
+              duration: 3,
+              repeat: Infinity,
+              repeatType: 'reverse',
+              ease: 'easeInOut',
+            }}
+            className="absolute top-0 right-0 w-32 h-32 bg-blue-100 dark:bg-blue-900/30 rounded-full opacity-70"
+          />
+          <div className="relative z-10">
+            <div className="flex items-center justify-between mb-6">
+              <div className="flex items-center">
+                <CalendarDays className="h-6 w-6 text-blue-500 mr-3" />
+                <h4 className="text-xl font-semibold text-gray-800 dark:text-white">
+                  Journal Calendar
+                </h4>
+              </div>
+            </div>
+
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5 }}
+              className="flex justify-center items-center"
+            >
+              <Calendar
+                mode="single"
+                selected={undoConversion(date)}
+                onSelect={(date: Date | undefined) => date && setDate(date)}
+                className="rounded-md"
+                components={{
+                  DayContent: ({ date: dayDate }: { date: Date }) => {
+                    const count = getEntriesCount(dayDate);
+                    return (
+                      <div className="relative w-full h-full p-2">
+                        <span>{dayDate.getDate()}</span>
+                        {count > 0 && (
+                          <div className="absolute -top-1 -right-1 h-4 w-4 bg-blue-500 rounded-full flex items-center justify-center text-[10px] text-white">
+                            {count}
+                          </div>
+                        )}
+                      </div>
+                    );
+                  },
+                }}
+              />
+            </motion.div>
+          </div>
+        </div>
 
         {/* Journal Entry Form */}
-        <Card className="bg-white/50 backdrop-blur-sm rounded-2xl border-none">
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <NotebookPen className="w-5 h-5" />
-              New Journal Entry
-            </CardTitle>
-          </CardHeader>
+        <div className="relative bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-6 overflow-hidden">
+          <motion.div
+            initial={{ opacity: 0.5, scale: 0.8, x: -100, y: 50 }}
+            animate={{
+              opacity: [0.5, 1, 0.5],
+              scale: [0.8, 1, 0.8],
+              x: [-100, 100, 150, -150, 0], // Moves further left and right
+              y: [50, 50, 50, 50, 50], // Keeps the Y value stable
+            }}
+            transition={{ duration: 5, repeat: Infinity, ease: 'easeInOut' }}
+          />
+          <div className="relative z-10">
+            <div className="flex items-center justify-between mb-6">
+              <div className="flex items-center">
+                <NotebookPen className="h-6 w-6 text-blue-500 mr-3" />
+                <h4 className="text-xl font-semibold text-gray-800 dark:text-white">
+                  New Entry
+                </h4>
+              </div>
+              <span className="text-sm font-medium text-blue-500 bg-blue-50 dark:bg-blue-900/50 py-1 px-3 rounded-full">
+                {getDate().toLocaleDateString('en-US', {
+                  month: 'long',
+                  day: 'numeric',
+                  year: 'numeric',
+                })}
+              </span>
+            </div>
 
-          <CardContent>
-            <RandomPromptCard />
-            <TextArea
-              placeholder="What's on your mind?"
-              value={newEntry}
-              onChange={(e) => setNewEntry(e.target.value)}
-              className="min-h-[200px]"
-            />
-          </CardContent>
-          <CardFooter>
-            <Button onClick={handleSaveEntry} className="w-full">
-              <PenLine className="w-4 h-4 mr-2" />
-              Save Entry
-            </Button>
-          </CardFooter>
-        </Card>
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.2 }}
+              className="space-y-4"
+            >
+              <RandomPromptCard />
+
+              <div className="bg-gray-50 dark:bg-gray-700/30 rounded-xl p-4">
+                <TextArea
+                  placeholder="What's on your mind today?"
+                  value={newEntry}
+                  onChange={(e) => setNewEntry(e.target.value)}
+                  className="min-h-[150px] bg-transparent border-none focus-visible:ring-0 p-0 placeholder:text-gray-400 text-gray-600 dark:text-gray-300"
+                />
+              </div>
+
+              <Button
+                onClick={handleSaveEntry}
+                className="w-full bg-blue-500 hover:bg-blue-600 text-white"
+              >
+                <PenLine className="w-4 h-4 mr-2" />
+                Save Entry
+              </Button>
+            </motion.div>
+          </div>
+        </div>
       </div>
 
       {/* Second Row - Entries List */}
-      <Card className="bg-white/50 backdrop-blur-sm rounded-2xl border-none">
-        <CardHeader>
-          <div className="flex items-center justify-between">
-            <CardTitle>
-              Entries for{' '}
-              {undoConversion(date).toLocaleDateString('en-US', {
-                month: 'long',
-                day: 'numeric',
-                year: 'numeric',
-              })}
-            </CardTitle>
-            <Badge variant="secondary">
+      <div className="relative bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-6 overflow-hidden">
+        <motion.div
+          initial={{ opacity: 0.4, scale: 0.7 }}
+          animate={{
+            opacity: [0.4, 1, 0.4],
+            scale: [0.7, 1.5, 0.7],
+            y: [50, 55, 50],
+          }}
+          transition={{
+            duration: 4.2,
+            repeat: Infinity,
+            repeatType: 'reverse',
+            ease: 'easeInOut',
+          }}
+          className="absolute bottom-0 right-0 w-32 h-32 bg-blue-100 dark:bg-blue-900/30 rounded-full opacity-70"
+        />
+        <div className="relative z-10">
+          <div className="flex items-center justify-between mb-6">
+            <div className="flex items-center">
+              <BookOpen className="h-6 w-6 text-blue-500 mr-3" />
+              <h4 className="text-xl font-semibold text-gray-800 dark:text-white">
+                Journal Entries from {formattedDate}
+              </h4>
+            </div>
+            <span className="text-sm font-medium text-blue-500 bg-blue-50 dark:bg-blue-900/50 py-1 px-3 rounded-full">
               {selectedDateEntries.length}{' '}
               {selectedDateEntries.length === 1 ? 'entry' : 'entries'}
-            </Badge>
+            </span>
           </div>
-        </CardHeader>
-        <CardContent>
-          <ScrollArea className="h-[500px] pr-4">
-            {selectedDateEntries.length === 0 ? (
-              <div className="text-center py-8">
-                <p className="text-muted-foreground">
-                  No entries for this date
-                </p>
-              </div>
-            ) : (
-              <div className="space-y-4">
-                {selectedDateEntries.map((entry) => (
-                  <Card key={entry.id} className="border">
-                    <CardContent className="pt-6">
-                      {editingEntryId === entry.id ? (
-                        <TextArea
-                          value={editingText}
-                          onChange={(e) => setEditingText(e.target.value)}
-                          className="min-h-[150px]"
-                        />
-                      ) : (
-                        <p className="whitespace-pre-wrap">
-                          {entry.journal_text}
-                        </p>
-                      )}
-                    </CardContent>
-                    <CardFooter className="justify-between">
-                      {editingEntryId === entry.id ? (
-                        <div className="flex gap-2">
-                          <Button variant="outline" onClick={cancelEditing}>
-                            <X className="w-4 h-4 mr-2" />
-                            Cancel
-                          </Button>
-                          <Button
-                            variant="default"
-                            onClick={() => saveEditedEntry(entry.id)}
-                          >
-                            <Save className="w-4 h-4 mr-2" />
-                            Save Entry
-                          </Button>
-                        </div>
-                      ) : (
-                        <div className="flex gap-2">
-                          <Button
-                            variant="outline"
-                            onClick={() => startEditing(entry)}
-                          >
-                            <Edit className="w-4 h-4 mr-2" />
-                            Edit Entry
-                          </Button>
-                          <Button
-                            variant="destructive"
-                            onClick={() => handleDeleteEntry(entry.id)}
-                          >
-                            <Trash2 className="w-4 h-4 mr-2" />
-                            Delete Entry
-                          </Button>
-                        </div>
-                      )}
-                    </CardFooter>
-                  </Card>
-                ))}
-              </div>
-            )}
-          </ScrollArea>
-        </CardContent>
-      </Card>
+
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.3 }}
+          >
+            <ScrollArea className="h-[500px] pr-4">
+              {selectedDateEntries.length === 0 ? (
+                <div className="flex flex-col items-center justify-center py-12 text-center">
+                  <NotebookPen className="h-12 w-12 text-gray-300 dark:text-gray-600 mb-4" />
+                  <p className="text-gray-500 dark:text-gray-400">
+                    No entries for this date
+                  </p>
+                </div>
+              ) : (
+                <div className="space-y-6">
+                  {selectedDateEntries.map((entry, index) => (
+                    <motion.div
+                      key={entry.id}
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ duration: 0.3, delay: index * 0.1 }}
+                    >
+                      <div className="bg-gray-50 dark:bg-gray-700/30 rounded-xl p-5 mb-4">
+                        {editingEntryId === entry.id ? (
+                          <TextArea
+                            value={editingText}
+                            onChange={(e) => setEditingText(e.target.value)}
+                            className="min-h-[150px] bg-transparent border-none focus-visible:ring-0 p-0 text-gray-600 dark:text-gray-300"
+                          />
+                        ) : (
+                          <p className="text-gray-600 dark:text-gray-300 leading-relaxed whitespace-pre-wrap">
+                            {entry.journal_text}
+                          </p>
+                        )}
+                      </div>
+
+                      <div className="flex justify-end gap-3">
+                        {editingEntryId === entry.id ? (
+                          <>
+                            <Button
+                              variant="outline"
+                              onClick={cancelEditing}
+                              className="border-gray-200 text-gray-600 hover:bg-gray-100 dark:border-gray-700 dark:text-gray-300 dark:hover:bg-gray-800"
+                            >
+                              <X className="w-4 h-4 mr-2" />
+                              Cancel
+                            </Button>
+                            <Button
+                              onClick={() => saveEditedEntry(entry.id)}
+                              className="bg-blue-500 hover:bg-blue-600 text-white"
+                            >
+                              <Save className="w-4 h-4 mr-2" />
+                              Save Changes
+                            </Button>
+                          </>
+                        ) : (
+                          <>
+                            <Button
+                              variant="outline"
+                              onClick={() => startEditing(entry)}
+                              className="border-gray-200 text-gray-600 hover:bg-gray-100 dark:border-gray-700 dark:text-gray-300 dark:hover:bg-gray-800"
+                            >
+                              <Edit className="w-4 h-4 mr-2" />
+                              Edit
+                            </Button>
+                            <Button
+                              variant="destructive"
+                              onClick={() => handleDeleteEntry(entry.id)}
+                              className="bg-red-500 hover:bg-red-600"
+                            >
+                              <Trash2 className="w-4 h-4 mr-2" />
+                              Delete
+                            </Button>
+                          </>
+                        )}
+                      </div>
+                    </motion.div>
+                  ))}
+                </div>
+              )}
+            </ScrollArea>
+          </motion.div>
+        </div>
+      </div>
     </div>
   );
 }
