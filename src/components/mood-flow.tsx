@@ -170,7 +170,7 @@ export default function MoodFlow({
 
   return (
     <div>
-      <Card className="bg-white backdrop-blur-sm rounded-2xl border-none w-1/3">
+      <Card className="bg-white backdrop-blur-sm rounded-2xl border-none">
         <CardTitle className="text-2xl font-bold mb-2 opacity-50 text-center">
           {title}
         </CardTitle>
