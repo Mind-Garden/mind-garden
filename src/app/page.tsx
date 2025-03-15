@@ -21,6 +21,7 @@ import {
   Calendar,
   Eye,
   EyeOff,
+  PenLine,
 } from 'lucide-react';
 import { TypingAnimation } from '@/components/magicui/typing-animation';
 import Footer from '@/components/footer';
@@ -455,43 +456,23 @@ export default function Home() {
                         <h5 className="text-lg font-medium text-gray-700 dark:text-gray-200 mb-2">
                           How am I feeling today?
                         </h5>
-                        <div className="flex space-x-3">
-                          {['😊', '😌', '😐', '😔', '😤'].map((emoji, i) => (
-                            <motion.button
-                              key={i}
-                              className={`w-10 h-10 rounded-full flex items-center justify-center text-xl ${i === 1 ? 'bg-blue-100 dark:bg-blue-900/50 ring-2 ring-blue-500' : 'bg-gray-100 dark:bg-gray-700'}`}
-                              whileHover={{ scale: 1.1 }}
-                              whileTap={{ scale: 0.95 }}
-                            >
-                              {emoji}
-                            </motion.button>
-                          ))}
-                        </div>
                       </div>
 
                       <div className="bg-gray-50 dark:bg-gray-700/30 rounded-xl p-4">
-                        <h5 className="text-lg font-medium text-gray-700 dark:text-gray-200 mb-3">
-                          Today's Reflection
-                        </h5>
                         <p className="text-gray-600 dark:text-gray-300 leading-relaxed">
                           I started my morning with a 10-minute meditation
                           session, which helped me center myself before a busy
                           day. The team meeting went better than expected, and I
-                          felt confident presenting my ideas...
+                          felt confident presenting my ideas. Other than that, I
+                          had a good time with my girlfriend today. We went for
+                          a walk around park and the weather was beautiful.
                         </p>
                       </div>
 
-                      <div className="flex flex-wrap gap-2 mt-4">
-                        <span className="text-xs font-medium bg-blue-100 dark:bg-blue-900/40 text-blue-700 dark:text-blue-300 py-1 px-3 rounded-full">
-                          Gratitude
-                        </span>
-                        <span className="text-xs font-medium bg-emerald-100 dark:bg-emerald-900/40 text-emerald-700 dark:text-emerald-300 py-1 px-3 rounded-full">
-                          Work
-                        </span>
-                        <span className="text-xs font-medium bg-purple-100 dark:bg-purple-900/40 text-purple-700 dark:text-purple-300 py-1 px-3 rounded-full">
-                          Meditation
-                        </span>
-                      </div>
+                      <Button className="w-full bg-blue-500 hover:bg-blue-600 text-white">
+                        <PenLine className="w-4 h-4 mr-2" />
+                        Save Entry
+                      </Button>
                     </motion.div>
                   </div>
                 </div>

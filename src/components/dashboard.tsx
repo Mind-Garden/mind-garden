@@ -114,7 +114,6 @@ export default function Dashboard({ userId }: DashboardProps) {
           </div>
         </Card>
       </div>
-      <HabitHeatmapGrid userId={userId} />
     </div>
   );
 }

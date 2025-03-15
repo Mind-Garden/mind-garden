@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { ChevronLeft, ChevronRight, ArrowLeft, ArrowRight } from 'lucide-react';
 import {
   format,
   startOfMonth,
@@ -11,6 +11,7 @@ import {
   addMonths,
   subMonths,
 } from 'date-fns';
+import { motion, AnimatePresence, type PanInfo } from 'framer-motion';
 
 import { Button } from '@/components/ui/button';
 import {
@@ -25,9 +26,9 @@ import {
   getAddedCategories,
   getPersonalizedCategories,
 } from '@/actions/data-intake';
-import {
+import type {
   IAddedCategory,
-  type IAddedResp,
+  IAddedResp,
   IPersonalizedCategories,
 } from '@/supabase/schema';
 
@@ -53,6 +54,13 @@ export default function HabitHeatmapGrid({ userId }: HeatmapProps) {
   const [personalizedCategories, setpersonalizedCategories] = useState<
     IPersonalizedCategories[] | null
   >();
+  const [currentCategoryIndex, setCurrentCategoryIndex] = useState(0);
+  const [direction, setDirection] = useState(0);
+  const [isDragging, setIsDragging] = useState(false);
+  const [categories, setCategories] = useState<string[]>([]);
+  const [trackingMethodsByCategory, setTrackingMethodsByCategory] = useState<
+    Record<string, string[]>
+  >({});
 
   useEffect(() => {
     const fetchData = async () => {
@@ -99,6 +107,23 @@ export default function HabitHeatmapGrid({ userId }: HeatmapProps) {
       }
 
       setHabitData(boolResp);
+
+      // Set up categories and tracking methods
+      if (boolResp) {
+        const categoryNames = Object.keys(boolResp);
+        setCategories(categoryNames);
+
+        const methodsMap: Record<string, string[]> = {};
+        categoryNames.forEach((category) => {
+          methodsMap[category] = getTrackingMethodsForCategory(
+            category,
+            addedHabits,
+            personalizedCategories,
+          );
+        });
+
+        setTrackingMethodsByCategory(methodsMap);
+      }
     };
     fetchData();
   }, [userId]);
@@ -114,6 +139,23 @@ export default function HabitHeatmapGrid({ userId }: HeatmapProps) {
   // Navigation functions for changing months
   const previousMonth = () => setCurrentMonth(subMonths(currentMonth, 1));
   const nextMonth = () => setCurrentMonth(addMonths(currentMonth, 1));
+
+  // Navigation functions for changing categories
+  const previousCategory = () => {
+    if (categories.length === 0) return;
+    setDirection(-1);
+    setCurrentCategoryIndex((prev) =>
+      prev === 0 ? categories.length - 1 : prev - 1,
+    );
+  };
+
+  const nextCategory = () => {
+    if (categories.length === 0) return;
+    setDirection(1);
+    setCurrentCategoryIndex((prev) =>
+      prev === categories.length - 1 ? 0 : prev + 1,
+    );
+  };
 
   // Function to get habit data for a specific date
   const getHabitDataForDate = (category: string, date: Date) => {
@@ -143,21 +185,32 @@ export default function HabitHeatmapGrid({ userId }: HeatmapProps) {
   };
 
   // Function to get all tracking methods for a category
-  const getTrackingMethodsForCategory = (category: string): string[] => {
-    if (addHabit && (category === 'meal' || category === 'cooking')) {
+  const getTrackingMethodsForCategory = (
+    category: string,
+    habits?: IAddedCategory[] | null,
+    personalized?: IPersonalizedCategories[] | null,
+  ): string[] => {
+    const habitsToUse = habits || addHabit;
+    const personalizedToUse = personalized || personalizedCategories;
+
+    if (
+      habitsToUse &&
+      personalizedToUse &&
+      (category === 'meal' || category === 'cooking')
+    ) {
       let out: string[] = [];
-      for (const category of addHabit) {
-        const name = personalizedCategories?.find(
-          (cat) => cat.id == category.added_habit,
+      for (const cat of habitsToUse) {
+        const name = personalizedToUse.find(
+          (c) => c.id == cat.added_habit,
         )?.name;
         if (name == 'meal' || name === 'cooking') {
-          if (category.tracking_method.includes('breakfast')) {
+          if (cat.tracking_method.includes('breakfast')) {
             out = [...out, 'breakfast'];
           }
-          if (category.tracking_method.includes('lunch')) {
+          if (cat.tracking_method.includes('lunch')) {
             out = [...out, 'lunch'];
           }
-          if (category.tracking_method.includes('dinner')) {
+          if (cat.tracking_method.includes('dinner')) {
             out = [...out, 'dinner'];
           }
         }
@@ -165,6 +218,55 @@ export default function HabitHeatmapGrid({ userId }: HeatmapProps) {
       return out;
     }
     return ['boolean']; // Default for other categories
+  };
+
+  // Swipe handlers
+  const handleDragEnd = (
+    e: MouseEvent | TouchEvent | PointerEvent,
+    info: PanInfo,
+  ) => {
+    setIsDragging(false);
+
+    const swipe =
+      Math.abs(info.offset.x) > 50 || Math.abs(info.velocity.x) > 0.3;
+
+    if (swipe) {
+      if (info.offset.x > 0) {
+        previousCategory();
+      } else {
+        nextCategory();
+      }
+    }
+  };
+
+  // Animation variants
+  const containerVariants = {
+    enter: (direction: number) => ({
+      x: direction > 0 ? 1000 : -1000,
+      opacity: 0,
+    }),
+    center: {
+      x: 0,
+      opacity: 1,
+    },
+    exit: (direction: number) => ({
+      x: direction > 0 ? -1000 : 1000,
+      opacity: 0,
+    }),
+  };
+
+  // Day variants for animations
+  const dayVariants = {
+    initial: { scale: 0.8, opacity: 0 },
+    animate: (index: number) => ({
+      scale: 1,
+      opacity: 1,
+      transition: {
+        delay: index * 0.01,
+        duration: 0.2,
+      },
+    }),
+    hover: { scale: 1.1, transition: { duration: 0.2 } },
   };
 
   // Render the calendar grid for a specific category and tracking method
@@ -196,22 +298,30 @@ export default function HabitHeatmapGrid({ userId }: HeatmapProps) {
 
           {/* Days of the month */}
           <TooltipProvider>
-            {daysInMonth.map((day) => {
+            {daysInMonth.map((day, index) => {
               const dayData = getHabitDataForDate(category, day);
               const completionValue = getValue(trackingMethod, dayData);
               const backgroundColor = getBackgroundColor(completionValue);
 
               return (
-                <Tooltip key={day.toString()}>
+                <Tooltip
+                  key={day.toString()}
+                  delayDuration={isDragging ? 1000 : 300}
+                >
                   <TooltipTrigger asChild>
-                    <div
+                    <motion.div
                       className={cn(
                         'aspect-square rounded-md flex items-center justify-center cursor-pointer transition-colors',
                         backgroundColor,
                       )}
+                      variants={dayVariants}
+                      initial="initial"
+                      animate="animate"
+                      whileHover="hover"
+                      custom={index}
                     >
                       <span className="text-sm">{format(day, 'd')}</span>
-                    </div>
+                    </motion.div>
                   </TooltipTrigger>
                   <TooltipContent>
                     <div className="text-sm">
@@ -241,31 +351,99 @@ export default function HabitHeatmapGrid({ userId }: HeatmapProps) {
     );
   };
 
+  // Get current category and its tracking methods
+  const currentCategory = categories[currentCategoryIndex] || '';
+  const currentTrackingMethods =
+    trackingMethodsByCategory[currentCategory] || [];
+
   return (
     <div className="w-full max-w-3xl mx-auto p-4">
       <div className="flex items-center justify-between mb-6">
-        <h2 className="text-2xl font-bold">Added Habit Tracker</h2>
+        <h2 className="text-2xl font-bold">Habit Tracker Calendar</h2>
         <div className="flex items-center space-x-4">
           <Button variant="outline" size="icon" onClick={previousMonth}>
             <ChevronLeft className="h-4 w-4" />
           </Button>
-          <h3 className="text-lg font-medium">
+          <motion.h3
+            key={format(currentMonth, 'MMMM-yyyy')}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            className="text-lg font-medium min-w-[140px] text-center"
+          >
             {format(currentMonth, 'MMMM yyyy')}
-          </h3>
+          </motion.h3>
           <Button variant="outline" size="icon" onClick={nextMonth}>
             <ChevronRight className="h-4 w-4" />
           </Button>
         </div>
       </div>
 
-      {/* Render heatmaps for each category and its tracking methods */}
-      {habitData &&
-        Object.keys(habitData).map((category) => {
-          const trackingMethods = getTrackingMethodsForCategory(category);
-          return trackingMethods.map((method) =>
-            renderHeatmap(category, method),
-          );
-        })}
+      {/* Category navigation */}
+      {categories.length > 0 && (
+        <div className="flex items-center justify-between mb-6">
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={previousCategory}
+            className="flex items-center gap-1"
+          >
+            <ArrowLeft className="h-4 w-4" />
+            Previous Habit
+          </Button>
+          <motion.div
+            key={currentCategory}
+            initial={{ opacity: 0, y: 5 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="text-base font-medium"
+          >
+            {currentCategoryIndex + 1} / {categories.length}
+          </motion.div>
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={nextCategory}
+            className="flex items-center gap-1"
+          >
+            Next Habit
+            <ArrowRight className="h-4 w-4" />
+          </Button>
+        </div>
+      )}
+
+      {/* Swipeable container for heatmaps */}
+      <AnimatePresence initial={false} custom={direction} mode="wait">
+        <motion.div
+          key={currentCategory}
+          custom={direction}
+          variants={containerVariants}
+          initial="enter"
+          animate="center"
+          exit="exit"
+          transition={{
+            x: { type: 'spring', stiffness: 300, damping: 30 },
+            opacity: { duration: 0.2 },
+          }}
+          drag="x"
+          dragConstraints={{ left: 0, right: 0 }}
+          dragElastic={0.1}
+          onDragStart={() => setIsDragging(true)}
+          onDragEnd={handleDragEnd}
+          className="touch-pan-y"
+        >
+          {/* Render heatmaps for current category and its tracking methods */}
+          {currentCategory &&
+            currentTrackingMethods.map((method) =>
+              renderHeatmap(currentCategory, method),
+            )}
+        </motion.div>
+      </AnimatePresence>
+
+      {/* Mobile swipe indicator */}
+      {categories.length > 1 && (
+        <div className="mt-6 text-center text-sm text-muted-foreground md:hidden">
+          <p>Swipe left or right to change habits</p>
+        </div>
+      )}
 
       {/* Show loading or empty state if no data */}
       {!habitData && (
