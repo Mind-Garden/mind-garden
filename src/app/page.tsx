@@ -1,7 +1,6 @@
 'use client';
 
 import { useEffect, useState, useRef } from 'react';
-import { useEffect, useState, useRef } from 'react';
 import { login, signup, forgotPassword } from '@/actions/auth';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
@@ -50,6 +49,7 @@ import {
 
 export default function Home() {
   const [isLogin, setIsLogin] = useState(true);
+  const emailRef = useRef<HTMLInputElement>(null);
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [passwordVisible, setPasswordVisible] = useState(false);
@@ -84,6 +84,7 @@ export default function Home() {
   /**
    * Handles authentication by calling the appropriate function
    * (login or signup) based on the value of isLogin.
+   * (login or signup) based on the value of isLogin.
    */
   const handleAuth = async (formData: FormData) => {
     setIsLoading(true);
@@ -107,6 +108,7 @@ export default function Home() {
   }, []);
 
   /**
+   * Handles the forgot password functionality.
    * Handles the forgot password functionality.
    */
   const handleForgotPassword = async () => {
@@ -1100,6 +1102,7 @@ export default function Home() {
                             name="email"
                             type="email"
                             placeholder="john.doe@example.com"
+                            ref={emailRef}
                             className="pl-12 h-12 text-lg bg-white/80 dark:bg-gray-800/80 border-gray-200 dark:border-gray-700 focus:ring-2 focus:ring-emerald-500 dark:focus:ring-emerald-600"
                             required
                           />
