@@ -1180,7 +1180,7 @@ export default function Home() {
                       <div className="text-center">
                         <span className="text-base text-gray-600 dark:text-gray-400">
                           {isLogin
-                            ? "Don't have an account?"
+                            ? 'Create a new account'
                             : 'Already have an account?'}
                         </span>{' '}
                         <button

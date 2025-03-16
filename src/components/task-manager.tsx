@@ -19,12 +19,12 @@ import {
 } from '@/actions/tasks';
 import { toast } from 'react-toastify';
 import type { ITask } from '@/supabase/schema';
-import VoiceRecorder from '@/components/voice-recorder';
+import VoiceRecorder from '@/components/tasks/voice-recorder';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Input } from '@/components/ui/input';
 import { isSameDay, parseISO, format } from 'date-fns';
 import { getDate } from '@/lib/utils';
-import { activateFireworks } from '@/lib/fireworks';
+import { activateFireworks } from '@/components/magicui/fireworks';
 
 interface TaskManagerProps {
   userId: string;
