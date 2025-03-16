@@ -34,10 +34,12 @@ export default function WaterChart({ userId }: Readonly<WaterChartProps>) {
           (item: any) => 'entry_date' in item && 'water' in item,
         )
       ) {
-        const filteredData: DataPoint[] = response.data.map((item: any) => ({
-          x: item.entry_date,
-          y: item.water,
-        }));
+        const filteredData: DataPoint[] = response.data
+          .map((item: any) => ({
+            x: item.entry_date,
+            y: item.water,
+          }))
+          .filter((item) => item.y !== null);
 
         setData(filteredData);
         setLoading(false);

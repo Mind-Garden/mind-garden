@@ -210,7 +210,7 @@ export default function AnimatedLineGraph({
   }, [aspectRatio]);
 
   // Calculate min/max values for scaling
-  const padding = 60; // Increased padding to accommodate axis labels
+  const padding = 40; // Increased padding to accommodate axis labels
   const graphWidth = dimensions.width - padding * 2;
   const graphHeight = dimensions.height - padding * 2;
 
