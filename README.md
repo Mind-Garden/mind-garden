@@ -141,12 +141,6 @@ For this project, we are leveraging modern technologies to ensure scalability, m
 
 ![arch](public/arch.jpg)
 
-Creating .env file
-
-```bash
-cp .env.sample .env
-```
-
 Run the development server:
 
 ```bash
@@ -162,8 +156,6 @@ bun dev
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
 You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
-
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
 
 ## Learn More
 
@@ -193,11 +185,12 @@ Setting up code scan/code review
 
 ## Running Tests Using Jest
 
-1. Create a file named \*.spec.ts, for example `dbfunctions.spec.ts`
+1. Create a file named \*.spec.ts, for example `testfile.spec.ts`
 2. Write in the tests you desire to run
-3. In the CLI type, `npx jest 'dbfunctions.spec.ts'`
-4. If you wish to run it with test coverage type, `npx jest --coverage 'dbfunctions.spec.ts'`
+3. In the CLI type, `npx jest 'testfile.spec.ts'`
+4. If you wish to run it with test coverage type, `npx jest --coverage 'testfile.spec.ts'`
 5. If you wish to run it with test coverage for a specific directory type, `npm run test:coverage --path='x'` where `x` is the directory for your test file, i.e. `'src/utils/supabse'`
+6. Most importantly, if you wish to run *all tests* in the project type, `npm run test`
 
 ## Running Docker
 

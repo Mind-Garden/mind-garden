@@ -11,10 +11,8 @@
     "lint:check": "eslint . --max-warnings 0",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
-    "test": "cross-env NODE_ENV=test jest --testPathPattern='/src/'",
-    "test:coverage": "cross-env TARGET_PATH=${npm_config_path} jest --coverage --collectCoverageFrom=\"$TARGET_PATH/**/*.{ts,tsx}\"",
-    "test:seq": "cross-env NODE_ENV=test ENV=test jest --runInBand --testPathPattern='/src/' --bail=false",
-    "test:seq:failed": "cross-env NODE_ENV=test ENV=test jest --runInBand NODE_ENV=test ENV=test --testPathPattern='/src/' --bail=false --onlyFailures",
+    "test": "cross-env NODE_ENV=test ENV=test jest --runInBand --testPathPattern='/src/' --bail=false",
+    "test:coverage": "cross-env TARGET_PATH=${npm_config_path} jest --coverage --runInBand --collectCoverageFrom=\"$TARGET_PATH/**/*.{ts,tsx}\"",
     "clear_jest": "jest --clearCache",
     "husky": "npx husky install && npx husky add .husky/pre-commit",
     "prepare": "husky"
