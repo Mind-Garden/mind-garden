@@ -25,7 +25,7 @@ import { Checkbox } from '@/components/ui/checkbox';
 import { Input } from '@/components/ui/input';
 import { isSameDay, parseISO } from 'date-fns';
 import { getDate } from '@/lib/utils';
-import { activateFireworks } from '@/lib/fireworks';
+import { activateFireworks } from '@/components/magicui/fireworks';
 import { Progress } from '@/components/ui/progress';
 import { Separator } from '@/components/ui/separator';
 
