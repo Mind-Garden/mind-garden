@@ -106,9 +106,26 @@ export default function HealthDashboard({ userId }: HealthDashboardProps) {
 
   return (
     <div className="w-full">
+      {/* Tabs for navigation */}
+      <div className="flex space-x-2 mb-4 justify-center">
+        {sections.map((section, index) => (
+          <Button
+            key={section.id}
+            variant={activeIndex === index ? 'default' : 'outline'}
+            onClick={() => {
+              setDirection(index > activeIndex ? 1 : -1);
+              setActiveIndex(index);
+            }}
+            className="rounded-full"
+          >
+            {section.title}
+          </Button>
+        ))}
+      </div>
+
       {/* Swipeable content */}
       <div className="relative overflow-hidden">
-        <AnimatePresence initial={false} custom={direction} mode="wait">
+        <AnimatePresence initial={true} custom={direction} mode="wait">
           <motion.div
             key={activeIndex}
             custom={direction}
@@ -127,12 +144,6 @@ export default function HealthDashboard({ userId }: HealthDashboardProps) {
             className="w-full"
           >
             <Card className="overflow-hidden border-none shadow-md">
-              <CardHeader className="bg-gradient-to-r from-blue-50 to-green-50 dark:from-blue-950/20 dark:to-green-950/20">
-                <CardTitle>{sections[activeIndex].title}</CardTitle>
-                <CardDescription>
-                  {sections[activeIndex].description}
-                </CardDescription>
-              </CardHeader>
               <CardContent className="p-6 space-y-6">
                 {sections[activeIndex].content}
               </CardContent>
