@@ -85,17 +85,15 @@ export default function MoodFlow({
         <CardDescription className="text-center text-muted-foreground">
           from {lastMonthDate} to {todaysDate}
         </CardDescription>
-        <CardContent>
-          {moodData.length === 0 ? (
-            // If no moodData
-            <div className="h-16 text-center">No data yet! :( </div>
-          ) : (
-            // If there is moodData, render the chart
-            <div className="h-64 mx-auto">
-              <AnimatedLineGraph data={moodData} />
-            </div>
-          )}
-        </CardContent>
+        {moodData.length === 0 ? (
+          // If no moodData
+          <div className="h-16 text-center">No data yet! :( </div>
+        ) : (
+          // If there is moodData, render the chart
+          <div className="h-128">
+            <AnimatedLineGraph data={moodData} />
+          </div>
+        )}
       </Card>
     </div>
   );

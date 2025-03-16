@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Sparkles } from 'lucide-react';
@@ -12,25 +12,18 @@ interface AIResponseProps {
   readonly userId: string;
   readonly type: string;
   readonly title?: string;
-  readonly messageDuration?: number;
-  readonly id?: string; // Explicit ID for the component
 }
 
 export default function AIResponse({
   userId,
   type,
   title = 'Summary',
-  messageDuration = 5000,
-  id, // Accept ID from props
 }: AIResponseProps) {
-  // Component state
   const [summaryText, setSummaryText] = useState<string | null>(null);
-  const [currentMessage, setCurrentMessage] = useState<string>('');
+  const [displayedText, setDisplayedText] = useState<string>('');
   const [hasError, setHasError] = useState(false);
-  const [index, setIndex] = useState(0);
   const duration = 15;
 
-  // Loading messages
   const loadingMessages = [
     'Hope you are having a wonderful day! I am gathering some insights using your data...',
     'Looking at your recent entries to find helpful patterns. Keep tracking - it makes a difference!',
@@ -38,7 +31,11 @@ export default function AIResponse({
     'Preparing your personalized insights!',
   ];
 
-  // Fetch AI data
+  const [currentMessage, setCurrentMessage] = useState<string>(
+    loadingMessages[0],
+  );
+  const [index, setIndex] = useState(0);
+
   useEffect(() => {
     async function fetchAISummary() {
       try {
@@ -46,7 +43,6 @@ export default function AIResponse({
         setSummaryText(response);
         setHasError(false);
       } catch (error) {
-        console.error('Error fetching AI summary', error);
         setHasError(true);
       }
     }
@@ -54,9 +50,24 @@ export default function AIResponse({
     fetchAISummary();
   }, [userId, type]);
 
-  // Cycle through loading messages until AI response is ready
   useEffect(() => {
-    if (summaryText) return; // Stop cycling once summaryText is set
+    if (summaryText) {
+      let i = 0;
+      const interval = setInterval(() => {
+        if (i < summaryText.length) {
+          setDisplayedText(summaryText.slice(0, i + 1)); // Reveal text progressively
+          i++;
+        } else {
+          clearInterval(interval);
+        }
+      }, duration); // Typing speed
+
+      return () => clearInterval(interval);
+    }
+  }, [summaryText]);
+
+  useEffect(() => {
+    if (summaryText) return;
 
     const interval = setInterval(
       () => {
@@ -64,7 +75,7 @@ export default function AIResponse({
         setCurrentMessage(loadingMessages[index]);
       },
       currentMessage.length * duration + 4000,
-    ); // Rotate every 4 seconds
+    );
 
     return () => clearInterval(interval);
   }, [summaryText, index]);
@@ -86,15 +97,17 @@ export default function AIResponse({
         </div>
       </CardHeader>
       <CardContent>
-        <div className="prose prose-sm max-w-none dark:prose-invert text-base leading-relaxed">
-          <div className="markdown-container">
+        <div className="prose prose-sm max-w-none dark:prose-invert text-base leading-relaxed inline-block font-semibold text-lg">
+          {summaryText ? (
+            <ReactMarkdown>{displayedText}</ReactMarkdown>
+          ) : (
             <TypingAnimation
               className="inline-block font-semibold text-lg"
               duration={duration}
             >
-              {summaryText ? summaryText : currentMessage}
+              {hasError ? 'AI Model is currently unavailable' : currentMessage}
             </TypingAnimation>
-          </div>
+          )}
         </div>
       </CardContent>
     </Card>
