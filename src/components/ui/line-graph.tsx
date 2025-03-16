@@ -175,7 +175,11 @@ export default function AnimatedLineGraph({
   const handleSectionHover = (sectionIndex: number | null) => {
     setHoveredSection(sectionIndex);
 
-    if (sectionIndex !== null && points[sectionIndex]) {
+    if (
+      sectionIndex !== null &&
+      sectionIndex >= 0 &&
+      sectionIndex < points.length
+    ) {
       setTooltipInfo(points[sectionIndex]);
     } else {
       setTooltipInfo(null);
@@ -292,7 +296,7 @@ export default function AnimatedLineGraph({
   const labelFontSize = Math.max(12, Math.min(16, dimensions.width / 50));
 
   return (
-    <div ref={containerRef} className="w-full">
+    <div ref={containerRef} className="w-full z-50">
       <Card className="bg-white backdrop-blur-sm rounded-2xl border-none w-full">
         <CardTitle className="text-2xl font-bold mb-2 opacity-50 text-center"></CardTitle>
         <CardDescription className="text-center text-muted-foreground"></CardDescription>
@@ -396,10 +400,10 @@ export default function AnimatedLineGraph({
                       ) : null;
                     })}
 
-                    {/* Axis labels */}
+                    {/* Axis labels - moved outside the graph area */}
                     <text
                       x={dimensions.width / 2}
-                      y={dimensions.height - 10}
+                      y={dimensions.height + 10}
                       textAnchor="middle"
                       fill={gridColor}
                       fontSize={labelFontSize}
@@ -409,13 +413,13 @@ export default function AnimatedLineGraph({
                     </text>
 
                     <text
-                      x={15}
-                      y={dimensions.height / 2}
+                      x={5}
+                      y={dimensions.height / 2 + 10}
                       textAnchor="middle"
                       fill={gridColor}
                       fontSize={labelFontSize}
                       fontWeight="bold"
-                      transform={`rotate(-90, 15, ${dimensions.height / 2})`}
+                      transform={`rotate(-90, 5, ${dimensions.height / 2})`}
                     >
                       {yAxisLabel}
                     </text>
@@ -460,16 +464,33 @@ export default function AnimatedLineGraph({
 
                     {/* Section hover areas - invisible rectangles that trigger tooltips */}
                     {points.map((point, i, arr) => {
-                      // Skip the last point as it doesn't have a "next" point to form a section
-                      if (i === arr.length - 1) return null;
+                      // Calculate section boundaries
+                      let sectionStart, sectionWidth;
 
-                      const nextPoint = arr[i + 1];
-                      const sectionWidth = nextPoint.x - point.x;
+                      if (i === 0) {
+                        // First point - half width section to the right
+                        sectionStart = point.x;
+                        const nextPoint = arr[i + 1];
+                        const fullSectionWidth = nextPoint.x - point.x;
+                        sectionWidth = fullSectionWidth / 2;
+                      } else if (i === arr.length - 1) {
+                        // Last point - half width section to the left
+                        const prevPoint = arr[i - 1];
+                        const fullSectionWidth = point.x - prevPoint.x;
+                        sectionStart = point.x - fullSectionWidth / 2;
+                        sectionWidth = fullSectionWidth / 2;
+                      } else {
+                        // Middle points - section extends halfway to previous and next points
+                        const prevPoint = arr[i - 1];
+                        const nextPoint = arr[i + 1];
+                        sectionStart = (prevPoint.x + point.x) / 2;
+                        sectionWidth = (nextPoint.x - prevPoint.x) / 2;
+                      }
 
                       return (
                         <rect
                           key={`section-${i}`}
-                          x={point.x}
+                          x={sectionStart}
                           y={padding}
                           width={sectionWidth}
                           height={graphHeight}

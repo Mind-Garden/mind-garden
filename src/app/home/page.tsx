@@ -61,7 +61,7 @@ export default async function Home() {
 
         <div className="grid gap-6 lg:grid-cols-12">
           {/* Left Column */}
-          <div className="space-y-6 lg:col-span-5">
+          <div className="space-y-6 lg:col-span-4">
             {/* Today's Overview */}
             <Card className="overflow-hidden border-none shadow-md">
               <CardHeader className="bg-gradient-to-r from-blue-50 to-green-50 dark:from-blue-950/20 dark:to-green-950/20">
@@ -82,10 +82,22 @@ export default async function Home() {
                 <HabitHeatmap userId={userId} />
               </CardContent>
             </Card>
+
+            {/* Habit Tracker Swiper */}
+            <Card className="overflow-hidden border-none shadow-md">
+              <CardHeader className="bg-gradient-to-r from-blue-50 to-green-50 dark:from-blue-950/20 dark:to-green-950/20">
+                <div className="flex items-center justify-between">
+                  <CardTitle>Habit Trackers</CardTitle>
+                </div>
+              </CardHeader>
+              <CardContent className="p-6">
+                <HabitHeatmapGrid userId={userId} />
+              </CardContent>
+            </Card>
           </div>
 
           {/* Right Column */}
-          <div className="space-y-6 lg:col-span-7">
+          <div className="space-y-6 lg:col-span-8">
             {/* Mood Section */}
             <Card className="overflow-hidden border-none shadow-md">
               <CardHeader className="bg-gradient-to-r from-blue-50 to-green-50 dark:from-blue-950/20 dark:to-green-950/20">
@@ -96,17 +108,6 @@ export default async function Home() {
               </CardHeader>
               <CardContent className="p-6 space-y-6">
                 <HealthDashboard userId={userId} />
-              </CardContent>
-            </Card>
-            {/* Habit Tracker Swiper */}
-            <Card className="overflow-hidden border-none shadow-md">
-              <CardHeader className="bg-gradient-to-r from-blue-50 to-green-50 dark:from-blue-950/20 dark:to-green-950/20">
-                <div className="flex items-center justify-between">
-                  <CardTitle>Habit Trackers</CardTitle>
-                </div>
-              </CardHeader>
-              <CardContent className="p-6">
-                <HabitHeatmapGrid userId={userId} />
               </CardContent>
             </Card>
 

@@ -32,7 +32,7 @@ export default function HealthDashboard({ userId }: HealthDashboardProps) {
       description: 'Track your emotional patterns',
       content: (
         <>
-          <div className="grid gap-6 md:grid-cols-2">
+          <div className="grid md:grid-cols-2">
             <div className="md:col-span-1">
               <MoodFlow userId={userId} />
             </div>

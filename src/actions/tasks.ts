@@ -8,9 +8,9 @@ const LLM_API_URL = 'http://localhost:11434/api/chat';
 const promptionary: { [key: string]: string } = {
   'summarize tasks': 'Summarize all the following tasks in a dashed list:',
   'summarize mood':
-    'Here is my Mood from 1-5 and the distribution of them. Please summarize and give advice on how to improve my mood. Keep the response brief and to the point. Dont give me the responses in MD just normal text: ',
+    'Here is my mood distribution from 1 (low) to 5 (high). Please summarize the trends and give me two or three specific tips to improve my mood. Keep it clear, simple, and to the point. Mood data:',
   'summarize sleep':
-    'Give me a concise summary of my sleep and not in how to improve it based off my average sleep duration. Keep the response brief and to the point. Dont give me the responses in MD just normal text. This is my average sleep duration: ',
+    '"Provide a concise summary of my sleep based on the average sleep duration per night I provide. give me two or three specific tips to improve my sleep quality. Keep it clear, simple, and to the point. My average sleep duration per night is: ',
 };
 
 /**

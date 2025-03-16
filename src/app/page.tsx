@@ -5,7 +5,7 @@ import { login, signup, forgotPassword } from '@/actions/auth';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
-import { Card, CardContent } from '@/components/ui/card';
+import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import {
   CircleAlert,
   LoaderCircle,
@@ -15,12 +15,16 @@ import {
   LineChart,
   BookOpen,
   CheckCircle,
-  Brain,
   ChevronDown,
   Calendar,
   Eye,
   EyeOff,
   PenLine,
+  Check,
+  Plus,
+  Trash2,
+  BrushIcon as Broom,
+  X,
 } from 'lucide-react';
 import { TypingAnimation } from '@/components/magicui/typing-animation';
 import Footer from '@/components/footer';
@@ -35,6 +39,13 @@ import {
 } from 'framer-motion';
 import PathMorphingNav from '@/components/path-morphing-nav';
 import PathDrawing from '@/components/arrow-explore';
+import { Checkbox } from '@/components/ui/checkbox';
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from '@/components/ui/tooltip';
 
 export default function Home() {
   const [isLogin, setIsLogin] = useState(true);
@@ -643,7 +654,7 @@ export default function Home() {
           </div>
 
           {/* Feature 4: AI Assistant */}
-          <div ref={aiRef} className="mb-16">
+          <div ref={aiRef} className="mb-32">
             <motion.div
               className="flex flex-col md:flex-row items-center gap-12"
               initial={{ opacity: 0 }}
@@ -651,121 +662,337 @@ export default function Home() {
               transition={{ duration: 0.8 }}
             >
               <motion.div
-                className="w-full md:w-1/2 order-2 md:order-2"
-                initial={{ x: 50 }}
-                animate={isAiInView ? { x: 0 } : { x: 50 }}
+                className="w-full md:w-1/2 order-2 md:order-1"
+                initial={{ x: -50 }}
+                animate={isAiInView ? { x: 0 } : { x: -50 }}
                 transition={{ duration: 0.8, delay: 0.2 }}
               >
                 <h3 className="text-3xl font-bold mb-6 text-gray-800 dark:text-white">
-                  AI Assistant
+                  AI-Powered Task Management
                 </h3>
                 <p className="text-lg text-gray-600 dark:text-gray-300 mb-6">
-                  Leverage the power of artificial intelligence to enhance your
-                  mental wellness journey:
+                  Streamline your productivity with our intelligent task
+                  management system that helps you organize and prioritize:
                 </p>
                 <ul className="space-y-4">
                   <li className="flex items-start">
                     <CheckCircle className="h-6 w-6 text-emerald-500 mr-3 mt-1 flex-shrink-0" />
                     <span className="text-gray-700 dark:text-gray-200">
-                      Personalized insights based on your journal entries and
-                      habits
+                      Voice input to quickly capture tasks as they come to mind
                     </span>
                   </li>
                   <li className="flex items-start">
                     <CheckCircle className="h-6 w-6 text-emerald-500 mr-3 mt-1 flex-shrink-0" />
                     <span className="text-gray-700 dark:text-gray-200">
-                      Smart to-do list generation tailored to your goals
+                      AI organizes and categorizes your tasks automatically
                     </span>
                   </li>
                   <li className="flex items-start">
                     <CheckCircle className="h-6 w-6 text-emerald-500 mr-3 mt-1 flex-shrink-0" />
                     <span className="text-gray-700 dark:text-gray-200">
-                      Adaptive recommendations that evolve with your progress
+                      Track completion progress and maintain productivity
+                      momentum
                     </span>
                   </li>
                 </ul>
               </motion.div>
 
               <motion.div
-                className="w-full md:w-1/2 order-1 md:order-1"
-                initial={{ x: -50 }}
-                animate={isAiInView ? { x: 0 } : { x: -50 }}
+                className="w-full md:w-1/2 order-1 md:order-2"
+                initial={{ x: 50 }}
+                animate={isAiInView ? { x: 0 } : { x: 50 }}
                 transition={{ duration: 0.8, delay: 0.2 }}
               >
-                <div className="relative bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-6 overflow-hidden">
-                  <div className="absolute bottom-0 left-0 -mb-10 -ml-10 w-40 h-40 bg-blue-100 dark:bg-blue-900/30 rounded-full opacity-70"></div>
-                  <div className="relative z-10">
-                    <div className="flex items-center justify-between mb-6">
-                      <div className="flex items-center">
-                        <Brain className="h-7 w-7 text-blue-500 mr-3" />
-                        <h4 className="text-xl font-semibold text-gray-800 dark:text-white">
-                          AI Insights
-                        </h4>
-                      </div>
-                      <span className="text-sm font-medium text-blue-500 bg-blue-50 dark:bg-blue-900/50 py-1 px-3 rounded-full">
-                        Updated Now
-                      </span>
-                    </div>
+                <div className="relative bg-white dark:bg-gray-800 rounded-2xl shadow-xl overflow-hidden">
+                  <div className="absolute top-0 right-0 -mt-10 -mr-10 w-40 h-40 bg-blue-100 dark:bg-blue-900/30 rounded-full opacity-70"></div>
 
-                    <motion.div
-                      className="space-y-4"
-                      initial={{ opacity: 0, y: 20 }}
-                      animate={
-                        isAiInView
-                          ? { opacity: 1, y: 0 }
-                          : { opacity: 0, y: 20 }
-                      }
-                      transition={{ duration: 0.5, delay: 0.4 }}
-                    >
-                      <div className="bg-blue-50 dark:bg-blue-900/20 rounded-xl p-4 border-l-4 border-blue-500">
-                        <h5 className="text-lg font-medium text-gray-800 dark:text-white mb-2">
-                          Weekly Summary
-                        </h5>
-                        <p className="text-gray-600 dark:text-gray-300 text-sm leading-relaxed">
-                          Based on your journal entries, your mood has been
-                          consistently improving this week. Your meditation
-                          practice is showing positive effects on your stress
-                          levels. Consider increasing outdoor activities as they
-                          correlate with your highest mood scores.
+                  <motion.div
+                    className="relative z-10"
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={
+                      isAiInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }
+                    }
+                    transition={{ duration: 0.5, delay: 0.4 }}
+                  >
+                    {/* Task Management UI */}
+                    <div className="scale-[0.85] origin-top">
+                      <div className="w-full space-y-3 p-4 pt-6">
+                        <p className="text-gray-500 text-sm text-center">
+                          Press record and tell me about your tasks for today.
                         </p>
-                      </div>
 
-                      <div>
-                        <h5 className="text-lg font-medium text-gray-800 dark:text-white mb-3">
-                          Suggested To-Do List
-                        </h5>
-                        <div className="space-y-2">
-                          {[
-                            'Complete 15-minute morning meditation',
-                            'Take a 30-minute walk in nature',
-                            "Journal about today's accomplishments",
-                            'Practice deep breathing before meeting',
-                            'Read 20 pages of mindfulness book',
-                          ].map((task, index) => (
-                            <motion.div
-                              key={index}
-                              className="flex items-center p-3 bg-gray-50 dark:bg-gray-700/30 rounded-lg"
-                              initial={{ opacity: 0, x: -20 }}
-                              animate={
-                                isAiInView
-                                  ? { opacity: 1, x: 0 }
-                                  : { opacity: 0, x: -20 }
-                              }
-                              transition={{
-                                duration: 0.3,
-                                delay: 0.6 + index * 0.1,
-                              }}
-                            >
-                              <div className="w-5 h-5 rounded-full border-2 border-blue-500 mr-3 flex-shrink-0"></div>
-                              <span className="text-gray-700 dark:text-gray-200 text-sm">
-                                {task}
-                              </span>
-                            </motion.div>
-                          ))}
+                        <div className="flex items-center justify-between gap-2">
+                          <TooltipProvider>
+                            <Tooltip>
+                              <TooltipTrigger asChild>
+                                <motion.button
+                                  whileHover={{ scale: 1.05 }}
+                                  whileTap={{ scale: 0.95 }}
+                                  className="bg-gray-100 text-gray-600 p-3 rounded-full shadow-md"
+                                >
+                                  <Broom className="w-5 h-5" />
+                                </motion.button>
+                              </TooltipTrigger>
+                              <TooltipContent>Clear all tasks</TooltipContent>
+                            </Tooltip>
+                          </TooltipProvider>
+
+                          <motion.div
+                            whileHover={{ scale: 1.02 }}
+                            whileTap={{ scale: 0.98 }}
+                            className="flex-1 max-w-md mx-auto"
+                          >
+                            <Card className="bg-white shadow-md border-none overflow-hidden">
+                              <CardContent className="p-0">
+                                <div className="flex items-center justify-center p-3">
+                                  <div className="w-12 h-12 rounded-full bg-blue-100 flex items-center justify-center">
+                                    <svg
+                                      width="24"
+                                      height="24"
+                                      viewBox="0 0 24 24"
+                                      fill="none"
+                                      xmlns="http://www.w3.org/2000/svg"
+                                    >
+                                      <path
+                                        d="M12 15C13.6569 15 15 13.6569 15 12C15 10.3431 13.6569 9 12 9C10.3431 9 9 10.3431 9 12C9 13.6569 10.3431 15 12 15Z"
+                                        fill="#3B82F6"
+                                      />
+                                      <path
+                                        d="M19 12C19 12.9193 18.8189 13.8295 18.4672 14.6788C18.1154 15.5281 17.5998 16.2997 16.9497 16.9497C16.2997 17.5998 15.5281 18.1154 14.6788 18.4672C13.8295 18.8189 12.9193 19 12 19C11.0807 19 10.1705 18.8189 9.32122 18.4672C8.47194 18.1154 7.70026 17.5998 7.05025 16.9497C6.40024 16.2997 5.88463 15.5281 5.53284 14.6788C5.18106 13.8295 5 12.9193 5 12C5 10.1435 5.7375 8.36301 7.05025 7.05025C8.36301 5.7375 10.1435 5 12 5C13.8565 5 15.637 5.7375 16.9497 7.05025C18.2625 8.36301 19 10.1435 19 12Z"
+                                        stroke="#3B82F6"
+                                        strokeWidth="2"
+                                        strokeLinecap="round"
+                                        strokeLinejoin="round"
+                                      />
+                                    </svg>
+                                  </div>
+                                  <div className="ml-3 text-gray-500">
+                                    Tap to record
+                                  </div>
+                                </div>
+                              </CardContent>
+                            </Card>
+                          </motion.div>
+
+                          <TooltipProvider>
+                            <Tooltip>
+                              <TooltipTrigger asChild>
+                                <motion.button
+                                  whileHover={{ scale: 1.05 }}
+                                  whileTap={{ scale: 0.95 }}
+                                  className="bg-blue-500 text-white p-3 rounded-full shadow-md"
+                                >
+                                  <Plus className="w-5 h-5" />
+                                </motion.button>
+                              </TooltipTrigger>
+                              <TooltipContent>Add task manually</TooltipContent>
+                            </Tooltip>
+                          </TooltipProvider>
                         </div>
                       </div>
-                    </motion.div>
-                  </div>
+
+                      {/* Main Card */}
+                      <Card className="w-full overflow-hidden border-none shadow-lg bg-white rounded-xl">
+                        <CardHeader className="flex flex-row items-center justify-between p-4 pb-2 bg-blue-50">
+                          <div className="flex items-center gap-2">
+                            <div className="bg-blue-500 rounded-full p-1.5">
+                              <svg
+                                width="20"
+                                height="20"
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                xmlns="http://www.w3.org/2000/svg"
+                              >
+                                <path
+                                  d="M12 4.75V6.25"
+                                  stroke="white"
+                                  strokeWidth="1.5"
+                                  strokeLinecap="round"
+                                  strokeLinejoin="round"
+                                />
+                                <path
+                                  d="M17.25 6.75L16.25 7.75"
+                                  stroke="white"
+                                  strokeWidth="1.5"
+                                  strokeLinecap="round"
+                                  strokeLinejoin="round"
+                                />
+                                <path
+                                  d="M19.25 12H17.75"
+                                  stroke="white"
+                                  strokeWidth="1.5"
+                                  strokeLinecap="round"
+                                  strokeLinejoin="round"
+                                />
+                                <path
+                                  d="M17.25 17.25L16.25 16.25"
+                                  stroke="white"
+                                  strokeWidth="1.5"
+                                  strokeLinecap="round"
+                                  strokeLinejoin="round"
+                                />
+                                <path
+                                  d="M12 19.25V17.75"
+                                  stroke="white"
+                                  strokeWidth="1.5"
+                                  strokeLinecap="round"
+                                  strokeLinejoin="round"
+                                />
+                                <path
+                                  d="M7.75 16.25L6.75 17.25"
+                                  stroke="white"
+                                  strokeWidth="1.5"
+                                  strokeLinecap="round"
+                                  strokeLinejoin="round"
+                                />
+                                <path
+                                  d="M6.25 12H4.75"
+                                  stroke="white"
+                                  strokeWidth="1.5"
+                                  strokeLinecap="round"
+                                  strokeLinejoin="round"
+                                />
+                                <path
+                                  d="M7.75 7.75L6.75 6.75"
+                                  stroke="white"
+                                  strokeWidth="1.5"
+                                  strokeLinecap="round"
+                                  strokeLinejoin="round"
+                                />
+                                <path
+                                  d="M12 14.25C13.2426 14.25 14.25 13.2426 14.25 12C14.25 10.7574 13.2426 9.75 12 9.75C10.7574 9.75 9.75 10.7574 9.75 12C9.75 13.2426 10.7574 14.25 12 14.25Z"
+                                  stroke="white"
+                                  strokeWidth="1.5"
+                                  strokeLinecap="round"
+                                  strokeLinejoin="round"
+                                />
+                              </svg>
+                            </div>
+                            <h2 className="text-lg font-medium">AI Insights</h2>
+                          </div>
+                        </CardHeader>
+
+                        <CardContent className="p-0">
+                          <div className="p-4 pt-2 pb-0">
+                            <h3 className="text-sm font-medium text-gray-700 mb-2">
+                              Suggested To-Do List
+                            </h3>
+
+                            <div className="relative mb-4">
+                              <div className="h-1 w-full bg-blue-100 rounded-full overflow-hidden">
+                                <motion.div
+                                  className="h-full bg-blue-500 rounded-full"
+                                  style={{ width: '50%' }}
+                                  initial={{ width: '0%' }}
+                                  animate={
+                                    isAiInView
+                                      ? { width: '50%' }
+                                      : { width: '0%' }
+                                  }
+                                  transition={{ duration: 0.8, delay: 0.6 }}
+                                />
+                              </div>
+                              <div className="flex justify-between mt-1 text-xs text-gray-500">
+                                <span>3 completed</span>
+                                <span>6 total</span>
+                              </div>
+                            </div>
+                          </div>
+
+                          {/* Task Lists - Side by Side */}
+                          <div className="grid grid-cols-2 gap-4 p-4">
+                            {/* Left Column - To Do Tasks */}
+                            <div className="space-y-4">
+                              <h3 className="font-medium text-gray-800 flex items-center gap-2">
+                                <div className="bg-blue-100 p-1 rounded-full">
+                                  <Check className="w-4 h-4 text-blue-500" />
+                                </div>
+                                To Do
+                              </h3>
+
+                              <div className="space-y-2">
+                                {[
+                                  'Review notes and textbook chapters',
+                                  'Get enough sleep and eat well',
+                                  'Confirm meeting time with client',
+                                ].map((task, index) => (
+                                  <motion.div
+                                    key={index}
+                                    className="flex items-center gap-3 p-2 rounded-lg bg-blue-50/50 hover:bg-blue-50 transition-colors"
+                                    initial={{ opacity: 0, y: 10 }}
+                                    animate={
+                                      isAiInView
+                                        ? { opacity: 1, y: 0 }
+                                        : { opacity: 0, y: 10 }
+                                    }
+                                    transition={{
+                                      duration: 0.4,
+                                      delay: 0.7 + index * 0.1,
+                                    }}
+                                  >
+                                    <Checkbox
+                                      checked={false}
+                                      className="rounded-full border-2 border-gray-300"
+                                    />
+                                    <span className="flex-1 text-sm">
+                                      {task}
+                                    </span>
+                                    <button className="text-gray-400 hover:text-red-500 transition-colors">
+                                      <Trash2 className="w-4 h-4" />
+                                    </button>
+                                  </motion.div>
+                                ))}
+                              </div>
+                            </div>
+
+                            {/* Right Column - Completed Tasks */}
+                            <div className="space-y-4">
+                              <h3 className="font-medium text-gray-800 flex items-center gap-2">
+                                <div className="bg-green-100 p-1 rounded-full">
+                                  <Check className="w-4 h-4 text-green-500" />
+                                </div>
+                                Completed
+                              </h3>
+
+                              <div className="space-y-2">
+                                {[
+                                  'Practice problems and past exams',
+                                  'Focus on weak areas of the subject',
+                                  'Use flashcards for learning',
+                                ].map((task, index) => (
+                                  <motion.div
+                                    key={index}
+                                    className="flex items-center gap-3 p-2 rounded-lg bg-green-50/50 hover:bg-green-50 transition-colors"
+                                    initial={{ opacity: 0, y: 10 }}
+                                    animate={
+                                      isAiInView
+                                        ? { opacity: 1, y: 0 }
+                                        : { opacity: 0, y: 10 }
+                                    }
+                                    transition={{
+                                      duration: 0.4,
+                                      delay: 0.9 + index * 0.1,
+                                    }}
+                                  >
+                                    <Checkbox
+                                      checked={true}
+                                      className="rounded-full border-2 border-green-500 bg-green-500"
+                                    />
+                                    <span className="flex-1 text-sm text-gray-400 line-through">
+                                      {task}
+                                    </span>
+                                    <button className="text-gray-400 hover:text-red-500 transition-colors">
+                                      <Trash2 className="w-4 h-4" />
+                                    </button>
+                                  </motion.div>
+                                ))}
+                              </div>
+                            </div>
+                          </div>
+                        </CardContent>
+                      </Card>
+                    </div>
+                  </motion.div>
                 </div>
               </motion.div>
             </motion.div>
