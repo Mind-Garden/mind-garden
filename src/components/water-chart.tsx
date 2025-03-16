@@ -27,8 +27,6 @@ export default function WaterChart({ userId }: Readonly<WaterChartProps>) {
         todaysDate,
       );
 
-      console.log(response);
-
       if (
         Array.isArray(response.data) &&
         response.data.every(

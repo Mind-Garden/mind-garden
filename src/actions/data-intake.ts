@@ -311,7 +311,6 @@ export async function getAddedResp(userId: string, entryDate: string) {
       entry_date: entryDate,
     },
   );
-  console.log('db:' + data);
   if (error) {
     console.error('Error selecting added habit responses:', error.message);
     return null;
@@ -381,7 +380,6 @@ export async function getAllAddedRespCategory(
       habit: category,
     },
   );
-  console.log('db:' + data);
   if (error) {
     console.error('Error selecting added habit responses:', error.message);
     return null;

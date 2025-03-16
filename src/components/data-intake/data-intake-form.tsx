@@ -99,7 +99,6 @@ function DataIntakeForm({
     setLunchFunc: (value: boolean | null) => void,
     setDinnerFunc: (value: boolean | null) => void,
   ) => {
-    console.log(trackingMethod);
     if (method == 'scale') {
       setScaleFunc(trackingMethod[method]);
     } else if (method == 'breakfast') {
@@ -139,8 +138,6 @@ function DataIntakeForm({
           const trackingMethod = resp.tracking_method as Record<string, any>;
 
           for (const method in trackingMethod) {
-            console.log(method);
-
             switch (name) {
               case 'smoking':
                 setVars(trackingMethod, method, setSmoking, setSmokingBool);
@@ -310,7 +307,6 @@ function DataIntakeForm({
 
     //insert new rows.
     addedCategories?.map((category) => {
-      console.log(category);
       const name = personalizedCategories.find(
         (cat) => cat.id == category.added_habit,
       )?.name;
@@ -406,9 +402,7 @@ function DataIntakeForm({
       // Call to database to save the new habit
       // This would add the habit to the user's list of tracked habits
       const result = await addUserHabit(userId, categoryId, trackingMethod);
-      if (result && result != 'duplicate') {
-        console.log('result' + result);
-      }
+
       // Refresh the attributes list after adding a new habit
       // Note: In a real implementation, you might want to update the local state
       // or trigger a refetch of the attributes list

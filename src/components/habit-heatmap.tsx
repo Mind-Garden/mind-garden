@@ -91,8 +91,6 @@ export default function HabitHeatmapGrid({ userId }: HeatmapProps) {
               resp.added_habit,
             );
 
-            console.log('kjdf: ' + resp.tracking_method);
-
             if (name) {
               boolResp = { ...boolResp, [name]: catResp };
             }
@@ -101,7 +99,6 @@ export default function HabitHeatmapGrid({ userId }: HeatmapProps) {
       }
 
       setHabitData(boolResp);
-      console.log(boolResp);
     };
     fetchData();
   }, [userId]);
@@ -133,8 +130,6 @@ export default function HabitHeatmapGrid({ userId }: HeatmapProps) {
   // Function to calculate the completion value for a day
   const getValue = (method: string, data?: IAddedResp) => {
     if (data && data.tracking_method) {
-      console.log(method);
-      console.log(data.tracking_method[method]);
       return data.tracking_method[method];
     }
     return false;
@@ -156,8 +151,6 @@ export default function HabitHeatmapGrid({ userId }: HeatmapProps) {
           (cat) => cat.id == category.added_habit,
         )?.name;
         if (name == 'meal' || name === 'cooking') {
-          console.log(category.added_habit);
-          console.log(category);
           if (category.tracking_method.includes('breakfast')) {
             out = [...out, 'breakfast'];
           }
@@ -169,7 +162,6 @@ export default function HabitHeatmapGrid({ userId }: HeatmapProps) {
           }
         }
       }
-      console.log('methods' + out);
       return out;
     }
     return ['boolean']; // Default for other categories
