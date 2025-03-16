@@ -1,10 +1,11 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import LineGraph, { type DataPoint } from '@/components/ui/line-graph';
+import AnimatedLineGraph from '@/components/ui/line-graph';
 import { selectWaterDataByDateRange } from '@/actions/data-visualization';
 import { getLocalISOString } from '@/lib/utils';
 import { LoaderCircle } from 'lucide-react';
+import { DataPoint } from '@/supabase/schema';
 
 interface WaterChartProps {
   userId: string;
@@ -33,12 +34,10 @@ export default function WaterChart({ userId }: Readonly<WaterChartProps>) {
           (item: any) => 'entry_date' in item && 'water' in item,
         )
       ) {
-        const filteredData: DataPoint[] = response.data
-          .map((item: any) => ({
-            entry_date: item.entry_date,
-            value: item.water,
-          }))
-          .filter((item: DataPoint) => item.value !== null);
+        const filteredData: DataPoint[] = response.data.map((item: any) => ({
+          x: item.entry_date,
+          y: item.water,
+        }));
 
         setData(filteredData);
         setLoading(false);
@@ -52,21 +51,21 @@ export default function WaterChart({ userId }: Readonly<WaterChartProps>) {
 
   return (
     <div className="container mx-auto py-8">
-      {loading ? (
-        <div className="flex items-center justify-center h-[400px]">
-          <LoaderCircle className="h-12 w-12 text-gray-500 animate-spin" />
-        </div>
-      ) : !data || data.length === 0 ? (
-        <div className="h-16 text-center">No data yet! :( </div>
-      ) : (
-        <LineGraph
-          data={data}
-          title="Water Intake History"
-          yAxisLabel="Cups of Water"
-          tooltipLabel="Cups of Water"
-          color="hsl(215, 70%, 60%)"
-        />
-      )}
+      {(() => {
+        if (loading) {
+          return (
+            <div className="flex items-center justify-center h-[400px]">
+              <LoaderCircle className="h-12 w-12 text-gray-500 animate-spin" />
+            </div>
+          );
+        }
+
+        if (!data || data.length === 0) {
+          return <div className="h-16 text-center">No data yet! :( </div>;
+        }
+
+        return <AnimatedLineGraph data={data} />;
+      })()}
     </div>
   );
 }

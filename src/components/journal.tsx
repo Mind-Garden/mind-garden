@@ -268,7 +268,7 @@ export default function NewJournal({ userId }: NewJournalProps) {
                       <div className="relative w-full h-full p-2">
                         <span>{dayDate.getDate()}</span>
                         {count > 0 && (
-                          <div className="absolute -top-1 -right-1 h-4 w-4 bg-blue-500 rounded-full flex items-center justify-center text-[10px] text-white">
+                          <div className="absolute -top-1 -right-1 h-4 w-4 bg-blue-500 rounded-full flex items-center justify-center text-[10px] text-white z-50">
                             {count}
                           </div>
                         )}

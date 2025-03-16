@@ -6,6 +6,7 @@ import { Badge } from '@/components/ui/badge';
 import { Sparkles } from 'lucide-react';
 import { summarizeData } from '@/actions/ai-data-analysis';
 import ReactMarkdown from 'react-markdown';
+import { TypingAnimation } from './magicui/typing-animation';
 
 interface AIResponseProps {
   readonly userId: string;
@@ -23,17 +24,11 @@ export default function AIResponse({
   id, // Accept ID from props
 }: AIResponseProps) {
   // Component state
-  const [summaryText, setSummaryText] = useState('');
-  const [displayText, setDisplayText] = useState('');
+  const [summaryText, setSummaryText] = useState<string | null>(null);
+  const [currentMessage, setCurrentMessage] = useState<string>('');
   const [hasError, setHasError] = useState(false);
-  const [currentLoadingIndex, setCurrentLoadingIndex] = useState(0);
-
-  // Component-scoped refs
-  const typingSpeed = useRef(30);
-  const typingIndex = useRef(0);
-  const typingTimer = useRef<NodeJS.Timeout | null>(null);
-  const loadingTimer = useRef<NodeJS.Timeout | null>(null);
-  const contentRef = useRef<HTMLDivElement>(null);
+  const [index, setIndex] = useState(0);
+  const duration = 15;
 
   // Loading messages
   const loadingMessages = [
@@ -43,36 +38,8 @@ export default function AIResponse({
     'Preparing your personalized insights!',
   ];
 
-  // Clean up function
-  const cleanupTimers = () => {
-    if (typingTimer.current) {
-      clearTimeout(typingTimer.current);
-      typingTimer.current = null;
-    }
-    if (loadingTimer.current) {
-      clearTimeout(loadingTimer.current);
-      loadingTimer.current = null;
-    }
-  };
-
-  // Setup mount tracking
-  useEffect(() => {
-    return () => {
-      cleanupTimers();
-    };
-  }, []);
-
-  // Function to rotate to the next message
-  const rotateToNextMessage = () => {
-    setCurrentLoadingIndex(
-      (prevIndex) => (prevIndex + 1) % loadingMessages.length,
-    );
-  };
-
   // Fetch AI data
   useEffect(() => {
-    const isActive = true;
-
     async function fetchAISummary() {
       try {
         const response = await summarizeData(userId, type);
@@ -87,47 +54,20 @@ export default function AIResponse({
     fetchAISummary();
   }, [userId, type]);
 
-  // Typewriter effect
+  // Cycle through loading messages until AI response is ready
   useEffect(() => {
-    const textToShow =
-      hasError || !summaryText
-        ? loadingMessages[currentLoadingIndex]
-        : summaryText;
+    if (summaryText) return; // Stop cycling once summaryText is set
 
-    // Clean up any existing timers
-    cleanupTimers();
+    const interval = setInterval(
+      () => {
+        setIndex((prevIndex) => (prevIndex + 1) % loadingMessages.length);
+        setCurrentMessage(loadingMessages[index]);
+      },
+      currentMessage.length * duration + 4000,
+    ); // Rotate every 4 seconds
 
-    // Reset display and typing state
-    setDisplayText('');
-    typingIndex.current = 0;
-
-    const typeNextCharacter = () => {
-      if (typingIndex.current < textToShow.length) {
-        setDisplayText(textToShow.substring(0, typingIndex.current + 1));
-        typingIndex.current += 1;
-
-        typingTimer.current = setTimeout(
-          typeNextCharacter,
-          typingSpeed.current,
-        );
-      } else {
-        // Typing is complete
-        typingTimer.current = null;
-
-        // Schedule next message if showing loading message
-        if (!summaryText || hasError) {
-          loadingTimer.current = setTimeout(
-            rotateToNextMessage,
-            messageDuration,
-          );
-        }
-      }
-    };
-
-    typeNextCharacter();
-
-    return cleanupTimers;
-  }, [currentLoadingIndex, hasError, messageDuration, summaryText]);
+    return () => clearInterval(interval);
+  }, [summaryText, index]);
 
   return (
     <Card className="w-full shadow-md transition-all duration-300 hover:shadow-lg">
@@ -146,12 +86,14 @@ export default function AIResponse({
         </div>
       </CardHeader>
       <CardContent>
-        <div
-          className="prose prose-sm max-w-none dark:prose-invert text-base leading-relaxed"
-          ref={contentRef}
-        >
+        <div className="prose prose-sm max-w-none dark:prose-invert text-base leading-relaxed">
           <div className="markdown-container">
-            <ReactMarkdown>{displayText}</ReactMarkdown>
+            <TypingAnimation
+              className="inline-block font-semibold text-lg"
+              duration={duration}
+            >
+              {summaryText ? summaryText : currentMessage}
+            </TypingAnimation>
           </div>
         </div>
       </CardContent>

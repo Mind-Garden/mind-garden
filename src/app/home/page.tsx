@@ -13,9 +13,10 @@ import Dashboard from '@/components/dashboard';
 import BarLineChart from '@/components/bar-line-chart';
 import WaterChart from '@/components/water-chart';
 import HabitHeatmap from '@/components/heatmap';
-import { MoveRight } from 'lucide-react';
 import HabitHeatmapGrid from '@/components/habit-heatmap';
 import HealthDashboard from '@/components/health-dashboard';
+import { motion } from 'framer-motion';
+import MoodFlow from '@/components/mood-flow';
 
 export default async function Home() {
   const supabase = await createClient();
@@ -36,10 +37,18 @@ export default async function Home() {
     redirect('/error');
   }
 
+  const data = [
+    { x: '2023-01-01', y: 100 },
+    { x: '2023-02-01', y: 80 },
+    { x: '2023-03-01', y: 150 },
+    { x: '2023-04-01', y: 130 },
+    { x: '2023-05-01', y: 180 },
+    { x: '2023-06-01', y: 350 },
+  ];
+
   return (
     <div className="min-h-screen flex flex-col">
       <Header />
-
       <main className="flex-1 container mx-auto px-4 py-8">
         <div className="mb-8 space-y-2">
           <h1 className="text-4xl font-bold tracking-tight">

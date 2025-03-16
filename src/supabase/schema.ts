@@ -118,3 +118,19 @@ export interface IReminderWithLatestDates {
   latest_journal_entry_date: string | null;
   latest_data_intake_entry_date: string | null;
 }
+
+export interface DataPoint {
+  x: string; // Date as string
+  y: number; // Value
+}
+
+export interface MoodDataPoint {
+  entry_date: string;
+  scale_rating: number;
+}
+
+export interface MoodFlowProps {
+  // Array of mood data points with date and mood level
+  userId: string;
+  title?: string;
+}

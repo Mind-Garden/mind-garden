@@ -20,6 +20,8 @@ import {
 } from '@/components/ui/card';
 import { selectMoodDataByDateRange } from '@/actions/data-visualization';
 import { getLocalISOString } from '@/lib/utils';
+import AnimatedLineGraph from './ui/line-graph';
+import { DataPoint, MoodDataPoint, MoodFlowProps } from '@/supabase/schema';
 
 // Register ChartJS components
 ChartJS.register(
@@ -32,22 +34,11 @@ ChartJS.register(
   Legend,
 );
 
-interface MoodDataPoint {
-  entry_date: string;
-  scale_rating: number;
-}
-
-interface MoodFlowProps {
-  // Array of mood data points with date and mood level
-  userId: string;
-  title?: string;
-}
-
 export default function MoodFlow({
   userId,
   title = 'Mood Flow',
 }: Readonly<MoodFlowProps>) {
-  const [moodData, setMoodData] = useState<MoodDataPoint[]>([]);
+  const [moodData, setMoodData] = useState<DataPoint[]>([]);
 
   const todaysDate = getLocalISOString();
   const lastMonthDate = getLocalISOString(
@@ -61,6 +52,7 @@ export default function MoodFlow({
         lastMonthDate,
         todaysDate,
       );
+
       if (
         Array.isArray(response.data) &&
         response.data.every(
@@ -68,105 +60,21 @@ export default function MoodFlow({
         )
       ) {
         const moodData = response.data as MoodDataPoint[];
-        setMoodData(moodData);
+
+        // Convert to x, y format
+        const formattedData = moodData.map((item) => ({
+          x: item.entry_date, // Convert date string to Date object
+          y: item.scale_rating, // Scale rating as y-axis value
+        }));
+
+        setMoodData(formattedData);
       } else {
         console.error('Unexpected response data format', response.data);
       }
     };
+
     fetchMoodData();
   }, []);
-  // Extract dates and mood levels for the chart
-  const dates = moodData.map((item) => item.entry_date);
-  const levels = moodData.map((item) => item.scale_rating);
-
-  // Chart configuration
-  const chartData = {
-    labels: dates,
-    datasets: [
-      {
-        data: levels,
-        borderColor: 'rgb(0, 100, 10)',
-        backgroundColor: 'transparent',
-        pointBackgroundColor: 'rgb(0, 100, 10)',
-        pointBorderColor: 'rgb(0, 100, 10)',
-        zIndex: 10,
-      },
-    ],
-  };
-
-  const chartOptions = {
-    responsive: true,
-    maintainAspectRatio: false,
-    scales: {
-      y: {
-        min: 0,
-        max: 6,
-        display: false,
-        // Make axis border more visible
-        border: {
-          display: true,
-          width: 1,
-        },
-        ticks: {
-          font: {
-            size: 12,
-          },
-          padding: 8, // Add padding between ticks and axis
-        },
-        grid: {
-          color: 'rgba(0, 0, 0, 0.1)', // Lighter grid lines
-        },
-      },
-      x: {
-        grid: {
-          display: true,
-          color: 'rgba(0, 0, 0, 0.05)', // Even lighter x-axis grid
-        },
-        ticks: {
-          font: {
-            size: 11,
-          },
-        },
-      },
-    },
-    plugins: {
-      legend: {
-        display: false,
-      },
-      tooltip: {
-        enabled: true,
-        padding: 10,
-        backgroundColor: 'rgba(0,0,0,0.7)',
-        titleFont: {
-          size: 14,
-        },
-        bodyFont: {
-          size: 13,
-        },
-      },
-    },
-    elements: {
-      point: {
-        radius: 4,
-        hoverRadius: 12,
-        borderWidth: 2,
-        hitRadius: 25, // Makes points easier to hover
-      },
-      line: {
-        tension: 0.2, // Adds a slight curve to the line
-        borderWidth: 3, // Thicker line
-      },
-    },
-    // Add padding around the chart
-    layout: {
-      padding: {
-        left: 10,
-        right: 20,
-        top: 20,
-        bottom: 10,
-      },
-    },
-  };
 
   return (
     <div>
@@ -184,7 +92,7 @@ export default function MoodFlow({
           ) : (
             // If there is moodData, render the chart
             <div className="h-64 mx-auto">
-              <Line data={chartData} options={chartOptions} />
+              <AnimatedLineGraph data={moodData} />
             </div>
           )}
         </CardContent>
