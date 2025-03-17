@@ -9,11 +9,11 @@ describe('Reminders Integration Test', () => {
 
   beforeAll(async () => {
     const formData = {
-      email: 'testuser123@example.com',
+      email: `reminderuser${Date.now()}@example.com`,
       password: 'TestPassword123!',
       options: {
         data: {
-          first_name: 'Test',
+          first_name: 'Reminder',
           last_name: 'User',
         },
       },
