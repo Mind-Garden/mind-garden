@@ -291,7 +291,7 @@ export default function TaskManager({ userId, firstName }: TaskManagerProps) {
               initial={{ opacity: 0, y: -10 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -10 }}
-              className="flex items-center gap-2 max-w-md mx-auto"
+              className="flex items-center gap-2 max-w-md mx-auto pt-2"
             >
               <Input
                 value={manualTask}
@@ -369,12 +369,12 @@ export default function TaskManager({ userId, firstName }: TaskManagerProps) {
           </div>
 
           {/* Task Lists - Side by Side */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 p-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 p-6">
             {/* Left Column - To Do Tasks */}
-            <div className="space-y-4">
-              <h3 className="font-medium text-gray-800 flex items-center gap-2">
-                <div className="bg-blue-100 p-1 rounded-full">
-                  <Check className="w-4 h-4 text-blue-500" />
+            <div className="space-y-5 bg-white rounded-xl p-5 shadow-sm border border-gray-100">
+              <h3 className="font-semibold text-gray-800 flex items-center gap-2 text-lg mb-4">
+                <div className="bg-blue-100 p-1.5 rounded-full">
+                  <Check className="w-5 h-5 text-blue-600" />
                 </div>
                 To Do
               </h3>
@@ -383,7 +383,7 @@ export default function TaskManager({ userId, firstName }: TaskManagerProps) {
                 variants={containerVariants}
                 initial="hidden"
                 animate="visible"
-                className="space-y-2"
+                className="space-y-3"
               >
                 <AnimatePresence>
                   {todaysIncompleteTasks.length > 0 ? (
@@ -395,23 +395,25 @@ export default function TaskManager({ userId, firstName }: TaskManagerProps) {
                         animate="visible"
                         exit="exit"
                         layout
-                        className="flex items-center gap-3 p-2 rounded-lg bg-blue-50/50 hover:bg-blue-50 transition-colors"
+                        className="flex items-center gap-4 px-4 py-3 rounded-xl bg-blue-50 hover:bg-blue-100/70 transition-colors border border-blue-100/50 shadow-sm"
                       >
-                        <Checkbox
-                          checked={false}
-                          onCheckedChange={() =>
-                            handleToggleComplete(task.id, task.is_completed)
-                          }
-                          className="rounded-full border-2 border-gray-300"
-                        />
-                        <span className="flex-1 text-sm">
+                        <div className="relative">
+                          <Checkbox
+                            checked={false}
+                            onCheckedChange={() =>
+                              handleToggleComplete(task.id, task.is_completed)
+                            }
+                            className="h-5 w-5 rounded-full border-2 border-blue-400 data-[state=checked]:bg-blue-500 data-[state=checked]:border-blue-500 focus:ring-2 focus:ring-blue-200 focus:ring-offset-0"
+                          />
+                        </div>
+                        <span className="flex-1 text-sm font-medium text-gray-700">
                           {task.description}
                         </span>
                         <motion.button
                           whileHover={{ scale: 1.1 }}
                           whileTap={{ scale: 0.9 }}
                           onClick={() => handleDeleteTask(task.id)}
-                          className="text-gray-400 hover:text-red-500 transition-colors"
+                          className="text-gray-400 hover:text-red-500 transition-colors p-1.5 rounded-full hover:bg-red-50"
                         >
                           <Trash2 className="w-4 h-4" />
                         </motion.button>
@@ -421,7 +423,7 @@ export default function TaskManager({ userId, firstName }: TaskManagerProps) {
                     <motion.div
                       initial={{ opacity: 0 }}
                       animate={{ opacity: 1 }}
-                      className="text-center py-2 text-gray-500 text-sm"
+                      className="text-center py-6 text-gray-500 text-sm bg-blue-50/50 rounded-xl border border-blue-100/30 italic"
                     >
                       No pending tasks for today
                     </motion.div>
@@ -431,15 +433,15 @@ export default function TaskManager({ userId, firstName }: TaskManagerProps) {
 
               {/* Previous Incomplete Tasks */}
               {previousIncompleteTasks.length > 0 && (
-                <div className="mt-6">
-                  <div className="flex items-center gap-2 mb-2 text-sm text-gray-500">
+                <div className="mt-8">
+                  <div className="flex items-center gap-2 mb-3 text-sm text-gray-600 font-medium">
                     <Clock className="w-4 h-4" />
                     <span>Previous Uncompleted Tasks</span>
                   </div>
 
                   <motion.div
                     variants={containerVariants}
-                    className="space-y-2"
+                    className="space-y-3"
                   >
                     <AnimatePresence>
                       {previousIncompleteTasks.map((task) => (
@@ -448,18 +450,20 @@ export default function TaskManager({ userId, firstName }: TaskManagerProps) {
                           variants={taskVariants}
                           exit="exit"
                           layout
-                          className="flex items-center gap-3 p-2 rounded-lg bg-gray-50 hover:bg-gray-100 transition-colors"
+                          className="flex items-center gap-4 px-4 py-3 rounded-xl bg-gray-50 hover:bg-gray-100 transition-colors border border-gray-200/50 shadow-sm"
                         >
-                          <Checkbox
-                            checked={false}
-                            onCheckedChange={() =>
-                              handleToggleComplete(task.id, task.is_completed)
-                            }
-                            className="rounded-full border-2 border-gray-300"
-                          />
-                          <span className="flex-1 text-sm text-gray-600">
+                          <div className="relative">
+                            <Checkbox
+                              checked={false}
+                              onCheckedChange={() =>
+                                handleToggleComplete(task.id, task.is_completed)
+                              }
+                              className="h-5 w-5 rounded-full border-2 border-gray-400 data-[state=checked]:bg-gray-500 data-[state=checked]:border-gray-500 focus:ring-2 focus:ring-gray-200 focus:ring-offset-0"
+                            />
+                          </div>
+                          <span className="flex-1 text-sm font-medium text-gray-600">
                             {task.description}
-                            <span className="text-xs text-gray-400 ml-2">
+                            <span className="text-xs text-gray-400 ml-2 bg-gray-100 px-2 py-0.5 rounded-full">
                               {format(parseISO(task.created_at), 'MMM d')}
                             </span>
                           </span>
@@ -467,7 +471,7 @@ export default function TaskManager({ userId, firstName }: TaskManagerProps) {
                             whileHover={{ scale: 1.1 }}
                             whileTap={{ scale: 0.9 }}
                             onClick={() => handleDeleteTask(task.id)}
-                            className="text-gray-400 hover:text-red-500 transition-colors"
+                            className="text-gray-400 hover:text-red-500 transition-colors p-1.5 rounded-full hover:bg-red-50"
                           >
                             <Trash2 className="w-4 h-4" />
                           </motion.button>
@@ -480,15 +484,15 @@ export default function TaskManager({ userId, firstName }: TaskManagerProps) {
             </div>
 
             {/* Right Column - Completed Tasks */}
-            <div className="space-y-4">
-              <h3 className="font-medium text-gray-800 flex items-center gap-2">
-                <div className="bg-green-100 p-1 rounded-full">
-                  <Check className="w-4 h-4 text-green-500" />
+            <div className="space-y-5 bg-white rounded-xl p-5 shadow-sm border border-gray-100">
+              <h3 className="font-semibold text-gray-800 flex items-center gap-2 text-lg mb-4">
+                <div className="bg-green-100 p-1.5 rounded-full">
+                  <Check className="w-5 h-5 text-green-600" />
                 </div>
                 Completed
               </h3>
 
-              <motion.div variants={containerVariants} className="space-y-2">
+              <motion.div variants={containerVariants} className="space-y-3">
                 <AnimatePresence>
                   {todaysCompletedTasks.length > 0 ? (
                     todaysCompletedTasks.map((task) => (
@@ -498,15 +502,17 @@ export default function TaskManager({ userId, firstName }: TaskManagerProps) {
                         animate="checked"
                         exit="exit"
                         layout
-                        className="flex items-center gap-3 p-2 rounded-lg bg-green-50/50 hover:bg-green-50 transition-colors"
+                        className="flex items-center gap-4 px-4 py-3 rounded-xl bg-green-50 hover:bg-green-100/70 transition-colors border border-green-100/50 shadow-sm"
                       >
-                        <Checkbox
-                          checked={true}
-                          onCheckedChange={() =>
-                            handleToggleComplete(task.id, task.is_completed)
-                          }
-                          className="rounded-full border-2 border-green-500 bg-green-500"
-                        />
+                        <div className="relative">
+                          <Checkbox
+                            checked={true}
+                            onCheckedChange={() =>
+                              handleToggleComplete(task.id, task.is_completed)
+                            }
+                            className="h-5 w-5 rounded-full border-2 border-green-400 data-[state=checked]:bg-green-500 data-[state=checked]:border-green-500 focus:ring-2 focus:ring-green-200 focus:ring-offset-0"
+                          />
+                        </div>
                         <span className="flex-1 text-sm text-gray-400 line-through">
                           {task.description}
                         </span>
@@ -514,7 +520,7 @@ export default function TaskManager({ userId, firstName }: TaskManagerProps) {
                           whileHover={{ scale: 1.1 }}
                           whileTap={{ scale: 0.9 }}
                           onClick={() => handleDeleteTask(task.id)}
-                          className="text-gray-400 hover:text-red-500 transition-colors"
+                          className="text-gray-400 hover:text-red-500 transition-colors p-1.5 rounded-full hover:bg-red-50"
                         >
                           <Trash2 className="w-4 h-4" />
                         </motion.button>
@@ -524,7 +530,7 @@ export default function TaskManager({ userId, firstName }: TaskManagerProps) {
                     <motion.div
                       initial={{ opacity: 0 }}
                       animate={{ opacity: 1 }}
-                      className="text-center py-2 text-gray-500 text-sm"
+                      className="text-center py-6 text-gray-500 text-sm bg-green-50/50 rounded-xl border border-green-100/30 italic"
                     >
                       No completed tasks for today
                     </motion.div>
@@ -534,15 +540,15 @@ export default function TaskManager({ userId, firstName }: TaskManagerProps) {
 
               {/* Previous Completed Tasks */}
               {previousCompletedTasks.length > 0 && (
-                <div className="mt-6">
-                  <div className="flex items-center gap-2 mb-2 text-sm text-gray-500">
+                <div className="mt-8">
+                  <div className="flex items-center gap-2 mb-3 text-sm text-gray-600 font-medium">
                     <Clock className="w-4 h-4" />
                     <span>Previously Completed</span>
                   </div>
 
                   <motion.div
                     variants={containerVariants}
-                    className="space-y-2"
+                    className="space-y-3"
                   >
                     <AnimatePresence>
                       {previousCompletedTasks.map((task) => (
@@ -552,18 +558,20 @@ export default function TaskManager({ userId, firstName }: TaskManagerProps) {
                           animate="checked"
                           exit="exit"
                           layout
-                          className="flex items-center gap-3 p-2 rounded-lg bg-gray-50 hover:bg-gray-100 transition-colors"
+                          className="flex items-center gap-4 px-4 py-3 rounded-xl bg-gray-50 hover:bg-gray-100 transition-colors border border-gray-200/50 shadow-sm"
                         >
-                          <Checkbox
-                            checked={true}
-                            onCheckedChange={() =>
-                              handleToggleComplete(task.id, task.is_completed)
-                            }
-                            className="rounded-full border-2 border-green-500 bg-green-500"
-                          />
+                          <div className="relative">
+                            <Checkbox
+                              checked={true}
+                              onCheckedChange={() =>
+                                handleToggleComplete(task.id, task.is_completed)
+                              }
+                              className="h-5 w-5 rounded-full border-2 border-green-400 data-[state=checked]:bg-green-500 data-[state=checked]:border-green-500 focus:ring-2 focus:ring-green-200 focus:ring-offset-0"
+                            />
+                          </div>
                           <span className="flex-1 text-sm text-gray-400 line-through">
                             {task.description}
-                            <span className="text-xs text-gray-400 ml-2">
+                            <span className="text-xs text-gray-400 ml-2 bg-gray-100 px-2 py-0.5 rounded-full">
                               {format(parseISO(task.created_at), 'MMM d')}
                             </span>
                           </span>
@@ -571,7 +579,7 @@ export default function TaskManager({ userId, firstName }: TaskManagerProps) {
                             whileHover={{ scale: 1.1 }}
                             whileTap={{ scale: 0.9 }}
                             onClick={() => handleDeleteTask(task.id)}
-                            className="text-gray-400 hover:text-red-500 transition-colors"
+                            className="text-gray-400 hover:text-red-500 transition-colors p-1.5 rounded-full hover:bg-red-50"
                           >
                             <Trash2 className="w-4 h-4" />
                           </motion.button>
