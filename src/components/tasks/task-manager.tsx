@@ -2,7 +2,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
-import { Plus, Check, Trash2, X, Clock } from 'lucide-react';
+import { Plus, Check, Trash2, X, Clock, ListTodo } from 'lucide-react';
 import { Broom } from '@phosphor-icons/react';
 import {
   Tooltip,
@@ -23,11 +23,12 @@ import VoiceRecorder from '@/components/tasks/voice-recorder';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Input } from '@/components/ui/input';
 import { isSameDay, parseISO, format } from 'date-fns';
-import { getDate } from '@/lib/utils';
+import { getDate, getGreetingText } from '@/lib/utils';
 import { activateFireworks } from '@/components/magicui/fireworks';
 
 interface TaskManagerProps {
   userId: string;
+  firstName: string;
 }
 
 const containerVariants = {
@@ -75,7 +76,7 @@ const progressVariants = {
   }),
 };
 
-export default function TaskManager({ userId }: TaskManagerProps) {
+export default function TaskManager({ userId, firstName }: TaskManagerProps) {
   const [isProcessing, setIsProcessing] = useState(false);
   const [tasks, setTasks] = useState<ITask[]>([]);
   const [manualTask, setManualTask] = useState('');
@@ -190,12 +191,10 @@ export default function TaskManager({ userId }: TaskManagerProps) {
     return (completedTasks / tasks.length) * 100;
   };
 
-  const clearAllTasks = async () => {
-    for (const task of tasks) {
-      await deleteTask(task.id);
-    }
-    setTasks([]);
-    toast.success('Cleared all tasks');
+  const clearAllCompletedTasks = async () => {
+    tasks
+      .filter((task) => task.is_completed)
+      .forEach((task) => handleDeleteTask(task.id));
   };
 
   // Today's incomplete tasks
@@ -225,6 +224,11 @@ export default function TaskManager({ userId }: TaskManagerProps) {
   return (
     <div className="flex-1 flex flex-col items-center justify-center space-y-6 p-4 max-w-4xl mx-auto w-full">
       {/* Voice Input at the top */}
+      <div className="mb-8 text-center">
+        <h1 className="text-3xl font-bold mb-2 opacity-50">
+          {getGreetingText()}, {firstName}.
+        </h1>
+      </div>
       <div className="w-full space-y-3">
         <p className="text-gray-500 text-sm text-center">
           Press record and tell me about your tasks for today.
@@ -237,13 +241,13 @@ export default function TaskManager({ userId }: TaskManagerProps) {
                 <motion.button
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
-                  onClick={clearAllTasks}
+                  onClick={clearAllCompletedTasks}
                   className="bg-gray-100 text-gray-600 p-3 rounded-full shadow-md"
                 >
                   <Broom className="w-5 h-5" />
                 </motion.button>
               </TooltipTrigger>
-              <TooltipContent>Clear all tasks</TooltipContent>
+              <TooltipContent>Clear all completed tasks</TooltipContent>
             </Tooltip>
           </TooltipProvider>
 
@@ -252,8 +256,8 @@ export default function TaskManager({ userId }: TaskManagerProps) {
             whileTap={{ scale: 0.98 }}
             className="flex-1 max-w-md mx-auto"
           >
-            <Card className="bg-white shadow-md border-none overflow-hidden">
-              <CardContent className="p-0">
+            <Card className="bg-blue-100 shadow-md border-none overflow-hidden flex justify-center">
+              <CardContent className="p-3">
                 <VoiceRecorder
                   onTranscriptComplete={processTranscript}
                   onTranscriptChange={setTranscript}
@@ -337,90 +341,16 @@ export default function TaskManager({ userId }: TaskManagerProps) {
         <CardHeader className="flex flex-row items-center justify-between p-4 pb-2 bg-blue-50">
           <div className="flex items-center gap-2">
             <div className="bg-blue-500 rounded-full p-1.5">
-              <svg
-                width="20"
-                height="20"
-                viewBox="0 0 24 24"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  d="M12 4.75V6.25"
-                  stroke="white"
-                  strokeWidth="1.5"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-                <path
-                  d="M17.25 6.75L16.25 7.75"
-                  stroke="white"
-                  strokeWidth="1.5"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-                <path
-                  d="M19.25 12H17.75"
-                  stroke="white"
-                  strokeWidth="1.5"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-                <path
-                  d="M17.25 17.25L16.25 16.25"
-                  stroke="white"
-                  strokeWidth="1.5"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-                <path
-                  d="M12 19.25V17.75"
-                  stroke="white"
-                  strokeWidth="1.5"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-                <path
-                  d="M7.75 16.25L6.75 17.25"
-                  stroke="white"
-                  strokeWidth="1.5"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-                <path
-                  d="M6.25 12H4.75"
-                  stroke="white"
-                  strokeWidth="1.5"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-                <path
-                  d="M7.75 7.75L6.75 6.75"
-                  stroke="white"
-                  strokeWidth="1.5"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-                <path
-                  d="M12 14.25C13.2426 14.25 14.25 13.2426 14.25 12C14.25 10.7574 13.2426 9.75 12 9.75C10.7574 9.75 9.75 10.7574 9.75 12C9.75 13.2426 10.7574 14.25 12 14.25Z"
-                  stroke="white"
-                  strokeWidth="1.5"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-              </svg>
+              <ListTodo className="w-5 h-5 text-white" />
             </div>
-            <h2 className="text-lg font-medium">AI Insights</h2>
+            <h2 className="text-lg font-medium">Task Manager</h2>
           </div>
         </CardHeader>
 
         <CardContent className="p-0">
           <div className="p-4 pt-2 pb-0">
-            <h3 className="text-sm font-medium text-gray-700 mb-2">
-              Suggested To-Do List
-            </h3>
-
             <div className="relative mb-4">
-              <div className="h-1 w-full bg-blue-100 rounded-full overflow-hidden">
+              <div className="h-3 w-full bg-blue-100 rounded-full overflow-hidden">
                 <motion.div
                   className="h-full bg-blue-500 rounded-full"
                   custom={calculateProgress()}
