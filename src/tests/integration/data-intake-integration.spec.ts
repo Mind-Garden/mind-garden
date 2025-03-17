@@ -9,15 +9,13 @@ import {
   getAddedResp,
   getAddedCategories,
   addUserHabit,
-} from '../../actions/data-intake';
+} from '@/actions/data-intake';
 
 jest.mock('next/cache');
 jest.mock('next/navigation');
 
 describe('Data intake Integration Tests', () => {
   let userId: string;
-  const email = `testuser${Date.now()}@example.com`;
-  const password = 'TestPassword123!';
 
   beforeAll(async () => {
     // Create a input
