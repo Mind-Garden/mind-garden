@@ -147,7 +147,7 @@ describe('Journal Management Integration Tests', () => {
 
   it('should return error when deleting a non-existent journal entry', async () => {
     const { error } = await deleteJournalEntry(
-      '75d15e24-ac75-42ac-95b1-aea7f8f5f74f',
+      '00000000-0000-0000-0000-000000000000',
     );
     expect(error).toBeDefined();
   });
