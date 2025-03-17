@@ -176,9 +176,6 @@ describe('Journal Management Integration Tests', () => {
       );
       expect(entry?.journal_text).toBe(longEntry);
       expect(entry?.journal_text.length).toBe(5000);
-
-      // Clean up
-      await deleteJournalEntry(entryId);
     } else {
       fail('Failed to save long journal entry');
     }
