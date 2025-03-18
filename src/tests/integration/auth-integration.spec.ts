@@ -14,7 +14,7 @@ jest.mock('next/navigation');
 
 describe('Auth Integration Tests', () => {
   let userId: string;
-  const email = `testuser${Date.now()}@example.com`;
+  const email = `authuser${Date.now()}@example.com`;
   const password = 'TestPassword123!';
 
   beforeAll(async () => {
