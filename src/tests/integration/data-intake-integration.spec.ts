@@ -16,6 +16,7 @@ jest.mock('next/navigation');
 
 describe('Data intake Integration Tests', () => {
   let userId: string;
+  let habitUUID: string;
 
   beforeAll(async () => {
     // Create a input
@@ -63,6 +64,10 @@ describe('Data intake Integration Tests', () => {
     // getPersonalizedCategories
     const result = await getPersonalizedCategories();
 
+    if (result) {
+      habitUUID = result[0].id;
+    }
+
     expect(result).toBeDefined();
     expect(result?.length).toBe(5);
   });
@@ -71,7 +76,7 @@ describe('Data intake Integration Tests', () => {
     //addResp new
     const result = await addResp(
       userId,
-      '00068b9b-5431-4275-9479-f34cf445be23',
+      habitUUID,
       { boolean: false },
       'today',
     );
@@ -84,7 +89,7 @@ describe('Data intake Integration Tests', () => {
     //addResp update
     const result = await addResp(
       userId,
-      '00068b9b-5431-4275-9479-f34cf445be23',
+      habitUUID,
       { boolean: true },
       getLocalISOString(),
     );
@@ -95,10 +100,7 @@ describe('Data intake Integration Tests', () => {
 
   it('it should get response by category', async () => {
     //getAllAddedRespCategory
-    const result = await getAllAddedRespCategory(
-      userId,
-      '00068b9b-5431-4275-9479-f34cf445be23',
-    );
+    const result = await getAllAddedRespCategory(userId, habitUUID);
 
     expect(result).toBeDefined();
     expect(result?.length).toBe(1);
@@ -114,11 +116,7 @@ describe('Data intake Integration Tests', () => {
 
   it('it should add new habit', async () => {
     // addUserHabit insert new
-    const result = await addUserHabit(
-      userId,
-      '00068b9b-5431-4275-9479-f34cf445be23',
-      'boolean',
-    );
+    const result = await addUserHabit(userId, habitUUID, 'boolean');
 
     expect(result).toBeDefined();
     expect(result).toBe('success');
@@ -126,11 +124,7 @@ describe('Data intake Integration Tests', () => {
 
   it('it should add new tracking method to already exiisting habit', async () => {
     // addUserHabit update
-    const result = await addUserHabit(
-      userId,
-      '00068b9b-5431-4275-9479-f34cf445be23',
-      'scale',
-    );
+    const result = await addUserHabit(userId, habitUUID, 'scale');
 
     expect(result).toBeDefined();
     expect(result).toBe('success');
