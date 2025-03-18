@@ -26,42 +26,41 @@ interface PathMorphingNavProps {
 export default function PathMorphingNav({ featuresRef }: PathMorphingNavProps) {
   const [activeIndex, setActiveIndex] = useState(0);
   const progress = useMotionValue(0);
+  const [direction, setDirection] = useState(0);
   const pathKeys = Object.keys(paths) as Array<keyof typeof paths>;
 
   // Use scroll progress to control the animation
   const { scrollYProgress } = useScroll({
     target: featuresRef,
-    offset: ['start 25%', 'end 25%'], // Ensures the section is tracked properly
+    offset: ['start 25%', 'end 25%'],
   });
 
   useEffect(() => {
     const unsubscribe = scrollYProgress.on('change', (value) => {
-      // Dynamically divide the scroll progress into equal sections
       const sectionSize = 1 / pathKeys.length;
-
-      // Calculate the new index based on scroll position
       const newIndex = Math.min(
         pathKeys.length - 1,
-        Math.round(value / sectionSize), // Use rounding instead of flooring
+        Math.round(value / sectionSize),
       );
 
       if (newIndex !== activeIndex) {
         setActiveIndex(newIndex);
+        setDirection(newIndex % 2);
       }
 
-      // Ensure smooth transitions between icons
       const normalizedProgress = (value - newIndex * sectionSize) / sectionSize;
-      progress.set(Math.max(0, Math.min(1, normalizedProgress))); // Clamp values between 0 and 1
+      progress.set(Math.max(0, Math.min(1, normalizedProgress)));
     });
 
     return unsubscribe;
   }, [activeIndex, pathKeys.length, progress, scrollYProgress]);
 
   return (
-    <div className="fixed top-1/2 left-6 -translate-y-1/2 z-50 flex items-center gap-6 bg-white/90 dark:bg-gray-900/90 backdrop-blur-md p-6 rounded-2xl shadow-2xl w-auto max-w-[30vw]">
+    <div
+      className={`fixed top-1/2 -translate-y-1/2 z-[-2] flex items-center gap-6 bg-white/90 dark:bg-gray-900/90 backdrop-blur-md p-6 rounded-2xl shadow-2xl w-auto max-w-[30vw] 
+        ${direction === 1 ? 'left-6 flex-row' : 'right-6 flex-row-reverse'}`}
+    >
       <div className="w-[10vw] h-[10vw] max-w-20 max-h-20">
-        {' '}
-        {/* Responsive size */}
         <motion.img
           key={activeIndex}
           src={paths[pathKeys[activeIndex]]}
@@ -69,7 +68,7 @@ export default function PathMorphingNav({ featuresRef }: PathMorphingNavProps) {
           className="w-full h-full object-contain"
           style={{
             filter: `drop-shadow(0px 0px 15px ${featureColors[activeIndex]})`,
-            transition: 'filter 0.3s ease-out', // Smooth transition for filter
+            transition: 'filter 0.3s ease-out',
           }}
         />
       </div>

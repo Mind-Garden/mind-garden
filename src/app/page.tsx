@@ -23,9 +23,8 @@ import {
   Check,
   Plus,
   Trash2,
-  BrushIcon as Broom,
-  X,
 } from 'lucide-react';
+import { Broom } from '@phosphor-icons/react';
 import { TypingAnimation } from '@/components/magicui/typing-animation';
 import Footer from '@/components/footer';
 import { toast } from 'react-toastify';
@@ -663,45 +662,9 @@ export default function Home() {
               transition={{ duration: 0.8 }}
             >
               <motion.div
-                className="w-full md:w-1/2 order-2 md:order-1"
+                className="w-full md:w-1/2 order-1 md:order-1"
                 initial={{ x: -50 }}
                 animate={isAiInView ? { x: 0 } : { x: -50 }}
-                transition={{ duration: 0.8, delay: 0.2 }}
-              >
-                <h3 className="text-3xl font-bold mb-6 text-gray-800 dark:text-white">
-                  AI-Powered Task Management
-                </h3>
-                <p className="text-lg text-gray-600 dark:text-gray-300 mb-6">
-                  Streamline your productivity with our intelligent task
-                  management system that helps you organize and prioritize:
-                </p>
-                <ul className="space-y-4">
-                  <li className="flex items-start">
-                    <CheckCircle className="h-6 w-6 text-emerald-500 mr-3 mt-1 flex-shrink-0" />
-                    <span className="text-gray-700 dark:text-gray-200">
-                      Voice input to quickly capture tasks as they come to mind
-                    </span>
-                  </li>
-                  <li className="flex items-start">
-                    <CheckCircle className="h-6 w-6 text-emerald-500 mr-3 mt-1 flex-shrink-0" />
-                    <span className="text-gray-700 dark:text-gray-200">
-                      AI organizes and categorizes your tasks automatically
-                    </span>
-                  </li>
-                  <li className="flex items-start">
-                    <CheckCircle className="h-6 w-6 text-emerald-500 mr-3 mt-1 flex-shrink-0" />
-                    <span className="text-gray-700 dark:text-gray-200">
-                      Track completion progress and maintain productivity
-                      momentum
-                    </span>
-                  </li>
-                </ul>
-              </motion.div>
-
-              <motion.div
-                className="w-full md:w-1/2 order-1 md:order-2"
-                initial={{ x: 50 }}
-                animate={isAiInView ? { x: 0 } : { x: 50 }}
                 transition={{ duration: 0.8, delay: 0.2 }}
               >
                 <div className="relative bg-white dark:bg-gray-800 rounded-2xl shadow-xl overflow-hidden">
@@ -869,16 +832,12 @@ export default function Home() {
                                 />
                               </svg>
                             </div>
-                            <h2 className="text-lg font-medium">AI Insights</h2>
+                            <h2 className="text-lg font-medium">To-Do List</h2>
                           </div>
                         </CardHeader>
 
                         <CardContent className="p-0">
                           <div className="p-4 pt-2 pb-0">
-                            <h3 className="text-sm font-medium text-gray-700 mb-2">
-                              Suggested To-Do List
-                            </h3>
-
                             <div className="relative mb-4">
                               <div className="h-1 w-full bg-blue-100 rounded-full overflow-hidden">
                                 <motion.div
@@ -995,6 +954,41 @@ export default function Home() {
                     </div>
                   </motion.div>
                 </div>
+              </motion.div>
+              <motion.div
+                className="w-full md:w-1/2 order-1 md:order-2 p-14"
+                initial={{ x: -50 }}
+                animate={isAiInView ? { x: -50 } : { x: 0 }}
+                transition={{ duration: 0.8, delay: 0.2 }}
+              >
+                <h3 className="text-3xl font-bold mb-6 text-gray-800 dark:text-white">
+                  AI-Powered Task Management
+                </h3>
+                <p className="text-lg text-gray-600 dark:text-gray-300 mb-6">
+                  Streamline your productivity with our intelligent task
+                  management system that helps you organize and prioritize:
+                </p>
+                <ul className="space-y-4">
+                  <li className="flex items-start">
+                    <CheckCircle className="h-6 w-6 text-emerald-500 mr-3 mt-1 flex-shrink-0" />
+                    <span className="text-gray-700 dark:text-gray-200">
+                      Voice input to quickly capture tasks as they come to mind
+                    </span>
+                  </li>
+                  <li className="flex items-start">
+                    <CheckCircle className="h-6 w-6 text-emerald-500 mr-3 mt-1 flex-shrink-0" />
+                    <span className="text-gray-700 dark:text-gray-200">
+                      AI organizes and categorizes your tasks automatically
+                    </span>
+                  </li>
+                  <li className="flex items-start">
+                    <CheckCircle className="h-6 w-6 text-emerald-500 mr-3 mt-1 flex-shrink-0" />
+                    <span className="text-gray-700 dark:text-gray-200">
+                      Track completion progress and maintain productivity
+                      momentum
+                    </span>
+                  </li>
+                </ul>
               </motion.div>
             </motion.div>
           </div>

@@ -62,10 +62,10 @@ export default async function Home() {
         <div className="grid gap-6 lg:grid-cols-12">
           {/* Left Column */}
           <div className="space-y-6 lg:col-span-4">
-            {/* Today's Overview */}
+            {/* Quick Links */}
             <Card className="overflow-hidden border-none shadow-md">
               <CardHeader className="bg-gradient-to-r from-blue-50 to-green-50 dark:from-blue-950/20 dark:to-green-950/20">
-                <CardTitle>Today's Overview</CardTitle>
+                <CardTitle>Quick Links</CardTitle>
               </CardHeader>
               <CardContent className="p-6">
                 <Dashboard userId={userId} />
