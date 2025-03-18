@@ -114,9 +114,6 @@ describe('Journal Management Integration Tests', () => {
       // Try to update with empty text
       const updateResult = await updateJournalEntry(testEntryId, '');
       expect(updateResult).toBeUndefined();
-
-      // Clean up
-      await deleteJournalEntry(testEntryId);
     } else {
       fail('Failed to save journal entry for update test');
     }
