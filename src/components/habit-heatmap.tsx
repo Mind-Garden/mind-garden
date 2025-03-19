@@ -81,6 +81,7 @@ export default function HabitHeatmapGrid({ userId }: HeatmapProps) {
               userId,
               resp.added_habit,
             );
+
             boolResp = { ...boolResp, [name]: catResp };
           } else if (
             (name && resp.tracking_method.includes('breakfast')) ||
@@ -197,20 +198,17 @@ export default function HabitHeatmapGrid({ userId }: HeatmapProps) {
         const name = personalizedToUse.find(
           (c) => c.id == cat.added_habit,
         )?.name;
-        if (name == 'meal' || name === 'cooking') {
-          if (
-            cat.tracking_method.includes('breakfast') &&
-            !out.includes('breakfast')
-          ) {
+        if (
+          (name == 'meal' && category == 'meal') ||
+          (name == 'cooking' && category == 'cooking')
+        ) {
+          if (cat.tracking_method.includes('breakfast')) {
             out = [...out, 'breakfast'];
           }
-          if (cat.tracking_method.includes('lunch') && !out.includes('lunch')) {
+          if (cat.tracking_method.includes('lunch')) {
             out = [...out, 'lunch'];
           }
-          if (
-            cat.tracking_method.includes('dinner') &&
-            !out.includes('dinner')
-          ) {
+          if (cat.tracking_method.includes('dinner')) {
             out = [...out, 'dinner'];
           }
         }

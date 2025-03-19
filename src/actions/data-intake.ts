@@ -339,6 +339,7 @@ export async function addResp(
     return null;
   } else {
     if (data && data.length != 0) {
+      //update already existing response
       const { error } = await updateData(
         'added_habit_responses',
         { user_id: userId, habit: habit, entry_date: entryDate },
