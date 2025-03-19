@@ -88,7 +88,7 @@ export default function HabitHeatmapGrid({ userId }: HeatmapProps) {
             resp.tracking_method.includes('lunch') ||
             resp.tracking_method.includes('dinner')
           ) {
-            //get data for category.added_habit that is yes/no question
+            // get data for category.added_habit that is yes/no question
             const catResp = await getAllAddedRespCategory(
               userId,
               resp.added_habit,

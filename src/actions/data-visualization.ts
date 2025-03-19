@@ -1,6 +1,5 @@
 'use server';
 
-import { createClient } from '@/supabase/server';
 import { getSupabaseClient } from '@/supabase/client';
 import { selectData } from '@/supabase/dbfunctions';
 

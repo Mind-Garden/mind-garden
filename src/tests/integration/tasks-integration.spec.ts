@@ -9,11 +9,11 @@ describe('Task Management Integration Tests', () => {
   beforeAll(async () => {
     // Create a test user in the database
     const formData = {
-      email: 'testuser123@example.com',
+      email: `taskuser${Date.now()}@example.com`,
       password: 'TestPassword123!',
       options: {
         data: {
-          first_name: 'Test',
+          first_name: 'Task',
           last_name: 'User',
         },
       },

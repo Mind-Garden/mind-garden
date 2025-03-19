@@ -79,6 +79,7 @@ function DataIntakeForm({
   );
 
   const setVars = async (
+    // Set variables for habits like smoking or alcohol
     trackingMethod: Record<string, any>,
     method: string,
     setScaleFunc: (value: number) => void,
@@ -92,6 +93,7 @@ function DataIntakeForm({
   };
 
   const setFoodVars = async (
+    // Set variables for habits like meal or cooking
     trackingMethod: Record<string, any>,
     method: string,
     setScaleFunc: (value: number) => void,
@@ -109,6 +111,7 @@ function DataIntakeForm({
       setDinnerFunc(trackingMethod[method]);
     }
   };
+
   const [water, setWater] = useState<number | null>(null);
   const [studyHours, setStudyHours] = useState<number | null>(null);
   const [studyRating, setStudyRating] = useState<number | null>(null);
@@ -138,6 +141,7 @@ function DataIntakeForm({
           const trackingMethod = resp.tracking_method as Record<string, any>;
 
           for (const method in trackingMethod) {
+            // Set variables from responses
             switch (name) {
               case 'smoking':
                 setVars(trackingMethod, method, setSmoking, setSmokingBool);
@@ -253,6 +257,7 @@ function DataIntakeForm({
   };
 
   const insertHabit = async (
+    // Insert new habit like smoking or alcohol
     added_habit: string,
     trackingMethod: string[],
     scaleValue: number,
@@ -270,6 +275,7 @@ function DataIntakeForm({
   };
 
   const insertHabitFood = async (
+    // Insert new habit like meal or cooking
     added_habit: string,
     trackingMethod: string[],
     scaleValue: number,
@@ -420,6 +426,7 @@ function DataIntakeForm({
   };
 
   const renderTrackerComponent = (method: string, name: string | undefined) => {
+    // Show component based on what habits have been added
     const trackerMap: Record<string, any> = {
       'scale:smoking': (
         <QuantityTrackerSimple
