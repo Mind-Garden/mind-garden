@@ -75,12 +75,7 @@ export default function HabitHeatmapGrid({ userId }: HeatmapProps) {
           const name = personalizedCategories.find(
             (cat) => cat.id == resp.added_habit,
           )?.name;
-          if (
-            name &&
-            name != 'meal' &&
-            name != 'cooking' &&
-            resp.tracking_method.includes('boolean')
-          ) {
+          if (name && resp.tracking_method.includes('boolean')) {
             //get data for category.added_habit that is yes/no question
             const catResp = await getAllAddedRespCategory(
               userId,
@@ -196,14 +191,17 @@ export default function HabitHeatmapGrid({ userId }: HeatmapProps) {
     if (
       habitsToUse &&
       personalizedToUse &&
-      (category === 'meal' || category === 'cooking')
+      (category == 'meal' || category == 'cooking')
     ) {
       let out: string[] = [];
       for (const cat of habitsToUse) {
         const name = personalizedToUse.find(
           (c) => c.id == cat.added_habit,
         )?.name;
-        if (name == 'meal' || name === 'cooking') {
+        if (
+          (name == 'meal' && category == 'meal') ||
+          (name == 'cooking' && category == 'cooking')
+        ) {
           if (cat.tracking_method.includes('breakfast')) {
             out = [...out, 'breakfast'];
           }
@@ -213,6 +211,8 @@ export default function HabitHeatmapGrid({ userId }: HeatmapProps) {
           if (cat.tracking_method.includes('dinner')) {
             out = [...out, 'dinner'];
           }
+          console.log(name, cat.tracking_method);
+          console.log(category, out);
         }
       }
       return out;
