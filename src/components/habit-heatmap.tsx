@@ -211,8 +211,6 @@ export default function HabitHeatmapGrid({ userId }: HeatmapProps) {
           if (cat.tracking_method.includes('dinner')) {
             out = [...out, 'dinner'];
           }
-          console.log(name, cat.tracking_method);
-          console.log(category, out);
         }
       }
       return out;
