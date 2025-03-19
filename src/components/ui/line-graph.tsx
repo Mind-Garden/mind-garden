@@ -149,7 +149,7 @@ const formatDate = (dateString: string) => {
 // Update the main component to be responsive
 export default function AnimatedLineGraph({
   data,
-  lineColor = '#a176e3', // Mint/teal color for line like in image
+  lineColor = '#bea9de', // Mint/teal color for line like in image
   backgroundColor = '#fcfcfc', // white
   gridColor = '#666666', // Subtle dark grid if needed
   tooltipColor = '#fcfcfc', // white

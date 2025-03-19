@@ -23,10 +23,10 @@ export default function Dashboard({ userId }: DashboardProps) {
     <div>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 max-w-6xl mx-auto">
         {/* Daily Data Intake */}
-        <Card className="p-5 bg-white/50 dark:bg-black/20 backdrop-blur-sm rounded-2xl border-none shadow-lg hover:shadow-xl transition-transform hover:scale-105">
+        <Card className="p-5 bg-white/50 dark:bg-black/20 rounded-2xl border-none shadow-lg hover:shadow-xl transition-transform hover:scale-105 hover:bg-white/70 dark:hover:bg-black/50">
           <div className="flex flex-col h-full">
-            <div className="p-3 bg-blue-100 dark:bg-blue-900/50 rounded-xl w-fit">
-              <ListCheck className="h-5 w-5 text-blue-600 dark:text-blue-400" />
+            <div className="p-3 bg-gradient-to-r from-blue-200 to-violet-200 rounded-xl w-fit">
+              <ListCheck className="h-5 w-5 text-violet-500" />
             </div>
             <h3 className="text-lg font-medium mt-3">Daily Data</h3>
             <p className="text-sm text-muted-foreground mt-1">
@@ -35,7 +35,7 @@ export default function Dashboard({ userId }: DashboardProps) {
             <Button
               onClick={() => router.push('/daily-intake')}
               variant="ghost"
-              className="mt-auto justify-start px-0 hover:bg-transparent hover:text-primary"
+              className="mt-auto justify-start px-0 hover:bg-gray-200"
             >
               Enter today →
             </Button>
@@ -43,10 +43,10 @@ export default function Dashboard({ userId }: DashboardProps) {
         </Card>
 
         {/* Journal Entry */}
-        <Card className="p-5 bg-white/50 dark:bg-black/20 backdrop-blur-sm rounded-2xl border-none shadow-lg hover:shadow-xl transition-transform hover:scale-105">
+        <Card className="p-5 bg-white/50 dark:bg-black/20 rounded-2xl border-none shadow-lg hover:shadow-xl transition-transform hover:scale-105 hover:bg-white/70 dark:hover:bg-black/50">
           <div className="flex flex-col h-full">
-            <div className="p-3 bg-violet-100 dark:bg-violet-900/50 rounded-xl w-fit">
-              <NotebookPen className="h-5 w-5 text-violet-600 dark:text-violet-400" />
+            <div className="p-3 bg-gradient-to-r from-blue-200 to-violet-200 rounded-xl w-fit">
+              <NotebookPen className="h-5 w-5 text-violet-500" />
             </div>
             <h3 className="text-lg font-medium mt-3">Journal</h3>
             <p className="text-sm text-muted-foreground mt-1">
@@ -55,7 +55,7 @@ export default function Dashboard({ userId }: DashboardProps) {
             <Button
               onClick={() => router.push('/journal')}
               variant="ghost"
-              className="mt-auto justify-start px-0 hover:bg-transparent hover:text-primary"
+              className="mt-auto justify-start px-0 hover:bg-gray-200"
             >
               Write entry →
             </Button>
@@ -63,10 +63,10 @@ export default function Dashboard({ userId }: DashboardProps) {
         </Card>
 
         {/* Sleep Tracker */}
-        <Card className="p-5 bg-white/50 dark:bg-black/20 backdrop-blur-sm rounded-2xl border-none shadow-lg hover:shadow-xl transition-transform hover:scale-105">
+        <Card className="p-5 bg-white/50 dark:bg-black/20 rounded-2xl border-none shadow-lg hover:shadow-xl transition-transform hover:scale-105 hover:bg-white/70 dark:hover:bg-black/50">
           <div className="flex flex-col h-full">
-            <div className="p-3 bg-indigo-100 dark:bg-indigo-900/50 rounded-xl w-fit">
-              <Moon className="h-5 w-5 text-indigo-600 dark:text-indigo-400" />
+            <div className="p-3 bg-gradient-to-r from-blue-200 to-violet-200 rounded-xl w-fit">
+              <Moon className="h-5 w-5 text-violet-500" />
             </div>
             <h3 className="text-lg font-medium mt-3">Sleep</h3>
             <p className="text-sm text-muted-foreground mt-1">
@@ -75,7 +75,7 @@ export default function Dashboard({ userId }: DashboardProps) {
             <Button
               onClick={() => router.push('/sleep-tracker')}
               variant="ghost"
-              className="mt-auto justify-start px-0 hover:bg-transparent hover:text-primary"
+              className="mt-auto justify-start px-0 hover:bg-gray-200"
             >
               Log sleep →
             </Button>
@@ -83,10 +83,10 @@ export default function Dashboard({ userId }: DashboardProps) {
         </Card>
 
         {/* To-Do List */}
-        <Card className="p-5 bg-white/50 dark:bg-black/20 backdrop-blur-sm rounded-2xl border-none shadow-lg hover:shadow-xl transition-transform hover:scale-105">
+        <Card className="p-5 bg-white/50 dark:bg-black/20 rounded-2xl border-none shadow-lg hover:shadow-xl transition-transform hover:scale-105 hover:bg-white/70 dark:hover:bg-black/50">
           <div className="flex flex-col h-full">
-            <div className="p-3 bg-blue-100 dark:bg-blue-900/50 rounded-xl w-fit">
-              <ListTodo className="h-5 w-5 text-blue-600 dark:text-blue-400" />
+            <div className="p-3 bg-gradient-to-r from-blue-200 to-violet-200 rounded-xl w-fit">
+              <ListTodo className="h-5 w-5 text-violet-500" />
             </div>
             <h3 className="text-lg font-medium mt-3">To-Do List</h3>
             <p className="text-sm text-muted-foreground mt-1">
@@ -95,7 +95,7 @@ export default function Dashboard({ userId }: DashboardProps) {
             <Button
               onClick={() => router.push('/task-manager')}
               variant="ghost"
-              className="mt-auto justify-start px-0 hover:bg-transparent hover:text-primary"
+              className="mt-auto justify-start px-0 hover:bg-gray-200"
             >
               Task Manager →
             </Button>
@@ -103,10 +103,10 @@ export default function Dashboard({ userId }: DashboardProps) {
         </Card>
 
         {/* Reminders */}
-        <Card className="p-5 bg-white/50 dark:bg-black/20 backdrop-blur-sm rounded-2xl border-none shadow-lg hover:shadow-xl transition-transform hover:scale-105">
+        <Card className="p-5 bg-white/50 dark:bg-black/20 rounded-2xl border-none shadow-lg hover:shadow-xl transition-transform hover:scale-105 hover:bg-white/70 dark:hover:bg-black/50">
           <div className="flex flex-col h-full">
-            <div className="p-3 bg-blue-100 dark:bg-blue-900/50 rounded-xl w-fit">
-              <Bell className="h-5 w-5 text-blue-600 dark:text-blue-400" />
+            <div className="p-3 bg-gradient-to-r from-blue-200 to-violet-200 rounded-xl w-fit">
+              <Bell className="h-5 w-5 text-violet-500" />
             </div>
             <h3 className="text-lg font-medium mt-3">Reminders</h3>
             <p className="text-sm text-muted-foreground mt-1">
@@ -115,24 +115,25 @@ export default function Dashboard({ userId }: DashboardProps) {
             <Button
               onClick={() => router.push('/reminders')}
               variant="ghost"
-              className="mt-auto justify-start px-0 hover:bg-transparent hover:text-primary"
+              className="mt-auto justify-start px-0 hover:bg-gray-200"
             >
               Reminders →
             </Button>
           </div>
         </Card>
+
         {/* Profile */}
-        <Card className="p-5 bg-white/50 dark:bg-black/20 backdrop-blur-sm rounded-2xl border-none shadow-lg hover:shadow-xl transition-transform hover:scale-105">
+        <Card className="p-5 bg-white/50 dark:bg-black/20 rounded-2xl border-none shadow-lg hover:shadow-xl transition-transform hover:scale-105 hover:bg-white/70 dark:hover:bg-black/50">
           <div className="flex flex-col h-full">
-            <div className="p-3 bg-sky-100 dark:bg-sky-900/50 rounded-xl w-fit">
-              <User className="h-5 w-5 text-sky-600 dark:text-sky-400" />
+            <div className="p-3 bg-gradient-to-r from-blue-200 to-violet-200 rounded-xl w-fit">
+              <User className="h-5 w-5 text-violet-500" />
             </div>
             <h3 className="text-lg font-medium mt-3">Profile</h3>
             <p className="text-sm text-muted-foreground mt-1">Your account</p>
             <Button
               onClick={() => router.push('/profile')}
               variant="ghost"
-              className="mt-auto justify-start px-0 hover:bg-transparent hover:text-primary"
+              className="mt-auto justify-start px-0 hover:bg-gray-200"
             >
               Settings →
             </Button>

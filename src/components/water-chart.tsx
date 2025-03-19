@@ -66,7 +66,7 @@ export default function WaterChart({ userId }: Readonly<WaterChartProps>) {
           return <div className="h-16 text-center">No data yet! :( </div>;
         }
 
-        return <AnimatedLineGraph data={data} />;
+        return <AnimatedLineGraph data={data} yAxisLabel="Cups of Water" />;
       })()}
     </div>
   );

@@ -91,7 +91,7 @@ export default function MoodFlow({
         ) : (
           // If there is moodData, render the chart
           <div className="h-128">
-            <AnimatedLineGraph data={moodData} />
+            <AnimatedLineGraph data={moodData} yAxisLabel="Mood Level" />
           </div>
         )}
       </Card>
