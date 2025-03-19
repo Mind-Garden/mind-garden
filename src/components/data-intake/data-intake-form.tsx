@@ -544,8 +544,8 @@ function DataIntakeForm({
   }
 
   return (
-    <div className="w-full max-w-4xl mx-auto px-4 py-2">
-      <div className="bg-white/50 backdrop-blur-sm mt-4 mx-4 rounded-full mb-6 py-4 px-2">
+    <div className="w-full max-w-4xl mx-auto px-4 py-2 rounded-2xl bg-gradient-to-r from-blue-200/50 via-aqua-100/50 to-teal-100/50 backdrop-blur-md">
+      <div className=" backdrop-blur-sm mt-4 mx-4 rounded-full mb-6 py-4 px-2">
         <div className="container mx-auto px-4 py-4 h-16 flex items-center justify-between">
           <div className="flex flex-col items-left pl-2">
             <p className="text-2xl font-semibold text-black">
@@ -566,7 +566,7 @@ function DataIntakeForm({
           <div className="flex items-center gap-4 pr-4">
             <Button
               variant="outline"
-              className="rounded-xl bg-transparent border-green-100/50 hover:bg-white/30"
+              className="rounded-xl bg-transparent border-green-100/50 hover:bg-black/10"
               onClick={() => setShowAddHabitDialog(true)}
             >
               <Plus className="h-4 w-4 mr-2" />
@@ -574,7 +574,7 @@ function DataIntakeForm({
             </Button>
             <Button
               variant="outline"
-              className="rounded-xl bg-transparent border-green-100/50 hover:bg-white/30"
+              className="rounded-xl bg-transparent border-green-100/50 hover:bg-black/10"
               onClick={handleSubmit}
               disabled={submitting}
             >
@@ -641,7 +641,7 @@ function DataIntakeForm({
                     onChange={handleToggle}
                     disabled={submitting || !scaleSelection}
                   >
-                    <span className="flex items-center gap-0.5">
+                    <span className="flex items-center">
                       <AttributeIcon
                         category={emotionsCategory.name}
                         attribute={attr.name}
