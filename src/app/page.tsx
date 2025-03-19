@@ -175,7 +175,7 @@ export default function Home() {
         >
           <div className="flex items-center justify-center">
             <motion.img
-              src="/logo.png"
+              src="/logo-blue.png"
               alt="Mind Garden Logo"
               className="h-20 w-auto mb-4 mr-7"
               initial={{ rotate: -10, scale: 0.8 }}

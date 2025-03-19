@@ -18,7 +18,7 @@ export default function MotionPath() {
         />
       </svg>
       <motion.img
-        src="/logo.png" // Ensure this SVG file is in the public folder
+        src="/logo-blue.png" // Ensure this SVG file is in the public folder
         alt="Brain Icon"
         style={brainStyle}
         initial={{ offsetDistance: '0%', scale: 2.5 }}

@@ -60,12 +60,12 @@ export function Header() {
   return (
     <>
       {/* Fixed Header */}
-      <header className="fixed top-0 left-0 w-full z-50 h-16 bg-black/50 backdrop-blur-sm border-b">
+      <header className="fixed top-0 left-0 w-full z-50 h-16 bg-gradient-to-r from-blue-200 via-aqua-100 to-teal-100 backdrop-blur-md">
         <div className="container mx-auto px-4 h-16 flex items-center justify-between">
           {/* Logo */}
           <div className="flex items-center">
             <img
-              src="/logo.png"
+              src="/logo-blue.png"
               alt="Mind Garden Logo"
               className="h-8 w-auto mr-2 transition-transform hover:scale-110"
               onClick={() => router.push('/home')}
