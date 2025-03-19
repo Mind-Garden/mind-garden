@@ -9,7 +9,6 @@ import {
   IAddedResp,
   ISleepEntries,
 } from '@/supabase/schema';
-import e from 'express';
 
 /**
  * Fetches all categories from the database.
@@ -340,6 +339,7 @@ export async function addResp(
   } else {
     if (data && data.length != 0) {
       //update
+      console.log(trackingValue);
       const { error } = await updateData(
         'added_habit_responses',
         { user_id: userId, habit: habit, entry_date: entryDate },
