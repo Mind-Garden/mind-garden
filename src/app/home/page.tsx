@@ -51,10 +51,10 @@ export default async function Home() {
       <Header />
       <main className="flex-1 container mx-auto px-4 py-8">
         <div className="mb-8 space-y-2">
-          <h1 className="text-4xl font-bold tracking-tight">
+          <h1 className="text-4xl font-bold tracking-tight font-title">
             Welcome back, {profileData?.first_name}
           </h1>
-          <p className="text-lg text-muted-foreground">
+          <p className="text-lg text-muted-foreground font-title">
             Here's an overview of your wellness journey.
           </p>
         </div>
@@ -64,7 +64,7 @@ export default async function Home() {
           <div className="space-y-6 lg:col-span-4">
             {/* Quick Links */}
             <Card className="overflow-hidden border-none shadow-md">
-              <CardHeader className="bg-gradient-to-r from-blue-50 to-green-50 dark:from-blue-950/20 dark:to-green-950/20">
+              <CardHeader className="bg-gradient-to-r from-blue-50 to-green-50 dark:from-blue-950/20 dark:to-green-950/20 font-title">
                 <CardTitle>Quick Links</CardTitle>
               </CardHeader>
               <CardContent className="p-6">
@@ -74,9 +74,11 @@ export default async function Home() {
 
             {/* Habit Tracker Heatmap */}
             <Card className="overflow-hidden border-none shadow-md">
-              <CardHeader className="bg-gradient-to-r from-blue-50 to-green-50 dark:from-blue-950/20 dark:to-green-950/20">
-                <CardTitle>Habit Tracker</CardTitle>
-                <CardDescription>Your daily progress</CardDescription>
+              <CardHeader className="bg-gradient-to-r from-blue-50 to-green-50 dark:from-blue-950/20 dark:to-green-950/20 font-title">
+                <CardTitle>Daily Progress Heatmap</CardTitle>
+                <CardDescription>
+                  Did you input your progress for today?
+                </CardDescription>
               </CardHeader>
               <CardContent className="p-6">
                 <HabitHeatmap userId={userId} />
@@ -85,7 +87,7 @@ export default async function Home() {
 
             {/* Habit Tracker Swiper */}
             <Card className="overflow-hidden border-none shadow-md">
-              <CardHeader className="bg-gradient-to-r from-blue-50 to-green-50 dark:from-blue-950/20 dark:to-green-950/20">
+              <CardHeader className="bg-gradient-to-r from-blue-50 to-green-50 dark:from-blue-950/20 dark:to-green-950/20 font-title">
                 <div className="flex items-center justify-between">
                   <CardTitle>Habit Trackers</CardTitle>
                 </div>
@@ -100,7 +102,7 @@ export default async function Home() {
           <div className="space-y-6 lg:col-span-8">
             {/* Mood Section */}
             <Card className="overflow-hidden border-none shadow-md">
-              <CardHeader className="bg-gradient-to-r from-blue-50 to-green-50 dark:from-blue-950/20 dark:to-green-950/20">
+              <CardHeader className="bg-gradient-to-r from-blue-50 to-green-50 dark:from-blue-950/20 dark:to-green-950/20 font-title">
                 <CardTitle>Mood and Sleep Summaries</CardTitle>
                 <CardDescription>
                   Gain insights into your well-being
@@ -113,7 +115,7 @@ export default async function Home() {
 
             {/* Charts Section */}
             <Card className="overflow-hidden border-none shadow-md">
-              <CardHeader className="bg-gradient-to-r from-blue-50 to-green-50 dark:from-blue-950/20 dark:to-green-950/20">
+              <CardHeader className="bg-gradient-to-r from-blue-50 to-green-50 dark:from-blue-950/20 dark:to-green-950/20 font-title">
                 <CardTitle>Charts</CardTitle>
                 <CardDescription>
                   Activity and water intake tracking

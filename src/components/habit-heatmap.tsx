@@ -358,8 +358,8 @@ export default function HabitHeatmapGrid({ userId }: HeatmapProps) {
 
   return (
     <div className="w-full max-w-3xl mx-auto p-4">
-      <div className="flex items-center justify-between mb-6">
-        <h2 className="text-2xl font-bold">Habit Tracker Calendar</h2>
+      <div className="flex flex-col items-center justify-center mb-6 space-y-2">
+        {/* Month Navigation */}
         <div className="flex items-center space-x-4">
           <Button variant="outline" size="icon" onClick={previousMonth}>
             <ChevronLeft className="h-4 w-4" />
@@ -376,6 +376,17 @@ export default function HabitHeatmapGrid({ userId }: HeatmapProps) {
             <ChevronRight className="h-4 w-4" />
           </Button>
         </div>
+        {/* Swipe Text animation */}
+        <motion.div
+          className="text-gray-500 text-sm text-center"
+          initial={{ y: -20, opacity: 0 }}
+          animate={{ y: 0, opacity: [0, 1, 0] }}
+          transition={{
+            opacity: { duration: 2, repeat: Infinity, ease: 'easeInOut' },
+          }}
+        >
+          Swipe to see habits tracked
+        </motion.div>
       </div>
 
       {/* Category navigation */}

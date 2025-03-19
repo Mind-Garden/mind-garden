@@ -107,20 +107,35 @@ export default function HealthDashboard({ userId }: HealthDashboardProps) {
   return (
     <div className="w-full">
       {/* Tabs for navigation */}
-      <div className="flex space-x-2 mb-4 justify-center">
-        {sections.map((section, index) => (
-          <Button
-            key={section.id}
-            variant={activeIndex === index ? 'default' : 'outline'}
-            onClick={() => {
-              setDirection(index > activeIndex ? 1 : -1);
-              setActiveIndex(index);
-            }}
-            className="rounded-full"
-          >
-            {section.title}
-          </Button>
-        ))}
+      <div className="flex flex-col items-center space-y-3">
+        {/* Section Buttons */}
+        <div className="flex justify-center">
+          {sections.map((section, index) => (
+            <Button
+              key={section.id}
+              variant={activeIndex === index ? 'default' : 'outline'}
+              onClick={() => {
+                setDirection(index > activeIndex ? 1 : -1);
+                setActiveIndex(index);
+              }}
+              className="rounded-full"
+            >
+              {section.title}
+            </Button>
+          ))}
+        </div>
+
+        {/* Swipe Text with Top-Down Animation */}
+        <motion.div
+          className="text-gray-500 text-sm text-center"
+          initial={{ y: -20, opacity: 0 }}
+          animate={{ y: 0, opacity: [0, 1, 0] }}
+          transition={{
+            opacity: { duration: 2, repeat: Infinity, ease: 'easeInOut' },
+          }}
+        >
+          Swipe to navigate summaries
+        </motion.div>
       </div>
 
       {/* Swipeable content */}
