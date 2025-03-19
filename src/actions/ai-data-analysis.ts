@@ -9,6 +9,7 @@ import {
   selectMoodFrequency,
 } from '@/actions/data-visualization';
 import { MoodCountData, SleepDataPoint } from '@/supabase/schema';
+import { format } from 'path';
 
 const functionary: Record<string, (userId: string) => Promise<string>> = {
   sleep: summarizeSleepData,
@@ -60,7 +61,10 @@ async function summarizeSleepData(
       const durations = sleepData.map((item) =>
         getSleepDuration(item.start, item.end),
       );
-      const averageDuration = getAverageTimeElapsed(durations);
+      const averageDuration = parseFloat(
+        getAverageTimeElapsed(durations).toFixed(1),
+      );
+
       try {
         const aiResponse = await fetchResponse(
           `${averageDuration}`,
@@ -74,7 +78,6 @@ async function summarizeSleepData(
       throw new Error('Data not in correct format');
     }
   } catch (error) {
-    console.error('Error summarizing sleep data:', error);
     throw new Error('Error with data summarization' + error);
   }
 }
@@ -114,14 +117,17 @@ async function summarizeMoodData(
       percentage: Math.round((mood.count / totalCount) * 100),
     }));
 
-    const aiResponse = await fetchResponse(
-      JSON.stringify(moodDistribution),
-      'summarize mood',
-    );
+    const formattedText = moodDistribution
+      .map(
+        ({ mood_level, percentage }) =>
+          `- Mood Level ${mood_level}: ${percentage}%`,
+      )
+      .join('\n');
+
+    const aiResponse = await fetchResponse(formattedText, 'summarize mood');
 
     return aiResponse;
   } catch (error) {
-    console.error(error);
     throw new Error('AI service is currently unavailable:' + error);
   }
 }

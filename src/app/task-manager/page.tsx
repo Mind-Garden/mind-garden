@@ -29,13 +29,7 @@ export default async function Home() {
       <Header />
 
       <main className="flex-1 container mx-auto px-4 py-8">
-        <div className="mb-8 text-center">
-          <h1 className="text-3xl font-bold mb-2 opacity-50">
-            {getGreetingText()}, {profileData?.first_name}.
-          </h1>
-        </div>
-
-        <TaskManager userId={userId} />
+        <TaskManager userId={userId} firstName={profileData?.first_name} />
       </main>
 
       <Footer />

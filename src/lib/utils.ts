@@ -1,5 +1,6 @@
 import { clsx, type ClassValue } from 'clsx';
 import { twMerge } from 'tailwind-merge';
+import { convertToLocalTime } from './time';
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -85,12 +86,13 @@ export const getTimeAMPM = (time: string) => {
 };
 
 export function getGreetingText(): string {
-  const currentTime = getDate().getHours();
+  const currentHour = new Date().getHours();
+
   let greetingText = '';
 
-  if (currentTime < 12) {
+  if (currentHour < 12) {
     greetingText = 'Good Morning';
-  } else if (currentTime < 18) {
+  } else if (currentHour < 18) {
     greetingText = 'Good Afternoon';
   } else {
     greetingText = 'Good Evening';

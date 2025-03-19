@@ -2,7 +2,70 @@ import { getDate } from '@/lib/utils';
 import { getSupabaseClient } from '@/supabase/client';
 import { insertData, selectData, updateData } from '@/supabase/dbfunctions';
 import { ITask } from '@/supabase/schema';
-import { fetchResponse } from '@/actions/ai-fetch';
+
+const LLM_API_URL = 'http://localhost:11434/api/chat';
+
+const promptionary: { [key: string]: string } = {
+  'summarize tasks': 'Summarize all the following tasks in a dashed list:',
+  'summarize mood':
+    'Here is my mood distribution from 1 (low) to 5 (high). Please summarize the trends and give me two or three specific tips to improve my mood. Keep it clear, simple, and to the point. Mood data:',
+  'summarize sleep':
+    '"Provide a concise summary of my sleep based on the average sleep duration per night I provide. give me two or three specific tips to improve my sleep quality. Keep it clear, simple, and to the point. My average sleep duration per night is: ',
+};
+
+/**
+ * Fetches a response from the LLM API
+ *
+ * @param {string} transcript the user's transcript
+ * @param {string} promptType the type of prompt to use
+ * @param {string} modelToUse the model to use
+ * @returns {string} the response from the LLM API
+ *
+ *  The following are the possible prompt types:
+ *
+ * 'summarize tasks': 'Summarize all the following tasks in a dashed list:',
+ *
+ * 'summarize mood': 'Please analyze my sleep patterns and provide: 1. A short summary of trends in my sleep schedule. 2. A couple of actionable suggestions for improving my sleep quality. Keep the response brief and to the point. Dont give me the responses in MD just normal text: ',
+ *
+ * 'summarize sleep': 'Please give me input and advice on my sleep. This is my average sleep duration: '
+ *
+ *
+ *
+ */
+export async function fetchResponse(
+  transcript: string,
+  promptType = '',
+  modelToUse = 'llama3.2:1b',
+): Promise<string> {
+  try {
+    const staticPrompt = promptionary[promptType];
+    const response = await fetch(LLM_API_URL, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        model: modelToUse,
+        messages: [
+          {
+            role: 'user',
+            content: `${staticPrompt} ${transcript}.`,
+          },
+        ],
+        stream: false,
+      }),
+    });
+
+    if (response.status === 200) {
+      const data = await response.json();
+      return data.message.content;
+    } else {
+      return '';
+    }
+  } catch (error) {
+    throw new Error('AI service is currently unavailable');
+  }
+}
 
 /**
  * Parse the tasks from the text response.

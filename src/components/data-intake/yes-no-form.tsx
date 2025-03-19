@@ -39,7 +39,7 @@ export default function YesNoForm({
           size="sm"
           className={cn(
             'flex items-center rounded-md transition-all px-1',
-            selected === true ? 'text-green-700' : 'text-gray-500',
+            selected === true ? 'bg-green-200 opacity-50' : 'text-gray-500',
           )}
           onClick={() => handleSelection(true)}
           disabled={disabled}
@@ -52,7 +52,7 @@ export default function YesNoForm({
           size="sm"
           className={cn(
             'flex items-center rounded-md transition-all px-1',
-            selected === false ? 'text-red-700' : 'text-gray-500',
+            selected === false ? 'bg-red-200 opacity-50' : 'text-gray-500',
           )}
           onClick={() => handleSelection(false)}
           disabled={disabled}

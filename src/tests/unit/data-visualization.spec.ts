@@ -54,7 +54,8 @@ describe('Data Visualization', () => {
           { entry_date: endDate, start: '23:00:00', end: '07:00:00' },
         ];
 
-        const matchMock = jest.fn().mockResolvedValue({ data: mockData });
+        const orderMock = jest.fn().mockResolvedValue({ data: mockData });
+        const matchMock = jest.fn().mockReturnValue({ order: orderMock });
 
         const lteMock = jest.fn().mockReturnValue({ match: matchMock });
         const gteMock = jest.fn().mockReturnValue({ lte: lteMock });
@@ -78,9 +79,12 @@ describe('Data Visualization', () => {
       it('should return an error if the query fails', async () => {
         console.error = jest.fn();
         const mockError = { message: 'Failed to fetch sleep data' };
-        const matchMock = jest
+
+        const orderMock = jest
           .fn()
           .mockResolvedValue({ data: null, error: mockError });
+        const matchMock = jest.fn().mockReturnValue({ order: orderMock });
+
         const lteMock = jest.fn().mockReturnValue({ match: matchMock });
         const gteMock = jest.fn().mockReturnValue({ lte: lteMock });
 
@@ -106,7 +110,8 @@ describe('Data Visualization', () => {
       it('should return empty data when no entries exist in date range', async () => {
         const mockData = { data: [] };
 
-        const matchMock = jest.fn().mockResolvedValue({ data: mockData.data });
+        const orderMock = jest.fn().mockResolvedValue({ data: mockData.data });
+        const matchMock = jest.fn().mockReturnValue({ order: orderMock });
 
         const lteMock = jest.fn().mockReturnValue({ match: matchMock });
         const gteMock = jest.fn().mockReturnValue({ lte: lteMock });
@@ -235,10 +240,12 @@ describe('Data Visualization', () => {
           { scale_rating: 3, entry_date: endDate },
         ];
 
-        // Mock the database query chain
-        const matchMock = jest
+        const orderMock = jest
           .fn()
           .mockResolvedValue({ data: mockData, error: null });
+        const matchMock = jest.fn().mockReturnValue({ order: orderMock });
+        // Mock the database query chain
+
         const lteMock = jest.fn().mockReturnValue({ match: matchMock });
         const gteMock = jest.fn().mockReturnValue({ lte: lteMock });
 
@@ -263,9 +270,11 @@ describe('Data Visualization', () => {
         const mockError = { message: 'Failed to fetch mood data' };
 
         // Mock the database query chain with error
-        const matchMock = jest
+
+        const orderMock = jest
           .fn()
           .mockResolvedValue({ data: null, error: mockError });
+        const matchMock = jest.fn().mockReturnValue({ order: orderMock });
         const lteMock = jest.fn().mockReturnValue({ match: matchMock });
         const gteMock = jest.fn().mockReturnValue({ lte: lteMock });
         const selectMock = jest.fn().mockReturnValue({ gte: gteMock });
@@ -293,9 +302,11 @@ describe('Data Visualization', () => {
         const mockData: any[] = [];
 
         // Mock the database query chain with empty data
-        const matchMock = jest
+
+        const orderMock = jest
           .fn()
           .mockResolvedValue({ data: mockData, error: null });
+        const matchMock = jest.fn().mockReturnValue({ order: orderMock });
         const lteMock = jest.fn().mockReturnValue({ match: matchMock });
         const gteMock = jest.fn().mockReturnValue({ lte: lteMock });
         const selectMock = jest.fn().mockReturnValue({ gte: gteMock });
@@ -521,7 +532,8 @@ describe('Data Visualization', () => {
             { entry_date: endDate, water: 5 },
           ];
 
-          const matchMock = jest.fn().mockResolvedValue({ data: mockData });
+          const orderMock = jest.fn().mockResolvedValue({ data: mockData });
+          const matchMock = jest.fn().mockReturnValue({ order: orderMock });
 
           const lteMock = jest.fn().mockReturnValue({ match: matchMock });
           const gteMock = jest.fn().mockReturnValue({ lte: lteMock });
@@ -545,9 +557,11 @@ describe('Data Visualization', () => {
         it('should return an error if the query fails', async () => {
           console.error = jest.fn();
           const mockError = { message: 'Failed to fetch water data' };
-          const matchMock = jest
+
+          const orderMock = jest
             .fn()
             .mockResolvedValue({ data: null, error: mockError });
+          const matchMock = jest.fn().mockReturnValue({ order: orderMock });
           const lteMock = jest.fn().mockReturnValue({ match: matchMock });
           const gteMock = jest.fn().mockReturnValue({ lte: lteMock });
 
@@ -573,9 +587,10 @@ describe('Data Visualization', () => {
         it('should return empty data when no entries exist in date range', async () => {
           const mockData = { data: [] };
 
-          const matchMock = jest
+          const orderMock = jest
             .fn()
             .mockResolvedValue({ data: mockData.data });
+          const matchMock = jest.fn().mockReturnValue({ order: orderMock });
 
           const lteMock = jest.fn().mockReturnValue({ match: matchMock });
           const gteMock = jest.fn().mockReturnValue({ lte: lteMock });

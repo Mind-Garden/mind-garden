@@ -2,14 +2,21 @@ import { redirect } from 'next/navigation';
 import { createClient } from '@/supabase/server';
 import Footer from '@/components/footer';
 import { Header } from '@/components/header';
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card';
 import Dashboard from '@/components/dashboard';
-import MoodFlow from '@/components/mood-flow';
-import MoodBar from '@/components/mood-bar';
-import SleepChart from '@/components/sleep-chart';
 import BarLineChart from '@/components/bar-line-chart';
 import WaterChart from '@/components/water-chart';
-import AIResponse from '@/components/ai-response';
 import HabitHeatmap from '@/components/heatmap';
+import HabitHeatmapGrid from '@/components/habit-heatmap';
+import HealthDashboard from '@/components/health-dashboard';
+import { motion } from 'framer-motion';
+import MoodFlow from '@/components/mood-flow';
 
 export default async function Home() {
   const supabase = await createClient();
@@ -30,50 +37,104 @@ export default async function Home() {
     redirect('/error');
   }
 
+  const data = [
+    { x: '2023-01-01', y: 100 },
+    { x: '2023-02-01', y: 80 },
+    { x: '2023-03-01', y: 150 },
+    { x: '2023-04-01', y: 130 },
+    { x: '2023-05-01', y: 180 },
+    { x: '2023-06-01', y: 350 },
+  ];
+
   return (
     <div className="min-h-screen flex flex-col">
       <Header />
-
       <main className="flex-1 container mx-auto px-4 py-8">
-        <div className="mb-8 text-center">
-          <h1 className="text-3xl font-bold mb-2 opacity-50">
-            Welcome to Mind Garden, {profileData?.first_name}!
+        <div className="mb-8 space-y-2">
+          <h1 className="text-4xl font-bold tracking-tight font-title">
+            Welcome back, {profileData?.first_name}
           </h1>
-          <p className="text-lg text-muted-foreground">
-            Cultivate your daily habits and track your progress.
+          <p className="text-lg text-muted-foreground font-title">
+            Here's an overview of your wellness journey.
           </p>
         </div>
 
-        {/* Content */}
-        {/* Dashboard */}
+        <div className="grid gap-6 lg:grid-cols-12">
+          {/* Left Column */}
+          <div className="space-y-6 lg:col-span-4">
+            {/* Quick Links */}
+            <Card className="overflow-hidden border-none shadow-md">
+              <CardHeader className="bg-gradient-to-r from-blue-50 to-green-50 dark:from-blue-950/20 dark:to-green-950/20 font-title">
+                <CardTitle>Quick Links</CardTitle>
+              </CardHeader>
+              <CardContent className="p-6">
+                <Dashboard userId={userId} />
+              </CardContent>
+            </Card>
 
-        <div className="mb-8">
-          <Dashboard userId={userId} />
-        </div>
+            {/* Habit Tracker Heatmap */}
+            <Card className="overflow-hidden border-none shadow-md">
+              <CardHeader className="bg-gradient-to-r from-blue-50 to-green-50 dark:from-blue-950/20 dark:to-green-950/20 font-title">
+                <CardTitle>Daily Progress Heatmap</CardTitle>
+                <CardDescription>
+                  Did you input your progress for today?
+                </CardDescription>
+              </CardHeader>
+              <CardContent className="p-6">
+                <HabitHeatmap userId={userId} />
+              </CardContent>
+            </Card>
 
-        {/* MoodFlow */}
-        <div className="mb-8">
-          <MoodFlow userId={userId} />
-        </div>
-        {/* MoodBar */}
-        <div>
-          <MoodBar userId={userId} />
-          <AIResponse userId={userId} type="mood" title="Mood Summary" />
-        </div>
-        <div className="mb-8">
-          <HabitHeatmap userId={userId} />
-        </div>
-        <div className="mb-8">
-          <AIResponse userId={userId} type="sleep" title="Sleep Summary" />
-        </div>
-        <div className="mb-8">
-          <SleepChart userId={userId} />
-        </div>
-        <div className="pt-10 pb-10">
-          <BarLineChart userId={userId} />
-        </div>
-        <div className="pt-10 pb-10">
-          <WaterChart userId={userId} />
+            {/* Habit Tracker Swiper */}
+            <Card className="overflow-hidden border-none shadow-md">
+              <CardHeader className="bg-gradient-to-r from-blue-50 to-green-50 dark:from-blue-950/20 dark:to-green-950/20 font-title">
+                <div className="flex items-center justify-between">
+                  <CardTitle>Habit Trackers</CardTitle>
+                </div>
+              </CardHeader>
+              <CardContent className="p-6">
+                <HabitHeatmapGrid userId={userId} />
+              </CardContent>
+            </Card>
+          </div>
+
+          {/* Right Column */}
+          <div className="space-y-6 lg:col-span-8">
+            {/* Mood Section */}
+            <Card className="overflow-hidden border-none shadow-md">
+              <CardHeader className="bg-gradient-to-r from-blue-50 to-green-50 dark:from-blue-950/20 dark:to-green-950/20 font-title">
+                <CardTitle>Mood and Sleep Summaries</CardTitle>
+                <CardDescription>
+                  Gain insights into your well-being
+                </CardDescription>
+              </CardHeader>
+              <CardContent className="p-6 space-y-6">
+                <HealthDashboard userId={userId} />
+              </CardContent>
+            </Card>
+
+            {/* Charts Section */}
+            <Card className="overflow-hidden border-none shadow-md">
+              <CardHeader className="bg-gradient-to-r from-blue-50 to-green-50 dark:from-blue-950/20 dark:to-green-950/20 font-title">
+                <CardTitle>Charts</CardTitle>
+                <CardDescription>
+                  Activity and water intake tracking
+                </CardDescription>
+              </CardHeader>
+              <CardContent className="p-6 space-y-8">
+                <div>
+                  <h3 className="text-lg font-medium mb-4">Daily Activity</h3>
+                  <BarLineChart userId={userId} />
+                </div>
+                <div className="pt-4 border-t">
+                  <h3 className="text-lg font-medium mb-4">
+                    Water Intake History
+                  </h3>
+                  <WaterChart userId={userId} />
+                </div>
+              </CardContent>
+            </Card>
+          </div>
         </div>
       </main>
 
