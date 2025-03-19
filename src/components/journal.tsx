@@ -323,7 +323,7 @@ export default function NewJournal({ userId }: NewJournalProps) {
                   placeholder="What's on your mind today?"
                   value={newEntry}
                   onChange={(e) => setNewEntry(e.target.value)}
-                  className="min-h-[150px] bg-transparent border-none focus-visible:ring-0 p-0 placeholder:text-gray-400 text-gray-600 dark:text-gray-300"
+                  className="min-h-[150px] bg-transparent border-none focus:outline-none focus:ring-0 p-0 placeholder:text-gray-400 text-gray-600"
                 />
               </div>
 
