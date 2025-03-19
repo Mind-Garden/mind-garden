@@ -1,41 +1,29 @@
 'use client';
 
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Sparkles } from 'lucide-react';
 import { summarizeData } from '@/actions/ai-data-analysis';
 import ReactMarkdown from 'react-markdown';
+import { TypingAnimation } from './magicui/typing-animation';
 
 interface AIResponseProps {
   readonly userId: string;
   readonly type: string;
   readonly title?: string;
-  readonly messageDuration?: number;
-  readonly id?: string; // Explicit ID for the component
 }
 
 export default function AIResponse({
   userId,
   type,
   title = 'Summary',
-  messageDuration = 5000,
-  id, // Accept ID from props
 }: AIResponseProps) {
-  // Component state
-  const [summaryText, setSummaryText] = useState('');
-  const [displayText, setDisplayText] = useState('');
+  const [summaryText, setSummaryText] = useState<string | null>(null);
+  const [displayedText, setDisplayedText] = useState<string>('');
   const [hasError, setHasError] = useState(false);
-  const [currentLoadingIndex, setCurrentLoadingIndex] = useState(0);
+  const duration = 15;
 
-  // Component-scoped refs
-  const typingSpeed = useRef(30);
-  const typingIndex = useRef(0);
-  const typingTimer = useRef<NodeJS.Timeout | null>(null);
-  const loadingTimer = useRef<NodeJS.Timeout | null>(null);
-  const contentRef = useRef<HTMLDivElement>(null);
-
-  // Loading messages
   const loadingMessages = [
     'Hope you are having a wonderful day! I am gathering some insights using your data...',
     'Looking at your recent entries to find helpful patterns. Keep tracking - it makes a difference!',
@@ -43,43 +31,18 @@ export default function AIResponse({
     'Preparing your personalized insights!',
   ];
 
-  // Clean up function
-  const cleanupTimers = () => {
-    if (typingTimer.current) {
-      clearTimeout(typingTimer.current);
-      typingTimer.current = null;
-    }
-    if (loadingTimer.current) {
-      clearTimeout(loadingTimer.current);
-      loadingTimer.current = null;
-    }
-  };
+  const [currentMessage, setCurrentMessage] = useState<string>(
+    loadingMessages[0],
+  );
+  const [index, setIndex] = useState(0);
 
-  // Setup mount tracking
   useEffect(() => {
-    return () => {
-      cleanupTimers();
-    };
-  }, []);
-
-  // Function to rotate to the next message
-  const rotateToNextMessage = () => {
-    setCurrentLoadingIndex(
-      (prevIndex) => (prevIndex + 1) % loadingMessages.length,
-    );
-  };
-
-  // Fetch AI data
-  useEffect(() => {
-    const isActive = true;
-
     async function fetchAISummary() {
       try {
         const response = await summarizeData(userId, type);
         setSummaryText(response);
         setHasError(false);
       } catch (error) {
-        console.error('Error fetching AI summary', error);
         setHasError(true);
       }
     }
@@ -87,47 +50,35 @@ export default function AIResponse({
     fetchAISummary();
   }, [userId, type]);
 
-  // Typewriter effect
   useEffect(() => {
-    const textToShow =
-      hasError || !summaryText
-        ? loadingMessages[currentLoadingIndex]
-        : summaryText;
-
-    // Clean up any existing timers
-    cleanupTimers();
-
-    // Reset display and typing state
-    setDisplayText('');
-    typingIndex.current = 0;
-
-    const typeNextCharacter = () => {
-      if (typingIndex.current < textToShow.length) {
-        setDisplayText(textToShow.substring(0, typingIndex.current + 1));
-        typingIndex.current += 1;
-
-        typingTimer.current = setTimeout(
-          typeNextCharacter,
-          typingSpeed.current,
-        );
-      } else {
-        // Typing is complete
-        typingTimer.current = null;
-
-        // Schedule next message if showing loading message
-        if (!summaryText || hasError) {
-          loadingTimer.current = setTimeout(
-            rotateToNextMessage,
-            messageDuration,
-          );
+    if (summaryText) {
+      let i = 0;
+      const interval = setInterval(() => {
+        if (i < summaryText.length) {
+          setDisplayedText(summaryText.slice(0, i + 1)); // Reveal text progressively
+          i++;
+        } else {
+          clearInterval(interval);
         }
-      }
-    };
+      }, duration); // Typing speed
 
-    typeNextCharacter();
+      return () => clearInterval(interval);
+    }
+  }, [summaryText]);
 
-    return cleanupTimers;
-  }, [currentLoadingIndex, hasError, messageDuration, summaryText]);
+  useEffect(() => {
+    if (summaryText) return;
+
+    const interval = setInterval(
+      () => {
+        setIndex((prevIndex) => (prevIndex + 1) % loadingMessages.length);
+        setCurrentMessage(loadingMessages[index]);
+      },
+      currentMessage.length * duration + 4000,
+    );
+
+    return () => clearInterval(interval);
+  }, [summaryText, index]);
 
   return (
     <Card className="w-full shadow-md transition-all duration-300 hover:shadow-lg">
@@ -146,13 +97,17 @@ export default function AIResponse({
         </div>
       </CardHeader>
       <CardContent>
-        <div
-          className="prose prose-sm max-w-none dark:prose-invert text-base leading-relaxed"
-          ref={contentRef}
-        >
-          <div className="markdown-container">
-            <ReactMarkdown>{displayText}</ReactMarkdown>
-          </div>
+        <div className="prose prose-sm max-w-none dark:prose-invert text-base leading-relaxed inline-block font-semibold text-lg">
+          {summaryText ? (
+            <ReactMarkdown>{displayedText}</ReactMarkdown>
+          ) : (
+            <TypingAnimation
+              className="inline-block font-semibold text-lg"
+              duration={duration}
+            >
+              {hasError ? 'AI Model is currently unavailable' : currentMessage}
+            </TypingAnimation>
+          )}
         </div>
       </CardContent>
     </Card>

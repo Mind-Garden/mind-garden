@@ -31,16 +31,6 @@ export function Header() {
   // List of navigation items - easy to add more
   const navItems: NavItem[] = [
     {
-      icon: Bell,
-      path: '/reminders',
-      label: 'Reminders',
-    },
-    {
-      icon: ListTodo,
-      path: '/task-manager',
-      label: 'Task Manager',
-    },
-    {
       icon: ListCheck,
       path: '/daily-intake',
       label: 'Daily Intake',
@@ -55,53 +45,69 @@ export function Header() {
       path: '/sleep-tracker',
       label: 'Sleep Tracker',
     },
+    {
+      icon: ListTodo,
+      path: '/task-manager',
+      label: 'Task Manager',
+    },
+    {
+      icon: Bell,
+      path: '/reminders',
+      label: 'Reminders',
+    },
   ];
 
   return (
-    <header className="font-body border-b bg-white/50 backdrop-blur-sm mt-4 mx-4 rounded-full border-none">
-      <div className="container mx-auto px-4 h-16 flex items-center justify-between">
-        {/* Logo */}
-        <div className="flex items-center">
-          <img
-            src="/logo.png"
-            alt="Mind Garden Logo"
-            className="h-8 w-auto mr-2 transition-transform hover:scale-110"
-            onClick={() => router.push('/home')}
-            style={{ cursor: 'pointer' }}
-          />
-          <p className="text-2xl font-extrabold text-slate-800 font-title">
-            Mind Garden
-          </p>
-        </div>
-        <div className="flex items-center gap-4">
-          {/* Navigation buttons generated from navItems array */}
-          {navItems.map((item) => {
-            const Icon = item.icon;
-            return (
-              <TooltipProvider key={item.path}>
-                <Tooltip>
-                  <TooltipTrigger asChild>
-                    <Button
-                      onClick={() => router.push(item.path)}
-                      variant="ghost"
-                      size="icon"
-                      aria-label={item.label}
-                      className="transition-transform hover:scale-110"
-                    >
-                      <Icon className="h-5 w-5" />
-                    </Button>
-                  </TooltipTrigger>
-                  <TooltipContent>
-                    <p>{item.label}</p>
-                  </TooltipContent>
-                </Tooltip>
-              </TooltipProvider>
-            );
-          })}
+    <>
+      {/* Fixed Header */}
+      <header className="fixed top-0 left-0 w-full z-50 h-16 bg-gradient-to-r from-blue-200 via-aqua-100 to-teal-100 backdrop-blur-md">
+        <div className="container mx-auto px-4 h-16 flex items-center justify-between">
+          {/* Logo */}
+          <div className="flex items-center">
+            <img
+              src="/logo-blue.png"
+              alt="Mind Garden Logo"
+              className="h-8 w-auto mr-2 transition-transform hover:scale-110"
+              onClick={() => router.push('/home')}
+              style={{ cursor: 'pointer' }}
+            />
+            <p className="text-2xl font-extrabold text-slate-800 font-title">
+              Mind Garden
+            </p>
+          </div>
+          <div className="flex items-center gap-4">
+            {/* Navigation buttons generated from navItems array */}
+            {navItems.map((item) => {
+              const Icon = item.icon;
+              return (
+                <TooltipProvider key={item.path}>
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <Button
+                        onClick={() => router.push(item.path)}
+                        variant="ghost"
+                        size="icon"
+                        aria-label={item.label}
+                        className="transition-transform hover:scale-110"
+                      >
+                        <Icon className="h-5 w-5" />
+                      </Button>
+                    </TooltipTrigger>
+                    <TooltipContent>
+                      <p>{item.label}</p>
+                    </TooltipContent>
+                  </Tooltip>
+                </TooltipProvider>
+              );
+            })}
 
-          <ProfileDropdown />
+            <ProfileDropdown />
+          </div>
         </div>
-      </div>
-    </header>
+      </header>
+
+      {/*Need This so Components dont render behind the header*/}
+      <div className="mt-16"></div>
+    </>
   );
 }

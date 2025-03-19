@@ -8,7 +8,7 @@ describe('Reminder API Integration Tests', () => {
   beforeAll(async () => {
     // Create a test user
     const { data, error } = await supabase.auth.signUp({
-      email: 'testuser@example.com',
+      email: `cronuser${Date.now()}@example.com`,
       password: 'TestPassword123!',
     });
 

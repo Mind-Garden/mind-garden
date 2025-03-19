@@ -20,8 +20,8 @@ function ToggleButton<T extends string | number>({
       className={`px-3 py-2 rounded-md text-sm font-medium transition-colors
       ${
         isSelected
-          ? 'bg-white/40 text-green-900 hover:bg-white/50'
-          : 'bg-transparent hover:bg-white/30 text-gray-700'
+          ? 'bg-black/10 hover:bg-black/10'
+          : 'bg-transparent hover:bg-black/10 text-gray-700'
       }
     `}
       onClick={() => onChange(value)}

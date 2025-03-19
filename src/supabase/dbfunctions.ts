@@ -60,9 +60,17 @@ export async function selectData<T>(
   if (fromDate && toDate) {
     query = query.gte('entry_date', fromDate).lte('entry_date', toDate);
   }
+
+  // Add matching conditions
   query = query.match(conditions ?? {});
 
-  // Build the query with conditions and selected columns
+  // Order the data by entry_date in ascending order if the entry_date field exists
+
+  if (fromDate && toDate) {
+    query = query.order('entry_date', { ascending: true });
+  }
+
+  // Execute the query
   const { data, error } = await query;
 
   if (error) {
@@ -72,7 +80,6 @@ export async function selectData<T>(
 
   return { data };
 }
-
 /**
  * Updates data in a given Supabase table
  * @param table - The name of the table

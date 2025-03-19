@@ -250,12 +250,12 @@ export async function addUserHabit(
       const tracking_method = data[0].tracking_method as string[];
       for (const i in tracking_method) {
         if (tracking_method[i] == trackingMethod) {
-          //already exists
+          // habit with tracking method already exists
           return 'duplicate';
         }
       }
 
-      //update
+      // update habit with new tracking method
       const { error } = await updateData(
         'added_habit',
         { user_id: userId, added_habit: categoryId },
@@ -269,7 +269,7 @@ export async function addUserHabit(
       return 'success';
     }
 
-    //insert
+    // insert new habit
     const { error } = await insertData(
       'added_habit',
       [
@@ -303,6 +303,7 @@ export async function getAddedCategories(userId: string) {
 }
 
 export async function getAddedResp(userId: string, entryDate: string) {
+  // Get responses by date
   const { data, error } = await selectData<IAddedResp>(
     'added_habit_responses',
     {
@@ -338,8 +339,6 @@ export async function addResp(
     return null;
   } else {
     if (data && data.length != 0) {
-      //update
-      console.log(trackingValue);
       const { error } = await updateData(
         'added_habit_responses',
         { user_id: userId, habit: habit, entry_date: entryDate },
@@ -351,7 +350,7 @@ export async function addResp(
       }
       return 'success';
     }
-    //insert
+    //insert a new response
     const { error } = await insertData('added_habit_responses', [
       {
         user_id: userId,
@@ -369,7 +368,7 @@ export async function addResp(
   }
 }
 
-export async function getAllAddedRespCategory(
+export async function getAllAddedRespCategory( //G et all added responses of a specific category
   userId: string,
   category: string,
 ) {

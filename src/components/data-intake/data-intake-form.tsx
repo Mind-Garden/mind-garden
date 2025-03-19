@@ -79,6 +79,7 @@ function DataIntakeForm({
   );
 
   const setVars = async (
+    // Set variables for habits like smoking or alcohol
     trackingMethod: Record<string, any>,
     method: string,
     setScaleFunc: (value: number) => void,
@@ -92,6 +93,7 @@ function DataIntakeForm({
   };
 
   const setFoodVars = async (
+    // Set variables for habits like meal or cooking
     trackingMethod: Record<string, any>,
     method: string,
     setScaleFunc: (value: number) => void,
@@ -109,6 +111,7 @@ function DataIntakeForm({
       setDinnerFunc(trackingMethod[method]);
     }
   };
+
   const [water, setWater] = useState<number | null>(null);
   const [studyHours, setStudyHours] = useState<number | null>(null);
   const [studyRating, setStudyRating] = useState<number | null>(null);
@@ -138,6 +141,7 @@ function DataIntakeForm({
           const trackingMethod = resp.tracking_method as Record<string, any>;
 
           for (const method in trackingMethod) {
+            // Set variables from responses
             switch (name) {
               case 'smoking':
                 setVars(trackingMethod, method, setSmoking, setSmokingBool);
@@ -253,6 +257,7 @@ function DataIntakeForm({
   };
 
   const insertHabit = async (
+    // Insert new habit like smoking or alcohol
     added_habit: string,
     trackingMethod: string[],
     scaleValue: number,
@@ -270,6 +275,7 @@ function DataIntakeForm({
   };
 
   const insertHabitFood = async (
+    // Insert new habit like meal or cooking
     added_habit: string,
     trackingMethod: string[],
     scaleValue: number,
@@ -420,6 +426,7 @@ function DataIntakeForm({
   };
 
   const renderTrackerComponent = (method: string, name: string | undefined) => {
+    // Show component based on what habits have been added
     const trackerMap: Record<string, any> = {
       'scale:smoking': (
         <QuantityTrackerSimple
@@ -544,8 +551,8 @@ function DataIntakeForm({
   }
 
   return (
-    <div className="w-full max-w-4xl mx-auto px-4 py-2">
-      <div className="bg-white/50 backdrop-blur-sm mt-4 mx-4 rounded-full mb-6 py-4 px-2">
+    <div className="w-full max-w-4xl mx-auto px-4 py-2 rounded-2xl bg-gradient-to-r from-blue-200/50 via-aqua-100/50 to-teal-100/50 backdrop-blur-md">
+      <div className=" backdrop-blur-sm mt-4 mx-4 rounded-full mb-6 py-4 px-2">
         <div className="container mx-auto px-4 py-4 h-16 flex items-center justify-between">
           <div className="flex flex-col items-left pl-2">
             <p className="text-2xl font-semibold text-black">
@@ -566,7 +573,7 @@ function DataIntakeForm({
           <div className="flex items-center gap-4 pr-4">
             <Button
               variant="outline"
-              className="rounded-xl bg-transparent border-green-100/50 hover:bg-white/30"
+              className="rounded-xl bg-transparent border-green-100/50 hover:bg-black/10"
               onClick={() => setShowAddHabitDialog(true)}
             >
               <Plus className="h-4 w-4 mr-2" />
@@ -574,7 +581,7 @@ function DataIntakeForm({
             </Button>
             <Button
               variant="outline"
-              className="rounded-xl bg-transparent border-green-100/50 hover:bg-white/30"
+              className="rounded-xl bg-transparent border-green-100/50 hover:bg-black/10"
               onClick={handleSubmit}
               disabled={submitting}
             >
@@ -641,7 +648,7 @@ function DataIntakeForm({
                     onChange={handleToggle}
                     disabled={submitting || !scaleSelection}
                   >
-                    <span className="flex items-center gap-0.5">
+                    <span className="flex items-center">
                       <AttributeIcon
                         category={emotionsCategory.name}
                         attribute={attr.name}
