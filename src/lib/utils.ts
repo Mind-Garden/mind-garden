@@ -41,10 +41,9 @@ export const convertTo24Hour = (time: string): number => {
 export const convertTo24HourSleepEntry = (timeStr: string) => {
   const [time, period] = timeStr.split(' ');
   const [hoursStr, minutes] = time.split(':').map(Number);
-
   let hours = hoursStr;
 
-  if (period === 'PM' && hours < 12) hours += 12;
+  if (period === 'PM' && hours !== 12) hours += 12;
   if (period === 'AM' && hours === 12) hours = 0;
 
   // Ensure two-digit format for hours and minutes
