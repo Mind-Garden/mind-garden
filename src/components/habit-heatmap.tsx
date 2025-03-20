@@ -202,13 +202,19 @@ export default function HabitHeatmapGrid({ userId }: HeatmapProps) {
           (name == 'meal' && category == 'meal') ||
           (name == 'cooking' && category == 'cooking')
         ) {
-          if (cat.tracking_method.includes('breakfast')) {
+          if (
+            cat.tracking_method.includes('breakfast') &&
+            !out.includes('breakfast')
+          ) {
             out = [...out, 'breakfast'];
           }
-          if (cat.tracking_method.includes('lunch')) {
+          if (cat.tracking_method.includes('lunch') && !out.includes('lunch')) {
             out = [...out, 'lunch'];
           }
-          if (cat.tracking_method.includes('dinner')) {
+          if (
+            cat.tracking_method.includes('dinner') &&
+            !out.includes('dinner')
+          ) {
             out = [...out, 'dinner'];
           }
         }
