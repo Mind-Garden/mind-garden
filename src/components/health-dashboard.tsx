@@ -99,7 +99,7 @@ export default function HealthDashboard({ userId }: HealthDashboardProps) {
   };
 
   return (
-    <div className="w-full">
+    <div className="w-full font-body">
       {/* Tabs for navigation */}
       <div className="flex flex-col items-center space-y-3">
         {/* Section Buttons */}

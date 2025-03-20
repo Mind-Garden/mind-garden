@@ -558,48 +558,50 @@ function DataIntakeForm({
   }
 
   return (
-    <div className="w-full max-w-4xl mx-auto px-4 py-2 rounded-2xl bg-gradient-to-r from-blue-200/50 via-aqua-100/50 to-teal-100/50 backdrop-blur-md">
-      <div className=" backdrop-blur-sm mt-4 mx-4 rounded-full mb-6 py-4 px-2">
-        <div className="container mx-auto px-4 py-4 h-16 flex items-center justify-between">
-          <div className="flex flex-col items-left pl-2">
-            <p className="text-2xl font-semibold text-black">
+    <div className="font-body w-full max-w-4xl mx-auto pb-2 rounded-2xl bg-gradient-to-r from-blue-200/50 via-aqua-100/50 to-teal-100/50 backdrop-blur-md">
+      <div className="backdrop-blur-sm mb-6 px-2 rounded-t-2xl">
+        <div className="container mx-auto px-4 py-4">
+          <div className="flex items-center justify-between h-16">
+            <p className="text-2xl font-medium text-black font-title pl-2">
               Daily Habit Form
             </p>
+            <div className="flex items-center gap-4 pr-4">
+              <Button
+                variant="outline"
+                className="rounded-xl bg-transparent border-green-100/50 hover:bg-black/10"
+                onClick={() => setShowAddHabitDialog(true)}
+              >
+                <Plus className="h-4 w-4 mr-2" />
+                Add Habit
+              </Button>
+              <Button
+                variant="outline"
+                className="rounded-xl bg-transparent border-green-100/50 hover:bg-black/10"
+                onClick={handleSubmit}
+                disabled={submitting}
+              >
+                Submit
+              </Button>
+            </div>
+          </div>
+          <div className="pl-2">
             {completedForm ? (
-              <p className="text-center text-sm text-gray-500">
+              <p className="text-sm text-gray-500">
                 You have completed your habit form for the day! You may edit and
                 resubmit at any time.
               </p>
             ) : (
-              <p className="text-center text-sm text-gray-500">
+              <p className="text-sm text-gray-500">
                 You have yet to complete your habit form for the day. Place your
                 selections and submit.
               </p>
             )}
           </div>
-          <div className="flex items-center gap-4 pr-4">
-            <Button
-              variant="outline"
-              className="rounded-xl bg-transparent border-green-100/50 hover:bg-black/10"
-              onClick={() => setShowAddHabitDialog(true)}
-            >
-              <Plus className="h-4 w-4 mr-2" />
-              Add Habit
-            </Button>
-            <Button
-              variant="outline"
-              className="rounded-xl bg-transparent border-green-100/50 hover:bg-black/10"
-              onClick={handleSubmit}
-              disabled={submitting}
-            >
-              Submit
-            </Button>
-          </div>
         </div>
       </div>
 
       {/* Wrap to make them relative for visual effects */}
-      <div className="relative">
+      <div className="relative px-4">
         {/* Loading spinner */}
         {submitting && (
           <div className="absolute inset-0 bg-gray-100/70 flex items-center justify-center rounded-2xl z-10">
@@ -611,7 +613,7 @@ function DataIntakeForm({
         <div
           className={`flex flex-col items-center py-4 bg-white/50 rounded-full mb-6 z-10 transition-opacity ${submitting ? 'opacity-50' : 'opacity-100'}`}
         >
-          <p className="font-bold text-xl">Rate Your Day:</p>
+          <p className="font-bold text-xl">Rate Your Day</p>
           <div className="flex justify-center gap-4 mt-2">
             {[1, 2, 3, 4, 5].map((rating) => (
               <ToggleButton<number>
@@ -643,7 +645,9 @@ function DataIntakeForm({
             }`}
           >
             <CardHeader className="pb-3">
-              <CardTitle className="text-lg">{emotionsCategory.name}</CardTitle>
+              <CardTitle className="text-lg text-semibold">
+                {emotionsCategory.name}
+              </CardTitle>
             </CardHeader>
             <CardContent>
               <div className="flex flex-wrap justify-center gap-2">

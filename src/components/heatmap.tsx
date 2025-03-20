@@ -138,7 +138,7 @@ export default function HabitHeatmap({ userId }: HeatmapProps) {
   };
 
   return (
-    <div className="w-full max-w-3xl mx-auto p-4">
+    <div className="w-full max-w-3xl mx-auto p-4 font-body">
       <div className="flex items-center justify-between mb-6">
         <h2 className="text-2xl font-bold">Daily Progress</h2>
         <div className="flex items-center space-x-4">

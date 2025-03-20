@@ -26,7 +26,7 @@ export default async function JournalPage() {
   }
 
   return (
-    <div className="min-h-screen flex flex-col">
+    <div className="min-h-screen flex flex-col font-body">
       <Header />
 
       {/* Main Content */}

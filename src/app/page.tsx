@@ -156,7 +156,7 @@ export default function Home() {
   }, []);
 
   return (
-    <div className="w-full min-h-screen overflow-x-hidden relative font-sans">
+    <div className="w-full min-h-screen overflow-x-hidden relative font-body">
       {/* Path Morphing Navigation */}
       {isFeaturesInView ? <PathMorphingNav featuresRef={featuresRef} /> : null}
 
