@@ -59,6 +59,7 @@ export default function ModifyPassword() {
       transition={{ duration: 0.4, ease: 'easeOut' }}
       className="font-body"
     >
+
       <div className="relative rounded-2xl overflow-hidden p-[2px] bg-gradient-to-r from-emerald-300 via-teal-300 to-violet-300">
         <Card className="bg-white rounded-[14px] h-full overflow-hidden border-none">
           <div className="absolute inset-0 rounded-xl z-0" />
