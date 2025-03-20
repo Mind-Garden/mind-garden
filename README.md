@@ -120,22 +120,18 @@ For this project, we are leveraging modern technologies to ensure scalability, m
    - **As a user, I want to be able to disable reminders for specific tasks, or altogether, so that I can customize my notification preferences.**
      - Given that I am a logged-in user, when I navigate to the notifications page, then the system displays an interface where I can toggle reminders on or off for specific tasks, such as habit tracking, journaling, and task completion.
 6. **Data Visualization**
-   - **As a user, I want to view my habits in a heat map so that I can quickly identify patterns in my habit tracking.**
-     - Given that I am a logged-in user and on the habit tracker page, when I select the "Heat Map" view, the system displays a color-coded calendar where completed habits are highlighted with different intensities based on consistency.
-   - **As a user, I want to see my longest streak for a habit so that I can track my best performance.**
-     - Given that I am a logged-in user and on the habit tracker page, when I select a habit, the system displays the longest number of consecutive days I have completed it.
-   - **As a user, I want to see my current streak so that I can stay motivated to maintain consistency.**
-     - Given that I am a logged-in user and on the habit tracker page, when I select a habit, the system displays the number of consecutive days I have completed it without breaking the streak.
-   - **As a user, I want to see my habits in a calendar view so that I can track my progress over time.**
-     - Given that I am a logged-in user and on the habit tracker page, when I select the "Calendar View," the system displays a monthly calendar where each day is marked based on my habit completion.
-   - **As a user, I want to view progress charts for my habits so that I can analyze my improvement over time.**
-     - Given that I am a logged-in user and on the analytics dashboard, when I select a habit, the system displays a line graph showing my completion trend over weeks or months.
-   - **As a user, I want to see my task completion trends in a bar chart so that I can track my productivity.**
-     - Given that I am a logged-in user and on the analytics dashboard, when I select "Task Completion," the system displays a bar chart showing the number of tasks I completed each day over the past month.
-   - **As a user, I want to see my journaling activity in a visual format so that I can reflect on how often I write.**
-     - Given that I am a logged-in user and on the analytics dashboard, when I select "Journaling Activity," the system displays a graph indicating the number of journal entries I have made over time.
-   - **As a user, I want to compare my habits, journal entries, and task completion side by side so that I can identify correlations.**
-     - Given that I am a logged-in user and on the analytics dashboard, when I choose multiple data points, the system overlays charts to help visualize relationships between habits, journaling, and tasks.
+    - **As a user, I want a heat map to track whether I have completed my habits so that I can identify gaps in my routine.**
+      - Given that I am on the home page, when I select the heat map view, the system displays a calendar with days marked to show I have completed journal, data intake and sleep entires.
+    - **As a user, I want to be able to view quantifiable habits such as exercise and studying, so that I can measure my progress more effectively.**
+      - Given that I am on the home page, I can see graphs that represent how much I have done of a habit.
+    - **As a user, I want my sleep data stored in a structured format so that I can analyze trends over time.**
+      - Given that I am on the home page, I can see a timeline visualization showing mood trends and a mood bar showing me the ratio of my mood.
+    - **As a user, I want to track my mood flow over time so that I can identify patterns in my emotional well-being.**
+      - Given that I am on the home page, I can see a timeline visualization showing mood trends. 
+    - **As a user, I want sleep analysis insights so that I can understand how my sleep quality affects my daily life.**
+      - Given that I am on the home page, the AI provides summaries and trends based on my sleeping habits.
+    - **As a user, I want to create my own habits so that I can track what matters most to me.**
+      - Given that I am on the habit tracker page, when I select "Add Habit," the system allows me to name the habit, assign it to a category, and choose a preferred tracking method from preset options.
 
 ## Architecture Diagram
 
