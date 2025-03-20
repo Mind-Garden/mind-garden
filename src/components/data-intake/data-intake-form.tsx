@@ -342,7 +342,7 @@ function DataIntakeForm({
         insertHabitFood(
           category.added_habit,
           category.tracking_method,
-          meals,
+          cooking,
           breakfastCookingBool,
           lunchCookingBool,
           dinnerCookingBool,
