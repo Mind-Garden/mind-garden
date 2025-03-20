@@ -140,7 +140,7 @@ export default async function Home() {
                   <WaterChart userId={userId} />
                 </div>
                 <div className="pt-4 border-t">
-                  <h3 className="text-lg font-medium mb-4">
+                  <h3 className="text-lg font-body font-semibold mb-4">
                     Habit Tracker Line Charts
                   </h3>
                   <HabitLineCharts userId={userId} />

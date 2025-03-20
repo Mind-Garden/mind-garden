@@ -24,6 +24,7 @@ async function sendReminderEmail(
       text,
       html,
     });
+    // Log to server console
     console.log(`Email sent to ${email} with messageId: ${info.messageId}`);
     return info.messageId; // Return messageId for verification
   } catch (error) {
