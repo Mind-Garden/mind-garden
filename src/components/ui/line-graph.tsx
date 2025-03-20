@@ -275,7 +275,7 @@ export default function AnimatedLineGraph({
   const labelFontSize = Math.max(12, Math.min(16, dimensions.width / 50));
 
   return (
-    <div ref={containerRef} className="w-full z-50">
+    <div ref={containerRef} className="max-w-screen-lg mx-auto z-50">
       <Card className="bg-white backdrop-blur-sm rounded-2xl border-none w-full">
         <CardTitle className="text-2xl font-bold mb-2 opacity-50 text-center">
           {title}
