@@ -26,7 +26,6 @@ import AddHabitDialog from '@/components/data-intake/add-habit';
 import { toast } from 'react-toastify';
 import QuantityTrackerSimple from './quantity-tracker';
 import YesNoForm from './yes-no-form';
-import SickRating from './sick-rating';
 import { getLocalISOString } from '@/lib/utils';
 
 import CounterCard from '@/components/ui/counter-card';
@@ -460,7 +459,15 @@ function DataIntakeForm({
           question="How many home-cooked meals today?"
         />
       ),
-      'scale:sick': <SickRating key={method + name} onChange={setSick} />,
+      'scale:sick': (
+        <RatingScale
+          key={method + name}
+          value={sick}
+          onChange={setSick}
+          leftLabel="Sick"
+          rightLabel="Healthy"
+        />
+      ),
       'boolean:alcohol': (
         <YesNoForm
           key={method + name}
