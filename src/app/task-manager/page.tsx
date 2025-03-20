@@ -2,7 +2,6 @@ import { redirect } from 'next/navigation';
 import { createClient } from '@/supabase/server';
 import Footer from '@/components/footer';
 import { Header } from '@/components/header';
-import { getGreetingText } from '@/lib/utils';
 import TaskManager from '@/components/tasks/task-manager';
 
 export default async function Home() {
@@ -25,7 +24,7 @@ export default async function Home() {
   }
 
   return (
-    <div className="min-h-screen flex flex-col">
+    <div className="min-h-screen flex flex-col font-body">
       <Header />
 
       <main className="flex-1 container mx-auto px-4 py-8">

@@ -4,7 +4,7 @@ import { createClient } from '@/supabase/server';
 
 import { Header } from '@/components/header';
 import Footer from '@/components/footer';
-import NewJournal from '@/components/journal';
+import NewJournal from '@/components/journal/journal';
 
 export default async function JournalPage() {
   const supabase = await createClient();
@@ -26,7 +26,7 @@ export default async function JournalPage() {
   }
 
   return (
-    <div className="min-h-screen flex flex-col">
+    <div className="min-h-screen flex flex-col font-body">
       <Header />
 
       {/* Main Content */}

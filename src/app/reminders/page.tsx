@@ -20,12 +20,14 @@ export default async function RemindersPage() {
       <Header />
 
       {/* Main Content */}
-      <main className="flex justify-center items-center mt-8 mb-8">
-        {userId ? (
-          <ReminderCard userId={userId} />
-        ) : (
-          <LoaderCircle className="justify-center h-10 w-10 animate-spin" />
-        )}
+      <main className="flex-1 container mx-auto px-4 py-8">
+        <div className="max-w-2xl mx-auto space-y-8">
+          {userId ? (
+            <ReminderCard userId={userId} />
+          ) : (
+            <LoaderCircle className="justify-center h-10 w-10 animate-spin" />
+          )}
+        </div>
       </main>
 
       <Footer />

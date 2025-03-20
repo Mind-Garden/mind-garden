@@ -67,13 +67,11 @@ export function Header() {
             <img
               src="/logo-blue.png"
               alt="Mind Garden Logo"
-              className="h-8 w-auto mr-2 transition-transform hover:scale-110"
+              className="h-10 w-auto mr-2 transition-transform hover:scale-110"
               onClick={() => router.push('/home')}
               style={{ cursor: 'pointer' }}
             />
-            <p className="text-2xl font-extrabold text-slate-800 font-title">
-              Mind Garden
-            </p>
+            <p className="text-3xl font-extrabold font-title">Mind Garden</p>
           </div>
           <div className="flex items-center gap-4">
             {/* Navigation buttons generated from navItems array */}

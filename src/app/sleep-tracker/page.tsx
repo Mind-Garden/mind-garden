@@ -1,10 +1,5 @@
-// Core Imports
 import { redirect } from 'next/navigation';
-
-// Utility
 import { createClient } from '@/supabase/server';
-
-// UI
 import Footer from '@/components/footer';
 import { SleepEntryCard } from '@/components/sleep-entry';
 import { Header } from '@/components/header';
@@ -29,7 +24,7 @@ export default async function SleepTrackerPage() {
   }
 
   return (
-    <div className="min-h-screen flex flex-col">
+    <div className="min-h-screen flex flex-col font-body">
       <Header />
 
       {/* Main Content */}
