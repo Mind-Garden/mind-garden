@@ -1,14 +1,11 @@
 'use client';
 
-//Core imports
 import { useEffect, useState } from 'react';
 
-// Third party imports
-import { Clock, Moon, Info, AlertCircle, LoaderCircle } from 'lucide-react';
+import { Clock, Moon, AlertCircle, LoaderCircle } from 'lucide-react';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-// Utility
 import {
   insertSleepEntry,
   selectSleepEntryByDate,
@@ -17,7 +14,6 @@ import {
 import { getLocalISOString, convertTo24HourSleepEntry } from '@/lib/utils';
 import { ISleepEntries } from '@/supabase/schema';
 
-//UI
 import {
   Card,
   CardContent,

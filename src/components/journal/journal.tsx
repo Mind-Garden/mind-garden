@@ -31,6 +31,7 @@ import { toast } from 'react-toastify';
 import type { IJournalEntries } from '@/supabase/schema';
 
 import { getDate, undoConversion } from '@/lib/utils';
+import FloatingShapes from '../ui/floating-shapes';
 
 interface NewJournalProps {
   readonly userId: string;
@@ -199,47 +200,8 @@ export default function NewJournal({ userId }: NewJournalProps) {
       {/* First Row */}
       <div className="grid md:grid-cols-2 gap-8">
         {/* Calendar Card */}
-        <div className="relative bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-6 overflow-hidden flex justify-center">
-          <motion.div
-            initial={{ opacity: 0.5, scale: 0.8 }}
-            animate={{
-              opacity: [0.5, 1, 0.5],
-              scale: [0.8, 1, 0.8],
-            }}
-            transition={{ duration: 5, repeat: Infinity, ease: 'easeInOut' }}
-            className="absolute top-0 right-0 w-32 h-32 bg-blue-100 dark:bg-blue-900/30 rounded-full opacity-70"
-          />
-          <motion.div
-            initial={{ opacity: 0.4, scale: 0.7 }}
-            animate={{
-              opacity: [0.4, 1, 0.4],
-              scale: [0.7, 1.1, 0.7],
-              y: [50, 55, 50],
-            }}
-            transition={{
-              duration: 3,
-              repeat: Infinity,
-              repeatType: 'reverse',
-              ease: 'easeInOut',
-            }}
-            className="absolute bottom-0 left-0 w-32 h-32 bg-blue-100 dark:bg-blue-900/30 rounded-full opacity-70"
-          />
-
-          <motion.div
-            initial={{ opacity: 0.4, scale: 0.7, x: 100, y: 50 }}
-            animate={{
-              opacity: [0.4, 1, 0.4],
-              scale: [0.7, 1.1, 0.7],
-              y: [50, 55, 50],
-            }}
-            transition={{
-              duration: 3,
-              repeat: Infinity,
-              repeatType: 'reverse',
-              ease: 'easeInOut',
-            }}
-            className="absolute top-0 right-0 w-32 h-32 bg-blue-100 dark:bg-blue-900/30 rounded-full opacity-70"
-          />
+        <div className="relative bg-white rounded-2xl shadow-lg p-6 overflow-hidden flex justify-center border-blue-500 border-2">
+          <FloatingShapes className="bg-blue-100 z-10" />
           <div className="relative z-10">
             <div className="flex items-center justify-between mb-6">
               <div className="flex items-center">
@@ -282,7 +244,7 @@ export default function NewJournal({ userId }: NewJournalProps) {
         </div>
 
         {/* Journal Entry Form */}
-        <div className="relative bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-6 overflow-hidden">
+        <div className="relative bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-6 overflow-hidden border-blue-500 border-2">
           <motion.div
             initial={{ opacity: 0.5, scale: 0.8, x: -100, y: 50 }}
             animate={{
@@ -340,22 +302,8 @@ export default function NewJournal({ userId }: NewJournalProps) {
       </div>
 
       {/* Second Row - Entries List */}
-      <div className="relative bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-6 overflow-hidden">
-        <motion.div
-          initial={{ opacity: 0.4, scale: 0.7 }}
-          animate={{
-            opacity: [0.4, 1, 0.4],
-            scale: [0.7, 1.5, 0.7],
-            y: [50, 55, 50],
-          }}
-          transition={{
-            duration: 4.2,
-            repeat: Infinity,
-            repeatType: 'reverse',
-            ease: 'easeInOut',
-          }}
-          className="absolute bottom-0 right-0 w-32 h-32 bg-blue-100 dark:bg-blue-900/30 rounded-full opacity-70"
-        />
+      <div className="relative bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-6 overflow-hidden border-blue-500 border-2">
+        <FloatingShapes className="bg-blue-100 z-10" />
         <div className="relative z-10">
           <div className="flex items-center justify-between mb-6">
             <div className="flex items-center">
@@ -392,7 +340,7 @@ export default function NewJournal({ userId }: NewJournalProps) {
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ duration: 0.3, delay: index * 0.1 }}
                     >
-                      <div className="bg-gray-50 dark:bg-gray-700/30 rounded-xl p-5 mb-4">
+                      <div className="bg-gray-50 dark:bg-gray-700/30 rounded-xl p-5 mb-4 border-blue-100 border-2">
                         {editingEntryId === entry.id ? (
                           <TextArea
                             value={editingText}
