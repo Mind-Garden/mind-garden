@@ -198,10 +198,7 @@ export default function HabitHeatmapGrid({ userId }: HeatmapProps) {
         const name = personalizedToUse.find(
           (c) => c.id == cat.added_habit,
         )?.name;
-        if (
-          (name == 'meal' && category == 'meal') ||
-          (name == 'cooking' && category == 'cooking')
-        ) {
+        if (name == 'meal' || name === 'cooking') {
           if (
             cat.tracking_method.includes('breakfast') &&
             !out.includes('breakfast')
