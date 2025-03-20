@@ -562,7 +562,7 @@ function DataIntakeForm({
       <div className="backdrop-blur-sm mb-6 px-2 rounded-t-2xl">
         <div className="container mx-auto px-4 py-4">
           <div className="flex items-center justify-between h-16">
-            <p className="text-2xl font-medium text-black font-title pl-2">
+            <p className="text-3xl font-semibold text-black font-title pl-2">
               Daily Habit Form
             </p>
             <div className="flex items-center gap-4 pr-4">
