@@ -224,8 +224,8 @@ export default function TaskManager({ userId, firstName }: TaskManagerProps) {
   return (
     <div className="flex-1 flex flex-col items-center justify-center space-y-6 p-4 max-w-4xl mx-auto w-full">
       {/* Voice Input at the top */}
-      <div className="mb-8 text-center">
-        <h1 className="text-3xl font-bold mb-2 opacity-50">
+      <div className="mb-2 text-center">
+        <h1 className="text-3xl font-bold opacity text-slate-800 font-title">
           {getGreetingText()}, {firstName}.
         </h1>
       </div>
@@ -298,6 +298,7 @@ export default function TaskManager({ userId, firstName }: TaskManagerProps) {
                 onChange={(e) => setManualTask(e.target.value)}
                 placeholder="Enter a task..."
                 className="flex-1 border-none shadow-md"
+                maxLength={70}
                 autoFocus
               />
               <motion.button
@@ -348,7 +349,7 @@ export default function TaskManager({ userId, firstName }: TaskManagerProps) {
         </CardHeader>
 
         <CardContent className="p-0">
-          <div className="p-4 pt-2 pb-0">
+          <div className="p-4 pt-4 pb-0">
             <div className="relative mb-4">
               <div className="h-3 w-full bg-blue-100 rounded-full overflow-hidden">
                 <motion.div
@@ -406,7 +407,7 @@ export default function TaskManager({ userId, firstName }: TaskManagerProps) {
                             className="h-5 w-5 rounded-full border-2 border-blue-400 data-[state=checked]:bg-blue-500 data-[state=checked]:border-blue-500 focus:ring-2 focus:ring-blue-200 focus:ring-offset-0"
                           />
                         </div>
-                        <span className="flex-1 text-sm font-medium text-gray-700">
+                        <span className="flex-1 text-sm font-medium text-gray-700 break-all">
                           {task.description}
                         </span>
                         <motion.button
@@ -461,11 +462,11 @@ export default function TaskManager({ userId, firstName }: TaskManagerProps) {
                               className="h-5 w-5 rounded-full border-2 border-gray-400 data-[state=checked]:bg-gray-500 data-[state=checked]:border-gray-500 focus:ring-2 focus:ring-gray-200 focus:ring-offset-0"
                             />
                           </div>
-                          <span className="flex-1 text-sm font-medium text-gray-600">
+                          <span className="flex-1 text-sm font-medium text-gray-600 break-all">
                             {task.description}
-                            <span className="text-xs text-gray-400 ml-2 bg-gray-100 px-2 py-0.5 rounded-full">
+                            <div className="text-xs text-gray-400 mt-1 bg-gray-100 px-2 py-0.5 rounded-full w-fit">
                               {format(parseISO(task.created_at), 'MMM d')}
-                            </span>
+                            </div>
                           </span>
                           <motion.button
                             whileHover={{ scale: 1.1 }}
@@ -513,7 +514,7 @@ export default function TaskManager({ userId, firstName }: TaskManagerProps) {
                             className="h-5 w-5 rounded-full border-2 border-green-400 data-[state=checked]:bg-green-500 data-[state=checked]:border-green-500 focus:ring-2 focus:ring-green-200 focus:ring-offset-0"
                           />
                         </div>
-                        <span className="flex-1 text-sm text-gray-400 line-through">
+                        <span className="flex-1 text-sm text-gray-400 line-through break-all">
                           {task.description}
                         </span>
                         <motion.button
@@ -569,11 +570,11 @@ export default function TaskManager({ userId, firstName }: TaskManagerProps) {
                               className="h-5 w-5 rounded-full border-2 border-green-400 data-[state=checked]:bg-green-500 data-[state=checked]:border-green-500 focus:ring-2 focus:ring-green-200 focus:ring-offset-0"
                             />
                           </div>
-                          <span className="flex-1 text-sm text-gray-400 line-through">
+                          <span className="flex-1 text-sm text-gray-400 line-through break-all">
                             {task.description}
-                            <span className="text-xs text-gray-400 ml-2 bg-gray-100 px-2 py-0.5 rounded-full">
+                            <div className="text-xs text-gray-400 mt-1 bg-gray-100 px-2 py-0.5 rounded-full w-fit">
                               {format(parseISO(task.created_at), 'MMM d')}
-                            </span>
+                            </div>
                           </span>
                           <motion.button
                             whileHover={{ scale: 1.1 }}
