@@ -9,6 +9,14 @@ import { Button } from '@/components/ui/button';
 import { LoaderCircle } from 'lucide-react';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import FloatingShapes from './ui/floating-shapes';
+import {
+  Card,
+  CardHeader,
+  CardTitle,
+  CardContent,
+  CardFooter,
+} from '@/components/ui/card';
 
 // Props interface defining expected props for this component
 interface ReminderCardProps {
@@ -167,15 +175,19 @@ function ReminderCard({ userId }: ReminderCardProps) {
   };
 
   return (
-    <div className="bg-white/50 backdrop-blur-sm rounded-2xl border-none py-4 px-6 min-w-[300px]">
-      <p className="font-title text-2xl">Reminders</p>
+    <Card className="bg-white/50 backdrop-blur-sm border-emerald-500 border-2 overflow-hidden rounded-2xl">
+      <FloatingShapes className="bg-emerald-100" />
+
+      <CardHeader className="pb-0">
+        <CardTitle className="font-title text-2xl">Reminders</CardTitle>
+      </CardHeader>
 
       {loading ? (
-        <div className="flex justify-center items-center py-16">
+        <CardContent className="flex justify-center items-center py-16">
           <LoaderCircle className="h-8 w-8 animate-spin" />
-        </div>
+        </CardContent>
       ) : (
-        <div className="mt-4 space-y-4">
+        <CardContent className="mt-4 space-y-4">
           {/* Hour selection grid */}
           <div className="space-y-2">
             <p className="font-body font-medium">Select Hour</p>
@@ -184,7 +196,7 @@ function ReminderCard({ userId }: ReminderCardProps) {
                 <Button
                   key={hour}
                   variant={hour === selectedHour ? 'default' : 'outline'}
-                  className="font-body font-medium"
+                  className={`font-body font-medium ${hour === selectedHour ? 'bg-emerald-500 hover:bg-emerald-600' : ''}`}
                   onClick={() => setSelectedHour(hour)}
                 >
                   {hour}
@@ -200,14 +212,14 @@ function ReminderCard({ userId }: ReminderCardProps) {
               <Button
                 variant={selectedAmPm === 'AM' ? 'default' : 'outline'}
                 onClick={() => setSelectedAmPm('AM')}
-                className="font-body font-medium"
+                className={`font-body font-medium ${selectedAmPm === 'AM' ? 'bg-emerald-500 hover:bg-emerald-600' : ''}`}
               >
                 AM
               </Button>
               <Button
                 variant={selectedAmPm === 'PM' ? 'default' : 'outline'}
                 onClick={() => setSelectedAmPm('PM')}
-                className="font-body font-medium"
+                className={`font-body font-medium ${selectedAmPm === 'PM' ? 'bg-emerald-500 hover:bg-emerald-600' : ''}`}
               >
                 PM
               </Button>
@@ -221,6 +233,7 @@ function ReminderCard({ userId }: ReminderCardProps) {
               <Switch
                 checked={journalReminders}
                 onCheckedChange={setJournalReminders}
+                className="data-[state=checked]:bg-emerald-500"
               />
             </div>
 
@@ -229,6 +242,7 @@ function ReminderCard({ userId }: ReminderCardProps) {
               <Switch
                 checked={dataIntakeReminders}
                 onCheckedChange={setDataIntakeReminders}
+                className="data-[state=checked]:bg-emerald-500"
               />
             </div>
 
@@ -237,40 +251,38 @@ function ReminderCard({ userId }: ReminderCardProps) {
               <Switch
                 checked={activityReminders}
                 onCheckedChange={setActivityReminders}
+                className="data-[state=checked]:bg-emerald-500"
               />
             </div>
           </div>
 
           <div className="flex justify-center items-center">
-            <p
-              className={
-                'max-w-sm text-center font-body font-normal text-gray-400'
-              }
-            >
+            <p className="max-w-sm text-center font-body font-normal text-gray-400">
               Mind Garden will never send you more than one reminder per day.
             </p>
           </div>
-
-          {/* Save button with loading/saved state */}
-          <Button
-            onClick={handleSubmit}
-            className="mt-4 w-full font-body font-medium flex justify-center items-center"
-            disabled={buttonLoading || !hasUnsavedChanges}
-          >
-            {buttonLoading ? (
-              <>
-                <LoaderCircle className="h-5 w-5 animate-spin mr-2" />
-                <span>Saving...</span>
-              </>
-            ) : !hasUnsavedChanges ? (
-              <span>Saved</span>
-            ) : (
-              <span>Save Reminders</span>
-            )}
-          </Button>
-        </div>
+        </CardContent>
       )}
-    </div>
+
+      <CardFooter className="px-6 pb-4">
+        <Button
+          onClick={handleSubmit}
+          className={`w-full font-body font-medium flex justify-center items-center ${hasUnsavedChanges ? 'bg-emerald-500 hover:bg-emerald-600' : 'bg-emerald-500/60'}`}
+          disabled={buttonLoading || !hasUnsavedChanges}
+        >
+          {buttonLoading ? (
+            <>
+              <LoaderCircle className="h-5 w-5 animate-spin mr-2" />
+              <span>Saving...</span>
+            </>
+          ) : !hasUnsavedChanges ? (
+            <span>Saved</span>
+          ) : (
+            <span>Save Reminders</span>
+          )}
+        </Button>
+      </CardFooter>
+    </Card>
   );
 }
 

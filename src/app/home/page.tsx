@@ -15,8 +15,6 @@ import WaterChart from '@/components/water-chart';
 import HabitHeatmap from '@/components/heatmap';
 import HabitHeatmapGrid from '@/components/habit-heatmap';
 import HealthDashboard from '@/components/health-dashboard';
-import { motion } from 'framer-motion';
-import MoodFlow from '@/components/mood-flow';
 
 export default async function Home() {
   const supabase = await createClient();
