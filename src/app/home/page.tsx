@@ -57,9 +57,9 @@ export default async function Home() {
           </p>
         </div>
 
-        <div className="grid gap-6 lg:grid-cols-12">
+        <div className="grid gap-6 lg:grid-cols-12 small:grid-cols-1">
           {/* Left Column */}
-          <div className="space-y-6 lg:col-span-4">
+          <div className="space-y-6 lg:col-span-4 small:col-span-1">
             {/* Quick Links */}
             <Card className="overflow-hidden border-none shadow-md">
               <CardHeader className="bg-gradient-to-r from-blue-50 to-green-50 dark:from-blue-950/20 dark:to-green-950/20 font-title">
@@ -97,7 +97,7 @@ export default async function Home() {
           </div>
 
           {/* Right Column */}
-          <div className="space-y-6 lg:col-span-8">
+          <div className="space-y-6 lg:col-span-8 small:col-span-1">
             {/* Mood Section */}
             <Card className="overflow-hidden border-none shadow-md">
               <CardHeader className="bg-gradient-to-r from-blue-50 to-green-50 dark:from-blue-950/20 dark:to-green-950/20 font-title">
