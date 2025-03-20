@@ -96,7 +96,8 @@ export default function AIResponse({
           </Badge>
         </div>
       </CardHeader>
-      <CardContent>
+      {/* Fixed height with scrollable content */}
+      <CardContent className="h-48 overflow-y-auto">
         <div className="prose prose-sm max-w-none dark:prose-invert text-base leading-relaxed inline-block font-semibold text-lg">
           {summaryText ? (
             <ReactMarkdown>{displayedText}</ReactMarkdown>

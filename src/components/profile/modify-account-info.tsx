@@ -61,7 +61,9 @@ export default function ModifyAccount(props: {
         <FloatingShapes className="bg-emerald-200" />
         <CardHeader>
           <CardTitle className="font-title">Profile Information</CardTitle>
-          <CardDescription className="font-header font-semibold text-md">Update your personal information</CardDescription>
+          <CardDescription className="font-header font-semibold text-md">
+            Update your personal information
+          </CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
           <motion.div

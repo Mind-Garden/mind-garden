@@ -12,17 +12,39 @@ export default function ParticlesBackground() {
   // Function to update the document height
   const updateHeight = () => {
     setDocumentHeight(document.documentElement.scrollHeight);
+    console.log('Updated document height:', documentHeight);
   };
+
+  // Set initial height and add resize listener
+  useEffect(() => {
+    // Initialize MutationObserver to watch for DOM changes
+    const observer = new MutationObserver(() => {
+      updateHeight(); // Update the height when DOM changes
+    });
+
+    // Start observing the document body for child and subtree mutations
+    observer.observe(document.body, { childList: true, subtree: true });
+
+    // Initial height update
+    updateHeight();
+
+    // Cleanup on unmount
+    return () => {
+      observer.disconnect();
+    };
+  }, []);
 
   // On route change, hide particles briefly, update height, then show them
   useEffect(() => {
     // Hide particles to ensure a full unmount and re-render
     setShowParticles(false);
+
     // Allow the new page content to render before re-calculating height
     const timeoutId = setTimeout(() => {
       updateHeight();
       setShowParticles(true);
     }, 500);
+
     return () => clearTimeout(timeoutId);
   }, [pathname]);
 
@@ -33,7 +55,7 @@ export default function ParticlesBackground() {
   return createPortal(
     <div className="absolute inset-0 z-[-5]">
       <Particles
-        key={pathname} // Forces remount on route change
+        key={documentHeight} // Forces remount on route change
         quantity={200}
         ease={80}
         color={'#000000'}

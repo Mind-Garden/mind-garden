@@ -63,7 +63,9 @@ export default function ModifyPassword() {
         <FloatingShapes className="bg-emerald-200" />
         <CardHeader>
           <CardTitle className="font-title">Change Password</CardTitle>
-          <CardDescription className="font-header font-semibold text-md">Update your password</CardDescription>
+          <CardDescription className="font-header font-semibold text-md">
+            Update your password
+          </CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
           <motion.div
