@@ -165,7 +165,7 @@ function DataIntakeForm({
                 setFoodVars(
                   trackingMethod,
                   method,
-                  setMeals,
+                  setCooking,
                   setBreakfastCookingBool,
                   setLunchCookingBool,
                   setDinnerCookingBool,
