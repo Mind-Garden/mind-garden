@@ -206,7 +206,7 @@ export default function NewJournal({ userId }: NewJournalProps) {
             <div className="flex items-center justify-between mb-6">
               <div className="flex items-center">
                 <CalendarDays className="h-6 w-6 text-blue-500 mr-3" />
-                <h4 className="text-xl font-semibold text-gray-800 dark:text-white">
+                <h4 className="text-2xl font-title font-semibold text-gray-800 dark:text-white">
                   Journal Calendar
                 </h4>
               </div>
@@ -259,7 +259,7 @@ export default function NewJournal({ userId }: NewJournalProps) {
             <div className="flex items-center justify-between mb-6">
               <div className="flex items-center">
                 <NotebookPen className="h-6 w-6 text-blue-500 mr-3" />
-                <h4 className="text-xl font-semibold text-gray-800 dark:text-white">
+                <h4 className="text-2xl font-title font-semibold text-gray-800 dark:text-white">
                   New Entry
                 </h4>
               </div>
@@ -308,7 +308,7 @@ export default function NewJournal({ userId }: NewJournalProps) {
           <div className="flex items-center justify-between mb-6">
             <div className="flex items-center">
               <BookOpen className="h-6 w-6 text-blue-500 mr-3" />
-              <h4 className="text-xl font-semibold text-gray-800 dark:text-white">
+              <h4 className="text-2xl font-title font-semibold text-gray-800 dark:text-white">
                 Journal Entries from {formattedDate}
               </h4>
             </div>

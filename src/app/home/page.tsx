@@ -52,14 +52,14 @@ export default async function Home() {
           <h1 className="text-4xl font-bold tracking-tight font-title">
             Welcome back, {profileData?.first_name}
           </h1>
-          <p className="text-lg text-muted-foreground font-title">
+          <p className="pl-1 text-xl text-bold text-muted-foreground font-header font-semibold">
             Here's an overview of your wellness journey.
           </p>
         </div>
 
-        <div className="grid gap-6 lg:grid-cols-12">
+        <div className="grid gap-6 lg:grid-cols-12 small:grid-cols-1">
           {/* Left Column */}
-          <div className="space-y-6 lg:col-span-4">
+          <div className="space-y-6 lg:col-span-4 small:col-span-1">
             {/* Quick Links */}
             <Card className="overflow-hidden border-none shadow-md">
               <CardHeader className="bg-gradient-to-r from-blue-50 to-green-50 dark:from-blue-950/20 dark:to-green-950/20 font-title">
@@ -72,9 +72,11 @@ export default async function Home() {
 
             {/* Habit Tracker Heatmap */}
             <Card className="overflow-hidden border-none shadow-md">
-              <CardHeader className="bg-gradient-to-r from-blue-50 to-green-50 dark:from-blue-950/20 dark:to-green-950/20 font-title">
-                <CardTitle>Daily Progress Heatmap</CardTitle>
-                <CardDescription>
+              <CardHeader className="bg-gradient-to-r from-blue-50 to-green-50 dark:from-blue-950/20 dark:to-green-950/20">
+                <CardTitle className="font-title mb-1">
+                  Daily Progress Heatmap
+                </CardTitle>
+                <CardDescription className="font-header text-md font-semibold">
                   Did you input your progress for today?
                 </CardDescription>
               </CardHeader>
@@ -97,12 +99,14 @@ export default async function Home() {
           </div>
 
           {/* Right Column */}
-          <div className="space-y-6 lg:col-span-8">
+          <div className="space-y-6 lg:col-span-8 small:col-span-1">
             {/* Mood Section */}
             <Card className="overflow-hidden border-none shadow-md">
-              <CardHeader className="bg-gradient-to-r from-blue-50 to-green-50 dark:from-blue-950/20 dark:to-green-950/20 font-title">
-                <CardTitle>Mood and Sleep Summaries</CardTitle>
-                <CardDescription>
+              <CardHeader className="bg-gradient-to-r from-blue-50 to-green-50 dark:from-blue-950/20 dark:to-green-950/20">
+                <CardTitle className="font-title">
+                  Mood and Sleep Summaries
+                </CardTitle>
+                <CardDescription className="font-header text-md font-semibold">
                   Gain insights into your well-being
                 </CardDescription>
               </CardHeader>
@@ -113,19 +117,21 @@ export default async function Home() {
 
             {/* Charts Section */}
             <Card className="overflow-hidden border-none shadow-md">
-              <CardHeader className="bg-gradient-to-r from-blue-50 to-green-50 dark:from-blue-950/20 dark:to-green-950/20 font-title">
-                <CardTitle>Charts</CardTitle>
-                <CardDescription>
+              <CardHeader className="bg-gradient-to-r from-blue-50 to-green-50 dark:from-blue-950/20 dark:to-green-950/20">
+                <CardTitle className="font-title">Charts</CardTitle>
+                <CardDescription className="font-header text-md font-semibold">
                   Activity and water intake tracking
                 </CardDescription>
               </CardHeader>
               <CardContent className="p-6 space-y-8">
                 <div>
-                  <h3 className="text-lg font-medium mb-4">Daily Activity</h3>
+                  <h3 className="text-lg font-body font-semibold mb-4">
+                    Daily Activity
+                  </h3>
                   <BarLineChart userId={userId} />
                 </div>
                 <div className="pt-4 border-t">
-                  <h3 className="text-lg font-medium mb-4">
+                  <h3 className="text-lg font-body font-semibold mb-4">
                     Water Intake History
                   </h3>
                   <WaterChart userId={userId} />

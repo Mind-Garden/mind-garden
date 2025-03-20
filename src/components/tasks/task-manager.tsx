@@ -344,7 +344,7 @@ export default function TaskManager({ userId, firstName }: TaskManagerProps) {
             <div className="bg-blue-500 rounded-full p-1.5">
               <ListTodo className="w-5 h-5 text-white" />
             </div>
-            <h2 className="text-lg font-medium">Task Manager</h2>
+            <h2 className="text-2xl font-title font-medium">Task Manager</h2>
           </div>
         </CardHeader>
 

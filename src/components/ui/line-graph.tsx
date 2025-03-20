@@ -94,7 +94,7 @@ const Cursor = ({
               fill={tooltipTextColor}
               fontSize="14"
               fontWeight="500"
-              fontFamily="system-ui, sans-serif"
+              fontFamily="var(--font-mulish)"
             >
               <tspan x="0" dy="0">
                 {formatDate(point.original.x)}
@@ -275,7 +275,7 @@ export default function AnimatedLineGraph({
   const labelFontSize = Math.max(12, Math.min(16, dimensions.width / 50));
 
   return (
-    <div ref={containerRef} className="w-full z-50">
+    <div ref={containerRef} className="max-w-screen-lg mx-auto z-50 font-body">
       <Card className="bg-white backdrop-blur-sm rounded-2xl border-none w-full">
         <CardTitle className="text-2xl font-bold mb-2 opacity-50 text-center">
           {title}
@@ -348,6 +348,7 @@ export default function AnimatedLineGraph({
                           dominantBaseline="middle"
                           fill={gridColor}
                           fontSize={fontSize}
+                          style={{ fontFamily: 'var(--font-mulish)' }}
                         >
                           {Math.round(tick.value)}
                         </text>
@@ -371,6 +372,7 @@ export default function AnimatedLineGraph({
                           fill={gridColor}
                           fontSize={fontSize}
                           transform={`rotate(-45, ${point.x}, ${dimensions.height - padding / 2})`}
+                          style={{ fontFamily: 'var(--font-mulish)' }}
                         >
                           {formatDate(point.original.x).split(' ')[0] +
                             ' ' +
@@ -388,6 +390,7 @@ export default function AnimatedLineGraph({
                       fill={gridColor}
                       fontSize={labelFontSize}
                       fontWeight="bold"
+                      style={{ fontFamily: 'var(--font-mulish)' }}
                     >
                       {xAxisLabel}
                     </text>
@@ -400,6 +403,7 @@ export default function AnimatedLineGraph({
                       fontSize={labelFontSize}
                       fontWeight="bold"
                       transform={`rotate(-90, 5, ${dimensions.height / 2})`}
+                      style={{ fontFamily: 'var(--font-mulish)' }}
                     >
                       {yAxisLabel}
                     </text>
