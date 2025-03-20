@@ -57,12 +57,13 @@ export default function ModifyPassword() {
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.4, ease: 'easeOut' }}
+      className="font-body"
     >
       <Card className="bg-white/50 backdrop-blur-sm rounded-2xl overflow-hidden border-2 border-emerald-400">
         <FloatingShapes className="bg-emerald-200" />
         <CardHeader>
           <CardTitle className="font-title">Change Password</CardTitle>
-          <CardDescription>Update your password</CardDescription>
+          <CardDescription className="font-header font-semibold text-md">Update your password</CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
           <motion.div

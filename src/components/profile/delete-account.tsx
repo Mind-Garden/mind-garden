@@ -36,12 +36,13 @@ export default function DeleteAccount(props: { userId: string }) {
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.4, ease: 'easeOut' }}
+      className="font-body"
     >
       <Card className="bg-white/50 backdrop-blur-sm rounded-2xl border-red-500 border-2 overflow-hidden">
         <FloatingShapes className="bg-red-200" />
         <CardHeader>
           <CardTitle className="font-title">Delete Account</CardTitle>
-          <CardDescription>
+          <CardDescription className="font-header font-semibold text-md">
             Permanently delete your account and all associated data
           </CardDescription>
         </CardHeader>
