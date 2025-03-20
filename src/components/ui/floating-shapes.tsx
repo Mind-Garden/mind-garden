@@ -85,7 +85,7 @@ export default function FloatingShapes({
           key={index}
           initial={{ opacity: 0.5, scale: 0.8 }}
           animate={{
-            opacity: [0.1, 0.5, 0.1],
+            opacity: [0.1, 0.4, 0.1],
             scale: [0.8, 1, 0.8],
             x: [0, offset.x, 0],
             y: [0, offset.y, 0],
