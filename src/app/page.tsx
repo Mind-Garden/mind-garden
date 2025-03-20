@@ -235,7 +235,7 @@ export default function Home() {
         {/* Content Wrapper */}
         <div className="relative max-w-6xl mx-auto z-10 px-4">
           <motion.h2
-            className="pb-6 text-4xl md:text-5xl font-bold text-center mb-24 bg-gradient-to-r from-emerald-400 to-blue-500 text-transparent bg-clip-text tracking-tight font-title"
+            className="pb-6 pt-1 text-4xl md:text-5xl font-bold text-center mb-24 bg-gradient-to-r from-emerald-400 to-blue-500 text-transparent bg-clip-text tracking-tight font-title"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
