@@ -12,7 +12,6 @@ export default function ParticlesBackground() {
   // Function to update the document height
   const updateHeight = () => {
     setDocumentHeight(document.documentElement.scrollHeight);
-    console.log('Updated document height:', documentHeight);
   };
 
   // Set initial height and add resize listener
