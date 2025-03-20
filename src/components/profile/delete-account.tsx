@@ -39,7 +39,7 @@ export default function DeleteAccount(props: { userId: string }) {
       className="font-body"
     >
       <Card className="bg-white/50 backdrop-blur-sm rounded-2xl border-red-500 border-2 overflow-hidden">
-        <FloatingShapes className="bg-red-200" />
+        <FloatingShapes colors={['bg-red-200']} />
         <CardHeader>
           <CardTitle className="font-title">Delete Account</CardTitle>
           <CardDescription className="font-header font-semibold text-md">

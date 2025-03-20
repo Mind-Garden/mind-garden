@@ -201,7 +201,7 @@ export default function NewJournal({ userId }: NewJournalProps) {
       <div className="grid md:grid-cols-2 gap-8">
         {/* Calendar Card */}
         <div className="relative bg-white rounded-2xl shadow-lg p-6 overflow-hidden flex justify-center border-blue-500 border-2">
-          <FloatingShapes className="bg-blue-100 z-10" />
+          <FloatingShapes className="bg-blue-100 z-10" colors={['bg-blue-100']}/>
           <div className="relative z-10">
             <div className="flex items-center justify-between mb-6">
               <div className="flex items-center">
@@ -303,7 +303,7 @@ export default function NewJournal({ userId }: NewJournalProps) {
 
       {/* Second Row - Entries List */}
       <div className="relative bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-6 overflow-hidden border-blue-500 border-2">
-        <FloatingShapes className="bg-blue-100 z-10" />
+        <FloatingShapes className="bg-blue-100 z-10" colors={['bg-blue-100']}/>
         <div className="relative z-10">
           <div className="flex items-center justify-between mb-6">
             <div className="flex items-center">
