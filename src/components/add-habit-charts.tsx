@@ -120,7 +120,6 @@ export default function HabitLineCharts({ userId }: HabitLineChartProps) {
   // Function to calculate the completion value for a day
   const getValue = (method: string, data?: IAddedResp) => {
     if (data && data.tracking_method) {
-      console.log(data.tracking_method[method]);
       return data.tracking_method[method];
     }
     return false;
@@ -216,7 +215,7 @@ export default function HabitLineCharts({ userId }: HabitLineChartProps) {
     trackingMethodsByCategory[currentCategory] || [];
 
   return (
-    <div className="w-full max-w-3xl mx-auto p-4">
+    <div className="w-full max-w-3xl mx-auto p-4 font-body">
       <div className="flex flex-col items-center justify-center mb-6 space-y-2">
         {/* Month Navigation */}
         <div className="flex items-center space-x-4">
