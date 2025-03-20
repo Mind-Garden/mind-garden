@@ -195,8 +195,18 @@ export default function AnimatedLineGraph({
   const graphWidth = dimensions.width - padding * 2;
   const graphHeight = dimensions.height - padding * 2;
   const yValues = data.map((d) => d.y);
-  const minY = Math.min(...yValues) * 0.9;
-  const maxY = Math.max(...yValues) * 1.1;
+  let actualMin = Math.min(...yValues);
+  let actualMax = Math.max(...yValues);
+
+  // Handle the case where dataRange = 0 (all y's are the same)
+  if (actualMin === actualMax) {
+    // Provide some tiny range so we can actually draw
+    actualMin -= 1;
+    actualMax += 1;
+  }
+
+  const minY = actualMin;
+  const maxY = actualMax;
   const range = maxY - minY;
 
   // Compute points:
@@ -260,13 +270,14 @@ export default function AnimatedLineGraph({
       },
     }),
   };
+  const yTickCount = new Set(data.map((item) => item.y)).size;
+  const safeYTickCount = yTickCount > 1 ? yTickCount : 2; // Avoid division by zero
 
-  const yTickCount = 5;
-  const yTicks = Array.from({ length: yTickCount }).map((_, i) => {
-    const value = minY + (range / (yTickCount - 1)) * i;
+  const yTicks = Array.from({ length: safeYTickCount }).map((_, i) => {
+    const value = minY + (range / (safeYTickCount - 1)) * i;
     return {
-      value,
-      y: padding + graphHeight - ((value - minY) / range) * graphHeight,
+      value: isNaN(value) ? minY : value, // Ensure value is not NaN
+      y: padding + graphHeight - ((value - minY) / (range || 1)) * graphHeight,
     };
   });
 
@@ -338,8 +349,8 @@ export default function AnimatedLineGraph({
                           x2={dimensions.width - padding}
                           y2={tick.y}
                           stroke={gridColor}
-                          strokeWidth="1"
-                          strokeDasharray="4 4"
+                          strokeWidth=".25"
+                          strokeDasharray="4 0"
                         />
                         <text
                           x={padding - 10}
