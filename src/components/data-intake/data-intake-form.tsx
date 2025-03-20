@@ -165,7 +165,7 @@ function DataIntakeForm({
                 setFoodVars(
                   trackingMethod,
                   method,
-                  setMeals,
+                  setCooking,
                   setBreakfastCookingBool,
                   setLunchCookingBool,
                   setDinnerCookingBool,
@@ -342,7 +342,7 @@ function DataIntakeForm({
         insertHabitFood(
           category.added_habit,
           category.tracking_method,
-          meals,
+          cooking,
           breakfastCookingBool,
           lunchCookingBool,
           dinnerCookingBool,
