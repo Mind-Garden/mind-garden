@@ -100,3 +100,23 @@ body {
     @apply bg-background text-foreground;
   }
 }
+
+@layer base {
+  :root {
+    --font-pacifico: 'Pacifico', cursive;
+    --font-dosis: 'Dosis', sans-serif;
+    --font-mulish: 'Mulish', sans-serif;
+  }
+
+  body {
+    font-family: var(--font-mulish), sans-serif;
+  }
+
+  svg {
+    font-family: var(--font-mulish), sans-serif !important;
+  }
+
+  svg text {
+    font-family: var(--font-mulish), sans-serif !important;
+  }
+}

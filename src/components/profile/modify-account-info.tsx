@@ -55,12 +55,13 @@ export default function ModifyAccount(props: {
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.4, ease: 'easeOut' }}
+      className="font-body"
     >
       <Card className="bg-white/50 backdrop-blur-sm rounded-2xl overflow-hidden border-2 border-emerald-500">
         <FloatingShapes className="bg-emerald-200" />
         <CardHeader>
           <CardTitle className="font-title">Profile Information</CardTitle>
-          <CardDescription>Update your personal information</CardDescription>
+          <CardDescription className="font-header font-semibold text-md">Update your personal information</CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
           <motion.div

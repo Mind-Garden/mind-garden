@@ -156,10 +156,10 @@ export function SleepEntryCard({ userId }: SleepTrackerProps) {
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
               <Moon className="h-5 w-5 text-primary" />
-              <h2 className="text-2xl font-bold">Sleep Entry</h2>
+              <h2 className="text-2xl font-title font-bold">Sleep Entry</h2>
             </div>
           </div>
-          <p className="text-sm text-muted-foreground">
+          <p className="text-md font-semibold font-header text-muted-foreground">
             Track your sleep patterns for better health
           </p>
         </CardHeader>

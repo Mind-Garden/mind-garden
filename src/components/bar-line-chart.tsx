@@ -83,7 +83,7 @@ export default function BarLineChart({ userId }: Readonly<BarLineChartProps>) {
   }, []);
 
   return (
-    <Card className="bg-white/50 break-inside-avoid backdrop-blur-sm rounded-2xl border-none mb-6 relative transition-opacity">
+    <Card className="font-body bg-white/50 break-inside-avoid backdrop-blur-sm rounded-2xl border-none mb-6 relative transition-opacity">
       <CardHeader className="pb-3">
         <CardTitle className="text-3xl text-center">
           {type === 'study' ? 'school day' : `${type} day`}

@@ -225,7 +225,7 @@ export default function TaskManager({ userId, firstName }: TaskManagerProps) {
     <div className="flex-1 flex flex-col items-center justify-center space-y-6 p-4 max-w-4xl mx-auto w-full">
       {/* Voice Input at the top */}
       <div className="mb-8 text-center">
-        <h1 className="text-3xl font-bold mb-2 opacity-50">
+        <h1 className="text-3xl font-title font-bold mb-2 opacity-50">
           {getGreetingText()}, {firstName}.
         </h1>
       </div>
@@ -343,7 +343,7 @@ export default function TaskManager({ userId, firstName }: TaskManagerProps) {
             <div className="bg-blue-500 rounded-full p-1.5">
               <ListTodo className="w-5 h-5 text-white" />
             </div>
-            <h2 className="text-lg font-medium">Task Manager</h2>
+            <h2 className="text-2xl font-title font-medium">Task Manager</h2>
           </div>
         </CardHeader>
 
