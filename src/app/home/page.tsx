@@ -15,6 +15,9 @@ import WaterChart from '@/components/water-chart';
 import HabitHeatmap from '@/components/heatmap';
 import HabitHeatmapGrid from '@/components/habit-heatmap';
 import HealthDashboard from '@/components/health-dashboard';
+import HabitLineCharts from '@/components/add-habit-charts';
+import { motion } from 'framer-motion';
+import MoodFlow from '@/components/mood-flow';
 
 export default async function Home() {
   const supabase = await createClient();
@@ -135,6 +138,12 @@ export default async function Home() {
                     Water Intake History
                   </h3>
                   <WaterChart userId={userId} />
+                </div>
+                <div className="pt-4 border-t">
+                  <h3 className="text-lg font-medium mb-4">
+                    Habit Tracker Line Charts
+                  </h3>
+                  <HabitLineCharts userId={userId} />
                 </div>
               </CardContent>
             </Card>
