@@ -182,7 +182,7 @@ export default function Home() {
               animate={{ rotate: 0, scale: 1 }}
               transition={{ duration: 0.6, delay: 0.4, type: 'spring' }}
             />
-            <h1 className="p-10 font-title text-7xl md:text-8xl font-bold bg-gradient-to-r from-emerald-400 to-blue-500 text-transparent bg-clip-text mb-4 tracking-tight z-2">
+            <h1 className="p-10 font-title text-7xl md:text-8xl font-bold bg-gradient-to-r from-emerald-400 via-teal-400 to-violet-400 text-transparent bg-clip-text mb-4 tracking-tight z-2">
               Mind Garden
             </h1>
           </div>
@@ -235,7 +235,7 @@ export default function Home() {
         {/* Content Wrapper */}
         <div className="relative max-w-6xl mx-auto z-10 px-4">
           <motion.h2
-            className="pb-6 pt-1 text-4xl md:text-5xl font-bold text-center mb-24 bg-gradient-to-r from-emerald-400 to-blue-500 text-transparent bg-clip-text tracking-tight font-title"
+            className="pb-6 pt-1 text-4xl md:text-5xl font-bold text-center mb-24 bg-gradient-to-r from-emerald-400 via-teal-400 to-violet-400 text-transparent bg-clip-text tracking-tight font-title"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
@@ -1153,7 +1153,7 @@ export default function Home() {
                         <Button
                           type="submit"
                           disabled={isLoading}
-                          className="w-full h-12 text-lg bg-gradient-to-r from-emerald-500 to-blue-500 hover:from-emerald-600 hover:to-blue-600 text-white shadow-lg hover:shadow-xl transition-all duration-200"
+                          className="w-full h-12 text-lg bg-gradient-to-r from-emerald-300 via-teal-300 to-violet-300 hover:from-emerald-400 hover:via-teal-400 hover:to-violet-400 text-white shadow-lg hover:shadow-xl transition-all duration-200"
                         >
                           {isLoading ? (
                             <>
@@ -1199,7 +1199,7 @@ export default function Home() {
                 className="text-center relative"
               >
                 <motion.h2
-                  className="pb-4 text-4xl font-bold mb-6 bg-gradient-to-r from-emerald-500 to-blue-500 text-transparent bg-clip-text font-title"
+                  className="pb-4 text-4xl font-bold mb-6 bg-gradient-to-r from-emerald-400 via-teal-400 to-violet-400 text-transparent bg-clip-text font-title"
                   initial={{ y: 20 }}
                   animate={{ y: 0 }}
                   transition={{ duration: 0.6 }}
@@ -1224,7 +1224,7 @@ export default function Home() {
                 >
                   <Button
                     onClick={() => setShowAuthForm(true)}
-                    className="h-14 px-8 text-lg bg-gradient-to-r from-emerald-500 to-blue-500 hover:from-emerald-600 hover:to-blue-600 text-white shadow-lg hover:shadow-xl transition-all duration-200"
+                    className="h-14 px-8 text-lg bg-gradient-to-r from-emerald-300 via-teal-300 to-violet-300 hover:from-emerald-400 hover:via-teal-400 hover:to-violet-400 text-white shadow-lg hover:shadow-xl transition-all duration-200"
                   >
                     Get Started
                   </Button>

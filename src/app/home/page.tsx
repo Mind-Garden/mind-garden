@@ -65,7 +65,7 @@ export default async function Home() {
           <div className="space-y-6 lg:col-span-4 small:col-span-1">
             {/* Quick Links */}
             <Card className="overflow-hidden border-none shadow-md">
-              <CardHeader className="bg-gradient-to-r from-blue-50 to-green-50 dark:from-blue-950/20 dark:to-green-950/20 font-title">
+              <CardHeader className="bg-gradient-to-r from-emerald-50 via-teal-50 to-violet-50 dark:from-blue-950/20 dark:to-green-950/20 font-title">
                 <CardTitle>Quick Links</CardTitle>
               </CardHeader>
               <CardContent className="p-6">
@@ -75,7 +75,7 @@ export default async function Home() {
 
             {/* Habit Tracker Heatmap */}
             <Card className="overflow-hidden border-none shadow-md">
-              <CardHeader className="bg-gradient-to-r from-blue-50 to-green-50 dark:from-blue-950/20 dark:to-green-950/20">
+              <CardHeader className="bg-gradient-to-r from-emerald-50 via-teal-50 to-violet-50 dark:from-blue-950/20 dark:to-green-950/20">
                 <CardTitle className="font-title mb-1">
                   Daily Progress Heatmap
                 </CardTitle>
@@ -90,7 +90,7 @@ export default async function Home() {
 
             {/* Habit Tracker Swiper */}
             <Card className="overflow-hidden border-none shadow-md">
-              <CardHeader className="bg-gradient-to-r from-blue-50 to-green-50 dark:from-blue-950/20 dark:to-green-950/20 font-title">
+              <CardHeader className="bg-gradient-to-r from-emerald-50 via-teal-50 to-violet-50 dark:from-blue-950/20 dark:to-green-950/20 font-title">
                 <div className="flex items-center justify-between">
                   <CardTitle>Habit Trackers</CardTitle>
                 </div>
@@ -105,7 +105,7 @@ export default async function Home() {
           <div className="space-y-6 lg:col-span-8 small:col-span-1">
             {/* Mood Section */}
             <Card className="overflow-hidden border-none shadow-md">
-              <CardHeader className="bg-gradient-to-r from-blue-50 to-green-50 dark:from-blue-950/20 dark:to-green-950/20">
+              <CardHeader className="bg-gradient-to-r from-emerald-50 via-teal-50 to-violet-50 dark:from-blue-950/20 dark:to-green-950/20">
                 <CardTitle className="font-title">
                   Mood and Sleep Summaries
                 </CardTitle>
@@ -120,7 +120,7 @@ export default async function Home() {
 
             {/* Charts Section */}
             <Card className="overflow-hidden border-none shadow-md">
-              <CardHeader className="bg-gradient-to-r from-blue-50 to-green-50 dark:from-blue-950/20 dark:to-green-950/20">
+              <CardHeader className="bg-gradient-to-r from-emerald-50 via-teal-50 to-violet-50 dark:from-blue-950/20 dark:to-green-950/20">
                 <CardTitle className="font-title">Charts</CardTitle>
                 <CardDescription className="font-header text-md font-semibold">
                   Activity and water intake tracking

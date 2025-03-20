@@ -558,7 +558,7 @@ function DataIntakeForm({
   }
 
   return (
-    <div className="font-body w-full max-w-4xl mx-auto pb-2 rounded-2xl bg-gradient-to-r from-blue-200/50 via-aqua-100/50 to-teal-100/50 backdrop-blur-md">
+    <div className="font-body w-full max-w-4xl mx-auto pb-2 rounded-2xl bg-gradient-to-r from-emerald-200/50 via-teal-200/50 to-violet-200/50 backdrop-blur-md">
       <div className="backdrop-blur-sm mb-6 px-2 rounded-t-2xl">
         <div className="container mx-auto px-4 py-4">
           <div className="flex items-center justify-between h-16">
