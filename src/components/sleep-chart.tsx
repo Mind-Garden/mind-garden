@@ -80,6 +80,22 @@ export default function SleepChart({
     fetchSleepData();
   }, []);
 
+  // formate date to month, day, year format
+  const formatDate = (dateString: string) => {
+    try {
+      const date = new Date(dateString + 'T00:00:00Z');
+      return date.toLocaleDateString('en-US', {
+        month: 'short',
+        day: 'numeric',
+        year: 'numeric',
+        timeZone: 'UTC',
+      });
+    } catch (e) {
+      return dateString;
+    }
+  };
+
+  // custom tooltip for the sleep chart
   const CustomTooltip = ({ active, payload, label }: any) => {
     if (active && payload && payload.length) {
       const data = payload[0].payload;
@@ -89,13 +105,35 @@ export default function SleepChart({
 
       return (
         <div className="bg-white p-2 shadow-md rounded-md">
-          <p className="text-sm font-semibold text-gray-800">{`${label}`}</p>
+          <p className="text-sm font-semibold text-gray-800">
+            {label ? formatDate(label) : ''}
+          </p>
           <p className="text-sm text-gray-600">Start Time: {startTime}</p>
           <p className="text-sm text-gray-600">End Time: {endTime}</p>
         </div>
       );
     }
     return null;
+  };
+
+  // custom cursor for sleep chart (verticle line cursor)
+  const CustomCursor = (props: any) => {
+    const { x, y, width, height, stroke } = props;
+
+    if (!x || !y) return null;
+
+    const centerX = x + width / 2;
+
+    return (
+      <line
+        x1={centerX}
+        y1={y}
+        x2={centerX}
+        y2={y + height}
+        stroke="#d9d9d9"
+        strokeWidth={1}
+      />
+    );
   };
 
   const chartOptions = {
@@ -148,7 +186,7 @@ export default function SleepChart({
               <CartesianGrid strokeDasharray="3 3" vertical={false} />
               <XAxis {...chartOptions.xAxis} />
               <YAxis {...chartOptions.yAxis} />
-              <Tooltip content={<CustomTooltip />} />
+              <Tooltip cursor={<CustomCursor />} content={<CustomTooltip />} />
               <Bar {...chartOptions.barStyles.start} />
               <Bar {...chartOptions.barStyles.sleepDuration}>
                 {sleepData.map((entry, index) => (

@@ -194,7 +194,7 @@ export default function HabitLineCharts({ userId }: HabitLineChartProps) {
         <h3 className="text-xl font-semibold mb-4 capitalize">{displayName}</h3>
 
         {/* Line chart rendering */}
-        <div className="container mx-auto py-8">
+        <div className="container mx-auto">
           {(() => {
             if (data.length === 0) {
               return <div className="h-16 text-center">No data yet! :( </div>;

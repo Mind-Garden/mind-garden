@@ -5,6 +5,7 @@ import { useEffect, useState } from 'react';
 import { Clock, Moon, AlertCircle, LoaderCircle } from 'lucide-react';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import FloatingShapes from './ui/floating-shapes';
 
 import {
   insertSleepEntry,
@@ -92,6 +93,7 @@ export function SleepEntryCard({ userId }: SleepTrackerProps) {
     }
   }, [userId]);
 
+  // loading state while fetching data
   if (loading)
     return (
       <div className="flex items-center justify-center min-h-screen">
@@ -150,124 +152,126 @@ export function SleepEntryCard({ userId }: SleepTrackerProps) {
   };
 
   return (
-    <div className="max-w-md mx-auto pt-8">
-      <Card className="bg-white/50 backdrop-blur-sm w-full max-w-md border-none">
-        <CardHeader className="pb-2">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-2">
-              <Moon className="h-5 w-5 text-primary" />
-              <h2 className="text-2xl font-title font-bold">Sleep Entry</h2>
-            </div>
+    <Card className="bg-white/50 backdrop-blur-sm border-sky-300 border-2 overflow-hidden rounded-2xl">
+      <FloatingShapes colors={['bg-sky-100']} />
+      <CardHeader className="pb-2">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-2">
+            <Moon className="h-6 w-6 text-sky-400" />
+            <h2 className="text-2xl font-title font-bold">Sleep Entry</h2>
           </div>
-          <p className="text-md font-semibold font-header text-muted-foreground">
-            Track your sleep patterns for better health
-          </p>
-        </CardHeader>
-        <CardContent className="space-y-6 pt-4">
-          <div className="space-y-4">
-            <div className="grid gap-2">
-              <div className="flex items-center justify-between">
-                <Label
-                  htmlFor="startTime"
-                  className="text-sm font-medium flex items-center gap-1.5"
-                >
-                  <Clock className="h-3.5 w-3.5 text-muted-foreground" />
-                  Start Time
-                </Label>
-                <div className="text-xs text-muted-foreground">Bedtime</div>
-              </div>
-              <div className="relative">
-                <input
-                  id="startTime"
-                  type="time"
-                  value={startTime.split(' ')[0]}
-                  onChange={(e) => {
-                    const newTime = e.target.value;
-                    const period = endTime.split(' ')[1];
-                    setStartTime(`${newTime} ${period}`);
-                  }}
-                  className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
-                />
-              </div>
+        </div>
+        <p className="text-md font-semibold font-header text-muted-foreground">
+          Track your sleep patterns for better health
+        </p>
+      </CardHeader>
+      <CardContent className="space-y-6 pt-4">
+        {/* Input area */}
+        <div className="space-y-4">
+          <div className="grid gap-2">
+            <div className="flex items-center justify-between">
+              <Label
+                htmlFor="startTime"
+                className="text-sm font-medium flex items-center gap-1.5"
+              >
+                <Clock className="h-3.5 w-3.5 text-muted-foreground" />
+                Start Time
+              </Label>
+              <div className="text-xs text-muted-foreground">Bedtime</div>
             </div>
-
-            <div className="grid gap-2">
-              <div className="flex items-center justify-between">
-                <Label
-                  htmlFor="endTime"
-                  className="text-sm font-medium flex items-center gap-1.5"
-                >
-                  <Clock className="h-3.5 w-3.5 text-muted-foreground" />
-                  End Time
-                </Label>
-                <div className="text-xs text-muted-foreground">Wake up</div>
-              </div>
-              <div className="relative">
-                <input
-                  id="endTime"
-                  type="time"
-                  value={endTime.split(' ')[0]}
-                  onChange={(e) => {
-                    const newTime = e.target.value;
-                    const period = endTime.split(' ')[1];
-                    setEndTime(`${newTime} ${period}`);
-                  }}
-                  className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
-                />
-              </div>
-            </div>
-
-            <div className="bg-muted/50 rounded-lg p-3 flex items-center justify-between">
-              <span className="text-sm font-medium">Sleep Duration</span>
-              {startTime && endTime && (
-                <span className="text-sm font-bold">{calculateDuration()}</span>
-              )}
+            <div className="relative">
+              <input
+                id="startTime"
+                type="time"
+                value={startTime.split(' ')[0]}
+                onChange={(e) => {
+                  const newTime = e.target.value;
+                  const period = endTime.split(' ')[1];
+                  setStartTime(`${newTime} ${period}`);
+                }}
+                className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+              />
             </div>
           </div>
 
-          <div className="space-y-3 border-t pt-4">
-            <label className="text-sm font-medium">
-              How would you rate your sleep quality?
-            </label>
-            <RatingScale
-              value={sleepQuality}
-              onChange={setSleepQuality}
-              leftLabel="Poor"
-              rightLabel="Excellent"
-            />
+          <div className="grid gap-2">
+            <div className="flex items-center justify-between">
+              <Label
+                htmlFor="endTime"
+                className="text-sm font-medium flex items-center gap-1.5"
+              >
+                <Clock className="h-3.5 w-3.5 text-muted-foreground" />
+                End Time
+              </Label>
+              <div className="text-xs text-muted-foreground">Wake up</div>
+            </div>
+            <div className="relative">
+              <input
+                id="endTime"
+                type="time"
+                value={endTime.split(' ')[0]}
+                onChange={(e) => {
+                  const newTime = e.target.value;
+                  const period = endTime.split(' ')[1];
+                  setEndTime(`${newTime} ${period}`);
+                }}
+                className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+              />
+            </div>
           </div>
 
-          {entryExists && (
-            <div className="flex items-center gap-2 p-3 rounded-lg bg-amber-50 text-amber-800 border border-amber-200">
-              <AlertCircle className="h-4 w-4" />
-              <p className="text-sm">
-                You've already logged a sleep entry for today.
-              </p>
-            </div>
-          )}
-        </CardContent>
-        <CardFooter>
-          {!entryExists ? (
+          <div className="bg-muted/50 rounded-lg p-3 flex items-center justify-between">
+            <span className="text-sm font-medium">Sleep Duration</span>
+            {startTime && endTime && (
+              <span className="text-sm font-bold">{calculateDuration()}</span>
+            )}
+          </div>
+        </div>
+
+        {/* Rating Scale */}
+        <div className="space-y-3 border-t pt-4">
+          <label className="text-sm font-medium">
+            How would you rate your sleep quality?
+          </label>
+          <RatingScale
+            value={sleepQuality}
+            onChange={setSleepQuality}
+            leftLabel="Poor"
+            rightLabel="Excellent"
+          />
+        </div>
+
+        {entryExists && (
+          <div className="flex items-center gap-2 p-3 rounded-lg bg-amber-50 text-amber-800 border border-amber-200">
+            <AlertCircle className="h-4 w-4" />
+            <p className="text-sm">
+              You've already logged a sleep entry for today.
+            </p>
+          </div>
+        )}
+      </CardContent>
+      <CardFooter>
+        {/* Button to save or update */}
+        {!entryExists ? (
+          <Button
+            className="w-full"
+            size="lg"
+            onClick={() => handleSaveEntry()}
+          >
+            Save Sleep Entry
+          </Button>
+        ) : (
+          todayEntry?.id && (
             <Button
-              className="w-full"
+              className="w-full bg-sky-400 hover:bg-sky-500"
               size="lg"
               onClick={() => handleSaveEntry()}
             >
-              Save Sleep Entry
+              Update Sleep Entry
             </Button>
-          ) : (
-            todayEntry?.id && (
-              <Button
-                className="w-full"
-                size="lg"
-                onClick={() => handleSaveEntry()}
-              >
-                Update Sleep Entry
-              </Button>
-            )
-          )}
-        </CardFooter>
-      </Card>
-    </div>
+          )
+        )}
+      </CardFooter>
+    </Card>
   );
 }
