@@ -2,8 +2,7 @@ name: Docker CD Pipeline
 
 on:
   push:
-    branches:
-      - develop # Only runs when merged into develop
+    branches: [main, develop]
 
 jobs:
   build-and-push:
@@ -46,4 +45,6 @@ jobs:
         run: |
           docker image ls
           docker tag mind-garden_front-and-back:latest mindgarden/mind-garden:latest
+          docker tag mind-garden_ollama:latest mindgarden/ollama:latest
           docker push mindgarden/mind-garden:latest
+          docker push mindgarden/ollama:latest
