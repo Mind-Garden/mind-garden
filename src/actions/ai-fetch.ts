@@ -1,5 +1,6 @@
 const LLM_API_URL = 'http://localhost:11434/api/chat';
 
+//map query type to prompt
 const promptionary: { [key: string]: string } = {
   'summarize tasks': 'Summarize all the following tasks in a dashed list:',
   'summarize mood':
@@ -20,9 +21,9 @@ const promptionary: { [key: string]: string } = {
  *
  * 'summarize tasks': 'Summarize all the following tasks in a dashed list:',
  *
- * 'summarize mood': 'Please analyze my sleep patterns and provide: 1. A short summary of trends in my sleep schedule. 2. A couple of actionable suggestions for improving my sleep quality. Keep the response brief and to the point. Dont give me the responses in MD just normal text: ',
+ * 'summarize mood':  'Here is my Mood from 1-5 and the distribution of them. Please summarize and give advice on how to improve my mood. Keep the response brief and to the point. Dont give me the responses in MD just normal text: ',
  *
- * 'summarize sleep': 'Please give me input and advice on my sleep. This is my average sleep duration: '
+ * 'summarize sleep': 'Give me a concise summary of my sleep and not in how to improve it based off my average sleep duration. Keep the response brief and to the point. Dont give me the responses in MD just normal text. This is my average sleep duration:
  *
  *
  *

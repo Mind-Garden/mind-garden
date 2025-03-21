@@ -14,7 +14,6 @@ export default function ParticlesBackground() {
     setDocumentHeight(document.documentElement.scrollHeight);
   };
 
-  // Set initial height and add resize listener
   useEffect(() => {
     // Initialize MutationObserver to watch for DOM changes
     const observer = new MutationObserver(() => {
@@ -32,8 +31,7 @@ export default function ParticlesBackground() {
       observer.disconnect();
     };
   }, []);
-
-  // On route change, hide particles briefly, update height, then show them
+  //when the route changes
   useEffect(() => {
     // Hide particles to ensure a full unmount and re-render
     setShowParticles(false);

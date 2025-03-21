@@ -35,6 +35,7 @@ export default function PathMorphingNav({ featuresRef }: PathMorphingNavProps) {
     offset: ['start 25%', 'end 25%'],
   });
 
+  // morph the image as we scroll relative to the section that we get from the ref
   useEffect(() => {
     const unsubscribe = scrollYProgress.on('change', (value) => {
       const sectionSize = 1 / pathKeys.length;
@@ -43,11 +44,13 @@ export default function PathMorphingNav({ featuresRef }: PathMorphingNavProps) {
         Math.round(value / sectionSize),
       );
 
+      // only update if the index has changed
       if (newIndex !== activeIndex) {
         setActiveIndex(newIndex);
         setDirection(newIndex % 2);
       }
 
+      // get the progress within the section
       const normalizedProgress = (value - newIndex * sectionSize) / sectionSize;
       progress.set(Math.max(0, Math.min(1, normalizedProgress)));
     });

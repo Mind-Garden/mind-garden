@@ -13,6 +13,14 @@ export async function getDataHeatmap(userId: string) {
   return result;
 }
 
+/**
+ * Fetches mood data for a given user ID and date range.
+ * @param userId - The user ID whose mood data needs to be fetched
+ * @param startDate - The start of the date range
+ * @param endDate - The end of the date range
+ * @returns - An object with a data property containing the mood data. If an error occurred,
+ *            an error property is present with the error message.
+ */
 export async function selectMoodDataByDateRange(
   userId: string,
   startDate: string,
@@ -67,6 +75,16 @@ export async function selectMoodFrequency(
   return { data };
 }
 
+/**
+ * Fetches sleep data for a given user ID within a specified date range.
+ *
+ * @param userId - The user ID whose sleep data needs to be fetched
+ * @param startDate - The start of the date range
+ * @param endDate - The end of the date range
+ * @returns - An object with a data property containing the sleep data. If an error occurred,
+ *            an error property is present with the error message.
+ */
+
 export async function selectSleepDataByDateRange(
   userId: string,
   startDate: string,
@@ -108,6 +126,18 @@ const barLineFunctionary: Record<
 function hasData(result: any): result is { data: any } {
   return 'data' in result && result.data !== undefined;
 }
+
+/**
+ * Fetches data for a given user ID and date range based on the specified type.
+ * Utilizes a function mapping to call the appropriate data retrieval function.
+ *
+ * @param userId - The user ID for which data needs to be fetched.
+ * @param lastMonthDate - The start of the date range.
+ * @param todaysDate - The end of the date range.
+ * @param type - The type of data to fetch (e.g., 'work', 'study').
+ * @returns - A Promise that resolves to the data object retrieved for the specified type.
+ * @throws - Throws an error if the type is invalid or if data fetching results in an error.
+ */
 
 export async function selectDataByRange(
   userId: string,

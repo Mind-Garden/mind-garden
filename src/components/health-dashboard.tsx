@@ -19,6 +19,7 @@ export default function HealthDashboard({ userId }: HealthDashboardProps) {
   const [activeIndex, setActiveIndex] = useState(0);
   const [direction, setDirection] = useState(0);
 
+  // Sections to rotate for the dashboard
   const sections = [
     {
       id: 'mood',
@@ -119,7 +120,7 @@ export default function HealthDashboard({ userId }: HealthDashboardProps) {
           ))}
         </div>
 
-        {/* Swipe Text with Top-Down Animation */}
+        {/* Swipe Text with Animation */}
         <motion.div
           className="text-gray-500 text-sm text-center"
           initial={{ y: -20, opacity: 0 }}

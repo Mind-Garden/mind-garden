@@ -24,6 +24,7 @@ export default function AIResponse({
   const [hasError, setHasError] = useState(false);
   const duration = 15;
 
+  // Loading messages while the response is being fetched
   const loadingMessages = [
     'Hope you are having a wonderful day! I am gathering some insights using your data...',
     'Looking at your recent entries to find helpful patterns. Keep tracking - it makes a difference!',
@@ -36,6 +37,7 @@ export default function AIResponse({
   );
   const [index, setIndex] = useState(0);
 
+  // First hook to fetch AI summary
   useEffect(() => {
     async function fetchAISummary() {
       try {
@@ -50,6 +52,7 @@ export default function AIResponse({
     fetchAISummary();
   }, [userId, type]);
 
+  // Second hook to animate text while waiting for AI summary to be fetched
   useEffect(() => {
     if (summaryText) {
       let i = 0;
@@ -66,6 +69,7 @@ export default function AIResponse({
     }
   }, [summaryText]);
 
+  // Third hook to make the messages change either on loading or when the summary is fetched
   useEffect(() => {
     if (summaryText) return;
 
@@ -96,7 +100,7 @@ export default function AIResponse({
           </Badge>
         </div>
       </CardHeader>
-      {/* Fixed height with scrollable content */}
+      {/* Ai summary box */}
       <CardContent className="h-48 overflow-y-auto">
         <div className="prose prose-sm max-w-none dark:prose-invert text-base leading-relaxed inline-block font-semibold text-lg">
           {summaryText ? (

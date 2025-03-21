@@ -706,6 +706,7 @@ export default function Home() {
                             whileTap={{ scale: 0.98 }}
                             className="flex-1 max-w-md mx-auto"
                           >
+                            {/*Header for Task Manager */}
                             <Card className="bg-white shadow-md border-none overflow-hidden">
                               <CardContent className="p-0">
                                 <div className="flex items-center justify-center p-3">
@@ -955,6 +956,7 @@ export default function Home() {
                   </motion.div>
                 </div>
               </motion.div>
+              {/*AI task management feature description */}
               <motion.div
                 className="w-full md:w-1/2 order-1 md:order-2 p-14"
                 initial={{ x: -50 }}

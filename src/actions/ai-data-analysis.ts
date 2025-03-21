@@ -9,13 +9,14 @@ import {
   selectMoodFrequency,
 } from '@/actions/data-visualization';
 import { MoodCountData, SleepDataPoint } from '@/supabase/schema';
-import { format } from 'path';
 
+// function dictionary to map query types to functions
 const functionary: Record<string, (userId: string) => Promise<string>> = {
   sleep: summarizeSleepData,
   mood: summarizeMoodData,
 };
 
+// checks for the correct query type and calls it dynamically
 export async function summarizeData(
   userId: string,
   queryType: string,
