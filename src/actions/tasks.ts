@@ -28,13 +28,10 @@ const promptionary: { [key: string]: string } = {
  * 'summarize mood': 'Please analyze my sleep patterns and provide: 1. A short summary of trends in my sleep schedule. 2. A couple of actionable suggestions for improving my sleep quality. Keep the response brief and to the point. Dont give me the responses in MD just normal text: ',
  *
  * 'summarize sleep': 'Please give me input and advice on my sleep. This is my average sleep duration: '
- *
- *
- *
  */
-export async function fetchResponse(
+async function fetchResponse(
   transcript: string,
-  promptType = '',
+  promptType: string,
   modelToUse = 'llama3.2:1b',
 ): Promise<string> {
   try {
