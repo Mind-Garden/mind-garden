@@ -7,35 +7,36 @@ import { getLocalISOString } from '@/lib/utils';
 import { MoodCountData, MoodDistribution } from '@/supabase/schema';
 
 // Define mood types with their properties
+// could also replace these with scale icon rating export
 const moodTypes = [
   {
     id: 5,
     color: '#FFDD85',
-    emoji: '😁', // <ScaleIcon scaleRating={5} /> if we don't want emojis
+    emoji: '😁',
     label: 'Excellent',
   },
   {
     id: 4,
     color: '#D4E6A5',
-    emoji: '😊', // <ScaleIcon scaleRating={4} />
+    emoji: '😊',
     label: 'Good',
   },
   {
     id: 3,
     color: '#9ACBAD',
-    emoji: '😐', // <ScaleIcon scaleRating={3} />
+    emoji: '😐',
     label: 'Neutral',
   },
   {
     id: 2,
     color: '#5EB17F',
-    emoji: '😔', // <ScaleIcon scaleRating={2} />
+    emoji: '😔',
     label: 'Poor',
   },
   {
     id: 1,
     color: '#9E9E9E',
-    emoji: '😫', // <ScaleIcon scaleRating={1} />
+    emoji: '😫',
     label: 'Terrible',
   },
 ];
@@ -135,7 +136,7 @@ export default function MoodBar({
             })
           )}
         </div>
-
+        {/*Draw the line for the mood bar */}
         {moodDistribution.length > 0 && (
           <div className="h-6 w-full rounded-full overflow-hidden flex">
             {moodDistribution.map((item) => {

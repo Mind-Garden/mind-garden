@@ -270,6 +270,8 @@ export default function AnimatedLineGraph({
       },
     }),
   };
+
+  // get the number of y axis ticks
   const yTickCount = new Set(data.map((item) => item.y)).size;
   const safeYTickCount = yTickCount > 1 ? yTickCount : 2; // Avoid division by zero
 
@@ -281,6 +283,7 @@ export default function AnimatedLineGraph({
     };
   });
 
+  // automatically get graph configurations based on dimension size
   const fontSize = Math.max(10, Math.min(14, dimensions.width / 60));
   const titleFontSize = Math.max(16, Math.min(24, dimensions.width / 30));
   const labelFontSize = Math.max(12, Math.min(16, dimensions.width / 50));
@@ -309,6 +312,7 @@ export default function AnimatedLineGraph({
                   aspectRatio: `${aspectRatio}/1`,
                 }}
               >
+                {/* Set up the SVG for Graph */}
                 <MotionConfig reducedMotion="user">
                   <svg
                     ref={svgRef}
@@ -341,6 +345,7 @@ export default function AnimatedLineGraph({
                       </linearGradient>
                     </defs>
 
+                    {/*Set up the Grid lines */}
                     {yTicks.map((tick, i) => (
                       <g key={`grid-${i}`}>
                         <line
@@ -418,7 +423,7 @@ export default function AnimatedLineGraph({
                     >
                       {yAxisLabel}
                     </text>
-
+                    {/*Shadow under line */}
                     <motion.path
                       d={shadowPathDefinition}
                       fill="url(#shadowGradient)"
@@ -427,7 +432,7 @@ export default function AnimatedLineGraph({
                       animate={{ opacity: animate ? 0.5 : 0 }}
                       transition={{ delay: 1, duration: 1 }}
                     />
-
+                    {/* Line for graph*/}
                     <motion.path
                       d={pathDefinition}
                       stroke={lineColor}
@@ -437,7 +442,7 @@ export default function AnimatedLineGraph({
                       initial="hidden"
                       animate={animate ? 'visible' : 'hidden'}
                     />
-
+                    {/* Points*/}
                     {computedPoints.map((point, i) => (
                       <motion.circle
                         key={`point-${i}`}

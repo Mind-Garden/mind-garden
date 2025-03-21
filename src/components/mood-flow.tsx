@@ -1,7 +1,6 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { Line } from 'react-chartjs-2';
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -12,12 +11,7 @@ import {
   Tooltip,
   Legend,
 } from 'chart.js';
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardTitle,
-} from '@/components/ui/card';
+import { Card, CardDescription, CardTitle } from '@/components/ui/card';
 import { selectMoodDataByDateRange } from '@/actions/data-visualization';
 import { getLocalISOString } from '@/lib/utils';
 import AnimatedLineGraph from './ui/line-graph';
