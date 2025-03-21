@@ -4,16 +4,20 @@ import { motion } from 'framer-motion';
 import { useEffect, useState } from 'react';
 
 interface FloatingShapesProps {
-  colors: string[]
-  className?: string
+  colors: string[];
+  className?: string;
 }
 
 export default function FloatingShapes({
   colors,
   className,
 }: FloatingShapesProps) {
-  const [randomOffsets, setRandomOffsets] = useState<{ x: number; y: number }[]>([]);
-  const [edgePositions, setEdgePositions] = useState<{ vertical: string; horizontal: string }[]>([]);
+  const [randomOffsets, setRandomOffsets] = useState<
+    { x: number; y: number }[]
+  >([]);
+  const [edgePositions, setEdgePositions] = useState<
+    { vertical: string; horizontal: string }[]
+  >([]);
 
   useEffect(() => {
     // Random offset function to add slight variation to animation paths
@@ -23,24 +27,56 @@ export default function FloatingShapes({
     });
 
     // Generate new random offsets
-    setRandomOffsets([generateRandomOffset(), generateRandomOffset(), generateRandomOffset()]);
+    setRandomOffsets([
+      generateRandomOffset(),
+      generateRandomOffset(),
+      generateRandomOffset(),
+    ]);
 
     // Define edge regions (top, bottom, left, right)
     const edgeRegions = [
       {
         vertical: 'top-0',
-        horizontal: ['left-0', 'left-16', 'left-32', 'right-0', 'right-16', 'right-32'],
+        horizontal: [
+          'left-0',
+          'left-16',
+          'left-32',
+          'right-0',
+          'right-16',
+          'right-32',
+        ],
       },
       {
-        vertical: ['top-8', 'top-16', 'top-24', 'bottom-8', 'bottom-16', 'bottom-24'],
+        vertical: [
+          'top-8',
+          'top-16',
+          'top-24',
+          'bottom-8',
+          'bottom-16',
+          'bottom-24',
+        ],
         horizontal: 'right-0',
       },
       {
         vertical: 'bottom-0',
-        horizontal: ['left-0', 'left-16', 'left-32', 'right-0', 'right-16', 'right-32'],
+        horizontal: [
+          'left-0',
+          'left-16',
+          'left-32',
+          'right-0',
+          'right-16',
+          'right-32',
+        ],
       },
       {
-        vertical: ['top-8', 'top-16', 'top-24', 'bottom-8', 'bottom-16', 'bottom-24'],
+        vertical: [
+          'top-8',
+          'top-16',
+          'top-24',
+          'bottom-8',
+          'bottom-16',
+          'bottom-24',
+        ],
         horizontal: 'left-0',
       },
     ];
@@ -54,7 +90,9 @@ export default function FloatingShapes({
           ? region.vertical[Math.floor(Math.random() * region.vertical.length)]
           : region.vertical,
         horizontal: Array.isArray(region.horizontal)
-          ? region.horizontal[Math.floor(Math.random() * region.horizontal.length)]
+          ? region.horizontal[
+              Math.floor(Math.random() * region.horizontal.length)
+            ]
           : region.horizontal,
       };
     });
@@ -72,7 +110,9 @@ export default function FloatingShapes({
     }
 
     // Otherwise distribute evenly
-    const colorIndex = Math.floor((index / randomOffsets.length) * colors.length);
+    const colorIndex = Math.floor(
+      (index / randomOffsets.length) * colors.length,
+    );
     return colors[colorIndex % colors.length];
   };
 
@@ -102,4 +142,3 @@ export default function FloatingShapes({
     </>
   );
 }
-

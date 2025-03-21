@@ -59,14 +59,18 @@ export default function ModifyPassword() {
       transition={{ duration: 0.4, ease: 'easeOut' }}
       className="font-body"
     >
-
       <div className="relative rounded-2xl overflow-hidden p-[2px] bg-gradient-to-r from-emerald-300 via-teal-300 to-violet-300">
         <Card className="bg-white rounded-[14px] h-full overflow-hidden border-none">
           <div className="absolute inset-0 rounded-xl z-0" />
-          <FloatingShapes colors={['bg-emerald-200', 'bg-teal-200', 'bg-violet-200']} className={'z-10'} />
+          <FloatingShapes
+            colors={['bg-emerald-200', 'bg-teal-200', 'bg-violet-200']}
+            className={'z-10'}
+          />
           <CardHeader className="relative z-10">
             <CardTitle className="font-title">Change Password</CardTitle>
-            <CardDescription className="font-header font-semibold text-md">Update your password</CardDescription>
+            <CardDescription className="font-header font-semibold text-md">
+              Update your password
+            </CardDescription>
           </CardHeader>
           <CardContent className="space-y-4 relative z-10">
             <motion.div
