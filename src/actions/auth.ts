@@ -3,7 +3,7 @@
 import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
 
-import { createClient } from '../utils/supabase/server';
+import { createClient } from '@/supabase/server';
 
 export async function login(formData: FormData) {
   const supabase = await createClient();
@@ -33,7 +33,7 @@ export async function signup(formData: FormData) {
   const lastNameError = validateName(formData.get('lastName'), 'Last name');
   if (lastNameError) return lastNameError;
 
-  const data = {
+  const userData = {
     email: formData.get('email') as string,
     password: formData.get('password') as string,
     options: {
@@ -44,7 +44,7 @@ export async function signup(formData: FormData) {
     },
   };
 
-  const { error } = await supabase.auth.signUp(data);
+  const { error } = await supabase.auth.signUp(userData);
 
   if (error) {
     return { error: error.message };
@@ -96,6 +96,9 @@ export async function modifyAccount(
   const lastNameError = validateName(lastName, 'Last name');
   if (lastNameError) return lastNameError;
 
+  const emailError = validateEmail(email);
+  if (emailError) return emailError;
+
   const dataIn = {
     email: email,
     first_name: firstName,
@@ -125,12 +128,6 @@ export async function modifyPassword(newPassword: string) {
   }
 }
 
-const validateName = (name: FormDataEntryValue | null, field: string) => {
-  if (!name) return { error: `${field} is required` };
-  if (typeof name !== 'string' || name.length < 2)
-    return { error: `${field} must be at least 2 characters long` };
-};
-
 export async function forgotPassword(email: string, siteUrl: string) {
   const supabase = await createClient();
 
@@ -154,4 +151,16 @@ export async function authenticateResetCode(code: string) {
   }
 
   return { data: data.session };
+}
+
+const validateName = (name: FormDataEntryValue | null, field: string) => {
+  if (!name) return { error: `${field} is required` };
+  if (typeof name !== 'string' || name.length < 2)
+    return { error: `${field} must be at least 2 characters long` };
+};
+
+function validateEmail(email: string) {
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  if (!email) return { error: 'Email is required' };
+  if (!emailRegex.test(email)) return { error: 'Invalid email format' };
 }

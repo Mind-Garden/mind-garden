@@ -1,45 +1,11 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-import * as jwt from 'jsonwebtoken';
-import SuperTest from 'supertest';
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+require('dotenv').config({ path: '.env' });
 
-// Helper function to assert response status codes in tests
-export const assertStatusCode = (
-  res: SuperTest.Response,
-  expectedStatus: number = 200,
-): SuperTest.Response => {
-  if (res.status === expectedStatus) {
-    console.log(`Response body: ${JSON.stringify(res.body)}`);
-    return res;
-  }
+import { createClient } from '@supabase/supabase-js';
 
-  const reqData = JSON.parse(JSON.stringify(res)).req;
-  throw new Error(`
-  request-method  : ${JSON.stringify(reqData.method)} 
-  request-url     : ${JSON.stringify(reqData.url)}
-  request-data    : ${JSON.stringify(reqData.data)}
-  request-headers : ${JSON.stringify(reqData.headers)}
-  response-status  : ${JSON.stringify(res.status)}
-  response-body    : ${JSON.stringify(res.body)}
-  `);
-};
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || '';
+const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || '';
 
-// Create a user token for authentication in tests
-function createUserToken(
-  userId: number,
-  secretKey: string,
-  options: jwt.SignOptions,
-) {
-  return jwt.sign({ userId }, secretKey, options);
-}
+const supabase = createClient(supabaseUrl, supabaseKey);
 
-// Global setup before all tests
-beforeAll(async () => {
-  console.log('Jest setup: initializing test environment...');
-});
-
-// Global teardown after all tests
-afterAll(async () => {
-  console.log('Jest teardown: cleaning up...');
-});
-
-export { createUserToken };
+export default supabase;

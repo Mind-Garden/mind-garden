@@ -1,12 +1,14 @@
 import { redirect } from 'next/navigation';
-import { createClient } from '@/utils/supabase/server';
-import Footer from '@/components/footer';
-import DataIntakeForm from '@/components/data-intake/data-intake-form';
+
 import {
+  getPersonalizedCategories,
   selectAllFromAttributes,
   selectAllFromCategories,
-} from '@/utils/supabase/dbfunctions';
+} from '@/actions/data-intake';
+import DataIntakeForm from '@/components/data-intake/data-intake-form';
+import Footer from '@/components/footer';
 import { Header } from '@/components/header';
+import { createClient } from '@/supabase/server';
 
 export default async function Dashboard() {
   const supabase = await createClient();
@@ -24,9 +26,10 @@ export default async function Dashboard() {
     .single();
 
   const categories = await selectAllFromCategories();
+  const personalizedCategories = await getPersonalizedCategories();
   const attributes = await selectAllFromAttributes();
 
-  if (!categories || !attributes) {
+  if (!categories || !attributes || !personalizedCategories) {
     console.error('Failed to fetch categories or attributes.');
     redirect('/error');
   }
@@ -44,6 +47,7 @@ export default async function Dashboard() {
           userId={userId}
           categories={categories}
           attributes={attributes}
+          personalizedCategories={personalizedCategories}
         />
       </main>
 

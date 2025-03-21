@@ -1,7 +1,8 @@
 'use client';
 
+import { LogOut, User } from 'lucide-react';
 import { useRouter } from 'next/navigation';
-import { User, LogOut } from 'lucide-react';
+
 import { logout } from '@/actions/auth';
 import { Button } from '@/components/ui/button';
 import {
@@ -19,7 +20,7 @@ export function ProfileDropdown() {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="ghost" size="icon" className="rounded-full">
+        <Button variant="ghost" size="icon">
           <User className="h-5 w-5" />
         </Button>
       </DropdownMenuTrigger>

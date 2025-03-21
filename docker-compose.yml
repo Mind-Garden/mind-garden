@@ -1,0 +1,31 @@
+services:
+  front-and-back:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - '3000:3000'
+    env_file:
+      - .env
+    volumes:
+      - .:/usr/src/app
+      - /usr/src/app/node_modules
+
+  ollama:
+    build:
+      context: ./llm-api
+      dockerfile: Dockerfile
+    container_name: ollama
+    ports:
+      - '11434:11434'
+    volumes:
+      - ollama:/root/.ollama
+    healthcheck:
+      test: ['CMD', 'bash', '-c', "ollama list | grep -q 'summarization-model'"]
+      interval: 5s
+      retries: 5
+      start_period: 25s
+      timeout: 5s
+
+volumes:
+  ollama:

@@ -1,11 +1,11 @@
 import { redirect } from 'next/navigation';
 
-import { createClient } from '@/utils/supabase/server';
-import ModifyAccount from '@/components/modify-account-info';
-import ModifyPassword from '@/components/modify-password';
-import DeleteAccount from '@/components/delete-account';
 import Footer from '@/components/footer';
 import { Header } from '@/components/header';
+import DeleteAccount from '@/components/profile/delete-account';
+import ModifyAccount from '@/components/profile/modify-account-info';
+import ModifyPassword from '@/components/profile/modify-password';
+import { createClient } from '@/supabase/server';
 
 export default async function ProfilePage() {
   const supabase = await createClient();

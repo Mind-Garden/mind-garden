@@ -1,10 +1,9 @@
 import { redirect } from 'next/navigation';
 
-import { createClient } from '@/utils/supabase/server';
-
-import { Header } from '@/components/header';
 import Footer from '@/components/footer';
-import NewJournal from '@/components/journal';
+import { Header } from '@/components/header';
+import NewJournal from '@/components/journal/journal';
+import { createClient } from '@/supabase/server';
 
 export default async function JournalPage() {
   const supabase = await createClient();
@@ -26,7 +25,7 @@ export default async function JournalPage() {
   }
 
   return (
-    <div className="min-h-screen flex flex-col">
+    <div className="min-h-screen flex flex-col font-body">
       <Header />
 
       {/* Main Content */}

@@ -1,6 +1,6 @@
 'use client';
 // Core Imports
-import React, { useRef, useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 
 // Utility Imports
 import { cn } from '@/lib/utils';
