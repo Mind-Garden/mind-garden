@@ -1,12 +1,13 @@
-import supabase from '../../../jest.setup';
 import {
-  saveJournalEntry,
-  fetchJournalEntries,
-  updateJournalEntry,
   deleteJournalEntry,
+  fetchJournalEntries,
   getRandomPrompt,
+  saveJournalEntry,
+  updateJournalEntry,
 } from '@/actions/journal';
 import { IJournalEntries } from '@/supabase/schema';
+
+import supabase from '../../../jest.setup';
 
 describe('Journal Management Integration Tests', () => {
   let userId: string;

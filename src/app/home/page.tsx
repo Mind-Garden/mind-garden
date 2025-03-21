@@ -1,7 +1,13 @@
 import { redirect } from 'next/navigation';
-import { createClient } from '@/supabase/server';
+
+import HabitLineCharts from '@/components/add-habit-charts';
+import BarLineChart from '@/components/bar-line-chart';
+import Dashboard from '@/components/dashboard';
 import Footer from '@/components/footer';
+import HabitHeatmapGrid from '@/components/habit-heatmap';
 import { Header } from '@/components/header';
+import HealthDashboard from '@/components/health-dashboard';
+import HabitHeatmap from '@/components/heatmap';
 import {
   Card,
   CardContent,
@@ -9,13 +15,8 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
-import Dashboard from '@/components/dashboard';
-import BarLineChart from '@/components/bar-line-chart';
 import WaterChart from '@/components/water-chart';
-import HabitHeatmap from '@/components/heatmap';
-import HabitHeatmapGrid from '@/components/habit-heatmap';
-import HealthDashboard from '@/components/health-dashboard';
-import HabitLineCharts from '@/components/add-habit-charts';
+import { createClient } from '@/supabase/server';
 
 export default async function Home() {
   const supabase = await createClient();

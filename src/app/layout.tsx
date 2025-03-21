@@ -1,7 +1,9 @@
 import './globals.css';
+
 import { ToastContainer } from 'react-toastify';
-import { dosis, mulish, pacifico } from '@/lib/fonts';
+
 import ParticlesBackground from '@/components/particles';
+import { dosis, mulish, pacifico } from '@/lib/fonts';
 
 export const metadata = {
   title: 'Mind Garden',

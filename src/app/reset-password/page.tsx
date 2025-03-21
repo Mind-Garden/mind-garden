@@ -1,12 +1,13 @@
 'use client';
 
 import { redirect } from 'next/navigation';
-import { Particles } from '@/components/magicui/particles';
-import Footer from '@/components/footer';
-import ResetPassword from '@/components/reset-password';
-import { toast } from 'react-toastify';
 import { useEffect, useState } from 'react';
+import { toast } from 'react-toastify';
+
 import { authenticateResetCode } from '@/actions/auth';
+import Footer from '@/components/footer';
+import { Particles } from '@/components/magicui/particles';
+import ResetPassword from '@/components/reset-password';
 
 export default function ResetPasswordPage() {
   const [session, setSession] = useState<any | null>(null);

@@ -1,4 +1,3 @@
-import { getSupabaseClient } from '@/supabase/client';
 import {
   insertResponses,
   selectAllFromAttributes,
@@ -6,7 +5,7 @@ import {
   selectResponsesByDate,
   updateResponses,
 } from '@/actions/data-intake';
-import { Exo_2 } from 'next/font/google';
+import { getSupabaseClient } from '@/supabase/client';
 
 jest.mock('@/supabase/client', () => ({
   getSupabaseClient: jest.fn(),

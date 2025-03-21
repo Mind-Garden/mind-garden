@@ -1,4 +1,4 @@
-import { Pacifico, Dosis, Mulish } from 'next/font/google';
+import { Dosis, Mulish, Pacifico } from 'next/font/google';
 
 export const pacifico = Pacifico({
   subsets: ['latin'],

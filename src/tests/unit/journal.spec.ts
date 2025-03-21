@@ -1,5 +1,3 @@
-import { undoConversion } from '@/lib/utils';
-import { getSupabaseClient } from '@/supabase/client';
 import {
   deleteJournalEntry,
   fetchJournalEntries,
@@ -7,6 +5,8 @@ import {
   saveJournalEntry,
   updateJournalEntry,
 } from '@/actions/journal';
+import { undoConversion } from '@/lib/utils';
+import { getSupabaseClient } from '@/supabase/client';
 
 jest.mock('@/supabase/client', () => ({
   getSupabaseClient: jest.fn(),

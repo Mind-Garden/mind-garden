@@ -1,12 +1,12 @@
-import { getSupabaseClient } from '@/supabase/client';
 import {
-  getPersonalizedCategories,
+  addResp,
   addUserHabit,
   getAddedCategories,
   getAddedResp,
-  addResp,
   getAllAddedRespCategory,
+  getPersonalizedCategories,
 } from '@/actions/data-intake';
+import { getSupabaseClient } from '@/supabase/client';
 
 jest.mock('@/supabase/client', () => ({
   getSupabaseClient: jest.fn(),

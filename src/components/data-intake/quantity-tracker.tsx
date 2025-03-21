@@ -1,7 +1,8 @@
 'use client';
 
-import { Button } from '@/components/ui/button';
 import { MinusCircle, PlusCircle } from 'lucide-react';
+
+import { Button } from '@/components/ui/button';
 
 interface QuantityTrackerProps {
   value: number;

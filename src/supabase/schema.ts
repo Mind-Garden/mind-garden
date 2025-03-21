@@ -1,5 +1,3 @@
-import { WeekNumberLabel } from 'react-day-picker';
-
 export interface IUsers {
   id: string;
   first_name: string;

@@ -1,15 +1,16 @@
-import supabase from '../../../jest.setup';
-import { getLocalISOString } from '@/lib/utils';
 import {
-  selectAllFromCategories,
-  selectAllFromAttributes,
-  getPersonalizedCategories,
   addResp,
-  getAllAddedRespCategory,
-  getAddedResp,
-  getAddedCategories,
   addUserHabit,
+  getAddedCategories,
+  getAddedResp,
+  getAllAddedRespCategory,
+  getPersonalizedCategories,
+  selectAllFromAttributes,
+  selectAllFromCategories,
 } from '@/actions/data-intake';
+import { getLocalISOString } from '@/lib/utils';
+
+import supabase from '../../../jest.setup';
 
 jest.mock('next/cache');
 jest.mock('next/navigation');

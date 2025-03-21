@@ -1,23 +1,23 @@
 'use client';
 
-import { useState, useRef, useEffect } from 'react';
 import {
-  motion,
+  animate,
   AnimatePresence,
+  motion,
   MotionConfig,
   useMotionValue,
-  animate,
   useTransform,
 } from 'framer-motion';
+import { useEffect, useRef, useState } from 'react';
 
-// Types for our data and props
-import type { DataPoint } from '@/supabase/schema';
 import {
   Card,
   CardContent,
-  CardTitle,
   CardDescription,
+  CardTitle,
 } from '@/components/ui/card';
+// Types for our data and props
+import type { DataPoint } from '@/supabase/schema';
 
 interface AnimatedLineGraphProps {
   readonly data: DataPoint[];

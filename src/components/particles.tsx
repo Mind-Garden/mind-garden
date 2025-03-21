@@ -1,8 +1,9 @@
 'use client';
-import { useState, useEffect } from 'react';
 import { usePathname } from 'next/navigation';
-import { Particles } from '@/components/magicui/particles';
+import { useEffect, useState } from 'react';
 import { createPortal } from 'react-dom';
+
+import { Particles } from '@/components/magicui/particles';
 
 export default function ParticlesBackground() {
   const [documentHeight, setDocumentHeight] = useState(0);

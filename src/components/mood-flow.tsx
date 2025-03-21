@@ -1,20 +1,21 @@
 'use client';
 
-import { useState, useEffect } from 'react';
 import {
-  Chart as ChartJS,
   CategoryScale,
+  Chart as ChartJS,
+  Legend,
   LinearScale,
-  PointElement,
   LineElement,
+  PointElement,
   Title,
   Tooltip,
-  Legend,
 } from 'chart.js';
-import { Card, CardDescription, CardTitle } from '@/components/ui/card';
+import { useEffect, useState } from 'react';
+
 import { selectMoodDataByDateRange } from '@/actions/data-visualization';
+import { Card, CardDescription, CardTitle } from '@/components/ui/card';
+import AnimatedLineGraph from '@/components/ui/line-graph';
 import { getLocalISOString } from '@/lib/utils';
-import AnimatedLineGraph from './ui/line-graph';
 import { DataPoint, MoodDataPoint, MoodFlowProps } from '@/supabase/schema';
 
 // Register ChartJS components

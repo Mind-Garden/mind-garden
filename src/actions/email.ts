@@ -1,7 +1,5 @@
 'use server';
 
-import { IReminderWithLatestDates } from '@/supabase/schema';
-import { daysAgo, getLatestDate } from '@/lib/time';
 import sendReminderEmail from '@/lib/email-service';
 import {
   BOTH_FORMS_INCOMPLETE_HTML,
@@ -17,6 +15,8 @@ import {
   NO_USAGE_SUBJECT,
   NO_USAGE_TEXT,
 } from '@/lib/email-templates';
+import { daysAgo, getLatestDate } from '@/lib/time';
+import { IReminderWithLatestDates } from '@/supabase/schema';
 import { createClient } from '@/supabase/server';
 
 export async function sendReminders(reminderTime: string): Promise<void> {

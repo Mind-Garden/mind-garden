@@ -1,13 +1,14 @@
 import { redirect } from 'next/navigation';
-import { createClient } from '@/supabase/server';
-import Footer from '@/components/footer';
-import DataIntakeForm from '@/components/data-intake/data-intake-form';
+
 import {
+  getPersonalizedCategories,
   selectAllFromAttributes,
   selectAllFromCategories,
-  getPersonalizedCategories,
 } from '@/actions/data-intake';
+import DataIntakeForm from '@/components/data-intake/data-intake-form';
+import Footer from '@/components/footer';
 import { Header } from '@/components/header';
+import { createClient } from '@/supabase/server';
 
 export default async function Dashboard() {
   const supabase = await createClient();

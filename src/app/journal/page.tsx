@@ -1,10 +1,9 @@
 import { redirect } from 'next/navigation';
 
-import { createClient } from '@/supabase/server';
-
-import { Header } from '@/components/header';
 import Footer from '@/components/footer';
+import { Header } from '@/components/header';
 import NewJournal from '@/components/journal/journal';
+import { createClient } from '@/supabase/server';
 
 export default async function JournalPage() {
   const supabase = await createClient();

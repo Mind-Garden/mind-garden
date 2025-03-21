@@ -1,5 +1,6 @@
-import sendReminderEmail from '@/lib/email-service';
 import nodemailer from 'nodemailer';
+
+import sendReminderEmail from '@/lib/email-service';
 
 // Mock nodemailer transporter
 jest.mock('nodemailer', () => ({

@@ -1,10 +1,11 @@
 'use client';
 
-import { useState, useEffect } from 'react';
-import AnimatedLineGraph from '@/components/ui/line-graph';
-import { selectWaterDataByDateRange } from '@/actions/data-visualization';
-import { getLocalISOString } from '@/lib/utils';
 import { LoaderCircle } from 'lucide-react';
+import { useEffect, useState } from 'react';
+
+import { selectWaterDataByDateRange } from '@/actions/data-visualization';
+import AnimatedLineGraph from '@/components/ui/line-graph';
+import { getLocalISOString } from '@/lib/utils';
 import { DataPoint } from '@/supabase/schema';
 
 interface WaterChartProps {
@@ -64,9 +65,6 @@ export default function WaterChart({ userId }: Readonly<WaterChartProps>) {
 
         if (!data || data.length === 0) {
           return <div className="h-16 text-center">No data yet! :( </div>;
-        }
-        {
-          /* Render line graph */
         }
         return <AnimatedLineGraph data={data} yAxisLabel="Cups of Water" />;
       })()}

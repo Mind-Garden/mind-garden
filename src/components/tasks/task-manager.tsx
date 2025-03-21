@@ -1,15 +1,11 @@
 'use client';
-import { useState, useEffect, useRef } from 'react';
-import { AnimatePresence, motion } from 'framer-motion';
-import { Card, CardContent, CardHeader } from '@/components/ui/card';
-import { Plus, Check, Trash2, X, Clock, ListTodo } from 'lucide-react';
 import { Broom } from '@phosphor-icons/react';
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipTrigger,
-  TooltipProvider,
-} from '@/components/ui/tooltip';
+import { format, isSameDay, parseISO } from 'date-fns';
+import { AnimatePresence, motion } from 'framer-motion';
+import { Check, Clock, ListTodo, Plus, Trash2, X } from 'lucide-react';
+import { useEffect, useRef, useState } from 'react';
+import { toast } from 'react-toastify';
+
 import {
   addTasks,
   deleteTask,
@@ -17,14 +13,19 @@ import {
   fetchTasks,
   markTask,
 } from '@/actions/tasks';
-import { toast } from 'react-toastify';
-import type { ITask } from '@/supabase/schema';
+import { activateFireworks } from '@/components/magicui/fireworks';
 import VoiceRecorder from '@/components/tasks/voice-recorder';
+import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Input } from '@/components/ui/input';
-import { isSameDay, parseISO, format } from 'date-fns';
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from '@/components/ui/tooltip';
 import { getDate, getGreetingText } from '@/lib/utils';
-import { activateFireworks } from '@/components/magicui/fireworks';
+import type { ITask } from '@/supabase/schema';
 
 interface TaskManagerProps {
   userId: string;

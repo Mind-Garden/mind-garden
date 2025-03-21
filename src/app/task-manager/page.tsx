@@ -1,8 +1,9 @@
 import { redirect } from 'next/navigation';
-import { createClient } from '@/supabase/server';
+
 import Footer from '@/components/footer';
 import { Header } from '@/components/header';
 import TaskManager from '@/components/tasks/task-manager';
+import { createClient } from '@/supabase/server';
 
 export default async function Home() {
   const supabase = await createClient();

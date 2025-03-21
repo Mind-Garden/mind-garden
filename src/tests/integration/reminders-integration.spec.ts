@@ -1,5 +1,7 @@
-import { getReminders, updateReminders } from '@/actions/reminders';
 import dotenv from 'dotenv';
+
+import { getReminders, updateReminders } from '@/actions/reminders';
+
 import supabase from '../../../jest.setup';
 
 dotenv.config();
