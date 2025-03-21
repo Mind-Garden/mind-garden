@@ -1,7 +1,7 @@
 'use client';
 
-import {motion, useMotionValue, useScroll} from 'framer-motion';
-import {useEffect, useState} from 'react';
+import { motion, useMotionValue, useScroll } from 'framer-motion';
+import { useEffect, useState } from 'react';
 
 // SVG file paths in the public folder
 const paths = {
@@ -23,14 +23,14 @@ interface PathMorphingNavProps {
   readonly featuresRef: React.RefObject<HTMLDivElement | null>;
 }
 
-export default function PathMorphingNav({featuresRef}: PathMorphingNavProps) {
+export default function PathMorphingNav({ featuresRef }: PathMorphingNavProps) {
   const [activeIndex, setActiveIndex] = useState(0);
   const progress = useMotionValue(0);
   const [direction, setDirection] = useState(0);
   const pathKeys = Object.keys(paths) as Array<keyof typeof paths>;
 
   // Use scroll progress to control the animation
-  const {scrollYProgress} = useScroll({
+  const { scrollYProgress } = useScroll({
     target: featuresRef,
     offset: ['start 25%', 'end 25%'],
   });
@@ -60,10 +60,10 @@ export default function PathMorphingNav({featuresRef}: PathMorphingNavProps) {
       key={direction}
       className={`fixed top-1/2 -translate-y-1/2 z-[-2] flex items-center gap-6 bg-white/90 dark:bg-gray-900/90 backdrop-blur-md p-6 rounded-2xl shadow-2xl w-auto max-w-[30vw] 
           ${direction === 1 ? 'left-6 flex-row' : 'right-6 flex-row-reverse'}`}
-      initial={{opacity: 0, x: direction === 1 ? -50 : 50}}
-      animate={{opacity: 1, x: 0}}
-      exit={{opacity: 0, x: direction === 1 ? -50 : 50}}
-      transition={{duration: 0.5, ease: 'easeOut'}}
+      initial={{ opacity: 0, x: direction === 1 ? -50 : 50 }}
+      animate={{ opacity: 1, x: 0 }}
+      exit={{ opacity: 0, x: direction === 1 ? -50 : 50 }}
+      transition={{ duration: 0.5, ease: 'easeOut' }}
     >
       <div className="w-[10vw] h-[10vw] max-w-20 max-h-20">
         <motion.img

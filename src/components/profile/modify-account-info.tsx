@@ -3,7 +3,14 @@
 import { useState, useRef } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card';
 import { modifyAccount } from '@/actions/auth';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -12,8 +19,8 @@ import FloatingShapes from '../ui/floating-shapes';
 import { motion } from 'framer-motion';
 
 export default function ModifyAccount(props: {
-  profileData: any
-  userId: string
+  profileData: any;
+  userId: string;
 }) {
   const [isLoading, setIsLoading] = useState(false);
   const emailRef = useRef<HTMLInputElement>(null);
@@ -53,7 +60,10 @@ export default function ModifyAccount(props: {
       <div className="relative rounded-2xl overflow-hidden p-[2px] bg-gradient-to-r from-emerald-300 via-teal-300 to-violet-300">
         <Card className="bg-white rounded-[14px] h-full overflow-hidden border-none">
           <div className="absolute inset-0 rounded-xl z-0" />
-          <FloatingShapes colors={['bg-emerald-200', 'bg-teal-200', 'bg-violet-200']} className={'z-10'}/>
+          <FloatingShapes
+            colors={['bg-emerald-200', 'bg-teal-200', 'bg-violet-200']}
+            className={'z-10'}
+          />
           <CardHeader className="relative z-10">
             <CardTitle className="font-title">Profile Information</CardTitle>
             <CardDescription className="font-header font-semibold text-md">
@@ -86,7 +96,12 @@ export default function ModifyAccount(props: {
               <label htmlFor="lastName" className="text-sm font-medium">
                 Last Name
               </label>
-              <Input id="lastName" defaultValue={props.profileData?.last_name} ref={lastNameRef} disabled={isLoading} />
+              <Input
+                id="lastName"
+                defaultValue={props.profileData?.last_name}
+                ref={lastNameRef}
+                disabled={isLoading}
+              />
             </motion.div>
             <motion.div
               initial={{ opacity: 0 }}
@@ -108,7 +123,11 @@ export default function ModifyAccount(props: {
           </CardContent>
           <CardFooter className="relative z-10">
             <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-              <Button onClick={handleSubmit} disabled={isLoading} className="flex items-center gap-2">
+              <Button
+                onClick={handleSubmit}
+                disabled={isLoading}
+                className="flex items-center gap-2"
+              >
                 {isLoading ? (
                   <>
                     <Loader2 className="h-4 w-4 animate-spin" />
@@ -125,4 +144,3 @@ export default function ModifyAccount(props: {
     </motion.div>
   );
 }
-
