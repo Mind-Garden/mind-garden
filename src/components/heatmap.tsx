@@ -1,18 +1,19 @@
 'use client';
 
-import { useState, useEffect } from 'react';
-import { ChevronLeft, ChevronRight } from 'lucide-react';
 import {
-  format,
-  startOfMonth,
-  endOfMonth,
-  eachDayOfInterval,
-  getDay,
   addMonths,
+  eachDayOfInterval,
+  endOfMonth,
+  format,
+  getDay,
+  startOfMonth,
   subMonths,
 } from 'date-fns';
-import { motion, AnimatePresence } from 'framer-motion';
+import { AnimatePresence, motion } from 'framer-motion';
+import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { useEffect, useState } from 'react';
 
+import { getDataHeatmap } from '@/actions/data-visualization';
 import { Button } from '@/components/ui/button';
 import {
   Tooltip,
@@ -21,7 +22,6 @@ import {
   TooltipTrigger,
 } from '@/components/ui/tooltip';
 import { cn } from '@/lib/utils';
-import { getDataHeatmap } from '@/actions/data-visualization';
 
 // Define the type for a single day's habit data
 type HabitData = {

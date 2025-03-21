@@ -1,7 +1,8 @@
 'use client';
 
-import { useState, useEffect } from 'react';
 import { Minus, Plus } from 'lucide-react';
+import { useEffect, useState } from 'react';
+
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { RatingScale } from '@/components/ui/rating-scale';
 import { cn } from '@/lib/utils';

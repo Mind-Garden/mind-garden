@@ -1,44 +1,46 @@
 'use client';
 
-import { useEffect, useState, useRef } from 'react';
-import { login, signup, forgotPassword } from '@/actions/auth';
-import { Input } from '@/components/ui/input';
-import { Button } from '@/components/ui/button';
-import { Label } from '@/components/ui/label';
-import { Card, CardContent, CardHeader } from '@/components/ui/card';
+import 'react-toastify/dist/ReactToastify.css';
+
+import { Broom } from '@phosphor-icons/react';
 import {
+  AnimatePresence,
+  motion,
+  useInView,
+  useScroll,
+  useTransform,
+} from 'framer-motion';
+import {
+  BookOpen,
+  Calendar,
+  Check,
+  CheckCircle,
+  ChevronDown,
   CircleAlert,
+  Eye,
+  EyeOff,
+  LineChart,
   LoaderCircle,
   Lock,
   Mail,
-  User,
-  LineChart,
-  BookOpen,
-  CheckCircle,
-  ChevronDown,
-  Calendar,
-  Eye,
-  EyeOff,
   PenLine,
-  Check,
   Plus,
   Trash2,
+  User,
 } from 'lucide-react';
-import { Broom } from '@phosphor-icons/react';
-import { TypingAnimation } from '@/components/magicui/typing-animation';
-import Footer from '@/components/footer';
+import { useEffect, useRef, useState } from 'react';
 import { toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
-import {
-  motion,
-  useScroll,
-  useTransform,
-  useInView,
-  AnimatePresence,
-} from 'framer-motion';
-import PathMorphingNav from '@/components/path-morphing-nav';
+
+import { forgotPassword, login, signup } from '@/actions/auth';
 import PathDrawing from '@/components/arrow-explore';
+import Footer from '@/components/footer';
+import { TypingAnimation } from '@/components/magicui/typing-animation';
+import PathMorphingNav from '@/components/path-morphing-nav';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import { Checkbox } from '@/components/ui/checkbox';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
 import {
   Tooltip,
   TooltipContent,

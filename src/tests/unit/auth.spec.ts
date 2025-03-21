@@ -1,16 +1,17 @@
-import {
-  login,
-  signup,
-  logout,
-  deleteAccount,
-  modifyAccount,
-  modifyPassword,
-  forgotPassword,
-  authenticateResetCode,
-} from '@/actions/auth';
-import { createClient } from '@/supabase/server';
 import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
+
+import {
+  authenticateResetCode,
+  deleteAccount,
+  forgotPassword,
+  login,
+  logout,
+  modifyAccount,
+  modifyPassword,
+  signup,
+} from '@/actions/auth';
+import { createClient } from '@/supabase/server';
 
 // Mock Next.js functions
 jest.mock('next/cache', () => ({

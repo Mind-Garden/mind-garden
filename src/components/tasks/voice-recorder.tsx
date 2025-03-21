@@ -1,6 +1,6 @@
 'use client';
-import { useState, useRef, useEffect } from 'react';
-import { Mic, CircleStop, Loader2 } from 'lucide-react';
+import { CircleStop, Loader2, Mic } from 'lucide-react';
+import { useEffect, useRef, useState } from 'react';
 
 interface VoiceRecorderProps {
   onTranscriptComplete: (transcript: string) => void;
@@ -25,6 +25,9 @@ export default function VoiceRecorder({
     recognitionRef.current.continuous = true;
     recognitionRef.current.interimResults = true;
 
+    // On result from the speech recognition engine, concatenate all the transcripts
+    // received and set the component state to the concatenated string.
+    // Additionally, call onTranscriptChange with the same string, if it's provided.
     recognitionRef.current.onresult = (event: any) => {
       const transcripts = Array.from(event.results)
         .map((result: any) => result[0].transcript)

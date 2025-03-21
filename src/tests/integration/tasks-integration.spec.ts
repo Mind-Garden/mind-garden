@@ -1,6 +1,7 @@
-import supabase from '../../../jest.setup';
-import { addTasks, fetchTasks, markTask, deleteTask } from '@/actions/tasks';
+import { addTasks, deleteTask, fetchTasks, markTask } from '@/actions/tasks';
 import { ITask } from '@/supabase/schema';
+
+import supabase from '../../../jest.setup';
 
 describe('Task Management Integration Tests', () => {
   let userId: string;

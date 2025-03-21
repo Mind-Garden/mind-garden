@@ -1,24 +1,22 @@
-import { getSupabaseClient } from '@/supabase/client';
 import {
+  getDataHeatmap,
+  selectDataByRange,
   selectMoodDataByDateRange,
   selectMoodFrequency,
   selectSleepDataByDateRange,
-  selectDataByRange,
-  selectWorkDataByDateRange,
   selectStudyDataByDateRange,
   selectWaterDataByDateRange,
-  getDataHeatmap,
+  selectWorkDataByDateRange,
 } from '@/actions/data-visualization';
 import {
   convertTo24Hour,
   convertTo24HourSleepEntry,
   formatHour,
-  getSleepDuration,
   getBarColour,
+  getSleepDuration,
   getTimeAMPM,
 } from '@/lib/utils';
-import { summarizeData } from '@/actions/ai-data-analysis';
-import { fetchResponse } from '@/actions/ai-fetch';
+import { getSupabaseClient } from '@/supabase/client';
 
 jest.mock('@/supabase/client', () => ({
   getSupabaseClient: jest.fn(),

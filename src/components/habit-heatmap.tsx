@@ -1,18 +1,23 @@
 'use client';
 
-import { useState, useEffect } from 'react';
-import { ChevronLeft, ChevronRight, ArrowLeft, ArrowRight } from 'lucide-react';
 import {
-  format,
-  startOfMonth,
-  endOfMonth,
-  eachDayOfInterval,
-  getDay,
   addMonths,
+  eachDayOfInterval,
+  endOfMonth,
+  format,
+  getDay,
+  startOfMonth,
   subMonths,
 } from 'date-fns';
-import { motion, AnimatePresence, type PanInfo } from 'framer-motion';
+import { AnimatePresence, motion, type PanInfo } from 'framer-motion';
+import { ArrowLeft, ArrowRight, ChevronLeft, ChevronRight } from 'lucide-react';
+import { useEffect, useState } from 'react';
 
+import {
+  getAddedCategories,
+  getAllAddedRespCategory,
+  getPersonalizedCategories,
+} from '@/actions/data-intake';
 import { Button } from '@/components/ui/button';
 import {
   Tooltip,
@@ -21,11 +26,6 @@ import {
   TooltipTrigger,
 } from '@/components/ui/tooltip';
 import { cn } from '@/lib/utils';
-import {
-  getAllAddedRespCategory,
-  getAddedCategories,
-  getPersonalizedCategories,
-} from '@/actions/data-intake';
 import type {
   IAddedCategory,
   IAddedResp,

@@ -1,7 +1,7 @@
 'use client';
 
-import { useState, useEffect } from 'react';
 import { Minus, Plus } from 'lucide-react';
+import { useEffect, useState } from 'react';
 
 interface CounterProps {
   value?: number;

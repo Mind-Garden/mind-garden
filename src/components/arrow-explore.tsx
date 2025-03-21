@@ -1,7 +1,7 @@
 'use client';
 
-import type React from 'react';
 import * as motion from 'motion/react-client';
+import type React from 'react';
 import { useEffect, useState } from 'react';
 
 export default function PathDrawing() {

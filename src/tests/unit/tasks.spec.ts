@@ -1,13 +1,13 @@
+import {
+  addTasks,
+  deleteTask,
+  extractTasksFromTranscript,
+  fetchTasks,
+  markTask,
+} from '@/actions/tasks';
 import { getDate } from '@/lib/utils';
 import { getSupabaseClient } from '@/supabase/client';
 import { insertData, selectData, updateData } from '@/supabase/dbfunctions';
-import {
-  fetchTasks,
-  addTasks,
-  markTask,
-  deleteTask,
-  extractTasksFromTranscript,
-} from '@/actions/tasks';
 
 jest.mock('@/supabase/client', () => ({
   getSupabaseClient: jest.fn(),

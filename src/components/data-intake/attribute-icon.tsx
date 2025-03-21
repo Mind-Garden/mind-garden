@@ -1,6 +1,12 @@
 'use client';
 
-import React from 'react';
+import {
+  BowlSteam,
+  Broom,
+  Hand,
+  HandSoap,
+  SmileyNervous,
+} from '@phosphor-icons/react';
 import {
   AlarmClockCheck,
   Angry,
@@ -75,13 +81,7 @@ import {
   Wine,
   X,
 } from 'lucide-react';
-import {
-  BowlSteam,
-  Broom,
-  Hand,
-  HandSoap,
-  SmileyNervous,
-} from '@phosphor-icons/react';
+import React from 'react';
 
 interface AttributeIconProps {
   category: string;

@@ -24,9 +24,6 @@ const promptionary: { [key: string]: string } = {
  * 'summarize mood':  'Here is my Mood from 1-5 and the distribution of them. Please summarize and give advice on how to improve my mood. Keep the response brief and to the point. Dont give me the responses in MD just normal text: ',
  *
  * 'summarize sleep': 'Give me a concise summary of my sleep and not in how to improve it based off my average sleep duration. Keep the response brief and to the point. Dont give me the responses in MD just normal text. This is my average sleep duration:
- *
- *
- *
  */
 export async function fetchResponse(
   transcript: string,

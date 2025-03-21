@@ -1,5 +1,6 @@
-import { sendReminders } from '@/actions/email';
 import { NextRequest } from 'next/server';
+
+import { sendReminders } from '@/actions/email';
 import { GET } from '@/app/api/cron/route';
 
 // Mock the email action

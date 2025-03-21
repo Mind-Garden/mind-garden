@@ -1,32 +1,33 @@
 'use client';
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import {
-  BarChart,
   Bar,
+  BarChart,
+  CartesianGrid,
+  Cell,
+  ResponsiveContainer,
+  Tooltip,
   XAxis,
   YAxis,
-  Tooltip,
-  ResponsiveContainer,
-  Cell,
-  CartesianGrid,
 } from 'recharts';
+
+import { selectSleepDataByDateRange } from '@/actions/data-visualization';
 import {
   Card,
   CardContent,
   CardDescription,
-  CardTitle,
   CardHeader,
+  CardTitle,
 } from '@/components/ui/card';
 import {
-  getLocalISOString,
-  getSleepDuration,
   convertTo24Hour,
   formatHour,
   getBarColour,
+  getLocalISOString,
+  getSleepDuration,
   getTimeAMPM,
 } from '@/lib/utils';
-import { selectSleepDataByDateRange } from '@/actions/data-visualization';
-import { SleepDataPoint, ProcessedSleepDataPoint } from '@/supabase/schema';
+import { ProcessedSleepDataPoint, SleepDataPoint } from '@/supabase/schema';
 
 interface SleepChartProps {
   userId: string;

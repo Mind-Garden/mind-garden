@@ -1,36 +1,36 @@
 'use client';
 
+import { LoaderCircle, Plus } from 'lucide-react';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { toast } from 'react-toastify';
+
 import {
-  insertResponses,
-  selectResponsesByDate,
-  updateResponses,
+  addResp,
   addUserHabit, // New function to add habits to user's list
   getAddedCategories,
   getAddedResp,
-  addResp,
+  insertResponses,
+  selectResponsesByDate,
+  updateResponses,
 } from '@/actions/data-intake';
+import AddHabitDialog from '@/components/data-intake/add-habit';
 import AttributeIcon from '@/components/data-intake/attribute-icon';
+import QuantityTrackerSimple from '@/components/data-intake/quantity-tracker';
+import ScaleIcon from '@/components/data-intake/scale-icon';
 import ToggleButton from '@/components/data-intake/toggle-button';
+import YesNoForm from '@/components/data-intake/yes-no-form';
 import { Button } from '@/components/ui/button';
-import { LoaderCircle, Plus } from 'lucide-react';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import Counter from '@/components/ui/counter';
+import CounterCard from '@/components/ui/counter-card';
+import { RatingScale } from '@/components/ui/rating-scale';
+import { getLocalISOString } from '@/lib/utils';
 import type {
+  IAddedCategory,
   IAttributes,
   ICategories,
   IPersonalizedCategories,
-  IAddedCategory,
 } from '@/supabase/schema';
-import ScaleIcon from '@/components/data-intake/scale-icon';
-import AddHabitDialog from '@/components/data-intake/add-habit';
-import { toast } from 'react-toastify';
-import QuantityTrackerSimple from './quantity-tracker';
-import YesNoForm from './yes-no-form';
-import { getLocalISOString } from '@/lib/utils';
-
-import CounterCard from '@/components/ui/counter-card';
-import Counter from '@/components/ui/counter';
-import { RatingScale } from '@/components/ui/rating-scale';
 
 interface DataIntakeFormProps {
   userId: string;

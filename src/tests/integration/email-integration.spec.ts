@@ -1,6 +1,8 @@
-import { sendReminders } from '@/actions/email';
-import nodemailer from 'nodemailer';
 import dotenv from 'dotenv';
+import nodemailer from 'nodemailer';
+
+import { sendReminders } from '@/actions/email';
+
 import supabase from '../../../jest.setup';
 
 // Mock the entire nodemailer module

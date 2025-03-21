@@ -1,22 +1,24 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
-import { IReminders } from '@/supabase/schema';
-import { getReminders, updateReminders } from '@/actions/reminders';
-import { convertToLocalTime, convertToUtcTime } from '@/lib/time';
-import { Switch } from '@/components/ui/switch';
-import { Button } from '@/components/ui/button';
-import { LoaderCircle } from 'lucide-react';
-import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import FloatingShapes from './ui/floating-shapes';
+
+import { LoaderCircle } from 'lucide-react';
+import React, { useEffect, useState } from 'react';
+import { toast } from 'react-toastify';
+
+import { getReminders, updateReminders } from '@/actions/reminders';
+import { Button } from '@/components/ui/button';
 import {
   Card,
-  CardHeader,
-  CardTitle,
   CardContent,
   CardFooter,
+  CardHeader,
+  CardTitle,
 } from '@/components/ui/card';
+import FloatingShapes from '@/components/ui/floating-shapes';
+import { Switch } from '@/components/ui/switch';
+import { convertToLocalTime, convertToUtcTime } from '@/lib/time';
+import { IReminders } from '@/supabase/schema';
 
 // Props interface defining expected props for this component
 interface ReminderCardProps {

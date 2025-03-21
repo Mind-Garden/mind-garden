@@ -1,15 +1,16 @@
 'use client';
 
-import { useState } from 'react';
-import { motion, AnimatePresence, type PanInfo } from 'framer-motion';
+import { AnimatePresence, motion, type PanInfo } from 'framer-motion';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
-import { Card, CardContent } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { cn } from '@/lib/utils';
-import MoodFlow from '@/components/mood-flow';
-import MoodBar from '@/components/mood-bar';
-import SleepChart from '@/components/sleep-chart';
+import { useState } from 'react';
+
 import AIResponse from '@/components/ai-response';
+import MoodBar from '@/components/mood-bar';
+import MoodFlow from '@/components/mood-flow';
+import SleepChart from '@/components/sleep-chart';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent } from '@/components/ui/card';
+import { cn } from '@/lib/utils';
 
 interface HealthDashboardProps {
   userId: string;

@@ -1,8 +1,14 @@
 'use client';
 
-import { useState, useRef } from 'react';
+import 'react-toastify/dist/ReactToastify.css';
+
+import { motion } from 'framer-motion';
+import { Loader2 } from 'lucide-react';
+import { useRef, useState } from 'react';
+import { toast } from 'react-toastify';
+
+import { modifyPassword } from '@/actions/auth';
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
 import {
   Card,
   CardContent,
@@ -11,12 +17,8 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
-import { modifyPassword } from '@/actions/auth';
-import { toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
-import { Loader2 } from 'lucide-react';
-import FloatingShapes from '../ui/floating-shapes';
-import { motion } from 'framer-motion';
+import FloatingShapes from '@/components/ui/floating-shapes';
+import { Input } from '@/components/ui/input';
 
 export default function ModifyPassword() {
   const [isLoading, setIsLoading] = useState(false);

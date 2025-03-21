@@ -1,12 +1,12 @@
 import { getLocalISOString } from '@/lib/utils';
 import { insertData, selectData, updateData } from '@/supabase/dbfunctions';
 import {
-  IAttributes,
-  ICategories,
-  IResponses,
-  IPersonalizedCategories,
   IAddedCategory,
   IAddedResp,
+  IAttributes,
+  ICategories,
+  IPersonalizedCategories,
+  IResponses,
   ISleepEntries,
 } from '@/supabase/schema';
 

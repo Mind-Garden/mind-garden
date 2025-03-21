@@ -1,25 +1,25 @@
 'use client';
 
-import { useState, useEffect } from 'react';
-import { ChevronLeft, ChevronRight, ArrowLeft, ArrowRight } from 'lucide-react';
 import {
+  addMonths,
+  eachDayOfInterval,
+  endOfMonth,
   format,
   startOfMonth,
-  endOfMonth,
-  eachDayOfInterval,
-  addMonths,
   subMonths,
 } from 'date-fns';
-import { motion, AnimatePresence, type PanInfo } from 'framer-motion';
-import AnimatedLineGraph from '@/components/ui/line-graph';
-import { Button } from '@/components/ui/button';
+import { AnimatePresence, motion, type PanInfo } from 'framer-motion';
+import { ArrowLeft, ArrowRight, ChevronLeft, ChevronRight } from 'lucide-react';
+import { useEffect, useState } from 'react';
 
 import {
-  getAllAddedRespCategory,
   getAddedCategories,
+  getAllAddedRespCategory,
   getPersonalizedCategories,
 } from '@/actions/data-intake';
-import type { IAddedResp, DataPoint } from '@/supabase/schema';
+import { Button } from '@/components/ui/button';
+import AnimatedLineGraph from '@/components/ui/line-graph';
+import type { DataPoint, IAddedResp } from '@/supabase/schema';
 
 interface HabitLineChartProps {
   readonly userId: string;

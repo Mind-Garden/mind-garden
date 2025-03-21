@@ -1,9 +1,9 @@
-import { getSupabaseClient } from '@/supabase/client';
 import {
   insertSleepEntry,
   selectSleepEntryByDate,
   updateSleepEntry,
 } from '@/actions/data-intake';
+import { getSupabaseClient } from '@/supabase/client';
 
 jest.mock('@/supabase/client', () => ({
   getSupabaseClient: jest.fn(),

@@ -1,13 +1,13 @@
 import { fetchResponse } from '@/actions/ai-fetch';
 import {
+  selectMoodFrequency,
+  selectSleepDataByDateRange,
+} from '@/actions/data-visualization';
+import {
+  getAverageTimeElapsed,
   getLocalISOString,
   getSleepDuration,
-  getAverageTimeElapsed,
 } from '@/lib/utils';
-import {
-  selectSleepDataByDateRange,
-  selectMoodFrequency,
-} from '@/actions/data-visualization';
 import { MoodCountData, SleepDataPoint } from '@/supabase/schema';
 
 // function dictionary to map query types to functions

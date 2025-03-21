@@ -1,37 +1,34 @@
 'use client';
 
-import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-
-import { Calendar } from '@/components/ui/calendar';
-import { Button } from '@/components/ui/button';
-import { TextArea } from '@/components/ui/textarea';
-import { ScrollArea } from '@/components/ui/scroll-area';
-
 import {
-  PenLine,
-  Trash2,
-  CalendarDays,
-  Save,
-  X,
-  Edit,
-  NotebookPen,
-  LoaderCircle,
   BookOpen,
+  CalendarDays,
+  Edit,
+  LoaderCircle,
+  NotebookPen,
+  PenLine,
+  Save,
+  Trash2,
+  X,
 } from 'lucide-react';
+import { useEffect, useState } from 'react';
+import { toast } from 'react-toastify';
 
-import { RandomPromptCard } from './random-prompt-card';
 import {
   deleteJournalEntry,
   fetchJournalEntries,
   saveJournalEntry,
   updateJournalEntry,
 } from '@/actions/journal';
-import { toast } from 'react-toastify';
-import type { IJournalEntries } from '@/supabase/schema';
-
+import { RandomPromptCard } from '@/components/journal/random-prompt-card';
+import { Button } from '@/components/ui/button';
+import { Calendar } from '@/components/ui/calendar';
+import FloatingShapes from '@/components/ui/floating-shapes';
+import { ScrollArea } from '@/components/ui/scroll-area';
+import { TextArea } from '@/components/ui/textarea';
 import { getDate, undoConversion } from '@/lib/utils';
-import FloatingShapes from '../ui/floating-shapes';
+import type { IJournalEntries } from '@/supabase/schema';
 
 interface NewJournalProps {
   readonly userId: string;

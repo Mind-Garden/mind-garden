@@ -1,13 +1,15 @@
-import supabase from '../../../jest.setup';
-import {
-  signup,
-  login,
-  logout,
-  deleteAccount,
-  modifyAccount,
-} from '@/actions/auth';
 import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
+
+import {
+  deleteAccount,
+  login,
+  logout,
+  modifyAccount,
+  signup,
+} from '@/actions/auth';
+
+import supabase from '../../../jest.setup';
 
 jest.mock('next/cache');
 jest.mock('next/navigation');

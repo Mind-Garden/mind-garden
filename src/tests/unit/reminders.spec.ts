@@ -1,6 +1,5 @@
 import { getReminders, updateReminders } from '@/actions/reminders';
 import { getSupabaseClient } from '@/supabase/client';
-import { selectData, updateData } from '@/supabase/dbfunctions';
 
 jest.mock('@/supabase/dbfunctions');
 jest.mock('@/lib/email-service');

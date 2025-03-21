@@ -1,11 +1,13 @@
 'use client';
 
-import { useState, useEffect } from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
 import { Sparkles } from 'lucide-react';
-import { summarizeData } from '@/actions/ai-data-analysis';
+import { useEffect, useState } from 'react';
 import ReactMarkdown from 'react-markdown';
+
+import { summarizeData } from '@/actions/ai-data-analysis';
+import { Badge } from '@/components/ui/badge';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+
 import { TypingAnimation } from './magicui/typing-animation';
 
 interface AIResponseProps {
@@ -102,7 +104,7 @@ export default function AIResponse({
       </CardHeader>
       {/* Ai summary box */}
       <CardContent className="h-48 overflow-y-auto">
-        <div className="prose prose-sm max-w-none dark:prose-invert text-base leading-relaxed inline-block font-semibold text-lg">
+        <div className="prose prose-sm max-w-none dark:prose-invert leading-relaxed inline-block font-semibold text-lg">
           {summaryText ? (
             <ReactMarkdown>{displayedText}</ReactMarkdown>
           ) : (

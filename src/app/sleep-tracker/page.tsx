@@ -1,8 +1,9 @@
 import { redirect } from 'next/navigation';
-import { createClient } from '@/supabase/server';
+
 import Footer from '@/components/footer';
-import { SleepEntryCard } from '@/components/sleep-entry';
 import { Header } from '@/components/header';
+import { SleepEntryCard } from '@/components/sleep-entry';
+import { createClient } from '@/supabase/server';
 
 export default async function SleepTrackerPage() {
   const supabase = await createClient();

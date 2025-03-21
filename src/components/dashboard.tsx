@@ -1,16 +1,16 @@
 'use client';
-import { useRouter } from 'next/navigation';
-
-import { Card } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
 import {
-  User,
+  Bell,
+  ListCheck,
+  ListTodo,
   Moon,
   NotebookPen,
-  ListCheck,
-  Bell,
-  ListTodo,
+  User,
 } from 'lucide-react';
+import { useRouter } from 'next/navigation';
+
+import { Button } from '@/components/ui/button';
+import { Card } from '@/components/ui/card';
 
 interface DashboardProps {
   readonly userId: string;

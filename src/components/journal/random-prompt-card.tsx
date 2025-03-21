@@ -1,11 +1,12 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { AnimatePresence, motion } from 'framer-motion';
 import { RotateCw } from 'lucide-react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { cn } from '@/lib/utils';
+import { useEffect, useState } from 'react';
+
 import { getRandomPrompt } from '@/actions/journal';
 import { CardDescription } from '@/components/ui/card';
+import { cn } from '@/lib/utils';
 
 export function RandomPromptCard() {
   const [prompt, setPrompt] = useState('');
