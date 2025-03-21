@@ -125,13 +125,13 @@ For this project, we are leveraging modern technologies to ensure scalability, m
     - **As a user, I want to be able to view quantifiable habits such as exercise and studying, so that I can measure my progress more effectively.**
       - Given that I am on the home page, I can see graphs that represent how much I have done of a habit.
     - **As a user, I want my sleep data stored in a structured format so that I can analyze trends over time.**
-      - Given that I am on the home page, I can see a timeline visualization showing mood trends and a mood bar showing me the ratio of my mood.
+      - Given that I am on the home page, I can see sleep duration and quality of sleep over a specified amount of time.
     - **As a user, I want to track my mood flow over time so that I can identify patterns in my emotional well-being.**
-      - Given that I am on the home page, I can see a timeline visualization showing mood trends. 
-    - **As a user, I want sleep analysis insights so that I can understand how my sleep quality affects my daily life.**
-      - Given that I am on the home page, the AI provides summaries and trends based on my sleeping habits.
+      - Given that I am on the home page, I can see a timeline visualization showing mood trends and a mood bar showing me the ratio of my mood. 
+    - **As a user, I want sleep/mood analysis insights so that I can understand how my mood and sleep quality affects my daily life.**
+      - Given that I am on the home page, the AI provides summaries and trends based on my sleeping/mood habits.
     - **As a user, I want to create my own habits so that I can track what matters most to me.**
-      - Given that I am on the habit tracker page, when I select "Add Habit," the system allows me to name the habit, assign it to a category, and choose a preferred tracking method from preset options.
+      - Given that I am on the habit tracker page, when I select "Add Habit," the system allows me to choose a habit from a category to add, and choose a preferred tracking method from preset options.
 
 ## Architecture Diagram
 
