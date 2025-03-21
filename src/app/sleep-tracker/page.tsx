@@ -29,7 +29,9 @@ export default async function SleepTrackerPage() {
 
       {/* Main Content */}
       <main className="flex-1 container mx-auto px-4 py-8">
-        <SleepEntryCard userId={userId} />
+        <div className="max-w-2xl mx-auto space-y-8">
+          <SleepEntryCard userId={userId} />
+        </div>
       </main>
 
       {/* Footer */}

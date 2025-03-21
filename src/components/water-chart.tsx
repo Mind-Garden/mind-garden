@@ -52,7 +52,7 @@ export default function WaterChart({ userId }: Readonly<WaterChartProps>) {
   }, []);
 
   return (
-    <div className="container mx-auto py-8 font-body">
+    <div className="container mx-auto font-body">
       {(() => {
         if (loading) {
           return (
@@ -65,7 +65,9 @@ export default function WaterChart({ userId }: Readonly<WaterChartProps>) {
         if (!data || data.length === 0) {
           return <div className="h-16 text-center">No data yet! :( </div>;
         }
-
+        {
+          /* Render line graph */
+        }
         return <AnimatedLineGraph data={data} yAxisLabel="Cups of Water" />;
       })()}
     </div>
