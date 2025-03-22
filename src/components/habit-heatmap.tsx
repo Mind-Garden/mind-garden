@@ -175,8 +175,8 @@ export default function HabitHeatmapGrid({ userId }: HeatmapProps) {
   // Function to get the appropriate background color based on completion value
   const getBackgroundColor = (value: boolean) => {
     if (!value) return 'bg-muted';
-    if (value) return '!bg-green-500 dark:!bg-green-650';
-    return '!bg-green-700 dark:!bg-green-500';
+    if (value) return '!bg-green-500';
+    return '!bg-green-700';
   };
 
   // Function to get all tracking methods for a category

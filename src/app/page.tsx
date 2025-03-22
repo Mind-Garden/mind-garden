@@ -1176,7 +1176,7 @@ export default function Home() {
 
                       {/* Toggle between login and signup */}
                       <div className="text-center">
-                        <span className="text-base text-gray-600 dark:text-gray-400">
+                        <span className="text-base text-gray-600">
                           {isLogin
                             ? 'Create a new account'
                             : 'Already have an account?'}
@@ -1184,7 +1184,7 @@ export default function Home() {
                         <button
                           type="button"
                           onClick={() => setIsLogin(!isLogin)}
-                          className="text-base text-emerald-600 hover:text-emerald-700 dark:text-emerald-500 dark:hover:text-emerald-400 font-medium transition-colors"
+                          className="text-base text-emerald-600 hover:text-emerald-700 font-medium transition-colors"
                         >
                           {isLogin ? 'Sign up' : 'Log in'}
                         </button>
