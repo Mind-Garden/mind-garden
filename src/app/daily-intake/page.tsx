@@ -1,5 +1,6 @@
 import { redirect } from 'next/navigation';
 
+import { getAuthenticatedUserId } from '@/actions/auth';
 import {
   getPersonalizedCategories,
   selectAllFromAttributes,
@@ -8,22 +9,9 @@ import {
 import DataIntakeForm from '@/components/data-intake/data-intake-form';
 import Footer from '@/components/footer';
 import { Header } from '@/components/header';
-import { createClient } from '@/supabase/server';
 
 export default async function Dashboard() {
-  const supabase = await createClient();
-
-  const { data: authData, error: authError } = await supabase.auth.getUser();
-  if (authError || !authData?.user) {
-    redirect('/error');
-  }
-
-  const userId = authData.user.id;
-  const { data: profileData, error: profileError } = await supabase
-    .from('users')
-    .select('*')
-    .eq('id', userId)
-    .single();
+  const userId = await getAuthenticatedUserId();
 
   const categories = await selectAllFromCategories();
   const personalizedCategories = await getPersonalizedCategories();
@@ -31,10 +19,6 @@ export default async function Dashboard() {
 
   if (!categories || !attributes || !personalizedCategories) {
     console.error('Failed to fetch categories or attributes.');
-    redirect('/error');
-  }
-
-  if (profileError) {
     redirect('/error');
   }
 

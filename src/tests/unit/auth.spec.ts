@@ -5,6 +5,7 @@ import {
   authenticateResetCode,
   deleteAccount,
   forgotPassword,
+  getAuthenticatedUserId,
   login,
   logout,
   modifyAccount,
@@ -59,6 +60,54 @@ describe('Auth Functions', () => {
     };
 
     (createClient as jest.Mock).mockResolvedValue(mockSupabaseClient);
+  });
+
+  describe('getAuthenticatedUserId', () => {
+    it('should return the authenticated user ID when user is authenticated', async () => {
+      // Arrange
+      const mockUserId = 'user-123';
+      mockSupabaseClient.auth.getUser.mockResolvedValue({
+        data: { user: { id: mockUserId } },
+        error: null,
+      });
+
+      // Act
+      const result = await getAuthenticatedUserId();
+
+      // Assert
+      expect(createClient).toHaveBeenCalled();
+      expect(mockSupabaseClient.auth.getUser).toHaveBeenCalled();
+      expect(result).toBe(mockUserId);
+      expect(redirect).not.toHaveBeenCalled();
+    });
+
+    it('should redirect to error page when user is not authenticated', async () => {
+      // Arrange
+      mockSupabaseClient.auth.getUser.mockResolvedValue({
+        data: { user: null },
+        error: null,
+      });
+
+      // Act & Assert
+      await expect(getAuthenticatedUserId()).rejects.toThrow();
+      expect(createClient).toHaveBeenCalled();
+      expect(mockSupabaseClient.auth.getUser).toHaveBeenCalled();
+      expect(redirect).toHaveBeenCalledWith('/error');
+    });
+
+    it('should redirect to error page when there is an authentication error', async () => {
+      // Arrange
+      mockSupabaseClient.auth.getUser.mockResolvedValue({
+        data: { user: undefined },
+        error: { message: 'Authentication error' },
+      });
+
+      // Act & Assert
+      await expect(getAuthenticatedUserId()).rejects.toThrow();
+      expect(createClient).toHaveBeenCalled();
+      expect(mockSupabaseClient.auth.getUser).toHaveBeenCalled();
+      expect(redirect).toHaveBeenCalledWith('/error');
+    });
   });
 
   describe('login', () => {

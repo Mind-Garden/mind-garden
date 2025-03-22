@@ -85,7 +85,6 @@ export default function Home() {
   /**
    * Handles authentication by calling the appropriate function
    * (login or signup) based on the value of isLogin.
-   * (login or signup) based on the value of isLogin.
    */
   const handleAuth = async (formData: FormData) => {
     setIsLoading(true);
@@ -109,7 +108,6 @@ export default function Home() {
   }, []);
 
   /**
-   * Handles the forgot password functionality.
    * Handles the forgot password functionality.
    */
   const handleForgotPassword = async () => {

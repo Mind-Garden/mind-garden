@@ -1,5 +1,6 @@
 import { redirect } from 'next/navigation';
 
+import { getAuthenticatedUserId } from '@/actions/auth';
 import HabitLineCharts from '@/components/add-habit-charts';
 import BarLineChart from '@/components/bar-line-chart';
 import Dashboard from '@/components/dashboard';
@@ -19,14 +20,9 @@ import WaterChart from '@/components/water-chart';
 import { createClient } from '@/supabase/server';
 
 export default async function Home() {
+  const userId = await getAuthenticatedUserId();
+
   const supabase = await createClient();
-
-  const { data: authData, error: authError } = await supabase.auth.getUser();
-  if (authError || !authData?.user) {
-    redirect('/error');
-  }
-
-  const userId = authData.user.id;
   const { data: profileData, error: profileError } = await supabase
     .from('users')
     .select('*')

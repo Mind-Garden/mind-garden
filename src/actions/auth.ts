@@ -5,6 +5,17 @@ import { redirect } from 'next/navigation';
 
 import { createClient } from '@/supabase/server';
 
+export async function getAuthenticatedUserId(): Promise<string> {
+  const supabase = await createClient();
+
+  const { data: authData, error: authError } = await supabase.auth.getUser();
+  if (authError || !authData.user) {
+    redirect('/error');
+  }
+
+  return authData.user.id;
+}
+
 export async function login(formData: FormData) {
   const supabase = await createClient();
 

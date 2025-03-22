@@ -34,7 +34,7 @@ interface NewJournalProps {
   readonly userId: string;
 }
 
-export default function NewJournal({ userId }: NewJournalProps) {
+export default function Journal({ userId }: NewJournalProps) {
   const [date, setDate] = useState<Date>(getDate());
   const [newEntry, setNewEntry] = useState('');
   const [entries, setEntries] = useState<IJournalEntries[]>([]);
