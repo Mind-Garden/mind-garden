@@ -224,7 +224,7 @@ export default function Home() {
             }}
             className="flex flex-col items-center cursor-pointer"
           >
-            <p className="text-gray-600 dark:text-gray-300 mb-2 font-light">
+            <p className="text-gray-600 mb-2 font-light">
               Click here to unlock your garden
             </p>
             <ChevronDown className="h-6 w-6 text-emerald-500" />
@@ -259,30 +259,30 @@ export default function Home() {
                 animate={isHabitInView ? { x: 0 } : { x: -50 }}
                 transition={{ duration: 0.8, delay: 0.2 }}
               >
-                <h3 className="text-3xl font-bold mb-6 text-gray-800 dark:text-white">
+                <h3 className="text-3xl font-bold mb-6 text-gray-800">
                   Habit Tracking
                 </h3>
-                <p className="text-lg text-gray-600 dark:text-gray-300 mb-6">
+                <p className="text-lg text-gray-600 mb-6">
                   Build consistent routines that nurture your mental well-being.
                   Our intelligent habit tracker helps you:
                 </p>
                 <ul className="space-y-4">
                   <li className="flex items-start">
                     <CheckCircle className="h-6 w-6 text-emerald-500 mr-3 mt-1 flex-shrink-0" />
-                    <span className="text-gray-700 dark:text-gray-200">
+                    <span className="text-gray-700">
                       Create custom habits tailored to your mental health goals
                     </span>
                   </li>
                   <li className="flex items-start">
                     <CheckCircle className="h-6 w-6 text-emerald-500 mr-3 mt-1 flex-shrink-0" />
-                    <span className="text-gray-700 dark:text-gray-200">
+                    <span className="text-gray-700">
                       Track streaks and build momentum with visual progress
                       indicators
                     </span>
                   </li>
                   <li className="flex items-start">
                     <CheckCircle className="h-6 w-6 text-emerald-500 mr-3 mt-1 flex-shrink-0" />
-                    <span className="text-gray-700 dark:text-gray-200">
+                    <span className="text-gray-700">
                       Receive gentle reminders and personalized insights
                     </span>
                   </li>
@@ -295,17 +295,17 @@ export default function Home() {
                 animate={isHabitInView ? { x: 0 } : { x: 50 }}
                 transition={{ duration: 0.8, delay: 0.2 }}
               >
-                <div className="relative bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-6 overflow-hidden">
-                  <div className="absolute top-0 right-0 -mt-10 -mr-10 w-40 h-40 bg-emerald-100 dark:bg-emerald-900/30 rounded-full opacity-70"></div>
+                <div className="relative bg-white rounded-2xl shadow-xl p-6 overflow-hidden">
+                  <div className="absolute top-0 right-0 -mt-10 -mr-10 w-40 h-40 bg-emerald-100 rounded-full opacity-70"></div>
                   <div className="relative z-10">
                     <div className="flex items-center justify-between mb-8">
                       <div className="flex items-center">
                         <Calendar className="h-8 w-8 text-emerald-500 mr-3" />
-                        <h4 className="text-xl font-semibold text-gray-800 dark:text-white">
+                        <h4 className="text-xl font-semibold text-gray-800">
                           Daily Habits
                         </h4>
                       </div>
-                      <span className="text-sm font-medium text-emerald-500 bg-emerald-50 dark:bg-emerald-900/50 py-1 px-3 rounded-full">
+                      <span className="text-sm font-medium text-emerald-500 bg-emerald-50 py-1 px-3 rounded-full">
                         4/5 Today
                       </span>
                     </div>
@@ -341,7 +341,7 @@ export default function Home() {
                       ].map((habit, index) => (
                         <motion.div
                           key={index}
-                          className={`flex items-center justify-between p-4 rounded-xl ${habit.completed ? 'bg-emerald-50 dark:bg-emerald-900/20' : 'bg-gray-50 dark:bg-gray-700/30'}`}
+                          className={`flex items-center justify-between p-4 rounded-xl ${habit.completed ? 'bg-emerald-50' : 'bg-gray-50'}`}
                           initial={{ opacity: 0, y: 10 }}
                           animate={
                             isHabitInView
@@ -355,23 +355,23 @@ export default function Home() {
                         >
                           <div className="flex items-center">
                             <div
-                              className={`w-5 h-5 rounded-full mr-3 flex items-center justify-center ${habit.completed ? 'bg-emerald-500' : 'border-2 border-gray-300 dark:border-gray-600'}`}
+                              className={`w-5 h-5 rounded-full mr-3 flex items-center justify-center ${habit.completed ? 'bg-emerald-500' : 'border-2 border-gray-300'}`}
                             >
                               {habit.completed && (
                                 <CheckCircle className="h-4 w-4 text-white" />
                               )}
                             </div>
                             <span
-                              className={`font-medium ${habit.completed ? 'text-gray-800 dark:text-white' : 'text-gray-500 dark:text-gray-400'}`}
+                              className={`font-medium ${habit.completed ? 'text-gray-800' : 'text-gray-500'}`}
                             >
                               {habit.name}
                             </span>
                           </div>
                           <div className="flex items-center">
-                            <span className="text-xs font-medium text-gray-500 dark:text-gray-400 mr-2">
+                            <span className="text-xs font-medium text-gray-500 mr-2">
                               {habit.streak} days
                             </span>
-                            <div className="w-16 h-2 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
+                            <div className="w-16 h-2 bg-gray-200 rounded-full overflow-hidden">
                               <div
                                 className="h-full bg-emerald-500 rounded-full"
                                 style={{
@@ -403,29 +403,29 @@ export default function Home() {
                 animate={isJournalInView ? { x: 0 } : { x: 50 }}
                 transition={{ duration: 0.8, delay: 0.2 }}
               >
-                <h3 className="text-3xl font-bold mb-6 text-gray-800 dark:text-white">
+                <h3 className="text-3xl font-bold mb-6 text-gray-800">
                   Journaling
                 </h3>
-                <p className="text-lg text-gray-600 dark:text-gray-300 mb-6">
+                <p className="text-lg text-gray-600 mb-6">
                   Express your thoughts and emotions in a safe, private space
                   designed to foster self-reflection and growth:
                 </p>
                 <ul className="space-y-4">
                   <li className="flex items-start">
                     <CheckCircle className="h-6 w-6 text-emerald-500 mr-3 mt-1 flex-shrink-0" />
-                    <span className="text-gray-700 dark:text-gray-200">
+                    <span className="text-gray-700">
                       Guided prompts to inspire meaningful reflection
                     </span>
                   </li>
                   <li className="flex items-start">
                     <CheckCircle className="h-6 w-6 text-emerald-500 mr-3 mt-1 flex-shrink-0" />
-                    <span className="text-gray-700 dark:text-gray-200">
+                    <span className="text-gray-700">
                       Rich text editor with mood tracking and tagging
                     </span>
                   </li>
                   <li className="flex items-start">
                     <CheckCircle className="h-6 w-6 text-emerald-500 mr-3 mt-1 flex-shrink-0" />
-                    <span className="text-gray-700 dark:text-gray-200">
+                    <span className="text-gray-700">
                       End-to-end encryption for complete privacy
                     </span>
                   </li>
@@ -438,17 +438,17 @@ export default function Home() {
                 animate={isJournalInView ? { x: 0 } : { x: -50 }}
                 transition={{ duration: 0.8, delay: 0.2 }}
               >
-                <div className="relative bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-6 overflow-hidden">
-                  <div className="absolute bottom-0 left-0 -mb-10 -ml-10 w-40 h-40 bg-blue-100 dark:bg-blue-900/30 rounded-full opacity-70"></div>
+                <div className="relative bg-white rounded-2xl shadow-xl p-6 overflow-hidden">
+                  <div className="absolute bottom-0 left-0 -mb-10 -ml-10 w-40 h-40 bg-blue-100 rounded-full opacity-70"></div>
                   <div className="relative z-10">
                     <div className="flex items-center justify-between mb-6">
                       <div className="flex items-center">
                         <BookOpen className="h-7 w-7 text-blue-500 mr-3" />
-                        <h4 className="text-xl font-semibold text-gray-800 dark:text-white">
+                        <h4 className="text-xl font-semibold text-gray-800">
                           Today's Journal
                         </h4>
                       </div>
-                      <span className="text-sm font-medium text-blue-500 bg-blue-50 dark:bg-blue-900/50 py-1 px-3 rounded-full">
+                      <span className="text-sm font-medium text-blue-500 bg-blue-50 py-1 px-3 rounded-full">
                         May 14, 2025
                       </span>
                     </div>
@@ -464,13 +464,13 @@ export default function Home() {
                       transition={{ duration: 0.5, delay: 0.4 }}
                     >
                       <div className="mb-4">
-                        <h5 className="text-lg font-medium text-gray-700 dark:text-gray-200 mb-2">
+                        <h5 className="text-lg font-medium text-gray-700 mb-2">
                           How am I feeling today?
                         </h5>
                       </div>
 
-                      <div className="bg-gray-50 dark:bg-gray-700/30 rounded-xl p-4">
-                        <p className="text-gray-600 dark:text-gray-300 leading-relaxed">
+                      <div className="bg-gray-50 rounded-xl p-4">
+                        <p className="text-gray-600 leading-relaxed">
                           I started my morning with a 10-minute meditation
                           session, which helped me center myself before a busy
                           day. The team meeting went better than expected, and I
@@ -505,29 +505,29 @@ export default function Home() {
                 animate={isDataInView ? { x: 0 } : { x: -50 }}
                 transition={{ duration: 0.8, delay: 0.2 }}
               >
-                <h3 className="text-3xl font-bold mb-6 text-gray-800 dark:text-white">
+                <h3 className="text-3xl font-bold mb-6 text-gray-800">
                   Data Visualization
                 </h3>
-                <p className="text-lg text-gray-600 dark:text-gray-300 mb-6">
+                <p className="text-lg text-gray-600 mb-6">
                   Gain powerful insights into your mental well-being through
                   beautiful, intuitive visualizations:
                 </p>
                 <ul className="space-y-4">
                   <li className="flex items-start">
                     <CheckCircle className="h-6 w-6 text-emerald-500 mr-3 mt-1 flex-shrink-0" />
-                    <span className="text-gray-700 dark:text-gray-200">
+                    <span className="text-gray-700">
                       Track mood patterns and identify triggers
                     </span>
                   </li>
                   <li className="flex items-start">
                     <CheckCircle className="h-6 w-6 text-emerald-500 mr-3 mt-1 flex-shrink-0" />
-                    <span className="text-gray-700 dark:text-gray-200">
+                    <span className="text-gray-700">
                       Visualize progress across all your wellness metrics
                     </span>
                   </li>
                   <li className="flex items-start">
                     <CheckCircle className="h-6 w-6 text-emerald-500 mr-3 mt-1 flex-shrink-0" />
-                    <span className="text-gray-700 dark:text-gray-200">
+                    <span className="text-gray-700">
                       Discover correlations between habits and emotional
                       well-being
                     </span>
@@ -541,24 +541,24 @@ export default function Home() {
                 animate={isDataInView ? { x: 0 } : { x: 50 }}
                 transition={{ duration: 0.8, delay: 0.2 }}
               >
-                <div className="relative bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-6 overflow-hidden">
-                  <div className="absolute top-0 right-0 -mt-10 -mr-10 w-40 h-40 bg-purple-100 dark:bg-purple-900/30 rounded-full opacity-70"></div>
+                <div className="relative bg-white rounded-2xl shadow-xl p-6 overflow-hidden">
+                  <div className="absolute top-0 right-0 -mt-10 -mr-10 w-40 h-40 bg-purple-100 rounded-full opacity-70"></div>
                   <div className="relative z-10">
                     <div className="flex items-center justify-between mb-6">
                       <div className="flex items-center">
                         <LineChart className="h-7 w-7 text-purple-500 mr-3" />
-                        <h4 className="text-xl font-semibold text-gray-800 dark:text-white">
+                        <h4 className="text-xl font-semibold text-gray-800">
                           Wellness Insights
                         </h4>
                       </div>
                       <div className="flex space-x-2">
-                        <span className="text-xs font-medium bg-purple-50 dark:bg-purple-900/50 text-purple-600 dark:text-purple-300 py-1 px-2 rounded-full">
+                        <span className="text-xs font-medium bg-purple-50 text-purple-600 py-1 px-2 rounded-full">
                           Week
                         </span>
-                        <span className="text-xs font-medium bg-gray-100 dark:bg-gray-700 text-gray-500 dark:text-gray-400 py-1 px-2 rounded-full">
+                        <span className="text-xs font-medium bg-gray-100 text-gray-500 py-1 px-2 rounded-full">
                           Month
                         </span>
-                        <span className="text-xs font-medium bg-gray-100 dark:bg-gray-700 text-gray-500 dark:text-gray-400 py-1 px-2 rounded-full">
+                        <span className="text-xs font-medium bg-gray-100 text-gray-500 py-1 px-2 rounded-full">
                           Year
                         </span>
                       </div>
@@ -575,8 +575,8 @@ export default function Home() {
                       transition={{ duration: 0.5, delay: 0.4 }}
                     >
                       {/* Mood Chart */}
-                      <div className="bg-gray-50 dark:bg-gray-700/30 rounded-xl p-4">
-                        <h5 className="text-sm font-medium text-gray-600 dark:text-gray-300 mb-4">
+                      <div className="bg-gray-50 rounded-xl p-4">
+                        <h5 className="text-sm font-medium text-gray-600 mb-4">
                           Mood Trends
                         </h5>
                         <div className="h-32 flex items-end space-x-2">
@@ -598,7 +598,7 @@ export default function Home() {
                             ></motion.div>
                           ))}
                         </div>
-                        <div className="flex justify-between mt-2 text-xs text-gray-500 dark:text-gray-400">
+                        <div className="flex justify-between mt-2 text-xs text-gray-500">
                           <span>Mon</span>
                           <span>Tue</span>
                           <span>Wed</span>
@@ -611,7 +611,7 @@ export default function Home() {
 
                       {/* Habit Completion */}
                       <div>
-                        <h5 className="text-sm font-medium text-gray-600 dark:text-gray-300 mb-3">
+                        <h5 className="text-sm font-medium text-gray-600 mb-3">
                           Habit Completion
                         </h5>
                         <div className="space-y-3">
@@ -622,14 +622,14 @@ export default function Home() {
                           ].map((habit, index) => (
                             <div key={index} className="space-y-1">
                               <div className="flex justify-between text-sm">
-                                <span className="text-gray-700 dark:text-gray-300">
+                                <span className="text-gray-700">
                                   {habit.name}
                                 </span>
-                                <span className="text-gray-600 dark:text-gray-400">
+                                <span className="text-gray-600">
                                   {habit.completion}%
                                 </span>
                               </div>
-                              <div className="h-2 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
+                              <div className="h-2 bg-gray-200 rounded-full overflow-hidden">
                                 <motion.div
                                   className="h-full bg-gradient-to-r from-blue-500 to-purple-500 rounded-full"
                                   initial={{ width: 0 }}
@@ -669,8 +669,8 @@ export default function Home() {
                 animate={isAiInView ? { x: 0 } : { x: -50 }}
                 transition={{ duration: 0.8, delay: 0.2 }}
               >
-                <div className="relative bg-white dark:bg-gray-800 rounded-2xl shadow-xl overflow-hidden">
-                  <div className="absolute top-0 right-0 -mt-10 -mr-10 w-40 h-40 bg-blue-100 dark:bg-blue-900/30 rounded-full opacity-70"></div>
+                <div className="relative bg-white rounded-2xl shadow-xl overflow-hidden">
+                  <div className="absolute top-0 right-0 -mt-10 -mr-10 w-40 h-40 bg-blue-100 rounded-full opacity-70"></div>
 
                   <motion.div
                     className="relative z-10"
@@ -965,29 +965,29 @@ export default function Home() {
                 animate={isAiInView ? { x: -50 } : { x: 0 }}
                 transition={{ duration: 0.8, delay: 0.2 }}
               >
-                <h3 className="text-3xl font-bold mb-6 text-gray-800 dark:text-white">
+                <h3 className="text-3xl font-bold mb-6 text-gray-800">
                   AI-Powered Task Management
                 </h3>
-                <p className="text-lg text-gray-600 dark:text-gray-300 mb-6">
+                <p className="text-lg text-gray-600 mb-6">
                   Streamline your productivity with our intelligent task
                   management system that helps you organize and prioritize:
                 </p>
                 <ul className="space-y-4">
                   <li className="flex items-start">
                     <CheckCircle className="h-6 w-6 text-emerald-500 mr-3 mt-1 flex-shrink-0" />
-                    <span className="text-gray-700 dark:text-gray-200">
+                    <span className="text-gray-700">
                       Voice input to quickly capture tasks as they come to mind
                     </span>
                   </li>
                   <li className="flex items-start">
                     <CheckCircle className="h-6 w-6 text-emerald-500 mr-3 mt-1 flex-shrink-0" />
-                    <span className="text-gray-700 dark:text-gray-200">
+                    <span className="text-gray-700">
                       AI organizes and categorizes your tasks automatically
                     </span>
                   </li>
                   <li className="flex items-start">
                     <CheckCircle className="h-6 w-6 text-emerald-500 mr-3 mt-1 flex-shrink-0" />
-                    <span className="text-gray-700 dark:text-gray-200">
+                    <span className="text-gray-700">
                       Track completion progress and maintain productivity
                       momentum
                     </span>
@@ -1019,7 +1019,7 @@ export default function Home() {
                 exit={{ opacity: 0, scale: 0.95 }}
                 transition={{ duration: 0.4 }}
               >
-                <Card className="w-full backdrop-blur-sm bg-white/60 dark:bg-gray-800/60 shadow-xl border-0 rounded-2xl relative">
+                <Card className="w-full backdrop-blur-sm bg-white/60 shadow-xl border-0 rounded-2xl relative">
                   <CardContent className="space-y-8 p-12">
                     <form
                       onSubmit={async (e) => {
@@ -1034,12 +1034,10 @@ export default function Home() {
                         <motion.div
                           initial={{ opacity: 0, y: -10 }}
                           animate={{ opacity: 1, y: 0 }}
-                          className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg p-6 flex items-center space-x-3"
+                          className="bg-red-50 border border-red-200 rounded-lg p-6 flex items-center space-x-3"
                         >
-                          <CircleAlert className="h-6 w-6 text-red-600 dark:text-red-400" />
-                          <p className="text-base text-red-600 dark:text-red-400">
-                            {error}
-                          </p>
+                          <CircleAlert className="h-6 w-6 text-red-600" />
+                          <p className="text-base text-red-600">{error}</p>
                         </motion.div>
                       )}
 
@@ -1049,7 +1047,7 @@ export default function Home() {
                           <div className="space-y-3">
                             <Label
                               htmlFor="firstName"
-                              className="text-base font-medium text-gray-700 dark:text-gray-300"
+                              className="text-base font-medium text-gray-700"
                             >
                               First Name
                             </Label>
@@ -1059,7 +1057,7 @@ export default function Home() {
                                 id="firstName"
                                 name="firstName"
                                 placeholder="John"
-                                className="pl-12 h-12 text-lg bg-white/80 dark:bg-gray-800/80 border-gray-200 dark:border-gray-700 focus:ring-2 focus:ring-emerald-500 dark:focus:ring-emerald-600"
+                                className="pl-12 h-12 text-lg bg-white/80 border-gray-200 focus:ring-2 focus:ring-emerald-500"
                                 required
                               />
                             </div>
@@ -1067,7 +1065,7 @@ export default function Home() {
                           <div className="space-y-3">
                             <Label
                               htmlFor="lastName"
-                              className="text-base font-medium text-gray-700 dark:text-gray-300"
+                              className="text-base font-medium text-gray-700"
                             >
                               Last Name
                             </Label>
@@ -1077,7 +1075,7 @@ export default function Home() {
                                 id="lastName"
                                 name="lastName"
                                 placeholder="Doe"
-                                className="pl-12 h-12 text-lg bg-white/80 dark:bg-gray-800/80 border-gray-200 dark:border-gray-700 focus:ring-2 focus:ring-emerald-500 dark:focus:ring-emerald-600"
+                                className="pl-12 h-12 text-lg bg-white/80 border-gray-200 focus:ring-2 focus:ring-emerald-500"
                                 required
                               />
                             </div>
@@ -1089,7 +1087,7 @@ export default function Home() {
                       <div className="space-y-3">
                         <Label
                           htmlFor="email"
-                          className="text-base font-medium text-gray-700 dark:text-gray-300"
+                          className="text-base font-medium text-gray-700"
                         >
                           Email
                         </Label>
@@ -1101,7 +1099,7 @@ export default function Home() {
                             type="email"
                             placeholder="john.doe@example.com"
                             ref={emailRef}
-                            className="pl-12 h-12 text-lg bg-white/80 dark:bg-gray-800/80 border-gray-200 dark:border-gray-700 focus:ring-2 focus:ring-emerald-500 dark:focus:ring-emerald-600"
+                            className="pl-12 h-12 text-lg bg-white/80 border-gray-200 focus:ring-2 focus:ring-emerald-500"
                             required
                           />
                         </div>
@@ -1112,13 +1110,13 @@ export default function Home() {
                         <div className="flex items-center justify-between">
                           <Label
                             htmlFor="password"
-                            className="text-base font-medium text-gray-700 dark:text-gray-300"
+                            className="text-base font-medium text-gray-700"
                           >
                             Password
                           </Label>
                           {isLogin && (
                             <button
-                              className="text-base text-emerald-600 hover:text-emerald-700 dark:text-emerald-500 dark:hover:text-emerald-400 transition-colors"
+                              className="text-base text-emerald-600 hover:text-emerald-700 transition-colors"
                               type="button"
                               onClick={handleForgotPassword}
                             >
@@ -1137,7 +1135,7 @@ export default function Home() {
                                 ? 'Enter your password'
                                 : 'Create a strong password'
                             }
-                            className="pl-12 h-12 text-lg bg-white/80 dark:bg-gray-800/80 border-gray-200 dark:border-gray-700 focus:ring-2 focus:ring-emerald-500 dark:focus:ring-emerald-600"
+                            className="pl-12 h-12 text-lg bg-white/80 border-gray-200 focus:ring-2 focus:ring-emerald-500"
                           />
                           <button
                             type="button"
@@ -1211,7 +1209,7 @@ export default function Home() {
                   Begin Your Journey Today
                 </motion.h2>
                 <motion.p
-                  className="text-xl text-gray-600 dark:text-gray-300 mb-8 max-w-lg mx-auto"
+                  className="text-xl text-gray-600 mb-8 max-w-lg mx-auto"
                   initial={{ y: 20, opacity: 0 }}
                   animate={{ y: 0, opacity: 1 }}
                   transition={{ duration: 0.6, delay: 0.2 }}
