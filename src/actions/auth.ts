@@ -3,6 +3,7 @@
 import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
 
+import { selectData } from '@/supabase/dbfunctions';
 import { createClient } from '@/supabase/server';
 
 export async function getAuthenticatedUserId(): Promise<string> {
@@ -140,17 +141,33 @@ export async function modifyPassword(newPassword: string) {
 }
 
 export async function forgotPassword(email: string, siteUrl: string) {
-  const supabase = await createClient();
-
-  const { error } = await supabase.auth.resetPasswordForEmail(email, {
-    redirectTo: `${siteUrl}/reset-password`,
-  });
+  const { data, error } = await selectData<{ email: string }>(
+    'users',
+    { email },
+    ['email'],
+  );
 
   if (error) {
     return { error: error.message };
   }
 
-  return { success: 'Password reset link set to your email.' };
+  if (!data || data.length === 0) {
+    return { error: 'Please enter a valid email.' };
+  }
+
+  const supabase = await createClient();
+  const { error: resetError } = await supabase.auth.resetPasswordForEmail(
+    email,
+    {
+      redirectTo: `${siteUrl}/reset-password`,
+    },
+  );
+
+  if (resetError) {
+    return { error: resetError.message };
+  }
+
+  return { success: 'Password reset link sent to your email successfully.' };
 }
 
 export async function authenticateResetCode(code: string) {
