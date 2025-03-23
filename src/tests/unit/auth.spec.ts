@@ -11,6 +11,7 @@ import {
   modifyPassword,
   signup,
 } from '@/actions/auth';
+import { selectData } from '@/supabase/dbfunctions';
 import { createClient } from '@/supabase/server';
 
 // Mock Next.js functions
@@ -25,6 +26,10 @@ jest.mock('next/navigation', () => ({
 // Mock Supabase client
 jest.mock('@/supabase/server', () => ({
   createClient: jest.fn(),
+}));
+
+jest.mock('@/supabase/dbfunctions', () => ({
+  selectData: jest.fn(),
 }));
 
 describe('Auth Functions', () => {
@@ -430,31 +435,36 @@ describe('Auth Functions', () => {
   });
 
   describe('forgotPassword', () => {
-    it('should successfully send password reset email', async () => {
+    it('should successfully send a password reset email', async () => {
       // Arrange
       const email = 'test@example.com';
       const siteUrl = 'https://example.com';
+      (selectData as jest.Mock).mockResolvedValue({ data: [{ email }] });
+      mockSupabaseClient.auth.resetPasswordForEmail.mockResolvedValue({
+        error: null,
+      });
 
       // Act
       const result = await forgotPassword(email, siteUrl);
 
       // Assert
+      expect(selectData).toHaveBeenCalledWith('users', { email }, ['email']);
       expect(
         mockSupabaseClient.auth.resetPasswordForEmail,
       ).toHaveBeenCalledWith(email, {
         redirectTo: `${siteUrl}/reset-password`,
       });
       expect(result).toEqual({
-        success: 'Password reset link set to your email.',
+        success: 'Password reset link sent to your email successfully.',
       });
     });
 
-    it('should return error message when sending email fails', async () => {
+    it('should return an error message when sending email fails', async () => {
       // Arrange
       const email = 'test@example.com';
       const siteUrl = 'https://example.com';
       const mockError = { message: 'Failed to send password reset email' };
-
+      (selectData as jest.Mock).mockResolvedValue({ data: [{ email }] });
       mockSupabaseClient.auth.resetPasswordForEmail.mockResolvedValue({
         error: mockError,
       });
@@ -463,12 +473,48 @@ describe('Auth Functions', () => {
       const result = await forgotPassword(email, siteUrl);
 
       // Assert
+      expect(selectData).toHaveBeenCalledWith('users', { email }, ['email']);
       expect(
         mockSupabaseClient.auth.resetPasswordForEmail,
       ).toHaveBeenCalledWith(email, {
         redirectTo: `${siteUrl}/reset-password`,
       });
       expect(result).toEqual({ error: mockError.message });
+    });
+
+    it('should return error when selectData encounters an error', async () => {
+      // Arrange
+      const email = 'test@example.com';
+      const siteUrl = 'https://example.com';
+      const mockError = { message: 'Database error' };
+      (selectData as jest.Mock).mockResolvedValue({ error: mockError });
+
+      // Act
+      const result = await forgotPassword(email, siteUrl);
+
+      // Assert
+      expect(selectData).toHaveBeenCalledWith('users', { email }, ['email']);
+      expect(result).toEqual({ error: mockError.message });
+      expect(
+        mockSupabaseClient.auth.resetPasswordForEmail,
+      ).not.toHaveBeenCalled();
+    });
+
+    it('should return error when no email is found in the database', async () => {
+      // Arrange
+      const email = 'test@example.com';
+      const siteUrl = 'https://example.com';
+      (selectData as jest.Mock).mockResolvedValue({ data: [] });
+
+      // Act
+      const result = await forgotPassword(email, siteUrl);
+
+      // Assert
+      expect(selectData).toHaveBeenCalledWith('users', { email }, ['email']);
+      expect(result).toEqual({ error: 'Please enter a valid email.' });
+      expect(
+        mockSupabaseClient.auth.resetPasswordForEmail,
+      ).not.toHaveBeenCalled();
     });
   });
 

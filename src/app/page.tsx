@@ -121,9 +121,11 @@ export default function Home() {
     try {
       const { error, success } = await forgotPassword(email, siteUrl);
       if (error) {
-        toast.warn('Please try again later.');
+        toast.warn(error);
+      } else if (success) {
+        toast.success(success);
       } else {
-        toast.success('Password reset email sent successfully.');
+        toast.warn('Please try again later.');
       }
     } finally {
       setIsLoading(false);
