@@ -87,9 +87,9 @@ export default function HabitHeatmap({ userId }: HeatmapProps) {
   // Function to get the appropriate background color based on completion percentage
   const getBackgroundColor = (percentage: number) => {
     if (percentage === 0) return 'bg-muted';
-    if (percentage <= 34) return '!bg-blue-300 dark:!bg-blue-800';
-    if (percentage <= 67) return '!bg-blue-500 dark:!bg-blue-650';
-    return '!bg-blue-700 dark:!bg-blue-500';
+    if (percentage <= 34) return '!bg-blue-300';
+    if (percentage <= 67) return '!bg-blue-500';
+    return '!bg-blue-700';
   };
 
   // Swipe handlers

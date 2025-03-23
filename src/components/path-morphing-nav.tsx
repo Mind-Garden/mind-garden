@@ -61,7 +61,7 @@ export default function PathMorphingNav({ featuresRef }: PathMorphingNavProps) {
   return (
     <motion.div
       key={direction}
-      className={`fixed top-1/2 -translate-y-1/2 z-[-2] flex items-center gap-6 bg-white/90 dark:bg-gray-900/90 backdrop-blur-md p-6 rounded-2xl shadow-2xl w-auto max-w-[30vw] 
+      className={`fixed top-1/2 -translate-y-1/2 z-[-2] flex items-center gap-6 bg-white/90 backdrop-blur-md p-6 rounded-2xl shadow-2xl w-auto max-w-[30vw] 
           ${direction === 1 ? 'left-6 flex-row' : 'right-6 flex-row-reverse'}`}
       initial={{ opacity: 0, x: direction === 1 ? -50 : 50 }}
       animate={{ opacity: 1, x: 0 }}

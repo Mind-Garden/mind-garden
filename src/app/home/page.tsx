@@ -33,15 +33,6 @@ export default async function Home() {
     redirect('/error');
   }
 
-  const data = [
-    { x: '2023-01-01', y: 100 },
-    { x: '2023-02-01', y: 80 },
-    { x: '2023-03-01', y: 150 },
-    { x: '2023-04-01', y: 130 },
-    { x: '2023-05-01', y: 180 },
-    { x: '2023-06-01', y: 350 },
-  ];
-
   return (
     <div className="min-h-screen flex flex-col">
       <Header />
@@ -60,7 +51,7 @@ export default async function Home() {
           <div className="space-y-6 lg:col-span-4 small:col-span-1">
             {/* Quick Links */}
             <Card className="overflow-hidden border-none shadow-md">
-              <CardHeader className="bg-gradient-to-r from-emerald-50 via-teal-50 to-violet-50 dark:from-blue-950/20 dark:to-green-950/20 font-title">
+              <CardHeader className="bg-gradient-to-r from-emerald-50 via-teal-50 to-violet-50 font-title">
                 <CardTitle>Quick Links</CardTitle>
               </CardHeader>
               <CardContent className="p-6">
@@ -70,7 +61,7 @@ export default async function Home() {
 
             {/* Habit Tracker Heatmap */}
             <Card className="overflow-hidden border-none shadow-md">
-              <CardHeader className="bg-gradient-to-r from-emerald-50 via-teal-50 to-violet-50 dark:from-blue-950/20 dark:to-green-950/20">
+              <CardHeader className="bg-gradient-to-r from-emerald-50 via-teal-50 to-violet-50">
                 <CardTitle className="font-title mb-1">
                   Daily Progress Heatmap
                 </CardTitle>
@@ -85,7 +76,7 @@ export default async function Home() {
 
             {/* Habit Tracker Swiper */}
             <Card className="overflow-hidden border-none shadow-md">
-              <CardHeader className="bg-gradient-to-r from-emerald-50 via-teal-50 to-violet-50 dark:from-blue-950/20 dark:to-green-950/20 font-title">
+              <CardHeader className="bg-gradient-to-r from-emerald-50 via-teal-50 to-violet-50 font-title">
                 <div className="flex items-center justify-between">
                   <CardTitle>Habit Trackers</CardTitle>
                 </div>
@@ -100,7 +91,7 @@ export default async function Home() {
           <div className="space-y-6 lg:col-span-8 small:col-span-1">
             {/* Mood Section */}
             <Card className="overflow-hidden border-none shadow-md">
-              <CardHeader className="bg-gradient-to-r from-emerald-50 via-teal-50 to-violet-50 dark:from-blue-950/20 dark:to-green-950/20">
+              <CardHeader className="bg-gradient-to-r from-emerald-50 via-teal-50 to-violet-50">
                 <CardTitle className="font-title">
                   Mood and Sleep Summaries
                 </CardTitle>
@@ -115,7 +106,7 @@ export default async function Home() {
 
             {/* Charts Section */}
             <Card className="overflow-hidden border-none shadow-md">
-              <CardHeader className="bg-gradient-to-r from-emerald-50 via-teal-50 to-violet-50 dark:from-blue-950/20 dark:to-green-950/20">
+              <CardHeader className="bg-gradient-to-r from-emerald-50 via-teal-50 to-violet-50">
                 <CardTitle className="font-title">Charts</CardTitle>
                 <CardDescription className="font-header text-md font-semibold">
                   Activity and water intake tracking

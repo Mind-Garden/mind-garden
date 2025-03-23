@@ -104,7 +104,7 @@ export default function AIResponse({
       </CardHeader>
       {/* Ai summary box */}
       <CardContent className="h-48 overflow-y-auto">
-        <div className="prose prose-sm max-w-none dark:prose-invert leading-relaxed inline-block font-semibold text-lg">
+        <div className="prose prose-sm max-w-none leading-relaxed inline-block font-semibold text-lg">
           {summaryText ? (
             <ReactMarkdown>{displayedText}</ReactMarkdown>
           ) : (
