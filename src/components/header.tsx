@@ -80,7 +80,7 @@ export function Header() {
               {navItems.map((item) => {
                 const Icon = item.icon;
                 return (
-                  <TooltipProvider key={item.path}>
+                  <TooltipProvider key={item.path} delayDuration={50}>
                     <Tooltip>
                       <TooltipTrigger asChild>
                         <Button
