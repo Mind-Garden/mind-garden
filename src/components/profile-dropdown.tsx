@@ -1,6 +1,6 @@
 'use client';
 
-import { LogOut, User } from 'lucide-react';
+import { LogOut, LucideIcon, User } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 
 import { logout } from '@/actions/auth';
@@ -14,7 +14,18 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 
-export function ProfileDropdown() {
+// Define NavItem interface
+interface NavItem {
+  icon: LucideIcon;
+  path: string;
+  label: string;
+}
+
+interface ProfileDropdownProps {
+  navItems?: NavItem[];
+}
+
+export function ProfileDropdown({ navItems }: ProfileDropdownProps) {
   const { push } = useRouter();
 
   return (
@@ -25,8 +36,29 @@ export function ProfileDropdown() {
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="w-56">
+        {/* Conditionally render navigation items if they're passed in */}
+        {navItems && (
+          <>
+            <DropdownMenuLabel>Navigation</DropdownMenuLabel>
+            <DropdownMenuSeparator />
+            {navItems.map((item) => {
+              const Icon = item.icon;
+              return (
+                <DropdownMenuItem
+                  key={item.path}
+                  onClick={() => push(item.path)}
+                >
+                  <Icon className="mr-2 h-4 w-4" />
+                  <span>{item.label}</span>
+                </DropdownMenuItem>
+              );
+            })}
+            <DropdownMenuSeparator />
+          </>
+        )}
         <DropdownMenuLabel>My Account</DropdownMenuLabel>
         <DropdownMenuSeparator />
+
         <DropdownMenuItem onClick={() => push('/profile')}>
           Profile
         </DropdownMenuItem>
