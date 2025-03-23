@@ -1,28 +1,10 @@
-import { redirect } from 'next/navigation';
-
+import { getAuthenticatedUserId } from '@/actions/auth';
 import Footer from '@/components/footer';
 import { Header } from '@/components/header';
 import { SleepEntryCard } from '@/components/sleep-entry';
-import { createClient } from '@/supabase/server';
 
 export default async function SleepTrackerPage() {
-  const supabase = await createClient();
-
-  const { data: authData, error: authError } = await supabase.auth.getUser();
-  if (authError || !authData?.user) {
-    redirect('/error');
-  }
-
-  const userId = authData.user.id;
-  const { data: profileData, error: profileError } = await supabase
-    .from('users')
-    .select('*')
-    .eq('id', userId)
-    .single();
-
-  if (profileError || !profileData) {
-    redirect('/error');
-  }
+  const userId = await getAuthenticatedUserId();
 
   return (
     <div className="min-h-screen flex flex-col font-body">
