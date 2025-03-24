@@ -44,7 +44,7 @@ jobs:
       - name: Push Image to Docker Hub
         run: |
           docker image ls
-          docker tag mind-garden_front-and-back:latest mindgarden/mind-garden:latest
-          docker tag mind-garden_ollama:latest mindgarden/ollama:latest
+          docker tag mind-garden_front-and-back:latest mindgarden/web-app:latest
+          docker tag mind-garden_ollama:latest mindgarden/llm:latest
           docker push mindgarden/mind-garden:latest
           docker push mindgarden/ollama:latest
