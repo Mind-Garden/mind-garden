@@ -133,6 +133,15 @@ For this project, we are leveraging modern technologies to ensure scalability, m
     - **As a user, I want to create my own habits so that I can track what matters most to me.**
       - Given that I am on the habit tracker page, when I select "Add Habit," the system allows me to choose a habit from a category to add, and choose a preferred tracking method from preset options.
 
+## How to run the project
+
+1. In a CLI run `docker pull mindgarden/web-app:latest` and `docker pull mindgarden/llm:latest`
+2. Create a .env file with the values provided in the Project Release.
+3. In a CLI run `docker run --detach mindgarden/llm:latest`
+4. From the CLI go to the directory where your .env file from step 2 is located and run `docker run --env-file .env -p 3000:3000 --detach mindgarden/web-app:latest`
+5. In a browser type `localhost:3000` in the address bar and press enter.
+6. You may now sign up or login and start using the app. 
+
 ## Architecture Diagram
 
 ![arch](public/arch.jpg)
