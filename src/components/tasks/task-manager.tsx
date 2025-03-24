@@ -252,21 +252,21 @@ export default function TaskManager({ userId, firstName }: TaskManagerProps) {
             </Tooltip>
           </TooltipProvider>
 
-          <motion.div
-            whileHover={{ scale: 1.02 }}
-            whileTap={{ scale: 0.98 }}
-            className="flex-1 max-w-md mx-auto"
-          >
-            <Card className="bg-blue-100 shadow-md border-none overflow-hidden flex justify-center">
-              <CardContent className="p-3">
+          <Card className="flex-1 max-w-md mx-auto bg-blue-100 shadow-md border-none overflow-hidden flex justify-center">
+            <CardContent className="p-3">
+              <motion.div
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+                className="flex-1 max-w-md mx-auto"
+              >
                 <VoiceRecorder
                   onTranscriptComplete={processTranscript}
                   onTranscriptChange={setTranscript}
                   isProcessing={isProcessing}
                 />
-              </CardContent>
-            </Card>
-          </motion.div>
+              </motion.div>
+            </CardContent>
+          </Card>
 
           <TooltipProvider>
             <Tooltip>
