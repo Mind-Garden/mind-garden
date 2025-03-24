@@ -236,7 +236,7 @@ export default function TaskManager({ userId, firstName }: TaskManagerProps) {
         </p>
 
         <div className="flex items-center justify-between gap-2">
-          <TooltipProvider>
+          <TooltipProvider delayDuration={50}>
             <Tooltip>
               <TooltipTrigger asChild>
                 <motion.button
@@ -268,7 +268,7 @@ export default function TaskManager({ userId, firstName }: TaskManagerProps) {
             </CardContent>
           </Card>
 
-          <TooltipProvider>
+          <TooltipProvider delayDuration={50}>
             <Tooltip>
               <TooltipTrigger asChild>
                 <motion.button

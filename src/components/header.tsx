@@ -75,32 +75,36 @@ export function Header() {
             <p className="text-3xl font-extrabold font-title">Mind Garden</p>
           </div>
           <div className="flex items-center gap-4">
-            {/* Navigation buttons generated from navItems array */}
-            {navItems.map((item) => {
-              const Icon = item.icon;
-              return (
-                <TooltipProvider key={item.path}>
-                  <Tooltip>
-                    <TooltipTrigger asChild>
-                      <Button
-                        onClick={() => router.push(item.path)}
-                        variant="ghost"
-                        size="icon"
-                        aria-label={item.label}
-                        className="transition-transform hover:scale-110"
-                      >
-                        <Icon className="h-5 w-5" />
-                      </Button>
-                    </TooltipTrigger>
-                    <TooltipContent>
-                      <p>{item.label}</p>
-                    </TooltipContent>
-                  </Tooltip>
-                </TooltipProvider>
-              );
-            })}
+            {/* Show on medium screens and above */}
+            <div className="hidden md:flex items-center gap-4">
+              {navItems.map((item) => {
+                const Icon = item.icon;
+                return (
+                  <TooltipProvider key={item.path} delayDuration={50}>
+                    <Tooltip>
+                      <TooltipTrigger asChild>
+                        <Button
+                          onClick={() => router.push(item.path)}
+                          variant="ghost"
+                          size="icon"
+                          aria-label={item.label}
+                          className="transition-transform hover:scale-110"
+                        >
+                          <Icon className="h-5 w-5" />
+                        </Button>
+                      </TooltipTrigger>
+                      <TooltipContent>
+                        <p>{item.label}</p>
+                      </TooltipContent>
+                    </Tooltip>
+                  </TooltipProvider>
+                );
+              })}
+            </div>
 
-            <ProfileDropdown />
+            {/* Pass navItems to ProfileDropdown only on small screens */}
+            <ProfileDropdown navItems={undefined} className="hidden md:block" />
+            <ProfileDropdown navItems={navItems} className="block md:hidden" />
           </div>
         </div>
       </header>
