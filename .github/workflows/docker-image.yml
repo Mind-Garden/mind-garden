@@ -12,7 +12,7 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v4
 
-      - name: Install Docker using Docker's official script
+      - name: Install Docker Using Docker's Official Script
         run: |
           curl -fsSL https://get.docker.com -o get-docker.sh
           sudo sh get-docker.sh
@@ -31,7 +31,7 @@ jobs:
           echo "SMTP_PASSWORD=${{ secrets.SMTP_PASSWORD }}" >> .env
         shell: bash
 
-      - name: Log in to Docker Hub
+      - name: Log In To Docker Hub
         uses: docker/login-action@v3
         with:
           username: ${{ secrets.DOCKER_HUB_USERNAME }}

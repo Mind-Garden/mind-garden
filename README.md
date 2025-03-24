@@ -133,7 +133,7 @@ For this project, we are leveraging modern technologies to ensure scalability, m
     - **As a user, I want to create my own habits so that I can track what matters most to me.**
       - Given that I am on the habit tracker page, when I select "Add Habit," the system allows me to choose a habit from a category to add, and choose a preferred tracking method from preset options.
 
-## How to run the project
+## Run Project Using Docker Image
 
 1. In a CLI run `docker pull mindgarden/web-app:latest` and `docker pull mindgarden/llm:latest`
 2. Create a .env file with the values provided in the Project Release.
