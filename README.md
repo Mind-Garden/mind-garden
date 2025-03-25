@@ -139,8 +139,9 @@ For this project, we are leveraging modern technologies to ensure scalability, m
 2. Create a .env file with the values provided in the Project Release.
 3. In a CLI run `docker run -p 11434:11434 --detach mindgarden/llm:latest`
 4. From the CLI go to the directory where your .env file from step 2 is located and run `docker run --env-file .env -p 3000:3000 --detach mindgarden/web-app:latest`
-5. In a browser type `localhost:3000` in the address bar and press enter.
-6. You may now sign up or login and start using the app. 
+5. It will take some time for the images to build and start.
+6. When you see `✓ Ready in ###ms` in mindgarden/web-app:latest logs, in a browser type `localhost:3000` in the address bar and press enter.
+7. You may now sign up or login and start using the app. 
 
 ## Architecture Diagram
 
