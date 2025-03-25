@@ -8,7 +8,7 @@ import { summarizeData } from '@/actions/ai-data-analysis';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 
-import { TypingAnimation } from './magicui/typing-animation';
+import { TypingAnimation } from '../magicui/typing-animation';
 
 interface AIResponseProps {
   readonly userId: string;

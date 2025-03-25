@@ -1,7 +1,7 @@
 import { getAuthenticatedUserId } from '@/actions/auth';
+import { SleepEntryCard } from '@/components/data-intake/sleep-entry';
 import Footer from '@/components/footer';
 import { Header } from '@/components/header';
-import { SleepEntryCard } from '@/components/sleep-entry';
 
 export default async function SleepTrackerPage() {
   const userId = await getAuthenticatedUserId();

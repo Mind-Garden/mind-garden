@@ -4,7 +4,7 @@ import { AnimatePresence, motion, type PanInfo } from 'framer-motion';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { useState } from 'react';
 
-import AIResponse from '@/components/ai-response';
+import AIResponse from '@/components/data-visualization/ai-response';
 import MoodBar from '@/components/data-visualization/mood-bar';
 import MoodFlow from '@/components/data-visualization/mood-flow';
 import SleepChart from '@/components/data-visualization/sleep-chart';
