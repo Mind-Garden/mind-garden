@@ -12,7 +12,7 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v4
 
-      - name: Install Docker using Docker's official script
+      - name: Install Docker Using Docker's Official Script
         run: |
           curl -fsSL https://get.docker.com -o get-docker.sh
           sudo sh get-docker.sh
@@ -31,7 +31,7 @@ jobs:
           echo "SMTP_PASSWORD=${{ secrets.SMTP_PASSWORD }}" >> .env
         shell: bash
 
-      - name: Log in to Docker Hub
+      - name: Log In To Docker Hub
         uses: docker/login-action@v3
         with:
           username: ${{ secrets.DOCKER_HUB_USERNAME }}
@@ -44,7 +44,7 @@ jobs:
       - name: Push Image to Docker Hub
         run: |
           docker image ls
-          docker tag mind-garden_front-and-back:latest mindgarden/mind-garden:latest
-          docker tag mind-garden_ollama:latest mindgarden/ollama:latest
+          docker tag mind-garden_front-and-back:latest mindgarden/web-app:latest
+          docker tag mind-garden_ollama:latest mindgarden/llm:latest
           docker push mindgarden/mind-garden:latest
           docker push mindgarden/ollama:latest
