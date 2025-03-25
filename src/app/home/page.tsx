@@ -1,14 +1,15 @@
 import { redirect } from 'next/navigation';
 
 import { getAuthenticatedUserId } from '@/actions/auth';
-import HabitLineCharts from '@/components/add-habit-charts';
-import BarLineChart from '@/components/bar-line-chart';
 import Dashboard from '@/components/dashboard';
+import HabitLineCharts from '@/components/data-visualization/add-habit-charts';
+import BarLineChart from '@/components/data-visualization/bar-line-chart';
+import HabitHeatmapGrid from '@/components/data-visualization/habit-heatmap';
+import HealthDashboard from '@/components/data-visualization/health-dashboard';
+import HabitHeatmap from '@/components/data-visualization/heatmap';
+import WaterChart from '@/components/data-visualization/water-chart';
 import Footer from '@/components/footer';
-import HabitHeatmapGrid from '@/components/habit-heatmap';
 import { Header } from '@/components/header';
-import HealthDashboard from '@/components/health-dashboard';
-import HabitHeatmap from '@/components/heatmap';
 import {
   Card,
   CardContent,
@@ -16,7 +17,6 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
-import WaterChart from '@/components/water-chart';
 import { createClient } from '@/supabase/server';
 
 export default async function Home() {
@@ -121,15 +121,15 @@ export default async function Home() {
                 </div>
                 <div className="pt-4 border-t">
                   <h3 className="text-lg font-body font-semibold mb-4">
-                    Water Intake History
-                  </h3>
-                  <WaterChart userId={userId} />
-                </div>
-                <div className="pt-4 border-t">
-                  <h3 className="text-lg font-body font-semibold mb-4">
                     Habit Tracker Line Charts
                   </h3>
                   <HabitLineCharts userId={userId} />
+                </div>
+                <div className="pt-4 border-t">
+                  <h3 className="text-lg font-body font-semibold mb-4">
+                    Water Intake History
+                  </h3>
+                  <WaterChart userId={userId} />
                 </div>
               </CardContent>
             </Card>

@@ -13,8 +13,8 @@ import {
 import { useEffect, useState } from 'react';
 
 import { selectMoodDataByDateRange } from '@/actions/data-visualization';
+import AnimatedLineGraph from '@/components/data-visualization/line-graph';
 import { Card, CardDescription, CardTitle } from '@/components/ui/card';
-import AnimatedLineGraph from '@/components/ui/line-graph';
 import { getLocalISOString } from '@/lib/utils';
 import { DataPoint, MoodDataPoint, MoodFlowProps } from '@/supabase/schema';
 

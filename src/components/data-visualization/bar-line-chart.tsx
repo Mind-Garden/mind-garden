@@ -97,7 +97,7 @@ export default function BarLineChart({ userId }: Readonly<BarLineChartProps>) {
         <Button
           variant={type === 'work' ? 'default' : 'outline'}
           size="sm"
-          className="rounded-full"
+          className="rounded-full font-body"
           onClick={() => setType('work')}
         >
           Work Day
@@ -105,7 +105,7 @@ export default function BarLineChart({ userId }: Readonly<BarLineChartProps>) {
         <Button
           variant={type === 'study' ? 'default' : 'outline'}
           size="sm"
-          className="rounded-full"
+          className="rounded-full font-body"
           onClick={() => setType('study')}
         >
           School Day
@@ -212,7 +212,7 @@ export default function BarLineChart({ userId }: Readonly<BarLineChartProps>) {
                   <Legend />
                   <Bar
                     dataKey={`${type}_hours`}
-                    fill="#83e3c6"
+                    fill="#a7f3d0"
                     yAxisId="left"
                     name={type === 'study' ? 'Hours Studied' : 'Hours Worked'}
                     radius={[10, 10, 0, 0]}
@@ -220,7 +220,7 @@ export default function BarLineChart({ userId }: Readonly<BarLineChartProps>) {
                   <Line
                     type="monotone"
                     dataKey={`${type}_rating`}
-                    stroke="#2ebb61"
+                    stroke="#047857"
                     yAxisId="right"
                     name="Satisfaction Rating"
                     strokeWidth={2}
