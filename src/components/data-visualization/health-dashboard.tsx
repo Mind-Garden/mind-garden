@@ -5,9 +5,9 @@ import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { useState } from 'react';
 
 import AIResponse from '@/components/ai-response';
-import MoodBar from '@/components/mood-bar';
-import MoodFlow from '@/components/mood-flow';
-import SleepChart from '@/components/sleep-chart';
+import MoodBar from '@/components/data-visualization/mood-bar';
+import MoodFlow from '@/components/data-visualization/mood-flow';
+import SleepChart from '@/components/data-visualization/sleep-chart';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { cn } from '@/lib/utils';

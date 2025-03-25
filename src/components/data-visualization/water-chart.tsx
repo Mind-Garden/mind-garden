@@ -4,7 +4,7 @@ import { LoaderCircle } from 'lucide-react';
 import { useEffect, useState } from 'react';
 
 import { selectWaterDataByDateRange } from '@/actions/data-visualization';
-import AnimatedLineGraph from '@/components/ui/line-graph';
+import AnimatedLineGraph from '@/components/data-visualization/line-graph';
 import { getLocalISOString } from '@/lib/utils';
 import { DataPoint } from '@/supabase/schema';
 

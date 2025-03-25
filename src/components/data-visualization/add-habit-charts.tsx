@@ -17,8 +17,8 @@ import {
   getAllAddedRespCategory,
   getPersonalizedCategories,
 } from '@/actions/data-intake';
+import AnimatedLineGraph from '@/components/data-visualization/line-graph';
 import { Button } from '@/components/ui/button';
-import AnimatedLineGraph from '@/components/ui/line-graph';
 import type { DataPoint, IAddedResp } from '@/supabase/schema';
 
 interface HabitLineChartProps {
