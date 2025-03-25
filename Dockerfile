@@ -11,4 +11,4 @@ COPY . .
 EXPOSE 3000
 
 # Start the app
-CMD ["npm", "run", "dev"]
+CMD ["sh", "-c", "npm run build && npm run start"]
