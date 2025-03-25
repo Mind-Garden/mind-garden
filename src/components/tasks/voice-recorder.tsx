@@ -73,16 +73,16 @@ export default function VoiceRecorder({
       onClick={handleToggleRecording}
       disabled={isProcessing}
       className={`p-2 rounded-full transition-transform duration-300 hover:scale-105 
-        ${isRecording ? 'bg-red-50' : 'hover:bg-blue-50'} 
+        ${isRecording ? 'bg-red-50' : 'hover:bg-sky-50'} 
         ${isProcessing ? 'opacity-50 cursor-not-allowed' : ''}`}
       aria-label="Activate voice input"
     >
       {isProcessing ? (
-        <Loader2 className="w-7 h-7 text-blue-500 animate-spin" />
+        <Loader2 className="w-7 h-7 text-sky-500 animate-spin" />
       ) : isRecording ? (
         <CircleStop className="w-7 h-7 text-red-500 animate-pulse" />
       ) : (
-        <Mic className="w-7 h-7 text-blue-500" />
+        <Mic className="w-7 h-7 text-sky-500" />
       )}
     </button>
   );

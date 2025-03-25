@@ -206,9 +206,9 @@ describe('Data Visualization', () => {
 
     describe('getBarColour', () => {
       it('should return the correct color for sleep durations', () => {
-        expect(getBarColour(5)).toBe('#d9d9d9'); // less than 6
-        expect(getBarColour(6)).toBe('#83e3c6'); // between 6 and 8
-        expect(getBarColour(9)).toBe('#2ebb61'); // greater than 8
+        expect(getBarColour(5)).toBe('#d1d5db'); // less than 6
+        expect(getBarColour(6)).toBe('#22d3ee'); // between 6 and 8
+        expect(getBarColour(9)).toBe('#34d399'); // greater than 8
       });
     });
 

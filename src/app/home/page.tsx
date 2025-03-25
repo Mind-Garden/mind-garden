@@ -121,15 +121,15 @@ export default async function Home() {
                 </div>
                 <div className="pt-4 border-t">
                   <h3 className="text-lg font-body font-semibold mb-4">
-                    Water Intake History
-                  </h3>
-                  <WaterChart userId={userId} />
-                </div>
-                <div className="pt-4 border-t">
-                  <h3 className="text-lg font-body font-semibold mb-4">
                     Habit Tracker Line Charts
                   </h3>
                   <HabitLineCharts userId={userId} />
+                </div>
+                <div className="pt-4 border-t">
+                  <h3 className="text-lg font-body font-semibold mb-4">
+                    Water Intake History
+                  </h3>
+                  <WaterChart userId={userId} />
                 </div>
               </CardContent>
             </Card>

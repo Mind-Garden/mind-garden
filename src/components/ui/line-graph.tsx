@@ -31,6 +31,7 @@ interface AnimatedLineGraphProps {
   readonly yAxisLabel?: string;
   readonly title?: string;
   readonly aspectRatio?: number;
+  readonly shadowColour?: string;
 }
 
 const AnimateNumber = ({ value }: { value: number }) => {
@@ -151,6 +152,7 @@ export default function AnimatedLineGraph({
   yAxisLabel = 'Value',
   title,
   aspectRatio = 1.5,
+  shadowColour = 'url(#shadowGradient)',
 }: AnimatedLineGraphProps) {
   const [tooltipInfo, setTooltipInfo] = useState<{
     x: number;
@@ -161,6 +163,11 @@ export default function AnimatedLineGraph({
   const svgRef = useRef<SVGSVGElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const [dimensions, setDimensions] = useState({ width: 800, height: 400 });
+
+  const gradientId = `shadowGradient-${shadowColour.replace('#', '')}`;
+
+  // Check if shadowColour is a solid color (not a `url(#...)`)
+  const isSolidColor = !shadowColour.startsWith('url(');
 
   const handleSectionHover = (sectionIndex: number | null) => {
     if (
@@ -423,15 +430,43 @@ export default function AnimatedLineGraph({
                     >
                       {yAxisLabel}
                     </text>
-                    {/*Shadow under line */}
-                    <motion.path
-                      d={shadowPathDefinition}
-                      fill="url(#shadowGradient)"
-                      opacity={0.5}
-                      initial={{ opacity: 0 }}
-                      animate={{ opacity: animate ? 0.5 : 0 }}
-                      transition={{ delay: 1, duration: 1 }}
-                    />
+                    <svg>
+                      <defs>
+                        {/* Define gradient only if shadowColour is a solid color */}
+                        {isSolidColor && (
+                          <linearGradient
+                            id={gradientId}
+                            x1="0"
+                            x2="0"
+                            y1="0"
+                            y2="1"
+                          >
+                            <stop
+                              offset="0%"
+                              stopColor={shadowColour}
+                              stopOpacity={0.5}
+                            />
+                            <stop
+                              offset="100%"
+                              stopColor={shadowColour}
+                              stopOpacity={0}
+                            />
+                          </linearGradient>
+                        )}
+                      </defs>
+
+                      {/* Shadow under line */}
+                      <motion.path
+                        d={shadowPathDefinition}
+                        fill={
+                          isSolidColor ? `url(#${gradientId})` : shadowColour
+                        } // Use generated gradient if solid color
+                        opacity={0.5}
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: animate ? 0.5 : 0 }}
+                        transition={{ delay: 1, duration: 1 }}
+                      />
+                    </svg>
                     {/* Line for graph*/}
                     <motion.path
                       d={pathDefinition}

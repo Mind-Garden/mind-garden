@@ -22,6 +22,24 @@ export default function Dashboard({ userId }: DashboardProps) {
   return (
     <div className="font-body">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 max-w-6xl mx-auto">
+        {/* Profile */}
+        <Card className="p-5 bg-white/50 rounded-2xl border-none shadow-lg hover:shadow-xl transition-transform hover:scale-105 hover:bg-white/70">
+          <div className="flex flex-col h-full">
+            <div className="p-3 bg-gradient-to-r from-blue-200 to-violet-200 rounded-xl w-fit">
+              <User className="h-5 w-5 text-violet-500" />
+            </div>
+            <h3 className="text-lg font-header font-bold mt-3">Profile</h3>
+            <p className="text-sm text-muted-foreground mt-1">Your account</p>
+            <Button
+              onClick={() => router.push('/profile')}
+              variant="ghost"
+              className="mt-1 justify-start px-0 hover:bg-gray-200 hover:pl-4"
+            >
+              Settings →
+            </Button>
+          </div>
+        </Card>
+
         {/* Daily Data Intake */}
         <Card className="p-5 bg-white/50 rounded-2xl border-none shadow-lg hover:shadow-xl transition-transform hover:scale-105 hover:bg-white/70">
           <div className="flex flex-col h-full">
@@ -45,8 +63,8 @@ export default function Dashboard({ userId }: DashboardProps) {
         {/* Journal Entry */}
         <Card className="p-5 bg-white/50 rounded-2xl border-none shadow-lg hover:shadow-xl transition-transform hover:scale-105 hover:bg-white/70">
           <div className="flex flex-col h-full">
-            <div className="p-3 bg-gradient-to-r from-blue-200 to-violet-200 rounded-xl w-fit">
-              <NotebookPen className="h-5 w-5 text-violet-500" />
+            <div className="p-3 bg-emerald-100 rounded-xl w-fit">
+              <NotebookPen className="h-5 w-5 text-emerald-600" />
             </div>
             <h3 className="text-lg font-header font-bold mt-3">Journal</h3>
             <p className="text-sm text-muted-foreground mt-1">
@@ -55,7 +73,7 @@ export default function Dashboard({ userId }: DashboardProps) {
             <Button
               onClick={() => router.push('/journal')}
               variant="ghost"
-              className="mt-1 justify-start px-0 hover:bg-gray-200 hover:pl-4"
+              className="mt-1 justify-start px-0 hover:bg-emerald-100 hover:pl-4"
             >
               Write entry →
             </Button>
@@ -65,8 +83,8 @@ export default function Dashboard({ userId }: DashboardProps) {
         {/* Sleep Tracker */}
         <Card className="p-5 bg-white/50 rounded-2xl border-none shadow-lg hover:shadow-xl transition-transform hover:scale-105 hover:bg-white/70">
           <div className="flex flex-col h-full">
-            <div className="p-3 bg-gradient-to-r from-blue-200 to-violet-200 rounded-xl w-fit">
-              <Moon className="h-5 w-5 text-violet-500" />
+            <div className="p-3 bg-teal-100 rounded-xl w-fit">
+              <Moon className="h-5 w-5 text-teal-600" />
             </div>
             <h3 className="text-lg font-header font-bold mt-3">Sleep</h3>
             <p className="text-sm text-muted-foreground mt-1">
@@ -75,7 +93,7 @@ export default function Dashboard({ userId }: DashboardProps) {
             <Button
               onClick={() => router.push('/sleep-tracker')}
               variant="ghost"
-              className="mt-1 justify-start px-0 hover:bg-gray-200 hover:pl-4"
+              className="mt-1 justify-start px-0 hover:bg-teal-100 hover:pl-4"
             >
               Log sleep →
             </Button>
@@ -85,8 +103,8 @@ export default function Dashboard({ userId }: DashboardProps) {
         {/* To-Do List */}
         <Card className="p-5 bg-white/50 rounded-2xl border-none shadow-lg hover:shadow-xl transition-transform hover:scale-105 hover:bg-white/70">
           <div className="flex flex-col h-full">
-            <div className="p-3 bg-gradient-to-r from-blue-200 to-violet-200 rounded-xl w-fit">
-              <ListTodo className="h-5 w-5 text-violet-500" />
+            <div className="p-3 bg-blue-100 rounded-xl w-fit">
+              <ListTodo className="h-5 w-5 text-blue-600" />
             </div>
             <h3 className="text-lg font-header font-bold mt-3">To-Do List</h3>
             <p className="text-sm text-muted-foreground mt-1">
@@ -95,7 +113,7 @@ export default function Dashboard({ userId }: DashboardProps) {
             <Button
               onClick={() => router.push('/task-manager')}
               variant="ghost"
-              className="mt-1 justify-start px-0 hover:bg-gray-200 hover:pl-4"
+              className="mt-1 justify-start px-0 hover:bg-sky-100 hover:pl-4"
             >
               Task Manager →
             </Button>
@@ -105,8 +123,8 @@ export default function Dashboard({ userId }: DashboardProps) {
         {/* Reminders */}
         <Card className="p-5 bg-white/50 rounded-2xl border-none shadow-lg hover:shadow-xl transition-transform hover:scale-105 hover:bg-white/70">
           <div className="flex flex-col h-full">
-            <div className="p-3 bg-gradient-to-r from-blue-200 to-violet-200 rounded-xl w-fit">
-              <Bell className="h-5 w-5 text-violet-500" />
+            <div className="p-3 bg-violet-100 rounded-xl w-fit">
+              <Bell className="h-5 w-5 text-violet-600" />
             </div>
             <h3 className="text-lg font-header font-bold mt-3">Reminders</h3>
             <p className="text-sm text-muted-foreground mt-1">
@@ -115,27 +133,9 @@ export default function Dashboard({ userId }: DashboardProps) {
             <Button
               onClick={() => router.push('/reminders')}
               variant="ghost"
-              className="mt-1 justify-start px-0 hover:bg-gray-200 hover:pl-4"
+              className="mt-1 justify-start px-0 hover:bg-violet-100 hover:pl-4"
             >
               Reminders →
-            </Button>
-          </div>
-        </Card>
-
-        {/* Profile */}
-        <Card className="p-5 bg-white/50 rounded-2xl border-none shadow-lg hover:shadow-xl transition-transform hover:scale-105 hover:bg-white/70">
-          <div className="flex flex-col h-full">
-            <div className="p-3 bg-gradient-to-r from-blue-200 to-violet-200 rounded-xl w-fit">
-              <User className="h-5 w-5 text-violet-500" />
-            </div>
-            <h3 className="text-lg font-header font-bold mt-3">Profile</h3>
-            <p className="text-sm text-muted-foreground mt-1">Your account</p>
-            <Button
-              onClick={() => router.push('/profile')}
-              variant="ghost"
-              className="mt-1 justify-start px-0 hover:bg-gray-200 hover:pl-4"
-            >
-              Settings →
             </Button>
           </div>
         </Card>

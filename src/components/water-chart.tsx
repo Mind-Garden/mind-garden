@@ -66,7 +66,14 @@ export default function WaterChart({ userId }: Readonly<WaterChartProps>) {
         if (!data || data.length === 0) {
           return <div className="h-16 text-center">No data yet! :( </div>;
         }
-        return <AnimatedLineGraph data={data} yAxisLabel="Cups of Water" />;
+        return (
+          <AnimatedLineGraph
+            data={data}
+            yAxisLabel="Cups of Water"
+            lineColor="skyblue"
+            shadowColour="skyblue"
+          />
+        );
       })()}
     </div>
   );

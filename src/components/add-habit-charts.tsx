@@ -191,7 +191,9 @@ export default function HabitLineCharts({ userId }: HabitLineChartProps) {
 
     return (
       <div key={`${category}-${trackingMethod}`} className="mb-10">
-        <h3 className="text-xl font-semibold mb-4 capitalize">{displayName}</h3>
+        <h3 className="text-xl font-semibold capitalize text-center">
+          {displayName}
+        </h3>
 
         {/* Line chart rendering */}
         <div className="container mx-auto">
@@ -200,9 +202,7 @@ export default function HabitLineCharts({ userId }: HabitLineChartProps) {
               return <div className="h-16 text-center">No data yet! :( </div>;
             }
 
-            return (
-              <AnimatedLineGraph data={data} yAxisLabel="Tracking Value" />
-            );
+            return <AnimatedLineGraph data={data} />;
           })()}
         </div>
       </div>
@@ -215,7 +215,7 @@ export default function HabitLineCharts({ userId }: HabitLineChartProps) {
     trackingMethodsByCategory[currentCategory] || [];
 
   return (
-    <div className="w-full max-w-3xl mx-auto p-4 font-body">
+    <div className="w-full mx-auto font-body">
       <div className="flex flex-col items-center justify-center mb-6 space-y-2">
         {/* Month Navigation */}
         <div className="flex items-center space-x-4">
@@ -249,7 +249,7 @@ export default function HabitLineCharts({ userId }: HabitLineChartProps) {
 
       {/* Category navigation */}
       {categories.length > 0 && (
-        <div className="flex items-center justify-between mb-6">
+        <div className="w-full flex items-center justify-between pl-10 pr-10 mb-6">
           <Button
             variant="outline"
             size="sm"
