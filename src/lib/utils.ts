@@ -70,9 +70,9 @@ export const getBarColour = (duration: number): string => {
   if (duration < 6) {
     return '#d1d5db';
   } else if (duration >= 6 && duration <= 8) {
-    return '#22d3ee';
+    return '#83e3c6';
   } else {
-    return '#34d399';
+    return '#2ebb61';
   }
 };
 
