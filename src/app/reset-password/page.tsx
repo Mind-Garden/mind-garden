@@ -6,8 +6,8 @@ import { toast } from 'react-toastify';
 
 import { authenticateResetCode } from '@/actions/auth';
 import Footer from '@/components/footer';
+import ResetPassword from '@/components/login-page/reset-password';
 import { Particles } from '@/components/magicui/particles';
-import ResetPassword from '@/components/reset-password';
 
 export default function ResetPasswordPage() {
   const [session, setSession] = useState<any | null>(null);

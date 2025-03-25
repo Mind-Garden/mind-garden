@@ -4,7 +4,7 @@ import React from 'react';
 import { getAuthenticatedUserId } from '@/actions/auth';
 import Footer from '@/components/footer';
 import { Header } from '@/components/header';
-import ReminderCard from '@/components/reminder-card';
+import ReminderCard from '@/components/reminders/reminder-card';
 
 export default async function RemindersPage() {
   const userId = await getAuthenticatedUserId();

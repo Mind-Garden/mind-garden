@@ -32,10 +32,10 @@ import { useEffect, useRef, useState } from 'react';
 import { toast } from 'react-toastify';
 
 import { forgotPassword, login, signup } from '@/actions/auth';
-import PathDrawing from '@/components/arrow-explore';
 import Footer from '@/components/footer';
+import PathDrawing from '@/components/login-page/arrow-explore';
+import PathMorphingNav from '@/components/login-page/path-morphing-nav';
 import { TypingAnimation } from '@/components/magicui/typing-animation';
-import PathMorphingNav from '@/components/path-morphing-nav';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import { Checkbox } from '@/components/ui/checkbox';
