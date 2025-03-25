@@ -5,10 +5,9 @@ import { useEffect, useState } from 'react';
 import ReactMarkdown from 'react-markdown';
 
 import { summarizeData } from '@/actions/ai-data-analysis';
+import { TypingAnimation } from '@/components/magicui/typing-animation';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-
-import { TypingAnimation } from '@/magicui/typing-animation';
 
 interface AIResponseProps {
   readonly userId: string;
