@@ -172,8 +172,7 @@ export default function Heatmap({ userId, personalized }: HeatmapProps) {
   // Function to get the appropriate background color based on completion value
   const getBackgroundColor = (value: boolean) => {
     if (!value) return 'bg-muted';
-    if (value) return '!bg-green-500';
-    return '!bg-green-700';
+    else return '!bg-violet-300';
   };
 
   const getDataForDate = (date: Date) => {
@@ -193,9 +192,9 @@ export default function Heatmap({ userId, personalized }: HeatmapProps) {
   // Function to get the appropriate background color based on completion percentage
   const getBackgroundColorData = (percentage: number) => {
     if (percentage === 0) return 'bg-muted';
-    if (percentage <= 34) return '!bg-blue-300';
-    if (percentage <= 67) return '!bg-blue-500';
-    return '!bg-blue-700';
+    if (percentage <= 34) return '!bg-sky-100';
+    if (percentage <= 67) return '!bg-sky-300';
+    return '!bg-sky-500';
   };
 
   // Function to get all tracking methods for a category

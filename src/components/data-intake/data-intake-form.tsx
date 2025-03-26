@@ -434,6 +434,7 @@ function DataIntakeForm({
           value={smoking}
           onChange={setSmoking}
           question="How many cigarettes today?"
+          disabled={submitting || !scaleSelection}
         />
       ),
       'scale:alcohol': (
@@ -442,6 +443,7 @@ function DataIntakeForm({
           value={drinks}
           onChange={setDrinks}
           question="How many drinks today?"
+          disabled={submitting || !scaleSelection}
         />
       ),
       'scale:meal': (
@@ -450,6 +452,7 @@ function DataIntakeForm({
           value={meals}
           onChange={setMeals}
           question="How many meals today?"
+          disabled={submitting || !scaleSelection}
         />
       ),
       'scale:cooking': (
@@ -458,6 +461,7 @@ function DataIntakeForm({
           value={cooking}
           onChange={setCooking}
           question="How many home-cooked meals today?"
+          disabled={submitting || !scaleSelection}
         />
       ),
       'scale:sick': (
@@ -467,6 +471,7 @@ function DataIntakeForm({
           onChange={setSick}
           leftLabel="Sick"
           rightLabel="Healthy"
+          disabled={submitting || !scaleSelection}
         />
       ),
       'boolean:alcohol': (
@@ -475,6 +480,7 @@ function DataIntakeForm({
           question="Did you drink today?"
           onChange={setDrinksBool}
           initialValue={drinksBool}
+          disabled={submitting || !scaleSelection}
         />
       ),
       'boolean:smoking': (
@@ -483,6 +489,7 @@ function DataIntakeForm({
           question="Did you smoke today?"
           onChange={setSmokingBool}
           initialValue={smokingBool}
+          disabled={submitting || !scaleSelection}
         />
       ),
       'boolean:sick': (
@@ -491,6 +498,7 @@ function DataIntakeForm({
           question="Were you sick today?"
           onChange={setSickBool}
           initialValue={sickBool}
+          disabled={submitting || !scaleSelection}
         />
       ),
       'breakfast:meal': (
@@ -499,6 +507,7 @@ function DataIntakeForm({
           question="Did you eat breakfast today?"
           onChange={setBreakfastBool}
           initialValue={breakfastBool}
+          disabled={submitting || !scaleSelection}
         />
       ),
       'lunch:meal': (
@@ -507,6 +516,7 @@ function DataIntakeForm({
           question="Did you eat lunch today?"
           onChange={setLunchBool}
           initialValue={lunchBool}
+          disabled={submitting || !scaleSelection}
         />
       ),
       'dinner:meal': (
@@ -515,6 +525,7 @@ function DataIntakeForm({
           question="Did you eat dinner today?"
           onChange={setDinnerBool}
           initialValue={dinnerBool}
+          disabled={submitting || !scaleSelection}
         />
       ),
       'breakfast:cooking': (
@@ -523,6 +534,7 @@ function DataIntakeForm({
           question="Did you make breakfast today?"
           onChange={setBreakfastCookingBool}
           initialValue={breakfastCookingBool}
+          disabled={submitting || !scaleSelection}
         />
       ),
       'lunch:cooking': (
@@ -531,6 +543,7 @@ function DataIntakeForm({
           question="Did you make lunch today?"
           onChange={setLunchCookingBool}
           initialValue={lunchCookingBool}
+          disabled={submitting || !scaleSelection}
         />
       ),
       'dinner:cooking': (
@@ -539,6 +552,7 @@ function DataIntakeForm({
           question="Did you make dinner today?"
           onChange={setDinnerCookingBool}
           initialValue={dinnerCookingBool}
+          disabled={submitting || !scaleSelection}
         />
       ),
     };
@@ -724,6 +738,7 @@ function DataIntakeForm({
                       onChange={setStudyRating}
                       leftLabel="Poor"
                       rightLabel="Excellent"
+                      disabled={submitting || !scaleSelection}
                     />
                   </div>
                   <div className="flex flex-wrap justify-center gap-2 border-t pt-4">
@@ -790,6 +805,7 @@ function DataIntakeForm({
                       onChange={setWorkRating}
                       leftLabel="Poor"
                       rightLabel="Excellent"
+                      disabled={submitting || !scaleSelection}
                     />
                   </div>
                   <div className="flex flex-wrap justify-center gap-2 border-t pt-4">

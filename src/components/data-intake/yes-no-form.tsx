@@ -17,7 +17,7 @@ export default function YesNoForm({
   question,
   initialValue = null,
   onChange,
-  disabled = false,
+  disabled,
 }: YesNoFormProps) {
   const [selected, setSelected] = useState<boolean | null>(initialValue);
 
@@ -41,6 +41,9 @@ export default function YesNoForm({
           className={cn(
             'flex items-center rounded-md transition-all px-1',
             selected === true ? 'text-green-700' : 'text-gray-500',
+            disabled
+              ? 'opacity-50 pointer-events-none shadow-none bg-transparent'
+              : 'hover:bg-slate-100 hover:shadow',
           )}
           onClick={() => handleSelection(true)}
           disabled={disabled}
