@@ -5,10 +5,9 @@ import HabitLineCharts from '@/components/add-habit-charts';
 import BarLineChart from '@/components/bar-line-chart';
 import Dashboard from '@/components/dashboard';
 import Footer from '@/components/footer';
-import HabitHeatmapGrid from '@/components/habit-heatmap';
 import { Header } from '@/components/header';
 import HealthDashboard from '@/components/health-dashboard';
-import HabitHeatmap from '@/components/heatmap';
+import Heatmap from '@/components/heatmap';
 import {
   Card,
   CardContent,
@@ -70,7 +69,7 @@ export default async function Home() {
                 </CardDescription>
               </CardHeader>
               <CardContent className="p-6">
-                <HabitHeatmap userId={userId} />
+                <Heatmap personalized={false} userId={userId} />
               </CardContent>
             </Card>
 
@@ -82,7 +81,7 @@ export default async function Home() {
                 </div>
               </CardHeader>
               <CardContent className="p-6">
-                <HabitHeatmapGrid userId={userId} />
+                <Heatmap personalized={true} userId={userId} />
               </CardContent>
             </Card>
           </div>

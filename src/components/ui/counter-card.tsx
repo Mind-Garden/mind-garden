@@ -7,6 +7,8 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { RatingScale } from '@/components/ui/rating-scale';
 import { cn } from '@/lib/utils';
 
+import FloatingShapes from './floating-shapes';
+
 interface CounterCardProps {
   title: string;
   description?: string;
@@ -101,11 +103,24 @@ export default function CounterCard({
   return (
     <Card
       className={cn(
-        'bg-white/50 backdrop-blur-sm rounded-2xl border-none relative transition-opacity',
-        disabled ? 'opacity-50 pointer-events-none' : 'opacity-100',
+        'bg-white rounded-2xl border-none relative transition-opacity',
+        disabled ? 'opacity-100' : 'opacity-100',
         className,
       )}
     >
+      {disabled && (
+        <FloatingShapes
+          colors={[
+            'bg-emerald-200',
+            'bg-teal-200',
+            'bg-violet-200',
+            'bg-emerald-200',
+            'bg-teal-200',
+            'bg-violet-200',
+          ]}
+          className="absolute inset-0 z-0 pointer-events-none"
+        />
+      )}
       <CardHeader className="pb-3">
         <CardTitle className="text-lg">{title}</CardTitle>
         {description && (

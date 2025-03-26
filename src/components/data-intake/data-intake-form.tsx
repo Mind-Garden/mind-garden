@@ -23,6 +23,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import Counter from '@/components/ui/counter';
 import CounterCard from '@/components/ui/counter-card';
+import FloatingShapes from '@/components/ui/floating-shapes';
 import { RatingScale } from '@/components/ui/rating-scale';
 import { getLocalISOString } from '@/lib/utils';
 import type {
@@ -558,8 +559,8 @@ function DataIntakeForm({
   }
 
   return (
-    <div className="font-body w-full max-w-4xl mx-auto pb-2 rounded-2xl bg-gradient-to-r from-emerald-200/50 via-teal-200/50 to-violet-200/50 backdrop-blur-md">
-      <div className="backdrop-blur-sm mb-6 px-2 rounded-t-2xl">
+    <div className="font-body w-full max-w-4xl mx-auto pb-2 rounded-2xl bg-white/50 backdrop-blur-md">
+      <div className="backdrop-blur-sm px-2 rounded-t-2xl">
         <div className="container mx-auto px-4 py-4">
           <div className="flex items-center justify-between h-16">
             <p className="text-3xl font-semibold text-black font-title pl-2">
@@ -568,7 +569,7 @@ function DataIntakeForm({
             <div className="flex items-center gap-4 pr-4">
               <Button
                 variant="outline"
-                className="rounded-xl bg-transparent border-green-100/50 hover:bg-black/10"
+                className="rounded-xl bg-transparent border-black-100/50 hover:bg-black/10"
                 onClick={() => setShowAddHabitDialog(true)}
               >
                 <Plus className="h-4 w-4 mr-2" />
@@ -576,7 +577,7 @@ function DataIntakeForm({
               </Button>
               <Button
                 variant="outline"
-                className="rounded-xl bg-transparent border-green-100/50 hover:bg-black/10"
+                className="rounded-xl bg-transparent border-black-100/50 hover:bg-black/10"
                 onClick={handleSubmit}
                 disabled={submitting}
               >
@@ -611,7 +612,7 @@ function DataIntakeForm({
 
         {/* Scale Selection */}
         <div
-          className={`flex flex-col items-center py-4 bg-white/50 rounded-full mb-6 z-10 transition-opacity ${submitting ? 'opacity-50' : 'opacity-100'}`}
+          className={`flex flex-col items-center py-4 bg-white/50 rounded-full z-10 transition-opacity ${submitting ? 'opacity-50' : 'opacity-100'}`}
         >
           <p className="font-bold text-xl">Rate Your Day</p>
           <div className="flex justify-center gap-4 mt-2">
@@ -636,169 +637,217 @@ function DataIntakeForm({
         </div>
         {/* Emotions Category */}
         {emotionsCategory && (
-          <Card
-            key={emotionsCategory.id}
-            className={`bg-white/50 break-inside-avoid backdrop-blur-sm rounded-2xl border-none mb-6 relative transition-opacity ${
-              submitting || !scaleSelection
-                ? 'opacity-50 pointer-events-none'
-                : 'opacity-100'
-            }`}
-          >
-            <CardHeader className="pb-3">
-              <CardTitle className="text-lg text-semibold">
-                {emotionsCategory.name}
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="flex flex-wrap justify-center gap-2">
-                {attributesByCategory.get(emotionsCategory.id)?.map((attr) => (
-                  <ToggleButton<string>
-                    key={attr.id}
-                    value={attr.id}
-                    isSelected={currentSelection.has(attr.id)}
-                    onChange={handleToggle}
-                    disabled={submitting || !scaleSelection}
-                  >
-                    <span className="flex items-center">
-                      <AttributeIcon
-                        category={emotionsCategory.name}
-                        attribute={attr.name}
-                      />
-                      {attr.name}
-                    </span>
-                  </ToggleButton>
-                ))}
-              </div>
-            </CardContent>
-          </Card>
+          <div className="relative rounded-2xl overflow-hidden p-[2px] mb-5 bg-gradient-to-r from-emerald-300 via-sky-300 to-violet-300">
+            <Card
+              key={emotionsCategory.id}
+              className={
+                'bg-white rounded-[14px] h-full overflow-hidden border-none break-inside-avoid backdrop-blur-sm relative transition-opacity'
+              }
+            >
+              {(submitting || !scaleSelection) && (
+                <FloatingShapes
+                  colors={[
+                    'bg-emerald-200',
+                    'bg-teal-200',
+                    'bg-violet-200',
+                    'bg-emerald-200',
+                    'bg-teal-200',
+                    'bg-violet-200',
+                  ]}
+                  className="absolute inset-0 z-0 pointer-events-none"
+                />
+              )}
+              <CardHeader className="pb-3">
+                <CardTitle className="text-lg text-semibold">
+                  {emotionsCategory.name}
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="flex flex-wrap justify-center gap-2">
+                  {attributesByCategory
+                    .get(emotionsCategory.id)
+                    ?.map((attr) => (
+                      <ToggleButton<string>
+                        key={attr.id}
+                        value={attr.id}
+                        isSelected={currentSelection.has(attr.id)}
+                        onChange={handleToggle}
+                        disabled={submitting || !scaleSelection}
+                      >
+                        <span className="flex items-center">
+                          <AttributeIcon
+                            category={emotionsCategory.name}
+                            attribute={attr.name}
+                          />
+                          {attr.name}
+                        </span>
+                      </ToggleButton>
+                    ))}
+                </div>
+              </CardContent>
+            </Card>
+          </div>
         )}
 
         {/* Card Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           {/* School Category Card */}
           {schoolCategory && (
-            <Card
-              key={schoolCategory.id}
-              className={`bg-white/50 break-inside-avoid backdrop-blur-sm rounded-2xl border-none mb-6 relative transition-opacity ${
-                submitting || !scaleSelection
-                  ? 'opacity-50 pointer-events-none'
-                  : 'opacity-100'
-              }`}
-            >
-              <CardHeader className="pb-3">
-                <CardTitle className="text-lg">{schoolCategory.name}</CardTitle>
-                <p className="text-sm text-muted-foreground mt-1">
-                  {'How many hours did you study today?'}
-                </p>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-3 pt-4 pb-4">
-                  <Counter
-                    value={studyHours ?? 0}
-                    onChange={setStudyHours}
-                    disabled={submitting || !scaleSelection}
+            <div className="relative rounded-2xl overflow-hidden p-[2px] bg-gradient-to-r from-emerald-300 via-sky-300 to-violet-300">
+              <Card
+                key={schoolCategory.id}
+                className={
+                  'bg-white rounded-[14px] h-full overflow-hidden border-none break-inside-avoid backdrop-blur-sm relative transition-opacity'
+                }
+              >
+                {(submitting || !scaleSelection) && (
+                  <FloatingShapes
+                    colors={[
+                      'bg-emerald-200',
+                      'bg-teal-200',
+                      'bg-violet-200',
+                      'bg-emerald-200',
+                      'bg-teal-200',
+                      'bg-violet-200',
+                    ]}
+                    className="absolute inset-0 z-0 pointer-events-none"
                   />
-                </div>
-                <div className="space-y-3 border-t pt-4 pb-4">
-                  <label className="text-sm font-medium">
-                    {'How would you rate your school day?'}
-                  </label>
-                  <RatingScale
-                    value={studyRating ?? 0}
-                    onChange={setStudyRating}
-                    leftLabel="Poor"
-                    rightLabel="Excellent"
-                  />
-                </div>
-                <div className="flex flex-wrap justify-center gap-2 border-t pt-4">
-                  {attributesByCategory.get(schoolCategory.id)?.map((attr) => (
-                    <ToggleButton<string>
-                      key={attr.id}
-                      value={attr.id}
-                      isSelected={currentSelection.has(attr.id)}
-                      onChange={handleToggle}
+                )}
+                <CardHeader className="pb-3">
+                  <CardTitle className="text-lg">
+                    {schoolCategory.name}
+                  </CardTitle>
+                  <p className="text-sm text-muted-foreground mt-1">
+                    {'How many hours did you study today?'}
+                  </p>
+                </CardHeader>
+                <CardContent>
+                  <div className="space-y-3 pt-4 pb-4">
+                    <Counter
+                      value={studyHours ?? 0}
+                      onChange={setStudyHours}
                       disabled={submitting || !scaleSelection}
-                    >
-                      <span className="flex items-center gap-0.5">
-                        <AttributeIcon
-                          category={schoolCategory.name}
-                          attribute={attr.name}
-                        />
-                        {attr.name}
-                      </span>
-                    </ToggleButton>
-                  ))}
-                </div>
-              </CardContent>
-            </Card>
+                    />
+                  </div>
+                  <div className="space-y-3 border-t pt-4 pb-4">
+                    <label className="text-sm font-medium">
+                      {'How would you rate your school day?'}
+                    </label>
+                    <RatingScale
+                      value={studyRating ?? 0}
+                      onChange={setStudyRating}
+                      leftLabel="Poor"
+                      rightLabel="Excellent"
+                    />
+                  </div>
+                  <div className="flex flex-wrap justify-center gap-2 border-t pt-4">
+                    {attributesByCategory
+                      .get(schoolCategory.id)
+                      ?.map((attr) => (
+                        <ToggleButton<string>
+                          key={attr.id}
+                          value={attr.id}
+                          isSelected={currentSelection.has(attr.id)}
+                          onChange={handleToggle}
+                          disabled={submitting || !scaleSelection}
+                        >
+                          <span className="flex items-center gap-0.5">
+                            <AttributeIcon
+                              category={schoolCategory.name}
+                              attribute={attr.name}
+                            />
+                            {attr.name}
+                          </span>
+                        </ToggleButton>
+                      ))}
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
           )}
 
           {/* Work Category Card */}
           {workCategory && (
-            <Card
-              key={workCategory.id}
-              className={`bg-white/50 break-inside-avoid backdrop-blur-sm rounded-2xl border-none mb-6 relative transition-opacity ${
-                submitting || !scaleSelection
-                  ? 'opacity-50 pointer-events-none'
-                  : 'opacity-100'
-              }`}
-            >
-              <CardHeader className="pb-3">
-                <CardTitle className="text-lg">{workCategory.name}</CardTitle>
-                <p className="text-sm text-muted-foreground mt-1">
-                  {'How many hours did you work today?'}
-                </p>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-3 pt-4 pb-4">
-                  <Counter
-                    value={workHours ?? 0}
-                    onChange={setWorkHours}
-                    disabled={submitting || !scaleSelection}
+            <div className="relative rounded-2xl overflow-hidden p-[2px] bg-gradient-to-r from-emerald-300 via-sky-300 to-violet-300">
+              <Card
+                key={workCategory.id}
+                className={
+                  'bg-white rounded-[14px] h-full overflow-hidden border-none break-inside-avoid backdrop-blur-sm relative transition-opacity'
+                }
+              >
+                {(submitting || !scaleSelection) && (
+                  <FloatingShapes
+                    colors={[
+                      'bg-emerald-200',
+                      'bg-teal-200',
+                      'bg-violet-200',
+                      'bg-emerald-200',
+                      'bg-teal-200',
+                      'bg-violet-200',
+                    ]}
+                    className="absolute inset-0 z-0 pointer-events-none"
                   />
-                </div>
-                <div className="space-y-3 border-t pt-4 pb-4">
-                  <label className="text-sm font-medium">
-                    {'How would you rate your work day?'}
-                  </label>
-                  <RatingScale
-                    value={workRating ?? 0}
-                    onChange={setWorkRating}
-                    leftLabel="Poor"
-                    rightLabel="Excellent"
-                  />
-                </div>
-                <div className="flex flex-wrap justify-center gap-2 border-t pt-4">
-                  {attributesByCategory.get(workCategory.id)?.map((attr) => (
-                    <ToggleButton<string>
-                      key={attr.id}
-                      value={attr.id}
-                      isSelected={currentSelection.has(attr.id)}
-                      onChange={handleToggle}
+                )}
+                <CardHeader className="pb-3">
+                  <CardTitle className="text-lg">{workCategory.name}</CardTitle>
+                  <p className="text-sm text-muted-foreground mt-1">
+                    {'How many hours did you work today?'}
+                  </p>
+                </CardHeader>
+                <CardContent>
+                  <div className="space-y-3 pt-4 pb-4">
+                    <Counter
+                      value={workHours ?? 0}
+                      onChange={setWorkHours}
                       disabled={submitting || !scaleSelection}
-                    >
-                      <span className="flex items-center gap-0.5">
-                        <AttributeIcon
-                          category={workCategory.name}
-                          attribute={attr.name}
-                        />
-                        {attr.name}
-                      </span>
-                    </ToggleButton>
-                  ))}
-                </div>
-              </CardContent>
-            </Card>
+                    />
+                  </div>
+                  <div className="space-y-3 border-t pt-4 pb-4">
+                    <label className="text-sm font-medium">
+                      {'How would you rate your work day?'}
+                    </label>
+                    <RatingScale
+                      value={workRating ?? 0}
+                      onChange={setWorkRating}
+                      leftLabel="Poor"
+                      rightLabel="Excellent"
+                    />
+                  </div>
+                  <div className="flex flex-wrap justify-center gap-2 border-t pt-4">
+                    {attributesByCategory.get(workCategory.id)?.map((attr) => (
+                      <ToggleButton<string>
+                        key={attr.id}
+                        value={attr.id}
+                        isSelected={currentSelection.has(attr.id)}
+                        onChange={handleToggle}
+                        disabled={submitting || !scaleSelection}
+                      >
+                        <span className="flex items-center gap-0.5">
+                          <AttributeIcon
+                            category={workCategory.name}
+                            attribute={attr.name}
+                          />
+                          {attr.name}
+                        </span>
+                      </ToggleButton>
+                    ))}
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
           )}
 
           {/* Water Intake Card*/}
-          <CounterCard
-            title="water"
-            description="How many cups of water did you drink today?"
-            value={water ?? 0}
-            onChange={setWater}
-            disabled={submitting || !scaleSelection}
-          />
+          <div className="relative rounded-2xl overflow-hidden p-[2px] bg-gradient-to-r from-emerald-300 via-sky-300 to-violet-300">
+            <CounterCard
+              title="water"
+              description="How many cups of water did you drink today?"
+              value={water ?? 0}
+              onChange={setWater}
+              disabled={submitting || !scaleSelection}
+              className="w-full h-full"
+            />
+          </div>
           {addedCategories &&
             addedCategories.map((category) => {
               const name = personalizedCategories.find(
@@ -807,23 +856,38 @@ function DataIntakeForm({
               const methods = category.tracking_method;
 
               return (
-                <Card
-                  key={name}
-                  className={`bg-white/50 break-inside-avoid backdrop-blur-sm rounded-2xl border-none relative transition-opacity ${
-                    submitting || !scaleSelection
-                      ? 'opacity-50 pointer-events-none'
-                      : 'opacity-100'
-                  }`}
-                >
-                  <CardHeader className="pb-3">
-                    <CardTitle className="text-lg">{name}</CardTitle>
-                  </CardHeader>
-                  <CardContent className="space-y-4">
-                    {methods.map((method) =>
-                      renderTrackerComponent(method, name),
+                <div className="relative rounded-2xl overflow-hidden p-[2px] bg-gradient-to-r from-emerald-300 via-sky-300 to-violet-300">
+                  <Card
+                    key={name}
+                    className={`bg-white break-inside-avoid backdrop-blur-sm rounded-2xl border-none relative transition-opacity w-full h-full ${
+                      submitting || !scaleSelection
+                        ? 'opacity-100'
+                        : 'opacity-100'
+                    }`}
+                  >
+                    {(submitting || !scaleSelection) && (
+                      <FloatingShapes
+                        colors={[
+                          'bg-emerald-200',
+                          'bg-teal-200',
+                          'bg-violet-200',
+                          'bg-emerald-200',
+                          'bg-teal-200',
+                          'bg-violet-200',
+                        ]}
+                        className="absolute inset-0 z-0 pointer-events-none"
+                      />
                     )}
-                  </CardContent>
-                </Card>
+                    <CardHeader className="pb-3">
+                      <CardTitle className="text-lg">{name}</CardTitle>
+                    </CardHeader>
+                    <CardContent className="space-y-4">
+                      {methods.map((method) =>
+                        renderTrackerComponent(method, name),
+                      )}
+                    </CardContent>
+                  </Card>
+                </div>
               );
             })}
         </div>
