@@ -1,5 +1,3 @@
-'use server';
-
 import { fetchResponse } from '@/actions/ai-fetch';
 import { getDate } from '@/lib/utils';
 import { getSupabaseClient } from '@/supabase/client';

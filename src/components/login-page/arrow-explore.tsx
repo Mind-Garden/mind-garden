@@ -38,11 +38,11 @@ export default function PathDrawing() {
 
     return [
       { x: startX, y: startY, delay: 0 }, // Starting point
-      { x: 0.9, y: 0.65, delay: 0.2 }, // Diagonal "zig"
-      { x: 0.8, y: 0.65, delay: 0.4 }, // Diagonal "zag"
-      { x: 0.7, y: 0.75, delay: 0.8 }, // Diagonal "zag"
-      { x: 0.6, y: 0.85, delay: 1.0 }, // Diagonal "zig"
-      { x: 0.5, y: 0.85, delay: 1.2 }, // Diagonal "zag"
+      { x: 0.9, y: 0.65, delay: 0.2 },
+      { x: 0.8, y: 0.65, delay: 0.4 },
+      { x: 0.7, y: 0.75, delay: 0.8 },
+      { x: 0.6, y: 0.85, delay: 1.0 },
+      { x: 0.5, y: 0.85, delay: 1.2 },
       { x: endX, y: endY, delay: 1.4 }, // Final point (fixed near bottom)
     ];
   };

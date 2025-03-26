@@ -1,5 +1,5 @@
 services:
-  front-and-back:
+  web-app:
     build:
       context: .
       dockerfile: Dockerfile

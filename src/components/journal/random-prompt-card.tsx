@@ -49,7 +49,7 @@ export function RandomPromptCard() {
         onClick={getPrompt}
         disabled={isLoading}
         className={cn(
-          'bg-blue-500/30 hover:bg-blue-600/30 p-2.5 rounded-full shrink-0',
+          'bg-emerald-500/30 hover:bg-emerald-600/30 p-2.5 rounded-full shrink-0',
           'transition-all duration-300 hover:scale-110 active:scale-95',
           'disabled:opacity-50 disabled:cursor-not-allowed',
         )}

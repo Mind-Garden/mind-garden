@@ -177,8 +177,8 @@ function ReminderCard({ userId }: ReminderCardProps) {
   };
 
   return (
-    <Card className="bg-white/50 backdrop-blur-sm border-emerald-500 border-2 overflow-hidden rounded-2xl">
-      <FloatingShapes colors={['bg-emerald-100']} />
+    <Card className="bg-white/50 backdrop-blur-sm border-violet-400 border-2 overflow-hidden rounded-2xl">
+      <FloatingShapes colors={['bg-violet-100', 'bg-violet-200']} />
 
       <CardHeader className="pb-0">
         <CardTitle className="font-title text-2xl">Reminders</CardTitle>
@@ -198,7 +198,7 @@ function ReminderCard({ userId }: ReminderCardProps) {
                 <Button
                   key={hour}
                   variant={hour === selectedHour ? 'default' : 'outline'}
-                  className={`font-body font-medium ${hour === selectedHour ? 'bg-emerald-500 hover:bg-emerald-600' : ''}`}
+                  className={`font-body font-medium ${hour === selectedHour ? 'bg-violet-400 hover:bg-violet-500' : ''}`}
                   onClick={() => setSelectedHour(hour)}
                 >
                   {hour}
@@ -214,14 +214,14 @@ function ReminderCard({ userId }: ReminderCardProps) {
               <Button
                 variant={selectedAmPm === 'AM' ? 'default' : 'outline'}
                 onClick={() => setSelectedAmPm('AM')}
-                className={`font-body font-medium ${selectedAmPm === 'AM' ? 'bg-emerald-500 hover:bg-emerald-600' : ''}`}
+                className={`font-body font-medium ${selectedAmPm === 'AM' ? 'bg-violet-400 hover:bg-violet-500' : ''}`}
               >
                 AM
               </Button>
               <Button
                 variant={selectedAmPm === 'PM' ? 'default' : 'outline'}
                 onClick={() => setSelectedAmPm('PM')}
-                className={`font-body font-medium ${selectedAmPm === 'PM' ? 'bg-emerald-500 hover:bg-emerald-600' : ''}`}
+                className={`font-body font-medium ${selectedAmPm === 'PM' ? 'bg-violet-400 hover:bg-violet-500' : ''}`}
               >
                 PM
               </Button>
@@ -235,7 +235,7 @@ function ReminderCard({ userId }: ReminderCardProps) {
               <Switch
                 checked={journalReminders}
                 onCheckedChange={setJournalReminders}
-                className="data-[state=checked]:bg-emerald-500"
+                className="data-[state=checked]:bg-violet-400"
               />
             </div>
 
@@ -244,7 +244,7 @@ function ReminderCard({ userId }: ReminderCardProps) {
               <Switch
                 checked={dataIntakeReminders}
                 onCheckedChange={setDataIntakeReminders}
-                className="data-[state=checked]:bg-emerald-500"
+                className="data-[state=checked]:bg-violet-400"
               />
             </div>
 
@@ -253,7 +253,7 @@ function ReminderCard({ userId }: ReminderCardProps) {
               <Switch
                 checked={activityReminders}
                 onCheckedChange={setActivityReminders}
-                className="data-[state=checked]:bg-emerald-500"
+                className="data-[state=checked]:bg-violet-400"
               />
             </div>
           </div>
@@ -269,7 +269,7 @@ function ReminderCard({ userId }: ReminderCardProps) {
       <CardFooter className="px-6 pb-4">
         <Button
           onClick={handleSubmit}
-          className={`w-full font-body font-medium flex justify-center items-center ${hasUnsavedChanges ? 'bg-emerald-500 hover:bg-emerald-600' : 'bg-emerald-500/60'}`}
+          className={`w-full font-body font-medium flex justify-center items-center ${hasUnsavedChanges ? 'bg-violet-400 hover:bg-violet-500' : 'bg-violet-400/60'}`}
           disabled={buttonLoading || !hasUnsavedChanges}
         >
           {buttonLoading ? (

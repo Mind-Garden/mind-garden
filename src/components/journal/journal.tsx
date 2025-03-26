@@ -82,7 +82,7 @@ export default function Journal({ userId }: NewJournalProps) {
   if (loading)
     return (
       <div className="flex items-center justify-center min-h-screen">
-        <LoaderCircle className="h-12 w-12 text-blue-500 animate-spin" />
+        <LoaderCircle className="h-12 w-12 text-emerald-500 animate-spin" />
       </div>
     );
   if (error) return <div>Error: {error}</div>;
@@ -197,15 +197,15 @@ export default function Journal({ userId }: NewJournalProps) {
       {/* First Row */}
       <div className="grid md:grid-cols-2 gap-8">
         {/* Calendar Card */}
-        <div className="relative bg-white rounded-2xl shadow-lg p-6 overflow-hidden flex justify-center border-blue-500 border-2">
+        <div className="relative bg-white rounded-2xl shadow-lg p-6 overflow-hidden flex justify-center border-emerald-500 border-2">
           <FloatingShapes
-            className="bg-blue-100 z-10"
-            colors={['bg-blue-100']}
+            className="bg-emerald-200 z-10"
+            colors={['bg-emerald-100', 'bg-emerald-200']}
           />
           <div className="relative z-10">
             <div className="flex items-center justify-between mb-6">
               <div className="flex items-center">
-                <CalendarDays className="h-6 w-6 text-blue-500 mr-3" />
+                <CalendarDays className="h-6 w-6 text-emerald-500 mr-3" />
                 <h4 className="text-2xl font-title font-semibold text-gray-800">
                   Journal Calendar
                 </h4>
@@ -230,7 +230,7 @@ export default function Journal({ userId }: NewJournalProps) {
                       <div className="relative w-full h-full p-2">
                         <span>{dayDate.getDate()}</span>
                         {count > 0 && (
-                          <div className="absolute -top-1 -right-1 h-4 w-4 bg-blue-500 rounded-full flex items-center justify-center text-[10px] text-white z-50">
+                          <div className="absolute -top-1 -right-1 h-4 w-4 bg-emerald-500 rounded-full flex items-center justify-center text-[10px] text-white z-50">
                             {count}
                           </div>
                         )}
@@ -244,7 +244,7 @@ export default function Journal({ userId }: NewJournalProps) {
         </div>
 
         {/* Journal Entry Form */}
-        <div className="relative bg-white rounded-2xl shadow-lg p-6 overflow-hidden border-blue-500 border-2">
+        <div className="relative bg-white rounded-2xl shadow-lg p-6 overflow-hidden border-emerald-500 border-2">
           <motion.div
             initial={{ opacity: 0.5, scale: 0.8, x: -100, y: 50 }}
             animate={{
@@ -258,12 +258,12 @@ export default function Journal({ userId }: NewJournalProps) {
           <div className="relative z-10">
             <div className="flex items-center justify-between mb-6">
               <div className="flex items-center">
-                <NotebookPen className="h-6 w-6 text-blue-500 mr-3" />
+                <NotebookPen className="h-6 w-6 text-emerald-500 mr-3" />
                 <h4 className="text-2xl font-title font-semibold text-gray-800">
                   New Entry
                 </h4>
               </div>
-              <span className="text-sm font-medium text-blue-500 bg-blue-50 py-1 px-3 rounded-full">
+              <span className="text-sm font-medium text-emerald-500 bg-emerald-50 py-1 px-3 rounded-full">
                 {getDate().toLocaleDateString('en-US', {
                   month: 'long',
                   day: 'numeric',
@@ -291,7 +291,7 @@ export default function Journal({ userId }: NewJournalProps) {
 
               <Button
                 onClick={handleSaveEntry}
-                className="w-full bg-blue-500 hover:bg-blue-600 text-white"
+                className="w-full bg-emerald-500 hover:bg-emerald-600 text-white"
               >
                 <PenLine className="w-4 h-4 mr-2" />
                 Save Entry
@@ -302,17 +302,20 @@ export default function Journal({ userId }: NewJournalProps) {
       </div>
 
       {/* Second Row - Entries List */}
-      <div className="relative bg-white rounded-2xl shadow-lg p-6 overflow-hidden border-blue-500 border-2">
-        <FloatingShapes className="bg-blue-100 z-10" colors={['bg-blue-100']} />
+      <div className="relative bg-white rounded-2xl shadow-lg p-6 overflow-hidden border-emerald-500 border-2">
+        <FloatingShapes
+          className="bg-emerald-100 z-10"
+          colors={['bg-emerald-100']}
+        />
         <div className="relative z-10">
           <div className="flex items-center justify-between mb-6">
             <div className="flex items-center">
-              <BookOpen className="h-6 w-6 text-blue-500 mr-3" />
+              <BookOpen className="h-6 w-6 text-emerald-500 mr-3" />
               <h4 className="text-2xl font-title font-semibold text-gray-800">
                 Journal Entries from {formattedDate}
               </h4>
             </div>
-            <span className="text-sm font-medium text-blue-500 bg-blue-50 py-1 px-3 rounded-full">
+            <span className="text-sm font-medium text-emerald-500 bg-emerald-50 py-1 px-3 rounded-full">
               {selectedDateEntries.length}{' '}
               {selectedDateEntries.length === 1 ? 'entry' : 'entries'}
             </span>
@@ -338,7 +341,7 @@ export default function Journal({ userId }: NewJournalProps) {
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ duration: 0.3, delay: index * 0.1 }}
                     >
-                      <div className="bg-gray-50 rounded-xl p-5 mb-4 border-blue-100 border-2">
+                      <div className="bg-gray-50 rounded-xl p-5 mb-4 border-emerald-100 border-2">
                         {editingEntryId === entry.id ? (
                           <TextArea
                             value={editingText}
@@ -365,7 +368,7 @@ export default function Journal({ userId }: NewJournalProps) {
                             </Button>
                             <Button
                               onClick={() => saveEditedEntry(entry.id)}
-                              className="bg-blue-500 hover:bg-blue-600 text-white"
+                              className="bg-emerald-500 hover:bg-emerald-600 text-white"
                             >
                               <Save className="w-4 h-4 mr-2" />
                               Save Changes

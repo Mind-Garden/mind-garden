@@ -10,7 +10,7 @@ import {
 } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 
-import { ProfileDropdown } from '@/components/profile-dropdown';
+import { ProfileDropdown } from '@/components/layout/profile-dropdown';
 import { Button } from '@/components/ui/button';
 import {
   Tooltip,

@@ -1,8 +1,8 @@
 import { redirect } from 'next/navigation';
 
 import { getAuthenticatedUserId } from '@/actions/auth';
-import Footer from '@/components/footer';
-import { Header } from '@/components/header';
+import Footer from '@/components/layout/footer';
+import { Header } from '@/components/layout/header';
 import DeleteAccount from '@/components/profile/delete-account';
 import ModifyAccount from '@/components/profile/modify-account-info';
 import ModifyPassword from '@/components/profile/modify-password';

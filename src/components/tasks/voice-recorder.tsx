@@ -174,16 +174,16 @@ export default function VoiceRecorder({
           disabled={isProcessing}
           whileTap={{ scale: 0.95 }}
           className={`absolute z-10 flex items-center justify-center w-12 h-12 rounded-full shadow-md transition-colors duration-300
-              ${isRecording ? 'bg-red-50' : 'bg-blue-50'} 
+              ${isRecording ? 'bg-red-50' : 'bg-sky-50'} 
               ${isProcessing ? 'opacity-50 cursor-not-allowed' : ''}`}
           aria-label="Activate voice input"
         >
           {isProcessing ? (
-            <Loader2 className="w-7 h-7 text-blue-500 animate-spin" />
+            <Loader2 className="w-7 h-7 text-sky-500 animate-spin" />
           ) : isRecording ? (
             <CircleStop className="w-7 h-7 text-red-500 animate-pulse" />
           ) : (
-            <Mic className="w-7 h-7 text-blue-500" />
+            <Mic className="w-7 h-7 text-sky-500" />
           )}
         </motion.button>
       </div>

@@ -5,20 +5,40 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
+/**
+ * Returns a new Date object with the local timezone offset subtracted from the given Date
+ * @param date the Date object to convert, defaults to new Date()
+ * @returns a new Date object with the local timezone offset subtracted
+ */
 export const getDate = (date = new Date()) => {
   const offsetMs = date.getTimezoneOffset() * 60000; // Convert offset to milliseconds
   return new Date(date.getTime() - offsetMs);
 };
 
+/**
+ * Returns a new Date object with the local timezone offset added to the given Date
+ * @param date the Date object to convert, defaults to new Date()
+ * @returns a new Date object with the local timezone offset added
+ */
 export const undoConversion = (date: Date) => {
   const offsetMs = date.getTimezoneOffset() * 60000; // Convert offset to milliseconds
   return new Date(date.getTime() + offsetMs);
 };
 
+/**
+ * Returns the local date in ISO format, trimmed to only include the month, day, and year.
+ * @param date the Date object to convert, defaults to new Date()
+ * @returns a string in the format 'YYYY-MM-DD'
+ */
 export function getLocalISOString(date = new Date()) {
   return getDate(date).toISOString().split('T')[0].trim(); //only get the month-day-year
 }
 
+/**
+ * Converts 12-hour time to 24-hour time in decimal format.
+ * @param time a string in the format 'HH:MM AM/PM'
+ * @returns the time in decimal format (e.g. 1:30 PM becomes 13.5)
+ */
 export const convertTo24Hour = (time: string): number => {
   const [hourPart, minutePart] = time.split(':');
   let hour = parseInt(hourPart, 10);
@@ -37,6 +57,11 @@ export const convertTo24Hour = (time: string): number => {
   return result;
 };
 
+/**
+ * Converts 12-hour time in a sleep entry to 24-hour time in "HH:MM" format.
+ * @param timeStr a string in the format 'HH:MM AM/PM'
+ * @returns the time in 24-hour format (e.g. 1:30 PM becomes 13:30)
+ */
 export const convertTo24HourSleepEntry = (timeStr: string) => {
   const [time, period] = timeStr.split(' ');
   const [hoursStr, minutes] = time.split(':').map(Number);
@@ -66,9 +91,17 @@ export const getSleepDuration = (start: string, end: string) => {
   return convertTo24Hour(end) - convertTo24Hour(start);
 };
 
+/**
+ * Returns a colour based on the given sleep duration in hours.
+ * Less than 6 hours: #d1d5db
+ * 6-8 hours: #83e3c6
+ * More than 8 hours: #2ebb61
+ * @param duration the sleep duration in hours
+ * @returns a hex colour code
+ */
 export const getBarColour = (duration: number): string => {
   if (duration < 6) {
-    return '#d9d9d9';
+    return '#d1d5db';
   } else if (duration >= 6 && duration <= 8) {
     return '#83e3c6';
   } else {
@@ -76,6 +109,11 @@ export const getBarColour = (duration: number): string => {
   }
 };
 
+/**
+ * Converts a time in 24-hour format to 12-hour format with AM/PM.
+ * @param time a string in 24-hour format (e.g. '12:00')
+ * @returns a string in 12-hour format (e.g. '12:00 PM')
+ */
 export const getTimeAMPM = (time: string) => {
   const [hour, minute] = time.split(':');
   const isPM = parseInt(hour) >= 12;
@@ -83,6 +121,13 @@ export const getTimeAMPM = (time: string) => {
   return `${formattedHour}:${minute} ${isPM ? 'PM' : 'AM'}`;
 };
 
+/**
+ * Returns a greeting based on the current time of day.
+ * Good Morning: 0h-12h
+ * Good Afternoon: 12h-18h
+ * Good Evening: 18h-24h
+ * @returns a string containing the greeting
+ */
 export function getGreetingText(): string {
   const currentHour = new Date().getHours();
 
@@ -99,6 +144,11 @@ export function getGreetingText(): string {
   return greetingText;
 }
 
+/**
+ * Calculates the average time elapsed from a list of time values.
+ * @param times list of time values in seconds
+ * @returns the average time elapsed in seconds
+ */
 export const getAverageTimeElapsed = (times: number[]): number => {
   if (times.length === 0) return 0;
 

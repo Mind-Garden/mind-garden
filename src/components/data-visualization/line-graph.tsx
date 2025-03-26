@@ -31,6 +31,7 @@ interface AnimatedLineGraphProps {
   readonly yAxisLabel?: string;
   readonly title?: string;
   readonly aspectRatio?: number;
+  readonly shadowColour?: string;
 }
 
 const AnimateNumber = ({ value }: { value: number }) => {
@@ -51,6 +52,19 @@ const AnimateNumber = ({ value }: { value: number }) => {
 
   return <motion.span>{rounded}</motion.span>;
 };
+
+/**
+ * Renders a tooltip and a circle at a specified point on a graph when visible.
+ * The tooltip displays the formatted date and value corresponding to the point.
+ *
+ * @param point - An object containing the x and y coordinates, the value,
+ *                and the original data point from which the coordinates
+ *                are derived.
+ * @param visible - A boolean indicating whether the tooltip and circle
+ *                  should be visible.
+ * @param tooltipColor - The color of the tooltip background.
+ * @param tooltipTextColor - The color of the text inside the tooltip.
+ */
 
 const Cursor = ({
   point,
@@ -125,6 +139,11 @@ const Cursor = ({
   );
 };
 
+/**
+ * Format a date string into a human-readable format with the month, day, and year.
+ * @param {string} dateString The date string to format, in the format 'YYYY-MM-DD'
+ * @returns {string} The formatted date string, in the format 'Month DD, YYYY'
+ */
 const formatDate = (dateString: string) => {
   try {
     const date = new Date(dateString + 'T00:00:00Z');
@@ -139,6 +158,30 @@ const formatDate = (dateString: string) => {
   }
 };
 
+/**
+ * AnimatedLineGraph is a React component that renders a line graph with
+ * animation and toolips. It takes in the following props:
+ *
+ * - `data`: an array of objects with `x` and `y` properties
+ * - `lineColor`: the color of the line
+ * - `backgroundColor`: the background color of the graph
+ * - `gridColor`: the color of the grid lines
+ * - `tooltipColor`: the color of the tooltip background
+ * - `tooltipTextColor`: the color of the text inside the tooltip
+ * - `animate`: whether to animate the line drawing
+ * - `xAxisLabel`: the label for the x-axis
+ * - `yAxisLabel`: the label for the y-axis
+ * - `title`: the title of the graph
+ * - `aspectRatio`: the aspect ratio of the graph
+ * - `shadowColour`: the color of the shadow under the line
+ *
+ * The component renders a graph with a line that animates when the component
+ * is mounted. When the user hovers over a section of the graph, a tooltip
+ * appears with the formatted date and value corresponding to the point.
+ *
+ * @param {object} props
+ * @return {ReactElement}
+ */
 export default function AnimatedLineGraph({
   data,
   lineColor = '#bea9de',
@@ -151,6 +194,7 @@ export default function AnimatedLineGraph({
   yAxisLabel = 'Value',
   title,
   aspectRatio = 1.5,
+  shadowColour = 'url(#shadowGradient)',
 }: AnimatedLineGraphProps) {
   const [tooltipInfo, setTooltipInfo] = useState<{
     x: number;
@@ -161,6 +205,11 @@ export default function AnimatedLineGraph({
   const svgRef = useRef<SVGSVGElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const [dimensions, setDimensions] = useState({ width: 800, height: 400 });
+
+  const gradientId = `shadowGradient-${shadowColour.replace('#', '')}`;
+
+  // Check if shadowColour is a solid color (not a `url(#...)`)
+  const isSolidColor = !shadowColour.startsWith('url(');
 
   const handleSectionHover = (sectionIndex: number | null) => {
     if (
@@ -423,15 +472,43 @@ export default function AnimatedLineGraph({
                     >
                       {yAxisLabel}
                     </text>
-                    {/*Shadow under line */}
-                    <motion.path
-                      d={shadowPathDefinition}
-                      fill="url(#shadowGradient)"
-                      opacity={0.5}
-                      initial={{ opacity: 0 }}
-                      animate={{ opacity: animate ? 0.5 : 0 }}
-                      transition={{ delay: 1, duration: 1 }}
-                    />
+                    <svg>
+                      <defs>
+                        {/* Define gradient only if shadowColour is a solid color */}
+                        {isSolidColor && (
+                          <linearGradient
+                            id={gradientId}
+                            x1="0"
+                            x2="0"
+                            y1="0"
+                            y2="1"
+                          >
+                            <stop
+                              offset="0%"
+                              stopColor={shadowColour}
+                              stopOpacity={0.5}
+                            />
+                            <stop
+                              offset="100%"
+                              stopColor={shadowColour}
+                              stopOpacity={0}
+                            />
+                          </linearGradient>
+                        )}
+                      </defs>
+
+                      {/* Shadow under line */}
+                      <motion.path
+                        d={shadowPathDefinition}
+                        fill={
+                          isSolidColor ? `url(#${gradientId})` : shadowColour
+                        } // Use generated gradient if solid color
+                        opacity={0.5}
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: animate ? 0.5 : 0 }}
+                        transition={{ delay: 1, duration: 1 }}
+                      />
+                    </svg>
                     {/* Line for graph*/}
                     <motion.path
                       d={pathDefinition}

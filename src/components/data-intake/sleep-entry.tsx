@@ -151,12 +151,12 @@ export function SleepEntryCard({ userId }: SleepTrackerProps) {
   };
 
   return (
-    <Card className="bg-white/50 backdrop-blur-sm border-sky-300 border-2 overflow-hidden rounded-2xl">
-      <FloatingShapes colors={['bg-sky-100']} />
+    <Card className="bg-white/50 backdrop-blur-sm border-teal-400 border-2 overflow-hidden rounded-2xl">
+      <FloatingShapes colors={['bg-teal-100', 'bg-teal-200']} />
       <CardHeader className="pb-2">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <Moon className="h-6 w-6 text-sky-400" />
+            <Moon className="h-6 w-6 text-teal-500" />
             <h2 className="text-2xl font-title font-bold">Sleep Entry</h2>
           </div>
         </div>
@@ -253,7 +253,7 @@ export function SleepEntryCard({ userId }: SleepTrackerProps) {
         {/* Button to save or update */}
         {!entryExists ? (
           <Button
-            className="w-full"
+            className="w-full bg-teal-400 hover:bg-teal-500"
             size="lg"
             onClick={() => handleSaveEntry()}
           >
@@ -262,7 +262,7 @@ export function SleepEntryCard({ userId }: SleepTrackerProps) {
         ) : (
           todayEntry?.id && (
             <Button
-              className="w-full bg-sky-400 hover:bg-sky-500"
+              className="w-full bg-teal-400 hover:bg-teal-500"
               size="lg"
               onClick={() => handleSaveEntry()}
             >
