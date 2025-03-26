@@ -59,7 +59,7 @@ export default function DeleteAccount(props: { userId: string }) {
                 </Button>
               </motion.div>
             </DialogTrigger>
-            <DialogContent asChild>
+            <DialogContent>
               <motion.div
                 initial={{ scale: 0.8, opacity: 0 }}
                 animate={{ scale: 1, opacity: 1 }}

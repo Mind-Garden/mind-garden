@@ -85,7 +85,7 @@ describe('sendReminders Integration Test', () => {
       };
     }) as any;
 
-    await sendReminders('09:00:00');
+    await sendReminders('09:15:00');
 
     // Ensure no email was sent
     expect(mockSendMail).not.toHaveBeenCalled();
