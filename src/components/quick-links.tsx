@@ -1,5 +1,6 @@
 'use client';
 import {
+  ArrowRight,
   Bell,
   ListCheck,
   ListTodo,
@@ -12,11 +13,7 @@ import { useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 
-interface DashboardProps {
-  readonly userId: string;
-}
-
-export default function Dashboard({ userId }: DashboardProps) {
+export default function QuickLinks() {
   const router = useRouter();
 
   return (
@@ -25,17 +22,17 @@ export default function Dashboard({ userId }: DashboardProps) {
         {/* Profile */}
         <Card className="p-5 bg-white/50 rounded-2xl border-none shadow-lg hover:shadow-xl transition-transform hover:scale-105 hover:bg-white/70">
           <div className="flex flex-col h-full">
-            <div className="p-3 bg-gradient-to-r from-blue-200 to-violet-200 rounded-xl w-fit">
-              <User className="h-5 w-5 text-violet-500" />
+            <div className="p-3 bg-gradient-to-r from-emerald-200 to-sky-200 rounded-xl w-fit">
+              <User className="h-5 w-5 text-black" />
             </div>
             <h3 className="text-lg font-header font-bold mt-3">Profile</h3>
             <p className="text-sm text-muted-foreground mt-1">Your account</p>
             <Button
               onClick={() => router.push('/profile')}
               variant="ghost"
-              className="mt-1 justify-start px-0 hover:bg-gray-200 hover:pl-4"
+              className="mt-1 justify-start px-0 hover:bg-gradient-to-r hover:from-emerald-200 hover:to-sky-200 hover:pl-4"
             >
-              Settings →
+              Settings <ArrowRight className="w-4 h-4" />
             </Button>
           </div>
         </Card>
@@ -43,8 +40,8 @@ export default function Dashboard({ userId }: DashboardProps) {
         {/* Daily Data Intake */}
         <Card className="p-5 bg-white/50 rounded-2xl border-none shadow-lg hover:shadow-xl transition-transform hover:scale-105 hover:bg-white/70">
           <div className="flex flex-col h-full">
-            <div className="p-3 bg-gradient-to-r from-blue-200 to-violet-200 rounded-xl w-fit">
-              <ListCheck className="h-5 w-5 text-violet-500" />
+            <div className="p-3 bg-gradient-to-r from-sky-200 to-violet-200 rounded-xl w-fit">
+              <ListCheck className="h-5 w-5 text-black" />
             </div>
             <h3 className="text-lg font-header font-bold mt-3">Daily Data</h3>
             <p className="text-sm text-muted-foreground mt-1">
@@ -53,9 +50,9 @@ export default function Dashboard({ userId }: DashboardProps) {
             <Button
               onClick={() => router.push('/daily-intake')}
               variant="ghost"
-              className="mt-1 justify-start px-0 hover:bg-gray-200 hover:pl-4"
+              className="mt-1 justify-start px-0 hover:bg-gradient-to-r hover:from-sky-200 hover:to-violet-200 hover:pl-4"
             >
-              Enter today →
+              Enter today <ArrowRight className="w-4 h-4" />
             </Button>
           </div>
         </Card>
@@ -75,7 +72,7 @@ export default function Dashboard({ userId }: DashboardProps) {
               variant="ghost"
               className="mt-1 justify-start px-0 hover:bg-emerald-100 hover:pl-4"
             >
-              Write entry →
+              Write entry <ArrowRight className="w-4 h-4" />
             </Button>
           </div>
         </Card>
@@ -95,7 +92,7 @@ export default function Dashboard({ userId }: DashboardProps) {
               variant="ghost"
               className="mt-1 justify-start px-0 hover:bg-teal-100 hover:pl-4"
             >
-              Log sleep →
+              Log sleep <ArrowRight className="w-4 h-4" />
             </Button>
           </div>
         </Card>
@@ -115,7 +112,7 @@ export default function Dashboard({ userId }: DashboardProps) {
               variant="ghost"
               className="mt-1 justify-start px-0 hover:bg-sky-100 hover:pl-4"
             >
-              Task Manager →
+              Task Manager <ArrowRight className="w-4 h-4" />
             </Button>
           </div>
         </Card>
@@ -135,7 +132,7 @@ export default function Dashboard({ userId }: DashboardProps) {
               variant="ghost"
               className="mt-1 justify-start px-0 hover:bg-violet-100 hover:pl-4"
             >
-              Reminders →
+              Reminders <ArrowRight className="w-4 h-4" />
             </Button>
           </div>
         </Card>

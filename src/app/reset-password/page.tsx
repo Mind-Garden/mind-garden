@@ -5,7 +5,7 @@ import { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 
 import { authenticateResetCode } from '@/actions/auth';
-import Footer from '@/components/footer';
+import Footer from '@/components/layout/footer';
 import ResetPassword from '@/components/login-page/reset-password';
 import { Particles } from '@/components/magicui/particles';
 
