@@ -6,7 +6,6 @@ interface ToggleButtonProps<T extends string | number> {
   onChange: (value: T) => void;
   children: React.ReactNode;
   disabled?: boolean;
-  className?: string;
 }
 
 function ToggleButton<T extends string | number>({

@@ -51,7 +51,7 @@ export default function Heatmap({ userId, personalized }: HeatmapProps) {
   const [habitData, setHabitData] =
     useState<Record<string, IAddedResp[] | null>>();
   const [data, setData] = useState<Data[] | null>(null);
-  const [addHabit, setAddedHabit] = useState<IAddedCategory[] | null>();
+  const [addHabit, setAddHabit] = useState<IAddedCategory[] | null>();
   const [personalizedCategories, setpersonalizedCategories] = useState<
     IPersonalizedCategories[] | null
   >();
@@ -67,60 +67,51 @@ export default function Heatmap({ userId, personalized }: HeatmapProps) {
     const fetchData = async () => {
       if (personalized) {
         const addedHabits = await getAddedCategories(userId);
-        setAddedHabit(addedHabits);
         const personalizedCategories = await getPersonalizedCategories();
+        setAddHabit(addedHabits);
         setpersonalizedCategories(personalizedCategories);
-        let boolResp = {};
 
-        if (addedHabits && personalizedCategories) {
-          for (const resp of addedHabits) {
-            const name = personalizedCategories.find(
-              (cat) => cat.id == resp.added_habit,
-            )?.name;
-            if (name && resp.tracking_method.includes('boolean')) {
-              //get data for category.added_habit that is yes/no question
-              const catResp = await getAllAddedRespCategory(
-                userId,
-                resp.added_habit,
-              );
+        if (!addedHabits || !personalizedCategories) return;
 
-              boolResp = { ...boolResp, [name]: catResp };
-            } else if (
-              (name && resp.tracking_method.includes('breakfast')) ||
-              resp.tracking_method.includes('lunch') ||
-              resp.tracking_method.includes('dinner')
-            ) {
-              // get data for category.added_habit that is yes/no question
-              const catResp = await getAllAddedRespCategory(
-                userId,
-                resp.added_habit,
-              );
+        const boolResp: Record<string, any> = {};
 
-              if (name) {
-                boolResp = { ...boolResp, [name]: catResp };
-              }
-            }
+        for (const resp of addedHabits) {
+          const name = personalizedCategories.find(
+            (cat) => cat.id === resp.added_habit,
+          )?.name;
+          if (!name) continue;
+
+          const isBoolean = resp.tracking_method.includes('boolean');
+          const isMeal = ['breakfast', 'lunch', 'dinner'].some((method) =>
+            resp.tracking_method.includes(method),
+          );
+
+          if (isBoolean || isMeal) {
+            const catResp = await getAllAddedRespCategory(
+              userId,
+              resp.added_habit,
+            );
+            boolResp[name] = catResp;
           }
         }
 
         setHabitData(boolResp);
 
-        // Set up categories and tracking methods
-        if (boolResp) {
-          const categoryNames = Object.keys(boolResp);
-          setCategories(categoryNames);
+        const categoryNames = Object.keys(boolResp);
+        setCategories(categoryNames);
 
-          const methodsMap: Record<string, string[]> = {};
-          categoryNames.forEach((category) => {
-            methodsMap[category] = getTrackingMethodsForCategory(
+        const methodsMap = Object.fromEntries(
+          categoryNames.map((category) => [
+            category,
+            getTrackingMethodsForCategory(
               category,
               addedHabits,
               personalizedCategories,
-            );
-          });
+            ),
+          ]),
+        );
 
-          setTrackingMethodsByCategory(methodsMap);
-        }
+        setTrackingMethodsByCategory(methodsMap);
       } else {
         const habitData = await getDataHeatmap(userId);
         setData(habitData.data);
@@ -162,7 +153,7 @@ export default function Heatmap({ userId, personalized }: HeatmapProps) {
   const getHabitDataForDate = (category: string, date: Date) => {
     const formattedDate = format(date, 'yyyy-MM-dd');
     let out;
-    if (habitData && habitData[category]) {
+    if (habitData?.[category]) {
       out = habitData[category]?.find(
         (data) => data.entry_date === formattedDate,
       );
@@ -172,7 +163,7 @@ export default function Heatmap({ userId, personalized }: HeatmapProps) {
 
   // Function to calculate the completion value for a day
   const getValue = (method: string, data?: IAddedResp) => {
-    if (data && data.tracking_method) {
+    if (data?.tracking_method) {
       return data.tracking_method[method];
     }
     return false;
@@ -219,33 +210,27 @@ export default function Heatmap({ userId, personalized }: HeatmapProps) {
     if (
       habitsToUse &&
       personalizedToUse &&
-      (category == 'meal' || category == 'cooking')
+      (category === 'meal' || category === 'cooking')
     ) {
-      let out: string[] = [];
+      const out = new Set<string>();
+      const mealTypes = ['breakfast', 'lunch', 'dinner'];
+
       for (const cat of habitsToUse) {
         const name = personalizedToUse.find(
-          (c) => c.id == cat.added_habit,
+          (c) => c.id === cat.added_habit,
         )?.name;
-        if (name == 'meal' || name === 'cooking') {
-          if (
-            cat.tracking_method.includes('breakfast') &&
-            !out.includes('breakfast')
-          ) {
-            out = [...out, 'breakfast'];
-          }
-          if (cat.tracking_method.includes('lunch') && !out.includes('lunch')) {
-            out = [...out, 'lunch'];
-          }
-          if (
-            cat.tracking_method.includes('dinner') &&
-            !out.includes('dinner')
-          ) {
-            out = [...out, 'dinner'];
+        if (name === 'meal' || name === 'cooking') {
+          for (const meal of mealTypes) {
+            if (cat.tracking_method.includes(meal)) {
+              out.add(meal);
+            }
           }
         }
       }
-      return out;
+
+      return Array.from(out);
     }
+
     return ['boolean']; // Default for other categories
   };
 

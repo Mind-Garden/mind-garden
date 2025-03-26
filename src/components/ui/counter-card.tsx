@@ -103,8 +103,7 @@ export default function CounterCard({
   return (
     <Card
       className={cn(
-        'bg-white rounded-2xl border-none relative transition-opacity',
-        disabled ? 'opacity-100' : 'opacity-100',
+        'bg-white rounded-2xl border-none relative transition-opacity opacity-100',
         className,
       )}
     >

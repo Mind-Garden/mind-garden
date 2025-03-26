@@ -646,14 +646,7 @@ function DataIntakeForm({
             >
               {(submitting || !scaleSelection) && (
                 <FloatingShapes
-                  colors={[
-                    'bg-emerald-200',
-                    'bg-teal-200',
-                    'bg-violet-200',
-                    'bg-emerald-200',
-                    'bg-teal-200',
-                    'bg-violet-200',
-                  ]}
+                  colors={['bg-emerald-200', 'bg-teal-200', 'bg-violet-200']}
                   className="absolute inset-0 z-0 pointer-events-none"
                 />
               )}
@@ -702,14 +695,7 @@ function DataIntakeForm({
               >
                 {(submitting || !scaleSelection) && (
                   <FloatingShapes
-                    colors={[
-                      'bg-emerald-200',
-                      'bg-teal-200',
-                      'bg-violet-200',
-                      'bg-emerald-200',
-                      'bg-teal-200',
-                      'bg-violet-200',
-                    ]}
+                    colors={['bg-emerald-200', 'bg-teal-200', 'bg-violet-200']}
                     className="absolute inset-0 z-0 pointer-events-none"
                   />
                 )}
@@ -777,14 +763,7 @@ function DataIntakeForm({
               >
                 {(submitting || !scaleSelection) && (
                   <FloatingShapes
-                    colors={[
-                      'bg-emerald-200',
-                      'bg-teal-200',
-                      'bg-violet-200',
-                      'bg-emerald-200',
-                      'bg-teal-200',
-                      'bg-violet-200',
-                    ]}
+                    colors={['bg-emerald-200', 'bg-teal-200', 'bg-violet-200']}
                     className="absolute inset-0 z-0 pointer-events-none"
                   />
                 )}
@@ -856,21 +835,14 @@ function DataIntakeForm({
               const methods = category.tracking_method;
 
               return (
-                <div className="relative rounded-2xl overflow-hidden p-[2px] bg-gradient-to-r from-emerald-300 via-sky-300 to-violet-300">
-                  <Card
-                    key={name}
-                    className={`bg-white break-inside-avoid backdrop-blur-sm rounded-2xl border-none relative transition-opacity w-full h-full ${
-                      submitting || !scaleSelection
-                        ? 'opacity-100'
-                        : 'opacity-100'
-                    }`}
-                  >
+                <div
+                  key={name}
+                  className="relative rounded-2xl overflow-hidden p-[2px] bg-gradient-to-r from-emerald-300 via-sky-300 to-violet-300"
+                >
+                  <Card className="bg-white break-inside-avoid backdrop-blur-sm rounded-2xl border-none relative transition-opacity w-full h-full opacity-100">
                     {(submitting || !scaleSelection) && (
                       <FloatingShapes
                         colors={[
-                          'bg-emerald-200',
-                          'bg-teal-200',
-                          'bg-violet-200',
                           'bg-emerald-200',
                           'bg-teal-200',
                           'bg-violet-200',
