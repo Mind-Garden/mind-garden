@@ -7,8 +7,8 @@ import {
   selectAllFromCategories,
 } from '@/actions/data-intake';
 import DataIntakeForm from '@/components/data-intake/data-intake-form';
-import Footer from '@/components/footer';
-import { Header } from '@/components/header';
+import Footer from '@/components/layout/footer';
+import { Header } from '@/components/layout/header';
 
 export default async function Dashboard() {
   const userId = await getAuthenticatedUserId();

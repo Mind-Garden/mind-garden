@@ -1,7 +1,7 @@
 import { getAuthenticatedUserId } from '@/actions/auth';
-import Footer from '@/components/footer';
-import { Header } from '@/components/header';
 import Journal from '@/components/journal/journal';
+import Footer from '@/components/layout/footer';
+import { Header } from '@/components/layout/header';
 
 export default async function JournalPage() {
   const userId = await getAuthenticatedUserId();
