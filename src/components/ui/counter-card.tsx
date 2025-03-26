@@ -110,14 +110,7 @@ export default function CounterCard({
     >
       {disabled && (
         <FloatingShapes
-          colors={[
-            'bg-emerald-200',
-            'bg-teal-200',
-            'bg-violet-200',
-            'bg-emerald-200',
-            'bg-teal-200',
-            'bg-violet-200',
-          ]}
+          colors={['bg-emerald-200', 'bg-teal-200', 'bg-violet-200']}
           className="absolute inset-0 z-0 pointer-events-none"
         />
       )}
