@@ -3,9 +3,8 @@ import { redirect } from 'next/navigation';
 import { getAuthenticatedUserId } from '@/actions/auth';
 import HabitLineCharts from '@/components/data-visualization/add-habit-charts';
 import BarLineChart from '@/components/data-visualization/bar-line-chart';
-import HabitHeatmapGrid from '@/components/data-visualization/habit-heatmap';
 import HealthDashboard from '@/components/data-visualization/health-dashboard';
-import HabitHeatmap from '@/components/data-visualization/heatmap';
+import Heatmap from '@/components/data-visualization/heatmap';
 import WaterChart from '@/components/data-visualization/water-chart';
 import Footer from '@/components/layout/footer';
 import { Header } from '@/components/layout/header';
@@ -70,7 +69,7 @@ export default async function Home() {
                 </CardDescription>
               </CardHeader>
               <CardContent className="p-6">
-                <HabitHeatmap userId={userId} />
+                <Heatmap personalized={false} userId={userId} />
               </CardContent>
             </Card>
 
@@ -82,7 +81,7 @@ export default async function Home() {
                 </div>
               </CardHeader>
               <CardContent className="p-6">
-                <HabitHeatmapGrid userId={userId} />
+                <Heatmap personalized={true} userId={userId} />
               </CardContent>
             </Card>
           </div>

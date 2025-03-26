@@ -17,7 +17,7 @@ export default function YesNoForm({
   question,
   initialValue = null,
   onChange,
-  disabled = false,
+  disabled,
 }: YesNoFormProps) {
   const [selected, setSelected] = useState<boolean | null>(initialValue);
 
@@ -30,7 +30,7 @@ export default function YesNoForm({
     <div className="flex items-center justify-between py-2 px-3 bg-white/5 backdrop-blur-sm rounded-xl">
       <span className="text-sm font-medium">{question}</span>
 
-      <div className="flex items-center gap-3 ml-3">
+      <div className="flex items-center gap-3 ml-3 mr-2">
         <span className="text-sm mr-1">
           {selected !== null ? (selected ? 'Yes' : 'No') : ''}
         </span>
@@ -41,11 +41,14 @@ export default function YesNoForm({
           className={cn(
             'flex items-center rounded-md transition-all px-1',
             selected === true ? 'text-green-700' : 'text-gray-500',
+            disabled
+              ? 'opacity-50 pointer-events-none shadow-none bg-transparent'
+              : 'hover:bg-slate-100 hover:shadow',
           )}
           onClick={() => handleSelection(true)}
           disabled={disabled}
         >
-          <CheckCircle2 className="h-3 w-3 mr-1" />
+          <CheckCircle2 className="h-3 w-3" />
         </Button>
 
         <Button
@@ -58,7 +61,7 @@ export default function YesNoForm({
           onClick={() => handleSelection(false)}
           disabled={disabled}
         >
-          <XCircle className="h-3 w-3 mr-1" />
+          <XCircle className="h-3 w-3" />
         </Button>
       </div>
     </div>
