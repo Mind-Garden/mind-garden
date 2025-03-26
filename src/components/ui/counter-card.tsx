@@ -60,10 +60,9 @@ export default function CounterCard({
         className,
       )}
     >
-      {disabled && (
+      {!disabled && (
         <FloatingShapes
           colors={['bg-emerald-200', 'bg-teal-200', 'bg-violet-200']}
-          className="absolute inset-0 z-0 pointer-events-none"
         />
       )}
       <CardHeader className="pb-3">
