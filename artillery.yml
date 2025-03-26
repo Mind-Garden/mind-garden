@@ -1,10 +1,12 @@
 config:
   target: http://localhost:3000
   phases:
-    - duration: 10
-      arrivalRate: 10
+    - duration: 60
+      arrivalRate: 4
   engines:
-    playwright: {}
+    playwright: 
+      launchOptions:
+        headless: true
   processor: './src/tests/load/artillery/login.ts'
 scenarios:
   - engine: playwright

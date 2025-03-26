@@ -1,24 +1,5 @@
 import { Page } from '@playwright/test';
 
-export const config = {
-  target: 'http://localhost:3000',
-  phases: [
-    {
-      duration: 10,
-      arrivalRate: 1,
-    },
-  ],
-  engines: {
-    playwright: {},
-  },
-};
-export const scenarios = [
-  {
-    engine: 'playwright',
-    testFunction: login,
-  },
-];
-
 async function login(page: Page) {
   await page.goto('http://localhost:3000/');
   await page.getByRole('button', { name: 'Get Started' }).click();
