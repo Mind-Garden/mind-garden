@@ -199,8 +199,8 @@ export default function Journal({ userId }: NewJournalProps) {
         {/* Calendar Card */}
         <div className="relative bg-white rounded-2xl shadow-lg p-6 overflow-hidden flex justify-center border-emerald-500 border-2">
           <FloatingShapes
-            className="bg-emerald-100 z-10"
-            colors={['bg-emerald-100']}
+            className="bg-emerald-200 z-10"
+            colors={['bg-emerald-100', 'bg-emerald-200']}
           />
           <div className="relative z-10">
             <div className="flex items-center justify-between mb-6">

@@ -178,7 +178,7 @@ function ReminderCard({ userId }: ReminderCardProps) {
 
   return (
     <Card className="bg-white/50 backdrop-blur-sm border-violet-400 border-2 overflow-hidden rounded-2xl">
-      <FloatingShapes colors={['bg-violet-100']} />
+      <FloatingShapes colors={['bg-violet-100', 'bg-violet-200']} />
 
       <CardHeader className="pb-0">
         <CardTitle className="font-title text-2xl">Reminders</CardTitle>
