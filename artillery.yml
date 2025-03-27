@@ -1,5 +1,5 @@
 config:
-  target: http://localhost:3000
+  target: http://localhost:3000 # change to https://mindgarden.vercel.app/ for testing on vercel
   phases:
     - duration: 20
       arrivalRate: 1
