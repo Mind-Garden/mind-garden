@@ -120,3 +120,39 @@ body {
     font-family: var(--font-mulish), sans-serif !important;
   }
 }
+
+@keyframes Toastify__trackProgress {
+  0% {
+    transform: scaleX(0);
+  }
+  100% {
+    transform: scaleX(1);
+  }
+}
+
+.Toastify__progress-bar {
+  background: linear-gradient(to right, #34d399, #38bdf8, #a78bfa);
+  background-size: 100% 100%;
+  animation: Toastify__trackProgress linear 1;
+  transform-origin: left;
+  mask-image: linear-gradient(to right, black, black);
+  mask-size: 100% 100%;
+  -webkit-mask-size: 100% 100%;
+}
+
+.Toastify__progress-bar--animated {
+  animation-duration: 3s;
+}
+
+/* Force Mulish font on toast components */
+.Toastify__toast-container,
+.Toastify__toast,
+.Toastify__toast-body,
+.Toastify__toast-body > div {
+  font-family: var(--font-mulish), sans-serif !important;
+}
+
+/* Ensure toast text properly inherits font styles */
+.Toastify * {
+  font-family: inherit;
+}

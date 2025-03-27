@@ -1,3 +1,4 @@
+import 'react-toastify/dist/ReactToastify.css';
 import './globals.css';
 
 import { ToastContainer } from 'react-toastify';
@@ -35,7 +36,19 @@ export default function RootLayout({
           {children}
         </div>
 
-        <ToastContainer position="top-right" autoClose={3000} />
+        <ToastContainer
+          position="top-right"
+          autoClose={3000}
+          hideProgressBar={false}
+          newestOnTop={true}
+          closeOnClick
+          pauseOnFocusLoss
+          draggable={false}
+          pauseOnHover
+          className="w-auto max-w-[350px] text-sm py-3 px-2 !font-body"
+          toastClassName="bg-white/70 backdrop-blur-md border border-gray-300 shadow-md rounded-xl text-sm text-gray-800 overflow-hidden mb-4"
+          progressClassName="Toastify__progress-bar--animated h-1 w-full absolute bottom-0 rounded-b-full"
+        />
       </body>
     </html>
   );

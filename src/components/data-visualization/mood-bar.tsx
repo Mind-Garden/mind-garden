@@ -1,5 +1,6 @@
 'use client';
 
+import { Frown } from 'lucide-react';
 import { useEffect, useState } from 'react';
 
 import { selectMoodFrequency } from '@/actions/data-visualization';
@@ -117,7 +118,10 @@ export default function MoodBar({
         <div className="flex justify-center items-center mb-6 p-4">
           {moodDistribution.length === 0 ? (
             // No data available message
-            <div className="h-16 text-center">No data yet! :( </div>
+            <div className="h-16 flex items-center justify-center text-center gap-2 text-muted-foreground">
+              <span>No data found.</span>
+              <Frown className="w-5 h-5" />
+            </div>
           ) : (
             moodDistribution.map((item) => {
               const mood = moodMap[item.id];
