@@ -45,9 +45,8 @@ export default function RootLayout({
           pauseOnFocusLoss
           draggable={false}
           pauseOnHover
-          className="w-auto max-w-[350px]"
+          className="w-auto max-w-[350px] text-sm py-3 px-2 !font-body"
           toastClassName="bg-white/70 backdrop-blur-md border border-gray-300 shadow-md rounded-xl text-sm text-gray-800 overflow-hidden mb-4"
-          bodyClassName="text-sm py-3 px-2 !font-body"
           progressClassName="Toastify__progress-bar--animated h-1 w-full absolute bottom-0 rounded-b-full"
         />
       </body>
