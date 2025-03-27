@@ -13,9 +13,9 @@ import {
   selectResponsesByDate,
   updateResponses,
 } from '@/actions/data-intake';
-import AddHabitDialog from '@/components/data-intake/add-habit';
+import AddHabitDialog from '@/components/data-intake/add-habit-dialog';
 import AttributeIcon from '@/components/data-intake/attribute-icon';
-import QuantityTrackerSimple from '@/components/data-intake/quantity-tracker';
+import QuantityTracker from '@/components/data-intake/quantity-tracker';
 import ScaleIcon from '@/components/data-intake/scale-icon';
 import ToggleButton from '@/components/data-intake/toggle-button';
 import YesNoForm from '@/components/data-intake/yes-no-form';
@@ -434,7 +434,7 @@ function DataIntakeForm({
     // Show component based on what habits have been added
     const trackerMap: Record<string, any> = {
       'scale:smoking': (
-        <QuantityTrackerSimple
+        <QuantityTracker
           key={method + name}
           value={smoking}
           onChange={setSmoking}
@@ -443,7 +443,7 @@ function DataIntakeForm({
         />
       ),
       'scale:alcohol': (
-        <QuantityTrackerSimple
+        <QuantityTracker
           key={method + name}
           value={drinks}
           onChange={setDrinks}
@@ -452,7 +452,7 @@ function DataIntakeForm({
         />
       ),
       'scale:meal': (
-        <QuantityTrackerSimple
+        <QuantityTracker
           key={method + name}
           value={meals}
           onChange={setMeals}
@@ -461,7 +461,7 @@ function DataIntakeForm({
         />
       ),
       'scale:cooking': (
-        <QuantityTrackerSimple
+        <QuantityTracker
           key={method + name}
           value={cooking}
           onChange={setCooking}
@@ -839,7 +839,7 @@ function DataIntakeForm({
               value={water ?? 0}
               onChange={setWater}
               disabled={submitting || !scaleSelection}
-              className="w-full h-full"
+              className="w-full h-full rounded-[14px]"
             />
           </div>
           {addedCategories &&
@@ -855,7 +855,7 @@ function DataIntakeForm({
                   className="relative rounded-2xl overflow-hidden p-[2px] bg-gradient-to-r from-emerald-300 via-sky-300 to-violet-300"
                 >
                   <Card
-                    className={`bg-white break-inside-avoid backdrop-blur-sm rounded-2xl border-none relative transition-opacity w-full h-full opacity-100
+                    className={`bg-white rounded-[14px] break-inside-avoid backdrop-blur-sm border-none relative transition-opacity w-full h-full opacity-100
                   ${submitting || !scaleSelection ? 'text-gray-500 bg-gray-100' : ''}`}
                   >
                     {!submitting && scaleSelection && (

@@ -378,7 +378,7 @@ export default function Heatmap({ userId, personalized }: HeatmapProps) {
                                 Journal: {dayData.journal_text ? '✅' : '❌'}
                               </p>
                               <p>
-                                Data Intake:{' '}
+                                Daily Habits:{' '}
                                 {dayData.scale_rating ? '✅' : '❌'}
                               </p>
                               <p>Sleep: {dayData.start ? '✅' : '❌'}</p>
