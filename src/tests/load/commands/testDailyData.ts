@@ -10,37 +10,23 @@ async function testDailyData(page: Page) {
   await page.getByRole('textbox', { name: 'Password' }).fill('loadtest');
   await page.getByRole('button', { name: 'Log in' }).click();
 
-  await page.waitForSelector('[id="radix-«r6»"]');
-  await page.getByRole('button', { name: 'Enter today' }).click();
   for (let i = 0; i < 10; i++) {
+    await page.waitForURL('http://localhost:3000/home');
+    await page.goto('http://localhost:3000/daily-intake');
+    await page.waitForURL('http://localhost:3000/daily-intake');
     await page
       .locator('div')
       .filter({ hasText: /^Rate Your Day$/ })
       .getByRole('button')
-      .nth(4)
+      .nth(Math.floor(Math.random() * 3) + 1) // choose random number to rate your day
       .click();
-    await page.getByRole('button', { name: 'happy' }).click();
-    await page
-      .locator('div')
-      .filter({
-        hasText:
-          /^0How would you rate your school day\?12345PoorExcellentclasshomeworkexam$/,
-      })
-      .getByLabel('Increase count')
-      .click();
-    await page.getByRole('button', { name: '5' }).first().click();
-    await page.getByRole('button', { name: '5' }).nth(1).click();
-    await page.getByRole('button', { name: 'Increase count' }).nth(1).click();
-    await page
-      .locator('div')
-      .filter({ hasText: /^Did you smoke today\?$/ })
-      .getByRole('button')
-      .nth(1)
-      .click();
-    await page.getByRole('button', { name: 'Submit' }).click();
 
     // sleep for 2 seconds
-    await page.waitForTimeout(4000);
+    await page.waitForTimeout(1000);
+    await page.getByRole('button', { name: 'Submit' }).click();
+    await page.waitForTimeout(1000);
+
+    await page.goto('http://localhost:3000/home');
   }
 }
 
