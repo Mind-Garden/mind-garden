@@ -10,7 +10,7 @@
     "lint:fix": "eslint . --fix",
     "lint:check": "eslint . --max-warnings 0",
     "prettier": "prettier --write .",
-    "format": "npm run lint:fix && npm run prettier",
+    "format": "npm run prettier && npm run lint:fix",
     "format:check": "prettier --check .",
     "test": "cross-env NODE_ENV=test ENV=test jest --runInBand --testPathPattern='/src/' --bail=false",
     "test:coverage": "cross-env TARGET_PATH=${npm_config_path} jest --coverage --runInBand --collectCoverageFrom=\"$TARGET_PATH/**/*.{ts,tsx}\"",
