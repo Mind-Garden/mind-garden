@@ -9,11 +9,7 @@ interface CounterProps {
   disabled?: boolean;
 }
 
-export default function Counter({
-  value,
-  onChange,
-  disabled = false,
-}: CounterProps) {
+export default function Counter({ value, onChange, disabled }: CounterProps) {
   const [localCount, setLocalCount] = useState(value || 0);
 
   // Update local state when controlled value changes
@@ -56,7 +52,15 @@ export default function Counter({
     <div className="flex items-center justify-center gap-4">
       <button
         onClick={decrement}
-        className="w-10 h-10 rounded-full flex items-center justify-center border border-slate-300 text-slate-600 hover:bg-slate-100 transition-colors"
+        className={`
+    w-10 h-10 rounded-full flex items-center justify-center 
+    border border-slate-300 text-slate-600 transition-colors
+    ${
+      disabled
+        ? 'opacity-50 pointer-events-none shadow-none bg-transparent'
+        : 'hover:bg-slate-100 hover:shadow' // This applies hover shadow only when not disabled
+    }
+  `}
         aria-label="Decrease count"
         disabled={disabled}
       >
@@ -67,7 +71,12 @@ export default function Counter({
       </span>
       <button
         onClick={increment}
-        className="w-10 h-10 rounded-full flex items-center justify-center border border-slate-300 text-slate-600 hover:bg-slate-100 transition-colors"
+        className={`w-10 h-10 rounded-full flex items-center justify-center border border-slate-300 text-slate-600 hover:bg-slate-100 transition-colors
+          ${
+            disabled
+              ? 'opacity-50 pointer-events-none shadow-none bg-transparent'
+              : 'hover:bg-slate-100 hover:shadow' // This applies hover shadow only when not disabled
+          }`}
         aria-label="Increase count"
         disabled={disabled}
       >
