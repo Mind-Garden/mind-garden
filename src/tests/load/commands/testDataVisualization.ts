@@ -29,7 +29,7 @@ async function waitForHabitResponses(page: Page) {
   });
 }
 
-export async function dataVisualization(page: Page, context: any) {
+export async function testDataVisualization(page: Page) {
   const workerNumber = Math.floor(Math.random() * 10);
   const email = `load${workerNumber}@test.com`;
   await page.goto('http://localhost:3000/');

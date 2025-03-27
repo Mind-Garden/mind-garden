@@ -7,7 +7,7 @@ config:
     playwright:
       launchOptions:
         headless: true
-  processor: './src/tests/load/artillery/datavisualization.ts'
+  processor: './src/tests/load/artillery/load.ts'
 scenarios:
   - engine: playwright
     testFunction: 'artilleryScript'
