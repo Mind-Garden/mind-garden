@@ -4,7 +4,7 @@ async function testDailyData(page: Page) {
   const testID = Math.floor(Math.random() * 20);
   const email = `load${testID}@test.com`;
 
-  await page.goto('https://mindgarden.vercel.app/'); // change to localhost:3000 for local testing
+  await page.goto('http://localhost:3000/'); // change to localhost:3000 for local testing
   await page.getByRole('button', { name: 'Get Started' }).click();
   await page.getByRole('textbox', { name: 'Email' }).fill(email);
   await page.getByRole('textbox', { name: 'Password' }).fill('loadtest');
