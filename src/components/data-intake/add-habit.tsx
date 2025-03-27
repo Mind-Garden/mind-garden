@@ -92,24 +92,33 @@ export default function AddHabitDialog({
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
-          <DialogTitle>Add New Habit</DialogTitle>
-          <DialogDescription>
+          <DialogTitle className="font-header">Add New Habit</DialogTitle>
+          <DialogDescription className="font-body">
             Create a new habit to track in your daily form.
           </DialogDescription>
         </DialogHeader>
         <div className="grid gap-4 py-4">
           <div className="grid gap-2">
-            <Label htmlFor="category">Category</Label>
+            <Label className="font-body" htmlFor="category">
+              Category
+            </Label>
             <Select
               value={selectedCategory}
               onValueChange={setSelectedCategory}
             >
               <SelectTrigger id="category">
-                <SelectValue placeholder="Select a category" />
+                <SelectValue
+                  className="font-body"
+                  placeholder="Select a category"
+                />
               </SelectTrigger>
               <SelectContent>
                 {categories.map((category) => (
-                  <SelectItem key={category.id} value={category.id}>
+                  <SelectItem
+                    className="font-body"
+                    key={category.id}
+                    value={category.id}
+                  >
                     {category.name}
                   </SelectItem>
                 ))}
@@ -118,7 +127,7 @@ export default function AddHabitDialog({
           </div>
           {selectedCategory && (
             <div className="grid gap-2">
-              <Label>Tracking Method</Label>
+              <Label className="font-body">Tracking Method</Label>
               <RadioGroup
                 value={trackingMethod}
                 onValueChange={(value) =>
@@ -129,14 +138,21 @@ export default function AddHabitDialog({
                 {options.length > 0 ? (
                   options.map(({ value, label }) => (
                     <div key={value} className="mb-1">
-                      <RadioGroupItem value={value} id={`tracking-${value}`} />
-                      <Label className="ml-1" htmlFor={`tracking-${value}`}>
+                      <RadioGroupItem
+                        className="border-primary text-primary-foreground data-[state=checked]:bg-gradient-to-r from-emerald-400 via-sky-400 to-violet-400 data-[state=checked]:border-white"
+                        value={value}
+                        id={`tracking-${value}`}
+                      />
+                      <Label
+                        className="ml-1 font-body"
+                        htmlFor={`tracking-${value}`}
+                      >
                         {label}
                       </Label>
                     </div>
                   ))
                 ) : (
-                  <Label>Please choose a category.</Label>
+                  <Label className="font-body">Please choose a category.</Label>
                 )}
               </RadioGroup>
             </div>
@@ -144,8 +160,22 @@ export default function AddHabitDialog({
           {error && <p className="text-sm text-red-500">{error}</p>}
         </div>
         <DialogFooter>
-          <Button onClick={() => onOpenChange(false)}>Cancel</Button>
-          <Button onClick={handleSubmit}>Add Habit</Button>
+          <Button
+            variant="outline"
+            className="rounded-xl bg-transparent border-black-100/50 hover:bg-black/10"
+            onClick={() => onOpenChange(false)}
+          >
+            Cancel
+          </Button>
+          <Button
+            variant="outline"
+            className={
+              'rounded-xl bg-transparent border-black-100/50 hover:bg-gradient-to-r from-emerald-200 via-sky-200 to-violet-200'
+            }
+            onClick={handleSubmit}
+          >
+            Add Habit
+          </Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>

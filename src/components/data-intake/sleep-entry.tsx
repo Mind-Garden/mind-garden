@@ -1,7 +1,5 @@
 'use client';
 
-import 'react-toastify/dist/ReactToastify.css';
-
 import { AlertCircle, Clock, LoaderCircle, Moon } from 'lucide-react';
 import { motion } from 'motion/react';
 import { useEffect, useState } from 'react';

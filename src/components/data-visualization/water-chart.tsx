@@ -1,6 +1,6 @@
 'use client';
 
-import { LoaderCircle } from 'lucide-react';
+import { Frown, LoaderCircle } from 'lucide-react';
 import { useEffect, useState } from 'react';
 
 import { selectWaterDataByDateRange } from '@/actions/data-visualization';
@@ -64,7 +64,12 @@ export default function WaterChart({ userId }: Readonly<WaterChartProps>) {
         }
 
         if (!data || data.length === 0) {
-          return <div className="h-16 text-center">No data yet! :( </div>;
+          return (
+            <div className="h-16 flex items-center justify-center text-center gap-2 text-muted-foreground">
+              <span>No data found.</span>
+              <Frown className="w-5 h-5" />
+            </div>
+          );
         }
         return (
           <AnimatedLineGraph

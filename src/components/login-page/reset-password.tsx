@@ -1,7 +1,5 @@
 'use client';
 
-import 'react-toastify/dist/ReactToastify.css';
-
 import { redirect } from 'next/navigation';
 import { useRef } from 'react';
 import { toast } from 'react-toastify';
