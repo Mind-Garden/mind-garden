@@ -2,7 +2,12 @@
 
 import { useEffect, useState } from 'react';
 
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+} from '@/components/shadcn/card';
 import Counter from '@/components/ui/counter';
 import { cn } from '@/lib/utils';
 

@@ -4,7 +4,7 @@ import { LogOut, LucideIcon, User } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 
 import { logout } from '@/actions/auth';
-import { Button } from '@/components/ui/button';
+import { Button } from '@/components/shadcn/button';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -12,7 +12,7 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
+} from '@/components/shadcn/dropdown-menu';
 
 // Define NavItem interface
 interface NavItem {

@@ -19,8 +19,13 @@ import QuantityTrackerSimple from '@/components/data-intake/quantity-tracker';
 import ScaleIcon from '@/components/data-intake/scale-icon';
 import ToggleButton from '@/components/data-intake/toggle-button';
 import YesNoForm from '@/components/data-intake/yes-no-form';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Button } from '@/components/shadcn/button';
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+} from '@/components/shadcn/card';
 import Counter from '@/components/ui/counter';
 import CounterCard from '@/components/ui/counter-card';
 import FloatingShapes from '@/components/ui/floating-shapes';

@@ -8,14 +8,14 @@ import Heatmap from '@/components/data-visualization/heatmap';
 import WaterChart from '@/components/data-visualization/water-chart';
 import Footer from '@/components/layout/footer';
 import { Header } from '@/components/layout/header';
-import QuickLinks from '@/components/quick-links';
+import QuickLinks from '@/components/layout/quick-links';
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
-} from '@/components/ui/card';
+} from '@/components/shadcn/card';
 import { createClient } from '@/supabase/server';
 
 export default async function Home() {

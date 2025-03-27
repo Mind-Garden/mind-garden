@@ -34,10 +34,10 @@ import FeatureSection from '@/components/login-page/feature-section';
 import PathMorphingNav from '@/components/login-page/path-morphing-nav';
 import TaskManagerMockup from '@/components/login-page/task-manager-mock';
 import { TypingAnimation } from '@/components/magicui/typing-animation';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent } from '@/components/ui/card';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
+import { Button } from '@/components/shadcn/button';
+import { Card, CardContent } from '@/components/shadcn/card';
+import { Input } from '@/components/shadcn/input';
+import { Label } from '@/components/shadcn/label';
 
 export default function Home() {
   const [isLogin, setIsLogin] = useState(true);

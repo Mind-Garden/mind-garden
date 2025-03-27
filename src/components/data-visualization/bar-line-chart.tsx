@@ -15,8 +15,13 @@ import {
 } from 'recharts';
 
 import { selectDataByRange } from '@/actions/data-visualization';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Button } from '@/components/shadcn/button';
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+} from '@/components/shadcn/card';
 import { getLocalISOString } from '@/lib/utils';
 interface BarLineDataPoint {
   entry_date: string;

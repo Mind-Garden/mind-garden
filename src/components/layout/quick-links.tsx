@@ -10,8 +10,8 @@ import {
 } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 
-import { Button } from '@/components/ui/button';
-import { Card } from '@/components/ui/card';
+import { Button } from '@/components/shadcn/button';
+import { Card } from '@/components/shadcn/card';
 
 export default function QuickLinks() {
   const router = useRouter();

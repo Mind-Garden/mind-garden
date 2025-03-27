@@ -5,7 +5,7 @@ import { RotateCw } from 'lucide-react';
 import { useEffect, useState } from 'react';
 
 import { getRandomPrompt } from '@/actions/journal';
-import { CardDescription } from '@/components/ui/card';
+import { CardDescription } from '@/components/shadcn/card';
 import { cn } from '@/lib/utils';
 
 export function RandomPromptCard() {

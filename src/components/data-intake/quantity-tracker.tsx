@@ -2,7 +2,7 @@
 
 import { MinusCircle, PlusCircle } from 'lucide-react';
 
-import { Button } from '@/components/ui/button';
+import { Button } from '@/components/shadcn/button';
 
 interface QuantityTrackerProps {
   value: number;

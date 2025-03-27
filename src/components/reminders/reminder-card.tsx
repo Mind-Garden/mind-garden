@@ -3,20 +3,21 @@
 import 'react-toastify/dist/ReactToastify.css';
 
 import { LoaderCircle } from 'lucide-react';
+import { motion } from 'motion/react';
 import React, { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 
 import { getReminders, updateReminders } from '@/actions/reminders';
-import { Button } from '@/components/ui/button';
+import { Button } from '@/components/shadcn/button';
 import {
   Card,
   CardContent,
   CardFooter,
   CardHeader,
   CardTitle,
-} from '@/components/ui/card';
+} from '@/components/shadcn/card';
+import { Switch } from '@/components/shadcn/switch';
 import FloatingShapes from '@/components/ui/floating-shapes';
-import { Switch } from '@/components/ui/switch';
 import { convertToLocalTime, convertToUtcTime } from '@/lib/time';
 import { IReminders } from '@/supabase/schema';
 
@@ -177,114 +178,188 @@ function ReminderCard({ userId }: ReminderCardProps) {
   };
 
   return (
-    <Card className="bg-white/50 backdrop-blur-sm border-violet-400 border-2 overflow-hidden rounded-2xl">
-      <FloatingShapes colors={['bg-violet-100', 'bg-violet-200']} />
+    <motion.div
+      initial={{ opacity: 0, scale: 0.95 }}
+      animate={{ opacity: 1, scale: 1 }}
+      transition={{ duration: 0.3 }}
+    >
+      <Card className="bg-white/50 backdrop-blur-sm border-violet-400 border-2 overflow-hidden rounded-2xl">
+        <FloatingShapes colors={['bg-violet-100', 'bg-violet-200']} />
 
-      <CardHeader className="pb-0">
-        <CardTitle className="font-title text-2xl">Reminders</CardTitle>
-      </CardHeader>
+        <CardHeader className="pb-0">
+          <motion.div
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.2 }}
+          >
+            <CardTitle className="font-title text-2xl">Reminders</CardTitle>
+          </motion.div>
+        </CardHeader>
 
-      {loading ? (
-        <CardContent className="flex justify-center items-center py-16">
-          <LoaderCircle className="h-8 w-8 animate-spin" />
-        </CardContent>
-      ) : (
-        <CardContent className="mt-4 space-y-4">
-          {/* Hour selection grid */}
-          <div className="space-y-2">
-            <p className="font-body font-medium">Select Hour</p>
-            <div className="grid grid-cols-4 gap-2">
-              {Array.from({ length: 12 }, (_, i) => i + 1).map((hour) => (
-                <Button
-                  key={hour}
-                  variant={hour === selectedHour ? 'default' : 'outline'}
-                  className={`font-body font-medium ${hour === selectedHour ? 'bg-violet-400 hover:bg-violet-500' : ''}`}
-                  onClick={() => setSelectedHour(hour)}
+        {loading ? (
+          <CardContent className="flex justify-center items-center py-16">
+            <LoaderCircle className="h-8 w-8 animate-spin" />
+          </CardContent>
+        ) : (
+          <CardContent className="mt-4 space-y-4">
+            {/* Hour selection grid */}
+            <motion.div
+              className="space-y-2"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.3 }}
+            >
+              <p className="font-body font-medium">Select Hour</p>
+              <div className="grid grid-cols-4 gap-2">
+                {Array.from({ length: 12 }, (_, i) => i + 1).map(
+                  (hour, index) => (
+                    <motion.button
+                      key={hour}
+                      variants={{
+                        hidden: { opacity: 0, y: 10 },
+                        visible: (i: number) => ({
+                          opacity: 1,
+                          y: 0,
+                          transition: { delay: i * 0.05 },
+                        }),
+                      }}
+                      initial="hidden"
+                      animate="visible"
+                      custom={index}
+                      whileTap={{ scale: 0.9 }}
+                      className={`font-body font-medium px-4 py-2 rounded-md ${
+                        hour === selectedHour
+                          ? 'bg-violet-400 hover:bg-violet-500'
+                          : 'border border-gray-300'
+                      }`}
+                      onClick={() => setSelectedHour(hour)}
+                    >
+                      {hour}
+                    </motion.button>
+                  ),
+                )}
+              </div>
+            </motion.div>
+
+            {/* AM/PM toggle */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.4 }}
+              className="space-y-2"
+            >
+              <p className="font-body font-medium">AM/PM</p>
+              <div className="flex gap-2">
+                <motion.div
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
                 >
-                  {hour}
-                </Button>
-              ))}
-            </div>
-          </div>
+                  <Button
+                    variant={selectedAmPm === 'AM' ? 'default' : 'outline'}
+                    onClick={() => setSelectedAmPm('AM')}
+                    className={`font-body font-medium ${selectedAmPm === 'AM' ? 'bg-violet-400 hover:bg-violet-500' : ''}`}
+                  >
+                    AM
+                  </Button>
+                </motion.div>
+                <motion.div
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                >
+                  <Button
+                    variant={selectedAmPm === 'PM' ? 'default' : 'outline'}
+                    onClick={() => setSelectedAmPm('PM')}
+                    className={`font-body font-medium ${selectedAmPm === 'PM' ? 'bg-violet-400 hover:bg-violet-500' : ''}`}
+                  >
+                    PM
+                  </Button>
+                </motion.div>
+              </div>
+            </motion.div>
 
-          {/* AM/PM toggle */}
-          <div className="space-y-2">
-            <p className="font-body font-medium">AM/PM</p>
-            <div className="flex gap-2">
-              <Button
-                variant={selectedAmPm === 'AM' ? 'default' : 'outline'}
-                onClick={() => setSelectedAmPm('AM')}
-                className={`font-body font-medium ${selectedAmPm === 'AM' ? 'bg-violet-400 hover:bg-violet-500' : ''}`}
+            {/* Reminder toggles */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.5 }}
+              className="space-y-4"
+            >
+              <div className="flex items-center justify-between">
+                <p className="font-body font-medium">Journal Reminders</p>
+                <motion.div whileTap={{ scale: 0.9 }}>
+                  <Switch
+                    checked={journalReminders}
+                    onCheckedChange={setJournalReminders}
+                    className="data-[state=checked]:bg-violet-400"
+                  />
+                </motion.div>
+              </div>
+
+              <div className="flex items-center justify-between">
+                <p className="font-body font-medium">Habit/Sleep Reminders</p>
+                <motion.div whileTap={{ scale: 0.9 }}>
+                  <Switch
+                    checked={dataIntakeReminders}
+                    onCheckedChange={setDataIntakeReminders}
+                    className="data-[state=checked]:bg-violet-400"
+                  />
+                </motion.div>
+              </div>
+
+              <div className="flex items-center justify-between">
+                <p className="font-body font-medium">Activity Reminders</p>
+                <motion.div whileTap={{ scale: 0.9 }}>
+                  <Switch
+                    checked={activityReminders}
+                    onCheckedChange={setActivityReminders}
+                    className="data-[state=checked]:bg-violet-400"
+                  />
+                </motion.div>
+              </div>
+            </motion.div>
+
+            <div className="flex justify-center items-center">
+              <motion.p
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 0.6 }}
+                className="max-w-sm text-center font-body font-normal text-gray-400"
               >
-                AM
-              </Button>
+                Mind Garden will never send you more than one reminder per day.
+              </motion.p>
+            </div>
+          </CardContent>
+        )}
+
+        <CardFooter className="px-6 pb-4">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.7 }}
+            className="w-full"
+          >
+            <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
               <Button
-                variant={selectedAmPm === 'PM' ? 'default' : 'outline'}
-                onClick={() => setSelectedAmPm('PM')}
-                className={`font-body font-medium ${selectedAmPm === 'PM' ? 'bg-violet-400 hover:bg-violet-500' : ''}`}
+                onClick={handleSubmit}
+                className={`w-full font-body font-medium flex justify-center items-center ${hasUnsavedChanges ? 'bg-violet-400 hover:bg-violet-500' : 'bg-violet-400/60'}`}
+                disabled={buttonLoading || !hasUnsavedChanges}
               >
-                PM
+                {buttonLoading ? (
+                  <>
+                    <LoaderCircle className="h-5 w-5 mr-2 animate-spin" />
+                    <span>Saving...</span>
+                  </>
+                ) : !hasUnsavedChanges ? (
+                  <span>Saved</span>
+                ) : (
+                  <span>Save Reminders</span>
+                )}
               </Button>
-            </div>
-          </div>
-
-          {/* Reminder toggles */}
-          <div className="space-y-4">
-            <div className="flex items-center justify-between">
-              <p className="font-body font-medium">Journal Reminders</p>
-              <Switch
-                checked={journalReminders}
-                onCheckedChange={setJournalReminders}
-                className="data-[state=checked]:bg-violet-400"
-              />
-            </div>
-
-            <div className="flex items-center justify-between">
-              <p className="font-body font-medium">Habit/Sleep Reminders</p>
-              <Switch
-                checked={dataIntakeReminders}
-                onCheckedChange={setDataIntakeReminders}
-                className="data-[state=checked]:bg-violet-400"
-              />
-            </div>
-
-            <div className="flex items-center justify-between">
-              <p className="font-body font-medium">Activity Reminders</p>
-              <Switch
-                checked={activityReminders}
-                onCheckedChange={setActivityReminders}
-                className="data-[state=checked]:bg-violet-400"
-              />
-            </div>
-          </div>
-
-          <div className="flex justify-center items-center">
-            <p className="max-w-sm text-center font-body font-normal text-gray-400">
-              Mind Garden will never send you more than one reminder per day.
-            </p>
-          </div>
-        </CardContent>
-      )}
-
-      <CardFooter className="px-6 pb-4">
-        <Button
-          onClick={handleSubmit}
-          className={`w-full font-body font-medium flex justify-center items-center ${hasUnsavedChanges ? 'bg-violet-400 hover:bg-violet-500' : 'bg-violet-400/60'}`}
-          disabled={buttonLoading || !hasUnsavedChanges}
-        >
-          {buttonLoading ? (
-            <>
-              <LoaderCircle className="h-5 w-5 animate-spin mr-2" />
-              <span>Saving...</span>
-            </>
-          ) : !hasUnsavedChanges ? (
-            <span>Saved</span>
-          ) : (
-            <span>Save Reminders</span>
-          )}
-        </Button>
-      </CardFooter>
-    </Card>
+            </motion.div>
+          </motion.div>
+        </CardFooter>
+      </Card>
+    </motion.div>
   );
 }
 

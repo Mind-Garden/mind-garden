@@ -14,16 +14,16 @@ import {
   markTask,
 } from '@/actions/tasks';
 import { activateFireworks } from '@/components/magicui/fireworks';
-import VoiceRecorder from '@/components/tasks/voice-recorder';
-import { Card, CardContent, CardHeader } from '@/components/ui/card';
-import { Checkbox } from '@/components/ui/checkbox';
-import { Input } from '@/components/ui/input';
+import { Card, CardContent, CardHeader } from '@/components/shadcn/card';
+import { Checkbox } from '@/components/shadcn/checkbox';
+import { Input } from '@/components/shadcn/input';
 import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
-} from '@/components/ui/tooltip';
+} from '@/components/shadcn/tooltip';
+import VoiceRecorder from '@/components/tasks/voice-recorder';
 import { getDate, getGreetingText } from '@/lib/utils';
 import type { ITask } from '@/supabase/schema';
 

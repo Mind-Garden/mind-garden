@@ -11,13 +11,13 @@ import {
 import { useRouter } from 'next/navigation';
 
 import { ProfileDropdown } from '@/components/layout/profile-dropdown';
-import { Button } from '@/components/ui/button';
+import { Button } from '@/components/shadcn/button';
 import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
-} from '@/components/ui/tooltip';
+} from '@/components/shadcn/tooltip';
 
 // Define navigation item type
 interface NavItem {
