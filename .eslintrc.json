@@ -15,7 +15,7 @@
   },
   "plugins": ["@typescript-eslint", "unused-imports", "simple-import-sort"],
   "rules": {
-    "quotes": ["error", "single"],
+    "quotes": ["error", "single", { "avoidEscape": false }],
     "semi": ["error", "always"],
     "no-multi-spaces": ["error"],
     "indent": "off",
