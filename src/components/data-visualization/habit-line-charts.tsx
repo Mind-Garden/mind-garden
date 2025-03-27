@@ -23,7 +23,7 @@ import {
   getAllAddedRespCategory,
   getPersonalizedCategories,
 } from '@/actions/data-intake';
-import AnimatedLineGraph from '@/components/data-visualization/line-graph';
+import AnimatedLineGraph from '@/components/data-visualization/animated-line-graph';
 import { Button } from '@/components/shadcn/button';
 import type { DataPoint, IAddedResp } from '@/supabase/schema';
 
