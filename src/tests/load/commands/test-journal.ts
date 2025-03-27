@@ -21,7 +21,9 @@ async function testJournal(page: Page) {
   // Loop, making journal entries and deleting them
   for (let i = 0; i < 10; i++) {
     await page
-      .getByRole('textbox', { name: 'What\'s on your mind today?' })
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
+      .getByRole('textbox', { name: "What's on your mind today?" })
       .fill('test entry');
     await page.getByRole('button', { name: 'Save Entry' }).click();
     await page.getByRole('button', { name: 'Delete' }).first().click();
