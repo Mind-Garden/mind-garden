@@ -10,14 +10,14 @@ import {
 } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 
-import { ProfileDropdown } from '@/components/profile-dropdown';
-import { Button } from '@/components/ui/button';
+import { ProfileDropdown } from '@/components/layout/profile-dropdown';
+import { Button } from '@/components/shadcn/button';
 import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
-} from '@/components/ui/tooltip';
+} from '@/components/shadcn/tooltip';
 
 // Define navigation item type
 interface NavItem {
@@ -94,7 +94,7 @@ export function Header() {
                         </Button>
                       </TooltipTrigger>
                       <TooltipContent>
-                        <p>{item.label}</p>
+                        <p className="font-body">{item.label}</p>
                       </TooltipContent>
                     </Tooltip>
                   </TooltipProvider>

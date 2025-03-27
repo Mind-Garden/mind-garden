@@ -22,11 +22,11 @@ import {
   updateJournalEntry,
 } from '@/actions/journal';
 import { RandomPromptCard } from '@/components/journal/random-prompt-card';
-import { Button } from '@/components/ui/button';
-import { Calendar } from '@/components/ui/calendar';
+import { Button } from '@/components/shadcn/button';
+import { Calendar } from '@/components/shadcn/calendar';
+import { ScrollArea } from '@/components/shadcn/scroll-area';
+import { TextArea } from '@/components/shadcn/textarea';
 import FloatingShapes from '@/components/ui/floating-shapes';
-import { ScrollArea } from '@/components/ui/scroll-area';
-import { TextArea } from '@/components/ui/textarea';
 import { getDate, undoConversion } from '@/lib/utils';
 import type { IJournalEntries } from '@/supabase/schema';
 
@@ -199,8 +199,8 @@ export default function Journal({ userId }: NewJournalProps) {
         {/* Calendar Card */}
         <div className="relative bg-white rounded-2xl shadow-lg p-6 overflow-hidden flex justify-center border-emerald-500 border-2">
           <FloatingShapes
-            className="bg-emerald-100 z-10"
-            colors={['bg-emerald-100']}
+            className="bg-emerald-200 z-10"
+            colors={['bg-emerald-100', 'bg-emerald-200']}
           />
           <div className="relative z-10">
             <div className="flex items-center justify-between mb-6">

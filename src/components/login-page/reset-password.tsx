@@ -1,13 +1,11 @@
 'use client';
 
-import 'react-toastify/dist/ReactToastify.css';
-
 import { redirect } from 'next/navigation';
 import { useRef } from 'react';
 import { toast } from 'react-toastify';
 
 import { modifyPassword } from '@/actions/auth';
-import { Button } from '@/components/ui/button';
+import { Button } from '@/components/shadcn/button';
 import {
   Card,
   CardContent,
@@ -15,8 +13,8 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from '@/components/ui/card';
-import { Input } from '@/components/ui/input';
+} from '@/components/shadcn/card';
+import { Input } from '@/components/shadcn/input';
 
 export default function ResetPassword({ session }: { session: any }) {
   const newPass = useRef<HTMLInputElement>(null);

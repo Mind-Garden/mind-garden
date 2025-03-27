@@ -10,11 +10,12 @@ import {
   Title,
   Tooltip,
 } from 'chart.js';
+import { Frown } from 'lucide-react';
 import { useEffect, useState } from 'react';
 
 import { selectMoodDataByDateRange } from '@/actions/data-visualization';
 import AnimatedLineGraph from '@/components/data-visualization/line-graph';
-import { Card, CardDescription, CardTitle } from '@/components/ui/card';
+import { Card, CardDescription, CardTitle } from '@/components/shadcn/card';
 import { getLocalISOString } from '@/lib/utils';
 import { DataPoint, MoodDataPoint, MoodFlowProps } from '@/supabase/schema';
 
@@ -82,7 +83,10 @@ export default function MoodFlow({
         </CardDescription>
         {moodData.length === 0 ? (
           // If no moodData
-          <div className="h-16 text-center">No data yet! :( </div>
+          <div className="h-16 flex items-center justify-center text-center gap-2 text-muted-foreground">
+            <span>No data found.</span>
+            <Frown className="w-5 h-5" />
+          </div>
         ) : (
           // If there is moodData, render the chart
           <div className="h-128">

@@ -9,7 +9,13 @@ import {
   subMonths,
 } from 'date-fns';
 import { AnimatePresence, motion, type PanInfo } from 'framer-motion';
-import { ArrowLeft, ArrowRight, ChevronLeft, ChevronRight } from 'lucide-react';
+import {
+  ArrowLeft,
+  ArrowRight,
+  ChevronLeft,
+  ChevronRight,
+  Frown,
+} from 'lucide-react';
 import { useEffect, useState } from 'react';
 
 import {
@@ -18,7 +24,7 @@ import {
   getPersonalizedCategories,
 } from '@/actions/data-intake';
 import AnimatedLineGraph from '@/components/data-visualization/line-graph';
-import { Button } from '@/components/ui/button';
+import { Button } from '@/components/shadcn/button';
 import type { DataPoint, IAddedResp } from '@/supabase/schema';
 
 interface HabitLineChartProps {
@@ -199,7 +205,12 @@ export default function HabitLineCharts({ userId }: HabitLineChartProps) {
         <div className="container mx-auto">
           {(() => {
             if (data.length === 0) {
-              return <div className="h-16 text-center">No data yet! :( </div>;
+              return (
+                <div className="h-16 flex items-center justify-center text-center gap-2 text-muted-foreground">
+                  <span>No data found.</span>
+                  <Frown className="w-5 h-5" />
+                </div>
+              );
             }
 
             return <AnimatedLineGraph data={data} />;

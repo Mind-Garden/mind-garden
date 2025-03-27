@@ -1,22 +1,21 @@
 import { redirect } from 'next/navigation';
 
 import { getAuthenticatedUserId } from '@/actions/auth';
-import Dashboard from '@/components/dashboard';
 import HabitLineCharts from '@/components/data-visualization/add-habit-charts';
 import BarLineChart from '@/components/data-visualization/bar-line-chart';
-import HabitHeatmapGrid from '@/components/data-visualization/habit-heatmap';
 import HealthDashboard from '@/components/data-visualization/health-dashboard';
-import HabitHeatmap from '@/components/data-visualization/heatmap';
+import Heatmap from '@/components/data-visualization/heatmap';
 import WaterChart from '@/components/data-visualization/water-chart';
-import Footer from '@/components/footer';
-import { Header } from '@/components/header';
+import Footer from '@/components/layout/footer';
+import { Header } from '@/components/layout/header';
+import QuickLinks from '@/components/layout/quick-links';
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
-} from '@/components/ui/card';
+} from '@/components/shadcn/card';
 import { createClient } from '@/supabase/server';
 
 export default async function Home() {
@@ -36,9 +35,9 @@ export default async function Home() {
   return (
     <div className="min-h-screen flex flex-col">
       <Header />
-      <main className="flex-1 container mx-auto px-4 py-8">
-        <div className="mb-8 space-y-2">
-          <h1 className="text-4xl font-bold tracking-tight font-title">
+      <main className="flex-1 container mx-auto px-4 py-8 w-full">
+        <div className="mb-8 space-y-2 text-center sm:text-left">
+          <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold tracking-tight font-title">
             Welcome back, {profileData?.first_name}
           </h1>
           <p className="pl-1 text-xl text-bold text-muted-foreground font-header font-semibold">
@@ -46,16 +45,16 @@ export default async function Home() {
           </p>
         </div>
 
-        <div className="grid gap-6 lg:grid-cols-12 small:grid-cols-1">
+        <div className="grid gap-6 grid-cols-1 md:grid-cols-12">
           {/* Left Column */}
-          <div className="space-y-6 lg:col-span-4 small:col-span-1">
+          <div className="space-y-6 md:col-span-4">
             {/* Quick Links */}
             <Card className="overflow-hidden border-none shadow-md">
               <CardHeader className="bg-gradient-to-r from-emerald-50 via-teal-50 to-violet-50 font-title">
                 <CardTitle>Quick Links</CardTitle>
               </CardHeader>
               <CardContent className="p-6">
-                <Dashboard userId={userId} />
+                <QuickLinks />
               </CardContent>
             </Card>
 
@@ -70,7 +69,7 @@ export default async function Home() {
                 </CardDescription>
               </CardHeader>
               <CardContent className="p-6">
-                <HabitHeatmap userId={userId} />
+                <Heatmap personalized={false} userId={userId} />
               </CardContent>
             </Card>
 
@@ -82,13 +81,13 @@ export default async function Home() {
                 </div>
               </CardHeader>
               <CardContent className="p-6">
-                <HabitHeatmapGrid userId={userId} />
+                <Heatmap personalized={true} userId={userId} />
               </CardContent>
             </Card>
           </div>
 
           {/* Right Column */}
-          <div className="space-y-6 lg:col-span-8 small:col-span-1">
+          <div className="space-y-6 md:col-span-8">
             {/* Mood Section */}
             <Card className="overflow-hidden border-none shadow-md">
               <CardHeader className="bg-gradient-to-r from-emerald-50 via-teal-50 to-violet-50">

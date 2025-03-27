@@ -2,8 +2,8 @@ import { LoaderCircle } from 'lucide-react';
 import React from 'react';
 
 import { getAuthenticatedUserId } from '@/actions/auth';
-import Footer from '@/components/footer';
-import { Header } from '@/components/header';
+import Footer from '@/components/layout/footer';
+import { Header } from '@/components/layout/header';
 import ReminderCard from '@/components/reminders/reminder-card';
 
 export default async function RemindersPage() {
