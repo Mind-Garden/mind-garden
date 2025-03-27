@@ -18,7 +18,7 @@ async function testDailyData(page: Page) {
       .locator('div')
       .filter({ hasText: /^Rate Your Day$/ })
       .getByRole('button')
-      .nth(1 % 5) // choose random number to rate your day
+      .nth(i % 5) // choose random number to rate your day
       .click();
 
     // sleep for 2 seconds
