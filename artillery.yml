@@ -1,5 +1,5 @@
 config:
-  target: https://mindgarden.vercel.app/
+  target: https://mindgarden.vercel.app/ # change to localhost:3000 for local testing
   phases:
     - duration: 20
       arrivalRate: 1

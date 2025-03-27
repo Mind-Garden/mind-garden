@@ -17,7 +17,7 @@ async function testSignup(page: Page) {
     await page.waitForSelector('[id="radix-«r6»"]');
 
     // sleep for 2 seconds
-    await page.waitForTimeout(2000);
+    await page.waitForTimeout(4000);
 
     await page.locator('[id="radix-«r6»"]').click();
     await page.getByRole('menuitem', { name: 'Profile' }).click();
