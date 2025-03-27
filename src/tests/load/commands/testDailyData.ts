@@ -9,9 +9,9 @@ async function testDailyData(page: Page) {
   await page.getByRole('textbox', { name: 'Email' }).fill(email);
   await page.getByRole('textbox', { name: 'Password' }).fill('loadtest');
   await page.getByRole('button', { name: 'Log in' }).click();
+  await page.waitForURL('http://localhost:3000/home');
 
   for (let i = 0; i < 10; i++) {
-    await page.waitForURL('http://localhost:3000/home');
     await page.goto('http://localhost:3000/daily-intake');
     await page.waitForURL('http://localhost:3000/daily-intake');
     await page
@@ -25,8 +25,6 @@ async function testDailyData(page: Page) {
     await page.waitForTimeout(1000);
     await page.getByRole('button', { name: 'Submit' }).click();
     await page.waitForTimeout(1000);
-
-    await page.goto('http://localhost:3000/home');
   }
 }
 
