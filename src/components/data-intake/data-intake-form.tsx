@@ -592,7 +592,6 @@ function DataIntakeForm({
               <Button
                 variant="outline"
                 className={`rounded-xl bg-transparent border-black-100/50 ${!submitting && scaleSelection ? 'hover:bg-gradient-to-r from-emerald-200 via-sky-200 to-violet-200' : 'hover:bg-black/10'} `}
-                // className={`rounded-xl bg-gradient-to-r from-emerald-100 via-sky-100 to-violet-100 border-black-100/50 hover:bg-gradient-to-r from-emerald-300 via-sky-300 to-violet-300`}
                 onClick={handleSubmit}
                 disabled={submitting}
               >
@@ -655,9 +654,8 @@ function DataIntakeForm({
           <div className="relative rounded-2xl overflow-hidden p-[2px] mb-5 bg-gradient-to-r from-emerald-300 via-sky-300 to-violet-300">
             <Card
               key={emotionsCategory.id}
-              className={
-                'bg-white rounded-[14px] h-full overflow-hidden border-none break-inside-avoid backdrop-blur-sm relative transition-opacity'
-              }
+              className={`bg-white rounded-[14px] h-full overflow-hidden border-none break-inside-avoid backdrop-blur-sm relative transition-opacity
+                ${submitting || !scaleSelection ? 'text-gray-500 bg-gray-100' : ''}`}
             >
               {!submitting && scaleSelection && (
                 <FloatingShapes
@@ -703,9 +701,8 @@ function DataIntakeForm({
             <div className="relative rounded-2xl overflow-hidden p-[2px] bg-gradient-to-r from-emerald-300 via-sky-300 to-violet-300">
               <Card
                 key={schoolCategory.id}
-                className={
-                  'bg-white rounded-[14px] h-full overflow-hidden border-none break-inside-avoid backdrop-blur-sm relative transition-opacity'
-                }
+                className={`bg-white rounded-[14px] h-full overflow-hidden border-none break-inside-avoid backdrop-blur-sm relative transition-opacity
+                  ${submitting || !scaleSelection ? 'text-gray-500 bg-gray-100' : ''}`}
               >
                 {!submitting && scaleSelection && (
                   <FloatingShapes
@@ -771,9 +768,8 @@ function DataIntakeForm({
             <div className="relative rounded-2xl overflow-hidden p-[2px] bg-gradient-to-r from-emerald-300 via-sky-300 to-violet-300">
               <Card
                 key={workCategory.id}
-                className={
-                  'bg-white rounded-[14px] h-full overflow-hidden border-none break-inside-avoid backdrop-blur-sm relative transition-opacity'
-                }
+                className={`bg-white rounded-[14px] h-full overflow-hidden border-none break-inside-avoid backdrop-blur-sm relative transition-opacity
+                  ${submitting || !scaleSelection ? 'text-gray-500 bg-gray-100' : ''}`}
               >
                 {!submitting && scaleSelection && (
                   <FloatingShapes
@@ -853,7 +849,10 @@ function DataIntakeForm({
                   key={name}
                   className="relative rounded-2xl overflow-hidden p-[2px] bg-gradient-to-r from-emerald-300 via-sky-300 to-violet-300"
                 >
-                  <Card className="bg-white break-inside-avoid backdrop-blur-sm rounded-2xl border-none relative transition-opacity w-full h-full opacity-100">
+                  <Card
+                    className={`bg-white break-inside-avoid backdrop-blur-sm rounded-2xl border-none relative transition-opacity w-full h-full opacity-100
+                  ${submitting || !scaleSelection ? 'text-gray-500 bg-gray-100' : ''}`}
+                  >
                     {!submitting && scaleSelection && (
                       <FloatingShapes
                         colors={[

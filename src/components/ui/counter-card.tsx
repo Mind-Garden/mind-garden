@@ -36,28 +36,13 @@ export default function CounterCard({
 
   // Determine if component is controlled or uncontrolled
   const isCountControlled = value !== undefined;
-  const count = isCountControlled ? value : localCount;
-
-  const handleCountChange = (newValue: number) => {
-    // Don't allow negative values
-    if (newValue < 0) return;
-
-    // Update local state if uncontrolled
-    if (!isCountControlled) {
-      setLocalCount(newValue);
-    }
-
-    // Call onChange if provided
-    if (onChange) {
-      onChange(newValue);
-    }
-  };
 
   return (
     <Card
       className={cn(
         'bg-white rounded-2xl border-none relative transition-opacity opacity-100',
         className,
+        disabled ? 'text-gray-500 bg-gray-100' : '',
       )}
     >
       {!disabled && (
