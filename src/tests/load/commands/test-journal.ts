@@ -23,7 +23,7 @@ async function testJournal(page: Page) {
     await page
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore
-      .getByRole('textbox', { name: "What's on your mind today?" })
+      .getByRole('textbox', { name: 'What\'s on your mind today?' })
       .fill('test entry');
     await page.getByRole('button', { name: 'Save Entry' }).click();
     await page.getByRole('button', { name: 'Delete' }).first().click();
