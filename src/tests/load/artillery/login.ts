@@ -1,9 +1,9 @@
 import { Page } from '@playwright/test';
 
-import { testSignup } from '@/tests/load/commands/signup';
+import { testLogin } from '@/tests/load/commands/login';
 
 async function artilleryScript(page: Page) {
-  await testSignup(page);
+  await testLogin(page);
 }
 
 export { artilleryScript };

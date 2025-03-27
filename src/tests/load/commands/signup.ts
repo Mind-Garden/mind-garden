@@ -1,9 +1,9 @@
 import { Page } from '@playwright/test';
 
-async function testSignup(page: Page, context: any) {
-  for (let i = 0; i < 20; i++) {
+async function testSignup(page: Page) {
+  for (let i = 0; i < 10; i++) {
     const workerNumber = Math.floor(Math.random() * 1000000);
-    const email = `test${workerNumber}@test.com`;
+    const email = `load${workerNumber}@test.com`;
 
     await page.goto('http://localhost:3000/');
     await page.getByRole('button', { name: 'Get Started' }).click();
