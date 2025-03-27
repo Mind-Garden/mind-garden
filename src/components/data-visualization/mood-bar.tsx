@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react';
 
 import { selectMoodFrequency } from '@/actions/data-visualization';
-import { Card, CardDescription, CardTitle } from '@/components/ui/card';
+import { Card, CardDescription, CardTitle } from '@/components/shadcn/card';
 import { getLocalISOString } from '@/lib/utils';
 import { MoodCountData, MoodDistribution } from '@/supabase/schema';
 

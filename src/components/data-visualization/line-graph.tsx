@@ -15,7 +15,7 @@ import {
   CardContent,
   CardDescription,
   CardTitle,
-} from '@/components/ui/card';
+} from '@/components/shadcn/card';
 // Types for our data and props
 import type { DataPoint } from '@/supabase/schema';
 

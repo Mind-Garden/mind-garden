@@ -3,15 +3,15 @@ import { motion } from 'framer-motion';
 import { Check, ListTodo, Plus, Trash2 } from 'lucide-react';
 import React from 'react';
 
-import VoiceRecorder from '@/components/tasks/voice-recorder';
-import { Card, CardContent, CardHeader } from '@/components/ui/card';
-import { Checkbox } from '@/components/ui/checkbox';
+import { Card, CardContent, CardHeader } from '@/components/shadcn/card';
+import { Checkbox } from '@/components/shadcn/checkbox';
 import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
-} from '@/components/ui/tooltip';
+} from '@/components/shadcn/tooltip';
+import VoiceRecorder from '@/components/tasks/voice-recorder';
 
 const TaskManagerMockup = () => {
   // Example tasks with static data

@@ -5,14 +5,14 @@ import { Trash2 } from 'lucide-react';
 import { useState } from 'react';
 
 import { deleteAccount } from '@/actions/auth';
-import { Button } from '@/components/ui/button';
+import { Button } from '@/components/shadcn/button';
 import {
   Card,
   CardDescription,
   CardFooter,
   CardHeader,
   CardTitle,
-} from '@/components/ui/card';
+} from '@/components/shadcn/card';
 import {
   Dialog,
   DialogContent,
@@ -21,7 +21,7 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from '@/components/ui/dialog';
+} from '@/components/shadcn/dialog';
 import FloatingShapes from '@/components/ui/floating-shapes';
 
 export default function DeleteAccount(props: { userId: string }) {

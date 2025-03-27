@@ -8,8 +8,8 @@ import AIResponse from '@/components/data-visualization/ai-response';
 import MoodBar from '@/components/data-visualization/mood-bar';
 import MoodFlow from '@/components/data-visualization/mood-flow';
 import SleepChart from '@/components/data-visualization/sleep-chart';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent } from '@/components/ui/card';
+import { Button } from '@/components/shadcn/button';
+import { Card, CardContent } from '@/components/shadcn/card';
 import { cn } from '@/lib/utils';
 
 interface HealthDashboardProps {

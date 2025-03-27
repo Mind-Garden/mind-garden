@@ -22,11 +22,11 @@ import {
   updateJournalEntry,
 } from '@/actions/journal';
 import { RandomPromptCard } from '@/components/journal/random-prompt-card';
-import { Button } from '@/components/ui/button';
-import { Calendar } from '@/components/ui/calendar';
+import { Button } from '@/components/shadcn/button';
+import { Calendar } from '@/components/shadcn/calendar';
+import { ScrollArea } from '@/components/shadcn/scroll-area';
+import { TextArea } from '@/components/shadcn/textarea';
 import FloatingShapes from '@/components/ui/floating-shapes';
-import { ScrollArea } from '@/components/ui/scroll-area';
-import { TextArea } from '@/components/ui/textarea';
 import { getDate, undoConversion } from '@/lib/utils';
 import type { IJournalEntries } from '@/supabase/schema';
 
