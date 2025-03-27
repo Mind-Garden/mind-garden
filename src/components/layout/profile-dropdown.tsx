@@ -100,7 +100,9 @@ export function ProfileDropdown({
               </>
             )}
 
-            <DropdownMenuLabel className="font-header font-bold text-md">My Account</DropdownMenuLabel>
+            <DropdownMenuLabel className="font-header font-bold text-md">
+              My Account
+            </DropdownMenuLabel>
             <DropdownMenuSeparator />
             <motion.div
               variants={menuItemVariants}

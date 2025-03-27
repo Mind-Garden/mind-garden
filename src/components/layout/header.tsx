@@ -94,7 +94,7 @@ export function Header() {
                         </Button>
                       </TooltipTrigger>
                       <TooltipContent>
-                        <p>{item.label}</p>
+                        <p className="font-body">{item.label}</p>
                       </TooltipContent>
                     </Tooltip>
                   </TooltipProvider>
