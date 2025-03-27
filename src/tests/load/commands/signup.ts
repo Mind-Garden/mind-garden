@@ -1,7 +1,7 @@
 import { Page } from '@playwright/test';
 
 async function testSignup(page: Page, context: any) {
-  for (let i = 0; i < 20; i++) {
+  for (let i = 0; i < 10; i++) {
     const workerNumber = Math.floor(Math.random() * 1000000);
     const email = `test${workerNumber}@test.com`;
 

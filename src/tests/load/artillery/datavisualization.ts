@@ -1,9 +1,9 @@
 import { Page } from '@playwright/test';
 
-import { testLogin } from '@/tests/load/commands/login';
+import { dataVisualization } from '@/tests/load/commands/datavisualization';
 
 async function artilleryScript(page: Page, context: any) {
-  await testLogin(page);
+  await dataVisualization(page, context);
 }
 
 export { artilleryScript };
