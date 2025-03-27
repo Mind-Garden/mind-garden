@@ -1,7 +1,5 @@
 'use client';
 
-import 'react-toastify/dist/ReactToastify.css';
-
 import {
   AnimatePresence,
   motion,
@@ -38,6 +36,12 @@ import { Button } from '@/components/shadcn/button';
 import { Card, CardContent } from '@/components/shadcn/card';
 import { Input } from '@/components/shadcn/input';
 import { Label } from '@/components/shadcn/label';
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from '@/components/shadcn/tooltip';
 
 export default function Home() {
   const [isLogin, setIsLogin] = useState(true);
@@ -762,13 +766,28 @@ export default function Home() {
                             }
                             className="pl-12 h-12 text-lg bg-white/80 border-gray-200 focus:ring-2 focus:ring-emerald-500"
                           />
-                          <button
-                            type="button"
-                            onClick={() => setPasswordVisible(!passwordVisible)}
-                            className="absolute right-5 top-3 h-5 w-5 text-slate-400 hover:text-slate-600 transition-colors"
-                          >
-                            {passwordVisible ? <EyeOff /> : <Eye />}
-                          </button>
+                          <TooltipProvider delayDuration={50}>
+                            <Tooltip>
+                              <TooltipTrigger asChild>
+                                <button
+                                  type="button"
+                                  onClick={() =>
+                                    setPasswordVisible(!passwordVisible)
+                                  }
+                                  className="absolute right-5 top-3 h-5 w-5 text-slate-400 hover:text-slate-600 transition-colors"
+                                >
+                                  {passwordVisible ? <EyeOff /> : <Eye />}
+                                </button>
+                              </TooltipTrigger>
+                              <TooltipContent>
+                                <p className="font-body">
+                                  {passwordVisible
+                                    ? 'Hide Password'
+                                    : 'Show Password'}
+                                </p>
+                              </TooltipContent>
+                            </Tooltip>
+                          </TooltipProvider>
                         </div>
                       </div>
 

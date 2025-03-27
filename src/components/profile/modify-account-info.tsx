@@ -1,7 +1,5 @@
 'use client';
 
-import 'react-toastify/dist/ReactToastify.css';
-
 import { motion } from 'framer-motion';
 import { Loader2 } from 'lucide-react';
 import { useRef, useState } from 'react';

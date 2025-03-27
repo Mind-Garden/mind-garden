@@ -1,7 +1,5 @@
 'use client';
 
-import 'react-toastify/dist/ReactToastify.css';
-
 import { LoaderCircle } from 'lucide-react';
 import { motion } from 'motion/react';
 import React, { useEffect, useState } from 'react';

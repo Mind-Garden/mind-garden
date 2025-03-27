@@ -72,7 +72,7 @@ export function ProfileDropdown({
             {/* Conditionally render navigation items if they're passed in */}
             {navItems && navItems.length > 0 && (
               <>
-                <DropdownMenuLabel className="text-sm font-normal text-muted-foreground">
+                <DropdownMenuLabel className="text-md font-header font-bold text-muted-foreground">
                   Navigation
                 </DropdownMenuLabel>
                 {navItems.map((item, index) => {
@@ -86,7 +86,10 @@ export function ProfileDropdown({
                       whileHover="hover"
                       custom={index}
                     >
-                      <DropdownMenuItem onClick={() => push(item.path)}>
+                      <DropdownMenuItem
+                        className="font-body"
+                        onClick={() => push(item.path)}
+                      >
                         <Icon className="mr-2 h-4 w-4" />
                         <span>{item.label}</span>
                       </DropdownMenuItem>
@@ -97,7 +100,7 @@ export function ProfileDropdown({
               </>
             )}
 
-            <DropdownMenuLabel>My Account</DropdownMenuLabel>
+            <DropdownMenuLabel className="font-header font-bold text-md">My Account</DropdownMenuLabel>
             <DropdownMenuSeparator />
             <motion.div
               variants={menuItemVariants}
@@ -105,7 +108,10 @@ export function ProfileDropdown({
               animate="visible"
               whileHover="hover"
             >
-              <DropdownMenuItem onClick={() => push('/profile')}>
+              <DropdownMenuItem
+                className="font-body"
+                onClick={() => push('/profile')}
+              >
                 Profile
               </DropdownMenuItem>
             </motion.div>
@@ -118,7 +124,7 @@ export function ProfileDropdown({
             >
               <DropdownMenuItem
                 onClick={logout}
-                className="text-red-600 hover:text-red-50 focus:text-red-50 hover:bg-red-600 focus:bg-red-600 cursor-pointer flex items-center"
+                className="font-body text-red-600 hover:text-red-50 focus:text-red-50 hover:bg-red-600 focus:bg-red-600 cursor-pointer flex items-center"
               >
                 <LogOut className="mr-2 h-4 w-4" />
                 <span>Log out</span>
