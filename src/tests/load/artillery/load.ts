@@ -3,6 +3,7 @@ import { Page } from '@playwright/test';
 import { testDataVisualization } from '@/tests/load/commands/test-data-visualization';
 import { testJournal } from '@/tests/load/commands/test-journal';
 import { testLogin } from '@/tests/load/commands/test-login';
+import { testReminders } from '@/tests/load/commands/test-reminders';
 
 import { testTaskManager } from '../commands/test-task-manager';
 
@@ -14,6 +15,7 @@ async function artilleryScript(page: Page) {
   await testDataVisualization(page, BASE_URL);
   await testJournal(page, BASE_URL);
   await testTaskManager(page, BASE_URL);
+  await testReminders(page, BASE_URL);
 }
 
 export { artilleryScript };
