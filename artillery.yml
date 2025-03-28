@@ -6,7 +6,7 @@ config:
   engines:
     playwright:
       launchOptions:
-        headless: true
+        headless: false
   processor: './src/tests/load/artillery/load.ts'
 scenarios:
   - engine: playwright
