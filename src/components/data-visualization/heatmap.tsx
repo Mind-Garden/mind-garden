@@ -362,17 +362,18 @@ export default function Heatmap({ userId, personalized }: HeatmapProps) {
                       <p className="font-medium">
                         {format(day, 'MMMM d, yyyy')}
                       </p>
-                      {dayData ? (
+                      {
                         <div className="mt-1">
-                          {personalized && (
-                            <p>
-                              {trackingMethod === 'boolean'
-                                ? category
-                                : `${category} - ${trackingMethod}`}
-                              : {completionValue ? '✅' : '❌'}
-                            </p>
-                          )}
-                          {!personalized && (
+                          {personalized ? (
+                            <div className="mt-1">
+                              <p>
+                                {trackingMethod === 'boolean'
+                                  ? category
+                                  : `${category} - ${trackingMethod}`}
+                                : {completionValue ? '✅' : '❌'}
+                              </p>
+                            </div>
+                          ) : dayData ? (
                             <div className="mt-1">
                               <p>
                                 Journal: {dayData.journal_text ? '✅' : '❌'}
@@ -383,11 +384,11 @@ export default function Heatmap({ userId, personalized }: HeatmapProps) {
                               </p>
                               <p>Sleep: {dayData.start ? '✅' : '❌'}</p>
                             </div>
+                          ) : (
+                            <p className="mt-1">No data recorded</p>
                           )}
                         </div>
-                      ) : (
-                        <p className="mt-1">No data recorded</p>
-                      )}
+                      }
                     </div>
                   </TooltipContent>
                 </Tooltip>
