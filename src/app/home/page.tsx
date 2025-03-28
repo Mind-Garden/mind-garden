@@ -1,8 +1,8 @@
 import { redirect } from 'next/navigation';
 
 import { getAuthenticatedUserId } from '@/actions/auth';
-import HabitLineCharts from '@/components/data-visualization/add-habit-charts';
 import BarLineChart from '@/components/data-visualization/bar-line-chart';
+import HabitLineCharts from '@/components/data-visualization/habit-line-charts';
 import HealthDashboard from '@/components/data-visualization/health-dashboard';
 import Heatmap from '@/components/data-visualization/heatmap';
 import WaterChart from '@/components/data-visualization/water-chart';
@@ -18,7 +18,7 @@ import {
 } from '@/components/shadcn/card';
 import { createClient } from '@/supabase/server';
 
-export default async function Home() {
+export default async function HomePage() {
   const userId = await getAuthenticatedUserId();
 
   const supabase = await createClient();

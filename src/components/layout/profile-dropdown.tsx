@@ -60,7 +60,7 @@ export function ProfileDropdown({
             whileTap="tap"
             className="p-2 rounded-md"
           >
-            <User className="h-5 w-5" />
+            <User className="h-5 w-5" aria-label="Open user menu" />
           </motion.button>
         </DropdownMenuTrigger>
         <motion.div

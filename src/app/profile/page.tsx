@@ -4,7 +4,7 @@ import { getAuthenticatedUserId } from '@/actions/auth';
 import Footer from '@/components/layout/footer';
 import { Header } from '@/components/layout/header';
 import DeleteAccount from '@/components/profile/delete-account';
-import ModifyAccount from '@/components/profile/modify-account-info';
+import ModifyAccount from '@/components/profile/modify-account';
 import ModifyPassword from '@/components/profile/modify-password';
 import { createClient } from '@/supabase/server';
 

@@ -7,6 +7,7 @@
 |  1.0 | Feb 14, 2025 | Hassan Khan | Initial Draft |
 | 1.1 | Feb 26, 2025 | Caroline | Sprint 2 |
 | 1.2 | Mar 20, 2025 | Caroline & Hassan | Sprint 3 |
+| 1.3 | Mar 27, 2025 | Hassan Khan | Sprint 4 |
 
 # **Introduction**
 
@@ -154,6 +155,48 @@ Other group roles such as QA or documentation are spread out evenly between memb
     * Water data  
   * Get heatmap data
 
+### Load Testing 
+
+All load testing for each feature was done using 20 accounts that make 20 requests each resulting in a total of at least 400 requests. All the tests complete in under 2 minutes completing the requirement of handling 20 users with 200 concurrent requests.
+
+*(At least 2 types of requests for each feature)*
+
+Account System:
+
+- Testing the login and logout requests
+
+Journal Entry:
+
+- Testing save entry and delete entry requests
+
+Daily Data Intake
+
+- Testing fetching and saving sleep entry requests
+- Testing fetching and submitting rate your day requests
+
+Task Manager:
+
+- Testing adding a task and deleting a task requests
+
+Reminders:
+
+- Testing fetching the current reminders and updating reminder requests
+
+Data Visualization:
+
+- Testing fetching added habit and personalized categories requests
+
+**Local AI LLM Load Testing:**
+
+Tools Used:
+
+- Programming Language: Python (using asyncio for concurrency)
+- HTTP Client: aiohttp (for sending asynchronous requests)
+- Testing Target: Ollama API running locally (http://localhost:11434/api/chat)
+- Concurrency Framework: asyncio.gather() (to send multiple requests simultaneously)
+
+Completed Test Report Link: [Local LLM Load Testing Report](https://github.com/Mind-Garden/mind-garden/wiki/Local-LLM-Load-Testing-Report)
+
 ## **Test Completeness**
 
 * 100% back-end code coverage (mandatory for this project), all the back-end source code should be covered by test cases.
@@ -163,12 +206,13 @@ Other group roles such as QA or documentation are spread out evenly between memb
 ## **Testing Tools**
 
 * Jest
-
- 
+* Playwright
+* Artillery
 
 ## **Test Environment**
 
 * Our GitHub Actions uses ubuntu-latest, but can be run on Windows/macOS
+* Load testing was completed locally on a powerful machine that can run multiple browser tabs at once
 
 Hardware Requirements:
 

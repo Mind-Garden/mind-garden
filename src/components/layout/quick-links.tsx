@@ -37,18 +37,18 @@ export default function QuickLinks() {
           </div>
         </Card>
 
-        {/* Daily Data Intake */}
+        {/* Daily Habits */}
         <Card className="p-5 bg-white/50 rounded-2xl border-none shadow-lg hover:shadow-xl transition-transform hover:scale-105 hover:bg-white/70">
           <div className="flex flex-col h-full">
             <div className="p-3 bg-gradient-to-r from-sky-200 to-violet-200 rounded-xl w-fit">
               <ListCheck className="h-5 w-5 text-black" />
             </div>
-            <h3 className="text-lg font-header font-bold mt-3">Daily Data</h3>
+            <h3 className="text-lg font-header font-bold mt-3">Daily Habits</h3>
             <p className="text-sm text-muted-foreground mt-1">
               Track your habits
             </p>
             <Button
-              onClick={() => router.push('/daily-intake')}
+              onClick={() => router.push('/daily-habits')}
               variant="ghost"
               className="mt-1 justify-start px-0 hover:bg-gradient-to-r hover:from-sky-200 hover:to-violet-200 hover:pl-4"
             >

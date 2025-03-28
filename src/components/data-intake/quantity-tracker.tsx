@@ -13,7 +13,7 @@ interface QuantityTrackerProps {
   question: string;
 }
 
-export default function QuantityTrackerSimple({
+export default function QuantityTracker({
   value,
   min = 0,
   max = 100,
