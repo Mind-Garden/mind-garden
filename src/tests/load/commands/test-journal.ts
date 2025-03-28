@@ -19,7 +19,7 @@ async function testJournal(page: Page, baseUrl: string) {
   // Loop, making journal entries and deleting them
   for (let i = 0; i < 10; i++) {
     await page
-      .getByRole('textbox', { name: "What's on your mind today?" })
+      .getByRole('textbox', { name: 'What\'s on your mind today?' })
       .fill('test entry');
     await page.getByRole('button', { name: 'Save Entry' }).click();
     await page.getByRole('button', { name: 'Delete' }).first().click();
