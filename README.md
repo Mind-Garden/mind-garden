@@ -202,7 +202,7 @@ Setting up code scan/code review
 1. run `npm i -g artillery`
 2. run `npm install artillery-engine-playwright`
 3. run `npm install playwright`
-4. If running locally, start the project `npm run build` and `npm run start` or test using the vercel link
+4. If running locally, start the project using `npm run build` and `npm run start` or test using the vercel link
 5. Under `/mind-garden/src/tests/load/artillery/load.ts` update the `baseUrl` to reflect step 4.
 6. From the main directory run `artillery run 'artillery.yml'`
 
