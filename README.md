@@ -198,6 +198,14 @@ Setting up code scan/code review
 5. If you wish to run it with test coverage for a specific directory type, `npm run test:coverage --path='x'` where `x` is the directory for your test file, i.e. `'src/utils/supabse'`
 6. Most importantly, if you wish to run *all tests* in the project type, `npm run test`
 
+## Running Load Tests Using Artillery
+1. run `npm i -g artillery`
+2. run `npm install artillery-engine-playwright`
+3. run `npm install playwright`
+4. If running locally, start the project using `npm run build` and `npm run start` or test using the vercel link
+5. Under `/mind-garden/src/tests/load/artillery/load.ts` update the `baseUrl` to reflect step 4.
+6. From the main directory run `artillery run 'artillery.yml'`
+
 ## Running Docker
 
 1. Install the latest version of Docker in your computer.
