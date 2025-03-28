@@ -6,8 +6,7 @@ import { testJournal } from '@/tests/load/commands/test-journal';
 import { testLogin } from '@/tests/load/commands/test-login';
 import { testReminders } from '@/tests/load/commands/test-reminders';
 import { testSleep } from '@/tests/load/commands/test-sleep';
-
-import { testTaskManager } from '../commands/test-task-manager';
+import { testTaskManager } from '@tests/load/commands/test-task-manager';
 
 const BASE_URL = 'http://localhost:3000'; // change to https://mindgarden.vercel.app/ for testing on vercel
 
