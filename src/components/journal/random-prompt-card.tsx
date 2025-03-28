@@ -30,21 +30,23 @@ export function RandomPromptCard() {
   };
 
   return (
-    <div className="flex items-center space-x-2 mb-3">
-      <CardDescription>Need inspiration?</CardDescription>
-      <AnimatePresence mode="wait">
-        <motion.div
-          key={prompt}
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: -10 }}
-          transition={{ duration: 0.2 }}
-        >
-          <CardDescription className="font-bold text-center">
-            {prompt}
-          </CardDescription>
-        </motion.div>
-      </AnimatePresence>
+    <div className="flex items-start justify-between mb-3 w-full">
+      <div className="flex flex-col space-y-1">
+        <CardDescription>Need inspiration?</CardDescription>
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={prompt}
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -10 }}
+            transition={{ duration: 0.2 }}
+          >
+            <CardDescription className="font-bold text-center">
+              {prompt}
+            </CardDescription>
+          </motion.div>
+        </AnimatePresence>
+      </div>
       <button
         onClick={getPrompt}
         disabled={isLoading}

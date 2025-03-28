@@ -6,7 +6,7 @@ import { Header } from '@/components/layout/header';
 import TaskManager from '@/components/tasks/task-manager';
 import { createClient } from '@/supabase/server';
 
-export default async function Home() {
+export default async function TaskManagerPage() {
   const userId = await getAuthenticatedUserId();
   const supabase = await createClient();
 

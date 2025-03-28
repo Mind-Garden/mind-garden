@@ -1,5 +1,5 @@
 import { getAuthenticatedUserId } from '@/actions/auth';
-import { SleepEntryCard } from '@/components/data-intake/sleep-entry';
+import { SleepEntryCard } from '@/components/data-intake/sleep-entry-card';
 import Footer from '@/components/layout/footer';
 import { Header } from '@/components/layout/header';
 

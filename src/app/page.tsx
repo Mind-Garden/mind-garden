@@ -27,10 +27,10 @@ import { toast } from 'react-toastify';
 
 import { forgotPassword, login, signup } from '@/actions/auth';
 import Footer from '@/components/layout/footer';
-import PathDrawing from '@/components/login-page/arrow-explore';
 import FeatureSection from '@/components/login-page/feature-section';
+import PathDrawing from '@/components/login-page/path-drawing';
 import PathMorphingNav from '@/components/login-page/path-morphing-nav';
-import TaskManagerMockup from '@/components/login-page/task-manager-mock';
+import TaskManagerMockup from '@/components/login-page/task-manager-mockup';
 import { TypingAnimation } from '@/components/magicui/typing-animation';
 import { Button } from '@/components/shadcn/button';
 import { Card, CardContent } from '@/components/shadcn/card';
@@ -43,7 +43,7 @@ import {
   TooltipTrigger,
 } from '@/components/shadcn/tooltip';
 
-export default function Home() {
+export default function RootPage() {
   const [isLogin, setIsLogin] = useState(true);
   const emailRef = useRef<HTMLInputElement>(null);
   const [error, setError] = useState('');

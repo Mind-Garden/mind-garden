@@ -10,7 +10,7 @@ import DataIntakeForm from '@/components/data-intake/data-intake-form';
 import Footer from '@/components/layout/footer';
 import { Header } from '@/components/layout/header';
 
-export default async function Dashboard() {
+export default async function DailyHabitsPage() {
   const userId = await getAuthenticatedUserId();
 
   const categories = await selectAllFromCategories();

@@ -33,8 +33,8 @@ export function Header() {
   const navItems: NavItem[] = [
     {
       icon: ListCheck,
-      path: '/daily-intake',
-      label: 'Daily Intake',
+      path: '/daily-habits',
+      label: 'Daily Habits',
     },
     {
       icon: NotebookPen,

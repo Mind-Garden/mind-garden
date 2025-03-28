@@ -14,7 +14,7 @@ import { Frown } from 'lucide-react';
 import { useEffect, useState } from 'react';
 
 import { selectMoodDataByDateRange } from '@/actions/data-visualization';
-import AnimatedLineGraph from '@/components/data-visualization/line-graph';
+import AnimatedLineGraph from '@/components/data-visualization/animated-line-graph';
 import { Card, CardDescription, CardTitle } from '@/components/shadcn/card';
 import { getLocalISOString } from '@/lib/utils';
 import { DataPoint, MoodDataPoint, MoodFlowProps } from '@/supabase/schema';
