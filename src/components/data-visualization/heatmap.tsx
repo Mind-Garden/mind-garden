@@ -288,6 +288,52 @@ export default function Heatmap({ userId, personalized }: HeatmapProps) {
     hover: { scale: 1.1, transition: { duration: 0.2 } },
   };
 
+  function renderTooltip({
+    personalized,
+    trackingMethod,
+    category,
+    completionValue,
+    dayData,
+  }: {
+    personalized: boolean;
+    trackingMethod: string;
+    category: string;
+    completionValue: boolean;
+    dayData?: {
+      journal_text?: string;
+      scale_rating?: string | number;
+      start?: string;
+    };
+  }) {
+    if (personalized && completionValue) {
+      const label =
+        trackingMethod === 'boolean'
+          ? category
+          : `${category} - ${trackingMethod}`;
+      const icon = completionValue ? '✅' : '❌';
+
+      return (
+        <div className="mt-1">
+          <p>
+            {label}: {icon}
+          </p>
+        </div>
+      );
+    }
+
+    if (dayData) {
+      return (
+        <div className="mt-1">
+          <p>Journal: {dayData.journal_text ? '✅' : '❌'}</p>
+          <p>Daily Habits: {dayData.scale_rating ? '✅' : '❌'}</p>
+          <p>Sleep: {dayData.start ? '✅' : '❌'}</p>
+        </div>
+      );
+    }
+
+    return <p className="mt-1">No data recorded</p>;
+  }
+
   // Render the calendar grid for a specific category and tracking method
   const renderHeatmap = (category: string, trackingMethod: string) => {
     let displayName = '';
@@ -362,32 +408,17 @@ export default function Heatmap({ userId, personalized }: HeatmapProps) {
                       <p className="font-medium">
                         {format(day, 'MMMM d, yyyy')}
                       </p>
-                      {dayData ? (
+                      {
                         <div className="mt-1">
-                          {personalized && (
-                            <p>
-                              {trackingMethod === 'boolean'
-                                ? category
-                                : `${category} - ${trackingMethod}`}
-                              : {completionValue ? '✅' : '❌'}
-                            </p>
-                          )}
-                          {!personalized && (
-                            <div className="mt-1">
-                              <p>
-                                Journal: {dayData.journal_text ? '✅' : '❌'}
-                              </p>
-                              <p>
-                                Daily Habits:{' '}
-                                {dayData.scale_rating ? '✅' : '❌'}
-                              </p>
-                              <p>Sleep: {dayData.start ? '✅' : '❌'}</p>
-                            </div>
-                          )}
+                          {renderTooltip({
+                            personalized,
+                            trackingMethod,
+                            category,
+                            completionValue,
+                            dayData,
+                          })}
                         </div>
-                      ) : (
-                        <p className="mt-1">No data recorded</p>
-                      )}
+                      }
                     </div>
                   </TooltipContent>
                 </Tooltip>
