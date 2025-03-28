@@ -5,7 +5,7 @@ import { RotateCw } from 'lucide-react';
 import { useEffect, useState } from 'react';
 
 import { getRandomPrompt } from '@/actions/journal';
-import { CardDescription } from '@/components/ui/card';
+import { CardDescription } from '@/components/shadcn/card';
 import { cn } from '@/lib/utils';
 
 export function RandomPromptCard() {
@@ -30,26 +30,28 @@ export function RandomPromptCard() {
   };
 
   return (
-    <div className="flex items-center space-x-2 mb-3">
-      <CardDescription>Need inspiration?</CardDescription>
-      <AnimatePresence mode="wait">
-        <motion.div
-          key={prompt}
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: -10 }}
-          transition={{ duration: 0.2 }}
-        >
-          <CardDescription className="font-bold text-center">
-            {prompt}
-          </CardDescription>
-        </motion.div>
-      </AnimatePresence>
+    <div className="flex items-start justify-between mb-3 w-full">
+      <div className="flex flex-col space-y-1">
+        <CardDescription>Need inspiration?</CardDescription>
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={prompt}
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -10 }}
+            transition={{ duration: 0.2 }}
+          >
+            <CardDescription className="font-bold text-center">
+              {prompt}
+            </CardDescription>
+          </motion.div>
+        </AnimatePresence>
+      </div>
       <button
         onClick={getPrompt}
         disabled={isLoading}
         className={cn(
-          'bg-blue-500/30 hover:bg-blue-600/30 p-2.5 rounded-full shrink-0',
+          'bg-emerald-500/30 hover:bg-emerald-600/30 p-2.5 rounded-full shrink-0',
           'transition-all duration-300 hover:scale-110 active:scale-95',
           'disabled:opacity-50 disabled:cursor-not-allowed',
         )}

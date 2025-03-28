@@ -17,12 +17,10 @@ function ToggleButton<T extends string | number>({
 }: ToggleButtonProps<T>) {
   return (
     <button
-      className={`px-3 py-2 rounded-md text-sm font-medium transition-colors
-      ${
-        isSelected
-          ? 'bg-black/10 hover:bg-black/10'
-          : 'bg-transparent hover:bg-black/10 text-gray-700'
-      }
+      className={`
+      px-3 py-2 rounded-md text-sm font-medium transition-colors
+      ${isSelected ? 'bg-black/10' : 'bg-transparent text-gray-700'}
+      ${disabled ? 'opacity-50 pointer-events-none shadow-none' : 'hover:bg-black/10'}
     `}
       onClick={() => onChange(value)}
       disabled={disabled}

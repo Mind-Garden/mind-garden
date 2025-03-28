@@ -7,6 +7,7 @@ interface RatingScaleProps {
   leftLabel?: string;
   rightLabel?: string;
   className?: string;
+  disabled?: boolean;
 }
 
 export function RatingScale({
@@ -15,6 +16,7 @@ export function RatingScale({
   leftLabel = 'Poor',
   rightLabel = 'Excellent',
   className,
+  disabled,
 }: RatingScaleProps) {
   return (
     <div className={cn('space-y-3', className)}>
@@ -30,6 +32,9 @@ export function RatingScale({
               value === number
                 ? 'bg-primary/15 text-primary border-2 border-primary'
                 : 'bg-muted/50 text-muted-foreground border-2 border-transparent',
+              disabled
+                ? 'opacity-50 pointer-events-none shadow-none bg-transparent'
+                : 'hover:bg-slate-100 hover:shadow',
             )}
           >
             {number}

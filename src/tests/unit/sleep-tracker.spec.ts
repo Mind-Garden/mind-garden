@@ -29,6 +29,7 @@ describe('Sleep Tracker Actions', () => {
             end: '9:00:00',
             user_id: '1',
             entry_date: '2025-02-26',
+            quality: 3,
           },
         ],
       };
@@ -45,6 +46,7 @@ describe('Sleep Tracker Actions', () => {
         mockData.data[0].start,
         mockData.data[0].end,
         mockData.data[0].user_id,
+        mockData.data[0].quality,
       );
       expect(result).toEqual(mockData);
       expect(insertMock).toHaveBeenCalled();
@@ -54,7 +56,7 @@ describe('Sleep Tracker Actions', () => {
     it('should return error.message and log the error on failure', async () => {
       console.error = jest.fn();
       const mockData = {
-        data: [{ start: '2:00:00', end: '9:00:00', user_id: '1' }],
+        data: [{ start: '2:00:00', end: '9:00:00', user_id: '1', quality: 3 }],
       };
       const mockReturnValue = { error: { message: 'Error' } };
 
@@ -69,6 +71,7 @@ describe('Sleep Tracker Actions', () => {
         mockData.data[0].start,
         mockData.data[0].end,
         mockData.data[0].user_id,
+        mockData.data[0].quality,
       );
       expect(result).toEqual(mockReturnValue);
       expect(insertMock).toHaveBeenCalled();
@@ -87,6 +90,7 @@ describe('Sleep Tracker Actions', () => {
         emptyEntryText,
         emptyEntryText,
         userId,
+        3,
       );
 
       expect(result).toBeUndefined();
@@ -103,6 +107,7 @@ describe('Sleep Tracker Actions', () => {
             entry_date: '2025-02-26',
             start: '2:00:00',
             end: '9:00:00',
+            quality: 3,
           },
         ],
         error: null,
@@ -182,6 +187,7 @@ describe('Sleep Tracker Actions', () => {
       const id = '1';
       const start = '2:00:00';
       const end = '9:00:00';
+      const sleepQuality = 3;
       const mockData = {
         data: [
           {
@@ -189,6 +195,7 @@ describe('Sleep Tracker Actions', () => {
             entry_date: '2025-02-26',
             start: start,
             end: end,
+            quality: sleepQuality,
           },
         ],
         error: null,
@@ -208,10 +215,14 @@ describe('Sleep Tracker Actions', () => {
         update: updateMock,
       });
 
-      const result = await updateSleepEntry(id, start, end);
+      const result = await updateSleepEntry(id, start, end, sleepQuality);
 
       expect(mockSupabaseClient.from).toHaveBeenCalledWith('sleep_entries');
-      expect(updateMock).toHaveBeenCalledWith({ end: end, start: start });
+      expect(updateMock).toHaveBeenCalledWith({
+        end: end,
+        start: start,
+        quality: sleepQuality,
+      });
       expect(matchMock).toHaveBeenCalledWith({ id: id });
       expect(selectMock).toHaveBeenCalled();
       expect(result).toEqual({ data: mockData.data });
@@ -222,6 +233,7 @@ describe('Sleep Tracker Actions', () => {
       const id = '1';
       const start = '2:00:00';
       const end = '9:00:00';
+      const sleepQuality = 3;
       const mockError = { message: 'Update error' };
 
       const selectMock = jest.fn().mockResolvedValue({
@@ -241,10 +253,14 @@ describe('Sleep Tracker Actions', () => {
         update: updateMock,
       });
 
-      const result = await updateSleepEntry(id, start, end);
+      const result = await updateSleepEntry(id, start, end, sleepQuality);
 
       expect(mockSupabaseClient.from).toHaveBeenCalledWith('sleep_entries');
-      expect(updateMock).toHaveBeenCalledWith({ end: end, start: start });
+      expect(updateMock).toHaveBeenCalledWith({
+        end: end,
+        start: start,
+        quality: sleepQuality,
+      });
       expect(matchMock).toHaveBeenCalledWith({ id: id });
       expect(selectMock).toHaveBeenCalled();
       expect(result).toEqual({ error: mockError.message });
@@ -258,8 +274,14 @@ describe('Sleep Tracker Actions', () => {
       const id = '1';
       const emptyStart = ' ';
       const emptyEnd = ' ';
+      const sleepQuality = 3;
 
-      const result = await updateSleepEntry(id, emptyStart, emptyEnd);
+      const result = await updateSleepEntry(
+        id,
+        emptyStart,
+        emptyEnd,
+        sleepQuality,
+      );
 
       expect(result).toBeUndefined();
       expect(mockSupabaseClient.from).not.toHaveBeenCalled();

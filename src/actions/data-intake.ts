@@ -63,9 +63,20 @@ export async function selectResponsesByDate(
 
 /**
  * Inserts new responses into the database.
- * @param attributeIds - Set of attribute IDs
- * @param userId - The user's ID
- * @param scaleRating - The user's scale rating for their day
+ *
+ * This function takes various parameters related to a user's responses and inserts them
+ * into the 'responses' table in the database. It constructs an object with the necessary
+ * data, including optional fields for water consumption, work and study details, and handles
+ * any errors that may occur during the insertion process.
+ *
+ * @param attributeIds - Set of attribute IDs representing the user's selected attributes.
+ * @param userId - The unique identifier of the user.
+ * @param scaleRating - The user's scale rating for their day.
+ * @param amountWater - Optional amount of water consumed.
+ * @param workHours - Optional number of work hours.
+ * @param workRating - Optional rating of the work completed.
+ * @param studyHours - Optional number of study hours.
+ * @param studyRating - Optional rating of the study completed.
  */
 export async function insertResponses(
   attributeIds: Set<string>,
@@ -98,11 +109,17 @@ export async function insertResponses(
 }
 
 /**
- * Updates an existing response in the database.
- * @param responseId - The unique identifier of the response.
+ * Updates an existing response in the database with the provided details.
+ *
+ * @param responseId - The unique identifier of the response to be updated.
  * @param attributeIds - A set of attribute IDs representing the user's selected attributes.
  * @param userId - The unique identifier of the user.
  * @param scaleRating - The user's scale rating for their day.
+ * @param amountWater - Optional amount of water consumed.
+ * @param workHours - Optional number of work hours.
+ * @param workRating - Optional rating of the work completed.
+ * @param studyHours - Optional number of study hours.
+ * @param studyRating - Optional rating of the study completed.
  */
 export async function updateResponses(
   responseId: string,
@@ -195,11 +212,12 @@ export async function selectSleepEntryByDate(
 }
 
 /**
- * Updates sleep entry by entry ID.
- * @param entryID - The sleep entry's ID
- * @param startTime - New start time
- * @param endTime - New end time
- * @returns - sleep entry on success or error
+ * Updates a sleep entry in the database.
+ * @param entryId - The ID of the sleep entry to update
+ * @param startTime - The new start time of the sleep entry
+ * @param endTime - The new end time of the sleep entry
+ * @param sleepQuality - The new sleep quality of the sleep entry
+ * @returns - Success response or error
  */
 export async function updateSleepEntry(
   entryId: string,
@@ -227,6 +245,13 @@ export async function getPersonalizedCategories() {
   return data as unknown as IPersonalizedCategories[];
 }
 
+/**
+ * Adds a habit to the user's list of added habits.
+ * @param userId - The ID of the user to add the habit to
+ * @param categoryId - The ID of the category of the habit to add
+ * @param trackingMethod - The tracking method of the habit to add
+ * @returns - 'success' or 'duplicate' if the habit already exists
+ */
 export async function addUserHabit(
   userId: string,
   categoryId: string,
@@ -318,6 +343,21 @@ export async function getAddedResp(userId: string, entryDate: string) {
   return data as unknown as IAddedResp[];
 }
 
+/**
+ * Adds or updates a response for a specified habit and user.
+ *
+ * This function first checks if a response for the given user, habit, and entry date
+ * already exists. If it does, the function updates the existing response with the new
+ * tracking value. If it doesn't exist, the function inserts a new response with the
+ * provided details.
+ *
+ * @param userId - The unique identifier of the user.
+ * @param habit - The habit associated with the response.
+ * @param trackingValue - The tracking data for the habit response.
+ * @param entryDate - The date of the response entry.
+ * @returns - 'success' if the response was added or updated successfully, otherwise null.
+ */
+
 export async function addResp(
   userId: string,
   habit: string,
@@ -369,7 +409,13 @@ export async function addResp(
   }
 }
 
-export async function getAllAddedRespCategory( //G et all added responses of a specific category
+/**
+ * Selects all added habit responses for a given user and category
+ * @param userId - The ID of the user to select the responses for
+ * @param category - The category of the habit to select the responses for
+ * @returns An array of added habit responses for the given user and category, or null if there was an error
+ */
+export async function getAllAddedRespCategory(
   userId: string,
   category: string,
 ) {

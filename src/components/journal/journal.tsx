@@ -22,11 +22,11 @@ import {
   updateJournalEntry,
 } from '@/actions/journal';
 import { RandomPromptCard } from '@/components/journal/random-prompt-card';
-import { Button } from '@/components/ui/button';
-import { Calendar } from '@/components/ui/calendar';
+import { Button } from '@/components/shadcn/button';
+import { Calendar } from '@/components/shadcn/calendar';
+import { ScrollArea } from '@/components/shadcn/scroll-area';
+import { TextArea } from '@/components/shadcn/textarea';
 import FloatingShapes from '@/components/ui/floating-shapes';
-import { ScrollArea } from '@/components/ui/scroll-area';
-import { TextArea } from '@/components/ui/textarea';
 import { getDate, undoConversion } from '@/lib/utils';
 import type { IJournalEntries } from '@/supabase/schema';
 
@@ -34,7 +34,7 @@ interface NewJournalProps {
   readonly userId: string;
 }
 
-export default function NewJournal({ userId }: NewJournalProps) {
+export default function Journal({ userId }: NewJournalProps) {
   const [date, setDate] = useState<Date>(getDate());
   const [newEntry, setNewEntry] = useState('');
   const [entries, setEntries] = useState<IJournalEntries[]>([]);
@@ -82,7 +82,7 @@ export default function NewJournal({ userId }: NewJournalProps) {
   if (loading)
     return (
       <div className="flex items-center justify-center min-h-screen">
-        <LoaderCircle className="h-12 w-12 text-blue-500 animate-spin" />
+        <LoaderCircle className="h-12 w-12 text-emerald-500 animate-spin" />
       </div>
     );
   if (error) return <div>Error: {error}</div>;
@@ -197,16 +197,16 @@ export default function NewJournal({ userId }: NewJournalProps) {
       {/* First Row */}
       <div className="grid md:grid-cols-2 gap-8">
         {/* Calendar Card */}
-        <div className="relative bg-white rounded-2xl shadow-lg p-6 overflow-hidden flex justify-center border-blue-500 border-2">
+        <div className="relative bg-white rounded-2xl shadow-lg p-6 overflow-hidden flex justify-center border-emerald-500 border-2">
           <FloatingShapes
-            className="bg-blue-100 z-10"
-            colors={['bg-blue-100']}
+            className="bg-emerald-200 z-10"
+            colors={['bg-emerald-100', 'bg-emerald-200']}
           />
           <div className="relative z-10">
             <div className="flex items-center justify-between mb-6">
               <div className="flex items-center">
-                <CalendarDays className="h-6 w-6 text-blue-500 mr-3" />
-                <h4 className="text-2xl font-title font-semibold text-gray-800 dark:text-white">
+                <CalendarDays className="h-6 w-6 text-emerald-500 mr-3" />
+                <h4 className="text-2xl font-title font-semibold text-gray-800">
                   Journal Calendar
                 </h4>
               </div>
@@ -230,7 +230,7 @@ export default function NewJournal({ userId }: NewJournalProps) {
                       <div className="relative w-full h-full p-2">
                         <span>{dayDate.getDate()}</span>
                         {count > 0 && (
-                          <div className="absolute -top-1 -right-1 h-4 w-4 bg-blue-500 rounded-full flex items-center justify-center text-[10px] text-white z-50">
+                          <div className="absolute -top-1 -right-1 h-4 w-4 bg-emerald-500 rounded-full flex items-center justify-center text-[10px] text-white z-50">
                             {count}
                           </div>
                         )}
@@ -244,7 +244,7 @@ export default function NewJournal({ userId }: NewJournalProps) {
         </div>
 
         {/* Journal Entry Form */}
-        <div className="relative bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-6 overflow-hidden border-blue-500 border-2">
+        <div className="relative bg-white rounded-2xl shadow-lg p-6 overflow-hidden border-emerald-500 border-2">
           <motion.div
             initial={{ opacity: 0.5, scale: 0.8, x: -100, y: 50 }}
             animate={{
@@ -258,12 +258,12 @@ export default function NewJournal({ userId }: NewJournalProps) {
           <div className="relative z-10">
             <div className="flex items-center justify-between mb-6">
               <div className="flex items-center">
-                <NotebookPen className="h-6 w-6 text-blue-500 mr-3" />
-                <h4 className="text-2xl font-title font-semibold text-gray-800 dark:text-white">
+                <NotebookPen className="h-6 w-6 text-emerald-500 mr-3" />
+                <h4 className="text-2xl font-title font-semibold text-gray-800">
                   New Entry
                 </h4>
               </div>
-              <span className="text-sm font-medium text-blue-500 bg-blue-50 dark:bg-blue-900/50 py-1 px-3 rounded-full">
+              <span className="text-sm font-medium text-emerald-500 bg-emerald-50 py-1 px-3 rounded-full">
                 {getDate().toLocaleDateString('en-US', {
                   month: 'long',
                   day: 'numeric',
@@ -280,7 +280,7 @@ export default function NewJournal({ userId }: NewJournalProps) {
             >
               <RandomPromptCard />
 
-              <div className="bg-gray-50 dark:bg-gray-700/30 rounded-xl p-4">
+              <div className="bg-gray-50 rounded-xl p-4">
                 <TextArea
                   placeholder="What's on your mind today?"
                   value={newEntry}
@@ -291,7 +291,7 @@ export default function NewJournal({ userId }: NewJournalProps) {
 
               <Button
                 onClick={handleSaveEntry}
-                className="w-full bg-blue-500 hover:bg-blue-600 text-white"
+                className="w-full bg-emerald-500 hover:bg-emerald-600 text-white"
               >
                 <PenLine className="w-4 h-4 mr-2" />
                 Save Entry
@@ -302,17 +302,20 @@ export default function NewJournal({ userId }: NewJournalProps) {
       </div>
 
       {/* Second Row - Entries List */}
-      <div className="relative bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-6 overflow-hidden border-blue-500 border-2">
-        <FloatingShapes className="bg-blue-100 z-10" colors={['bg-blue-100']} />
+      <div className="relative bg-white rounded-2xl shadow-lg p-6 overflow-hidden border-emerald-500 border-2">
+        <FloatingShapes
+          className="bg-emerald-100 z-10"
+          colors={['bg-emerald-100']}
+        />
         <div className="relative z-10">
           <div className="flex items-center justify-between mb-6">
             <div className="flex items-center">
-              <BookOpen className="h-6 w-6 text-blue-500 mr-3" />
-              <h4 className="text-2xl font-title font-semibold text-gray-800 dark:text-white">
+              <BookOpen className="h-6 w-6 text-emerald-500 mr-3" />
+              <h4 className="text-2xl font-title font-semibold text-gray-800">
                 Journal Entries from {formattedDate}
               </h4>
             </div>
-            <span className="text-sm font-medium text-blue-500 bg-blue-50 dark:bg-blue-900/50 py-1 px-3 rounded-full">
+            <span className="text-sm font-medium text-emerald-500 bg-emerald-50 py-1 px-3 rounded-full">
               {selectedDateEntries.length}{' '}
               {selectedDateEntries.length === 1 ? 'entry' : 'entries'}
             </span>
@@ -326,10 +329,8 @@ export default function NewJournal({ userId }: NewJournalProps) {
             <ScrollArea className="h-[500px] pr-4">
               {selectedDateEntries.length === 0 ? (
                 <div className="flex flex-col items-center justify-center py-12 text-center">
-                  <NotebookPen className="h-12 w-12 text-gray-300 dark:text-gray-600 mb-4" />
-                  <p className="text-gray-500 dark:text-gray-400">
-                    No entries for this date
-                  </p>
+                  <NotebookPen className="h-12 w-12 text-gray-300 mb-4" />
+                  <p className="text-gray-500">No entries for this date</p>
                 </div>
               ) : (
                 <div className="space-y-6">
@@ -340,15 +341,15 @@ export default function NewJournal({ userId }: NewJournalProps) {
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ duration: 0.3, delay: index * 0.1 }}
                     >
-                      <div className="bg-gray-50 dark:bg-gray-700/30 rounded-xl p-5 mb-4 border-blue-100 border-2">
+                      <div className="bg-gray-50 rounded-xl p-5 mb-4 border-emerald-100 border-2">
                         {editingEntryId === entry.id ? (
                           <TextArea
                             value={editingText}
                             onChange={(e) => setEditingText(e.target.value)}
-                            className="min-h-[150px] bg-transparent border-none focus-visible:ring-0 p-0 text-gray-600 dark:text-gray-300"
+                            className="min-h-[150px] bg-transparent border-none focus-visible:ring-0 p-0 text-gray-600"
                           />
                         ) : (
-                          <p className="text-gray-600 dark:text-gray-300 leading-relaxed whitespace-pre-wrap">
+                          <p className="text-gray-600 leading-relaxed whitespace-pre-wrap">
                             {entry.journal_text}
                           </p>
                         )}
@@ -360,14 +361,14 @@ export default function NewJournal({ userId }: NewJournalProps) {
                             <Button
                               variant="outline"
                               onClick={cancelEditing}
-                              className="border-gray-200 text-gray-600 hover:bg-gray-100 dark:border-gray-700 dark:text-gray-300 dark:hover:bg-gray-800"
+                              className="border-gray-200 text-gray-600 hover:bg-gray-100"
                             >
                               <X className="w-4 h-4 mr-2" />
                               Cancel
                             </Button>
                             <Button
                               onClick={() => saveEditedEntry(entry.id)}
-                              className="bg-blue-500 hover:bg-blue-600 text-white"
+                              className="bg-emerald-500 hover:bg-emerald-600 text-white"
                             >
                               <Save className="w-4 h-4 mr-2" />
                               Save Changes
@@ -378,7 +379,7 @@ export default function NewJournal({ userId }: NewJournalProps) {
                             <Button
                               variant="outline"
                               onClick={() => startEditing(entry)}
-                              className="border-gray-200 text-gray-600 hover:bg-gray-100 dark:border-gray-700 dark:text-gray-300 dark:hover:bg-gray-800"
+                              className="border-gray-200 text-gray-600 hover:bg-gray-100"
                             >
                               <Edit className="w-4 h-4 mr-2" />
                               Edit

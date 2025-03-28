@@ -1,21 +1,17 @@
 import { redirect } from 'next/navigation';
 
-import Footer from '@/components/footer';
-import { Header } from '@/components/header';
+import { getAuthenticatedUserId } from '@/actions/auth';
+import Footer from '@/components/layout/footer';
+import { Header } from '@/components/layout/header';
 import DeleteAccount from '@/components/profile/delete-account';
-import ModifyAccount from '@/components/profile/modify-account-info';
+import ModifyAccount from '@/components/profile/modify-account';
 import ModifyPassword from '@/components/profile/modify-password';
 import { createClient } from '@/supabase/server';
 
 export default async function ProfilePage() {
+  const userId = await getAuthenticatedUserId();
   const supabase = await createClient();
 
-  const { data: authData, error: authError } = await supabase.auth.getUser();
-  if (authError || !authData?.user) {
-    redirect('/error');
-  }
-
-  const userId = authData.user.id;
   const { data: profileData, error: profileError } = await supabase
     .from('users')
     .select('*')

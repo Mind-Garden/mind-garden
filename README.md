@@ -133,6 +133,16 @@ For this project, we are leveraging modern technologies to ensure scalability, m
     - **As a user, I want to create my own habits so that I can track what matters most to me.**
       - Given that I am on the habit tracker page, when I select "Add Habit," the system allows me to choose a habit from a category to add, and choose a preferred tracking method from preset options.
 
+## Run Project Using Docker Image
+
+1. In a CLI run `docker pull mindgarden/web-app:latest` and `docker pull mindgarden/llm:latest`
+2. Create a .env file with the values provided in the Project Release.
+3. In a CLI run `docker run -p 11434:11434 --detach mindgarden/llm:latest`
+4. From the CLI go to the directory where your .env file from step 2 is located and run `docker run --env-file .env -p 3000:3000 --detach mindgarden/web-app:latest`
+5. It will take some time for the images to build and start.
+6. When you see `✓ Ready in ###ms` in mindgarden/web-app:latest logs, in a browser type `localhost:3000` in the address bar and press enter.
+7. You may now sign up or login and start using the app. 
+
 ## Architecture Diagram
 
 ![arch](public/arch.jpg)
@@ -187,6 +197,14 @@ Setting up code scan/code review
 4. If you wish to run it with test coverage type, `npx jest --coverage 'testfile.spec.ts'`
 5. If you wish to run it with test coverage for a specific directory type, `npm run test:coverage --path='x'` where `x` is the directory for your test file, i.e. `'src/utils/supabse'`
 6. Most importantly, if you wish to run *all tests* in the project type, `npm run test`
+
+## Running Load Tests Using Artillery
+1. run `npm i -g artillery`
+2. run `npm install artillery-engine-playwright`
+3. run `npm install playwright`
+4. If running locally, start the project using `npm run build` and `npm run start` or test using the vercel link
+5. Under `/mind-garden/src/tests/load/artillery/load.ts` update the `baseUrl` to reflect step 4.
+6. From the main directory run `artillery run 'artillery.yml'`
 
 ## Running Docker
 

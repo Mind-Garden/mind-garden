@@ -1,32 +1,27 @@
 import { redirect } from 'next/navigation';
 
-import HabitLineCharts from '@/components/add-habit-charts';
-import BarLineChart from '@/components/bar-line-chart';
-import Dashboard from '@/components/dashboard';
-import Footer from '@/components/footer';
-import HabitHeatmapGrid from '@/components/habit-heatmap';
-import { Header } from '@/components/header';
-import HealthDashboard from '@/components/health-dashboard';
-import HabitHeatmap from '@/components/heatmap';
+import { getAuthenticatedUserId } from '@/actions/auth';
+import BarLineChart from '@/components/data-visualization/bar-line-chart';
+import HabitLineCharts from '@/components/data-visualization/habit-line-charts';
+import HealthDashboard from '@/components/data-visualization/health-dashboard';
+import Heatmap from '@/components/data-visualization/heatmap';
+import WaterChart from '@/components/data-visualization/water-chart';
+import Footer from '@/components/layout/footer';
+import { Header } from '@/components/layout/header';
+import QuickLinks from '@/components/layout/quick-links';
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
-} from '@/components/ui/card';
-import WaterChart from '@/components/water-chart';
+} from '@/components/shadcn/card';
 import { createClient } from '@/supabase/server';
 
-export default async function Home() {
+export default async function HomePage() {
+  const userId = await getAuthenticatedUserId();
+
   const supabase = await createClient();
-
-  const { data: authData, error: authError } = await supabase.auth.getUser();
-  if (authError || !authData?.user) {
-    redirect('/error');
-  }
-
-  const userId = authData.user.id;
   const { data: profileData, error: profileError } = await supabase
     .from('users')
     .select('*')
@@ -37,21 +32,12 @@ export default async function Home() {
     redirect('/error');
   }
 
-  const data = [
-    { x: '2023-01-01', y: 100 },
-    { x: '2023-02-01', y: 80 },
-    { x: '2023-03-01', y: 150 },
-    { x: '2023-04-01', y: 130 },
-    { x: '2023-05-01', y: 180 },
-    { x: '2023-06-01', y: 350 },
-  ];
-
   return (
     <div className="min-h-screen flex flex-col">
       <Header />
-      <main className="flex-1 container mx-auto px-4 py-8">
-        <div className="mb-8 space-y-2">
-          <h1 className="text-4xl font-bold tracking-tight font-title">
+      <main className="flex-1 container mx-auto px-4 py-8 w-full">
+        <div className="mb-8 space-y-2 text-center sm:text-left">
+          <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold tracking-tight font-title">
             Welcome back, {profileData?.first_name}
           </h1>
           <p className="pl-1 text-xl text-bold text-muted-foreground font-header font-semibold">
@@ -59,22 +45,22 @@ export default async function Home() {
           </p>
         </div>
 
-        <div className="grid gap-6 lg:grid-cols-12 small:grid-cols-1">
+        <div className="grid gap-6 grid-cols-1 md:grid-cols-12">
           {/* Left Column */}
-          <div className="space-y-6 lg:col-span-4 small:col-span-1">
+          <div className="space-y-6 md:col-span-4">
             {/* Quick Links */}
             <Card className="overflow-hidden border-none shadow-md">
-              <CardHeader className="bg-gradient-to-r from-emerald-50 via-teal-50 to-violet-50 dark:from-blue-950/20 dark:to-green-950/20 font-title">
+              <CardHeader className="bg-gradient-to-r from-emerald-50 via-teal-50 to-violet-50 font-title">
                 <CardTitle>Quick Links</CardTitle>
               </CardHeader>
               <CardContent className="p-6">
-                <Dashboard userId={userId} />
+                <QuickLinks />
               </CardContent>
             </Card>
 
             {/* Habit Tracker Heatmap */}
             <Card className="overflow-hidden border-none shadow-md">
-              <CardHeader className="bg-gradient-to-r from-emerald-50 via-teal-50 to-violet-50 dark:from-blue-950/20 dark:to-green-950/20">
+              <CardHeader className="bg-gradient-to-r from-emerald-50 via-teal-50 to-violet-50">
                 <CardTitle className="font-title mb-1">
                   Daily Progress Heatmap
                 </CardTitle>
@@ -83,28 +69,28 @@ export default async function Home() {
                 </CardDescription>
               </CardHeader>
               <CardContent className="p-6">
-                <HabitHeatmap userId={userId} />
+                <Heatmap personalized={false} userId={userId} />
               </CardContent>
             </Card>
 
             {/* Habit Tracker Swiper */}
             <Card className="overflow-hidden border-none shadow-md">
-              <CardHeader className="bg-gradient-to-r from-emerald-50 via-teal-50 to-violet-50 dark:from-blue-950/20 dark:to-green-950/20 font-title">
+              <CardHeader className="bg-gradient-to-r from-emerald-50 via-teal-50 to-violet-50 font-title">
                 <div className="flex items-center justify-between">
                   <CardTitle>Habit Trackers</CardTitle>
                 </div>
               </CardHeader>
               <CardContent className="p-6">
-                <HabitHeatmapGrid userId={userId} />
+                <Heatmap personalized={true} userId={userId} />
               </CardContent>
             </Card>
           </div>
 
           {/* Right Column */}
-          <div className="space-y-6 lg:col-span-8 small:col-span-1">
+          <div className="space-y-6 md:col-span-8">
             {/* Mood Section */}
             <Card className="overflow-hidden border-none shadow-md">
-              <CardHeader className="bg-gradient-to-r from-emerald-50 via-teal-50 to-violet-50 dark:from-blue-950/20 dark:to-green-950/20">
+              <CardHeader className="bg-gradient-to-r from-emerald-50 via-teal-50 to-violet-50">
                 <CardTitle className="font-title">
                   Mood and Sleep Summaries
                 </CardTitle>
@@ -119,7 +105,7 @@ export default async function Home() {
 
             {/* Charts Section */}
             <Card className="overflow-hidden border-none shadow-md">
-              <CardHeader className="bg-gradient-to-r from-emerald-50 via-teal-50 to-violet-50 dark:from-blue-950/20 dark:to-green-950/20">
+              <CardHeader className="bg-gradient-to-r from-emerald-50 via-teal-50 to-violet-50">
                 <CardTitle className="font-title">Charts</CardTitle>
                 <CardDescription className="font-header text-md font-semibold">
                   Activity and water intake tracking
@@ -134,15 +120,15 @@ export default async function Home() {
                 </div>
                 <div className="pt-4 border-t">
                   <h3 className="text-lg font-body font-semibold mb-4">
-                    Water Intake History
-                  </h3>
-                  <WaterChart userId={userId} />
-                </div>
-                <div className="pt-4 border-t">
-                  <h3 className="text-lg font-body font-semibold mb-4">
                     Habit Tracker Line Charts
                   </h3>
                   <HabitLineCharts userId={userId} />
+                </div>
+                <div className="pt-4 border-t">
+                  <h3 className="text-lg font-body font-semibold mb-4">
+                    Water Intake History
+                  </h3>
+                  <WaterChart userId={userId} />
                 </div>
               </CardContent>
             </Card>
