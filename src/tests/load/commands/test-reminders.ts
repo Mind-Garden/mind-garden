@@ -1,19 +1,21 @@
 import { Page } from '@playwright/test';
 
-async function testReminders(page: Page) {
+import { goToWebsiteAndLogin } from '@/tests/load/commands/test-login';
+
+async function testReminders(page: Page, baseUrl: string) {
   const testID = Math.floor(Math.random() * 20);
   const email = `load${testID}@test.com`;
 
-  await page.goto('https://mindgarden.vercel.app/'); // change to localhost:3000 for local testing
-  await page.getByRole('button', { name: 'Get Started' }).click();
-  await page.getByRole('textbox', { name: 'Email' }).fill(email);
-  await page.getByRole('textbox', { name: 'Password' }).fill('loadtest');
-  await page.getByRole('button', { name: 'Log in' }).click();
-  await page.waitForURL('https://mindgarden.vercel.app/home');
+  // Login
+  await goToWebsiteAndLogin(page, baseUrl, email);
+
+  // Wait for load
+  await page.waitForURL(baseUrl + '/home');
 
   for (let i = 0; i < 10; i++) {
-    await page.goto('https://mindgarden.vercel.app/reminders');
-    await page.waitForURL('https://mindgarden.vercel.app/reminders');
+    await page.goto(baseUrl + '/reminders');
+    await page.waitForURL(baseUrl + '/reminders');
+
     await page
       .getByRole('button', {
         name: String(Math.floor(Math.random() * 12) + 1),
