@@ -4,11 +4,16 @@ import { testDataVisualization } from '@/tests/load/commands/test-data-visualiza
 import { testJournal } from '@/tests/load/commands/test-journal';
 import { testLogin } from '@/tests/load/commands/test-login';
 
+import { testTaskManager } from '../commands/test-task-manager';
+
+const BASE_URL = 'http://localhost:3000'; // change to https://mindgarden.vercel.app/ for testing on vercel
+
 async function artilleryScript(page: Page) {
   // comment out tests you dont want running to test your own test
-  await testLogin(page);
-  await testDataVisualization(page);
-  await testJournal(page);
+  await testLogin(page, BASE_URL);
+  await testDataVisualization(page, BASE_URL);
+  await testJournal(page, BASE_URL);
+  await testTaskManager(page, BASE_URL);
 }
 
 export { artilleryScript };

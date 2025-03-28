@@ -1,5 +1,7 @@
 import { Page } from '@playwright/test';
 
+import { goToWebsiteAndLogin } from '@/tests/load/commands/test-login';
+
 async function waitForHabitResponses(page: Page) {
   await page.waitForResponse(async (res) => {
     // Filter by URL
@@ -29,18 +31,15 @@ async function waitForHabitResponses(page: Page) {
   });
 }
 
-export async function testDataVisualization(page: Page) {
+export async function testDataVisualization(page: Page, baseUrl: string) {
   const workerNumber = Math.floor(Math.random() * 10);
   const email = `load${workerNumber}@test.com`;
-  await page.goto('http://localhost:3000/');
-  await page.getByRole('button', { name: 'Get Started' }).click();
-  await page.getByRole('textbox', { name: 'Email' }).fill(email);
-  await page.getByRole('textbox', { name: 'Password' }).fill('loadtest');
-  await page.getByRole('button', { name: 'Log in' }).click();
-  await page.waitForURL('http://localhost:3000/home');
+
+  await goToWebsiteAndLogin(page, baseUrl, email);
+  await page.waitForURL(baseUrl + '/home');
 
   for (let i = 0; i < 10; i++) {
-    await page.goto('http://localhost:3000/home');
+    await page.goto(baseUrl + '/home');
     const responsePromise = waitForHabitResponses(page);
 
     await responsePromise;

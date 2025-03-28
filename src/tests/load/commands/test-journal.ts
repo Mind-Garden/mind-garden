@@ -1,27 +1,25 @@
 import { Page } from '@playwright/test';
 
-async function testJournal(page: Page) {
+import { goToWebsiteAndLogin } from '@/tests/load/commands/test-login';
+
+async function testJournal(page: Page, baseUrl: string) {
   const workerNumber = Math.floor(Math.random() * 10);
   const email = `load${workerNumber}@test.com`;
 
   // Login
-  await page.goto('http://localhost:3000/');
-  await page.getByRole('button', { name: 'Get Started' }).click();
-  await page.getByRole('textbox', { name: 'Email' }).fill(email);
-  await page.getByRole('textbox', { name: 'Password' }).fill('loadtest');
-  await page.getByRole('button', { name: 'Log in' }).click();
+  await goToWebsiteAndLogin(page, baseUrl, email);
 
   // Wait for load
-  await page.waitForURL('http://localhost:3000/home');
+  await page.waitForURL(baseUrl + '/home');
 
   // Go to journal page
   await page.getByRole('button', { name: 'Journal' }).click();
-  await page.waitForURL('http://localhost:3000/journal');
+  await page.waitForURL(baseUrl + '/journal');
 
   // Loop, making journal entries and deleting them
   for (let i = 0; i < 10; i++) {
     await page
-      .getByRole('textbox', { name: 'What\'s on your mind today?' })
+      .getByRole('textbox', { name: "What's on your mind today?" })
       .fill('test entry');
     await page.getByRole('button', { name: 'Save Entry' }).click();
     await page.getByRole('button', { name: 'Delete' }).first().click();

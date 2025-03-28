@@ -151,8 +151,6 @@ export default function TaskManager({ userId, firstName }: TaskManagerProps) {
 
       if (result?.error || (!result?.error && !result?.data)) {
         toast.warn('Error adding task. Please try again later.');
-      } else {
-        toast.success('Successfully added task!');
       }
 
       if (result?.data) {
@@ -416,6 +414,7 @@ export default function TaskManager({ userId, firstName }: TaskManagerProps) {
                           whileTap={{ scale: 0.9 }}
                           onClick={() => handleDeleteTask(task.id)}
                           className="text-gray-400 hover:text-red-500 transition-colors p-1.5 rounded-full hover:bg-red-50"
+                          aria-label="Delete Task"
                         >
                           <Trash2 className="w-4 h-4" />
                         </motion.button>
