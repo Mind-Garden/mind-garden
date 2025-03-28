@@ -27,7 +27,6 @@ import {
   CardTitle,
 } from '@/components/shadcn/card';
 import Counter from '@/components/ui/counter';
-import CounterCard from '@/components/ui/counter-card';
 import FloatingShapes from '@/components/ui/floating-shapes';
 import { RatingScale } from '@/components/ui/rating-scale';
 import { getLocalISOString } from '@/lib/utils';
@@ -833,14 +832,31 @@ function DataIntakeForm({
 
           {/* Water Intake Card*/}
           <div className="relative rounded-2xl overflow-hidden p-[2px] bg-gradient-to-r from-emerald-300 via-sky-300 to-violet-300">
-            <CounterCard
-              title="water"
-              description="How many cups of water did you drink today?"
-              value={water ?? 0}
-              onChange={setWater}
-              disabled={submitting || !scaleSelection}
-              className="w-full h-full rounded-[14px]"
-            />
+            <Card
+              className={`bg-white rounded-[14px] h-full overflow-hidden border-none break-inside-avoid backdrop-blur-sm relative transition-opacity
+                    ${submitting || !scaleSelection ? 'text-gray-500 bg-gray-100' : ''}`}
+            >
+              {!submitting && scaleSelection && (
+                <FloatingShapes
+                  colors={['bg-emerald-200', 'bg-teal-200', 'bg-violet-200']}
+                />
+              )}
+              <CardHeader className="pb-3">
+                <CardTitle className="text-lg">{'water'}</CardTitle>
+                <p className="text-sm text-muted-foreground mt-1">
+                  {'How many cups of water did you drink today?'}
+                </p>
+              </CardHeader>
+              <CardContent className="space-y-6">
+                <div className="flex items-center justify-center gap-4">
+                  <Counter
+                    value={water ?? 0}
+                    onChange={setWater}
+                    disabled={submitting || !scaleSelection}
+                  />
+                </div>
+              </CardContent>
+            </Card>
           </div>
           {addedCategories &&
             addedCategories.map((category) => {
