@@ -3,7 +3,7 @@ import { Page } from '@playwright/test';
 import { goToWebsiteAndLogin } from '@/tests/load/commands/test-login';
 
 export async function testTaskManager(page: Page, baseUrl: string) {
-  const workerNumber = Math.floor(Math.random() * 10);
+  const workerNumber = Math.floor(Math.random() * 20);
   const email = `load${workerNumber}@test.com`;
   await goToWebsiteAndLogin(page, baseUrl, email);
   await page.waitForURL(baseUrl + '/home');
