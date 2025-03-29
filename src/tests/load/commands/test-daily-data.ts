@@ -10,8 +10,8 @@ async function testDailyData(page: Page, baseUrl: string) {
   await page.waitForURL(baseUrl + '/home');
 
   for (let i = 0; i < 10; i++) {
-    await page.goto(baseUrl + '/daily-intake');
-    await page.waitForURL(baseUrl + '/daily-intake');
+    await page.goto(baseUrl + '/daily-habits');
+    await page.waitForURL(baseUrl + '/daily-habits');
     await page
       .locator('div')
       .filter({ hasText: /^Rate Your Day$/ })
