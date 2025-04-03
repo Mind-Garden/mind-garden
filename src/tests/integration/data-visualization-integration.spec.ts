@@ -6,7 +6,6 @@ import {
   selectWaterDataByDateRange,
   selectWorkDataByDateRange,
 } from '@/actions/data-visualization';
-import { getLocalISOString } from '@/lib/utils';
 
 import supabase from '../../../jest.setup';
 
@@ -15,10 +14,8 @@ jest.mock('next/navigation');
 
 describe('Data Visualization Integration Tests', () => {
   let userId: string;
-  const todaysDate = getLocalISOString();
-  const lastMonthDate = getLocalISOString(
-    new Date(new Date().setMonth(new Date().getMonth() - 1)),
-  );
+  const todaysDate = '2025-03-31';
+  const lastMonthDate = '2025-03-01';
 
   beforeAll(async () => {
     // Create a test user
