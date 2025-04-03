@@ -1,4 +1,4 @@
-# Mind Garden
+# Mind Garden 
 
 ## Meet the Contributors
 
