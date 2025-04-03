@@ -1,5 +1,6 @@
 'use client';
 
+import { motion } from 'framer-motion';
 import { LoaderCircle, Plus } from 'lucide-react';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { toast } from 'react-toastify';
@@ -577,33 +578,62 @@ function DataIntakeForm({
   }
 
   return (
-    <div className="font-body w-full max-w-4xl mx-auto pb-2 rounded-2xl bg-white/50 backdrop-blur-md">
-      <div className="backdrop-blur-sm px-2 rounded-t-2xl">
+    <motion.div
+      className="font-body w-full max-w-4xl mx-auto pb-2 rounded-2xl bg-white/50 backdrop-blur-md"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 0.5 }}
+    >
+      {/* Header Section */}
+      <motion.div
+        className="backdrop-blur-sm px-2 rounded-t-2xl"
+        initial={{ y: -20, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        transition={{ duration: 0.5 }}
+      >
         <div className="container mx-auto px-4 py-4">
-          <div className="flex items-center justify-between h-16">
+          <motion.div
+            className="flex items-center justify-between h-16"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.2, duration: 0.5 }}
+          >
             <p className="text-3xl font-semibold text-black font-title pl-2">
               Daily Habit Form
             </p>
             <div className="flex items-center gap-4 pr-4">
-              <Button
-                variant="outline"
-                className="rounded-xl bg-transparent border-black-100/50 hover:bg-black/10"
-                onClick={() => setShowAddHabitDialog(true)}
-              >
-                <Plus className="h-4 w-4 mr-2" />
-                Add Habit
-              </Button>
-              <Button
-                variant="outline"
-                className={`rounded-xl bg-transparent border-black-100/50 ${!submitting && scaleSelection ? 'hover:bg-gradient-to-r from-emerald-200 via-sky-200 to-violet-200' : 'hover:bg-black/10'} `}
-                onClick={handleSubmit}
-                disabled={submitting}
-              >
-                Submit
-              </Button>
+              <motion.div whileHover={{ scale: 1.05 }}>
+                <Button
+                  variant="outline"
+                  className="rounded-xl bg-transparent border-black-100/50 hover:bg-black/10"
+                  onClick={() => setShowAddHabitDialog(true)}
+                >
+                  <Plus className="h-4 w-4 mr-2" />
+                  Add Habit
+                </Button>
+              </motion.div>
+              <motion.div whileHover={{ scale: 1.05 }}>
+                <Button
+                  variant="outline"
+                  className={`rounded-xl bg-transparent border-black-100/50 ${
+                    !submitting && scaleSelection
+                      ? 'hover:bg-gradient-to-r from-emerald-200 via-sky-200 to-violet-200'
+                      : 'hover:bg-black/10'
+                  }`}
+                  onClick={handleSubmit}
+                  disabled={submitting}
+                >
+                  Submit
+                </Button>
+              </motion.div>
             </div>
-          </div>
-          <div className="pl-2">
+          </motion.div>
+          <motion.div
+            className="pl-2"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.3, duration: 0.5 }}
+          >
             {completedForm ? (
               <p className="text-sm text-gray-500">
                 You have completed your habit form for the day! You may edit and
@@ -615,22 +645,32 @@ function DataIntakeForm({
                 selections and submit.
               </p>
             )}
-          </div>
+          </motion.div>
         </div>
-      </div>
+      </motion.div>
 
-      {/* Wrap to make them relative for visual effects */}
+      {/* Form Content */}
       <div className="relative px-4">
-        {/* Loading spinner */}
+        {/* Loading Spinner */}
         {submitting && (
-          <div className="absolute inset-0 bg-gray-100/70 flex items-center justify-center rounded-2xl z-10">
+          <motion.div
+            className="absolute inset-0 bg-gray-100/70 flex items-center justify-center rounded-2xl z-10"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.3 }}
+          >
             <LoaderCircle className="h-12 w-12 text-gray-500 animate-spin" />
-          </div>
+          </motion.div>
         )}
 
         {/* Scale Selection */}
-        <div
-          className={`flex flex-col items-center py-4 bg-white/50 rounded-full z-10 transition-opacity ${submitting ? 'opacity-50' : 'opacity-100'}`}
+        <motion.div
+          className={`flex flex-col items-center py-4 bg-white/50 rounded-full z-10 transition-opacity ${
+            submitting ? 'opacity-50' : 'opacity-100'
+          }`}
+          initial={{ scale: 0.9, opacity: 0 }}
+          animate={{ scale: 1, opacity: 1 }}
+          transition={{ duration: 0.5, delay: 0.2 }}
         >
           <p className="font-bold text-xl">Rate Your Day</p>
           <div className="flex justify-center gap-4 mt-2">
@@ -646,20 +686,26 @@ function DataIntakeForm({
               </ToggleButton>
             ))}
           </div>
-
           {scaleError && (
             <p className="text-red-500 mt-2 text-sm">
               Please select a scale rating before submitting.
             </p>
           )}
-        </div>
+        </motion.div>
+
         {/* Emotions Category */}
         {emotionsCategory && (
-          <div className="relative rounded-2xl overflow-hidden p-[2px] mb-5 bg-gradient-to-r from-emerald-300 via-sky-300 to-violet-300">
+          <motion.div
+            className="relative rounded-2xl overflow-hidden p-[2px] mb-5 bg-gradient-to-r from-emerald-300 via-sky-300 to-violet-300"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.4, duration: 0.5 }}
+          >
             <Card
               key={emotionsCategory.id}
-              className={`bg-white rounded-[14px] h-full overflow-hidden border-none break-inside-avoid backdrop-blur-sm relative transition-opacity
-                ${submitting || !scaleSelection ? 'text-gray-500 bg-gray-100' : ''}`}
+              className={`bg-white rounded-[14px] h-full overflow-hidden border-none break-inside-avoid backdrop-blur-sm relative transition-opacity ${
+                submitting || !scaleSelection ? 'text-gray-500 bg-gray-100' : ''
+              }`}
             >
               {!submitting && scaleSelection && (
                 <FloatingShapes
@@ -695,18 +741,31 @@ function DataIntakeForm({
                 </div>
               </CardContent>
             </Card>
-          </div>
+          </motion.div>
         )}
 
         {/* Card Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <motion.div
+          className="grid grid-cols-1 md:grid-cols-2 gap-4"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.5, duration: 0.5 }}
+        >
           {/* School Category Card */}
           {schoolCategory && (
-            <div className="relative rounded-2xl overflow-hidden p-[2px] bg-gradient-to-r from-emerald-300 via-sky-300 to-violet-300">
+            <motion.div
+              className="relative rounded-2xl overflow-hidden p-[2px] bg-gradient-to-r from-emerald-300 via-sky-300 to-violet-300"
+              initial={{ scale: 0.9, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              transition={{ delay: 0.6, duration: 0.5 }}
+            >
               <Card
                 key={schoolCategory.id}
-                className={`bg-white rounded-[14px] h-full overflow-hidden border-none break-inside-avoid backdrop-blur-sm relative transition-opacity
-                  ${submitting || !scaleSelection ? 'text-gray-500 bg-gray-100' : ''}`}
+                className={`bg-white rounded-[14px] h-full overflow-hidden border-none break-inside-avoid backdrop-blur-sm relative transition-opacity ${
+                  submitting || !scaleSelection
+                    ? 'text-gray-500 bg-gray-100'
+                    : ''
+                }`}
               >
                 {!submitting && scaleSelection && (
                   <FloatingShapes
@@ -718,7 +777,7 @@ function DataIntakeForm({
                     {schoolCategory.name}
                   </CardTitle>
                   <p className="text-sm text-muted-foreground mt-1">
-                    {'How many hours did you study today?'}
+                    How many hours did you study today?
                   </p>
                 </CardHeader>
                 <CardContent>
@@ -731,7 +790,7 @@ function DataIntakeForm({
                   </div>
                   <div className="space-y-3 border-t pt-4 pb-4">
                     <label className="text-sm font-medium">
-                      {'How would you rate your school day?'}
+                      How would you rate your school day?
                     </label>
                     <RatingScale
                       value={studyRating ?? 0}
@@ -764,16 +823,24 @@ function DataIntakeForm({
                   </div>
                 </CardContent>
               </Card>
-            </div>
+            </motion.div>
           )}
 
           {/* Work Category Card */}
           {workCategory && (
-            <div className="relative rounded-2xl overflow-hidden p-[2px] bg-gradient-to-r from-emerald-300 via-sky-300 to-violet-300">
+            <motion.div
+              className="relative rounded-2xl overflow-hidden p-[2px] bg-gradient-to-r from-emerald-300 via-sky-300 to-violet-300"
+              initial={{ scale: 0.9, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              transition={{ delay: 0.7, duration: 0.5 }}
+            >
               <Card
                 key={workCategory.id}
-                className={`bg-white rounded-[14px] h-full overflow-hidden border-none break-inside-avoid backdrop-blur-sm relative transition-opacity
-                  ${submitting || !scaleSelection ? 'text-gray-500 bg-gray-100' : ''}`}
+                className={`bg-white rounded-[14px] h-full overflow-hidden border-none break-inside-avoid backdrop-blur-sm relative transition-opacity ${
+                  submitting || !scaleSelection
+                    ? 'text-gray-500 bg-gray-100'
+                    : ''
+                }`}
               >
                 {!submitting && scaleSelection && (
                   <FloatingShapes
@@ -783,7 +850,7 @@ function DataIntakeForm({
                 <CardHeader className="pb-3">
                   <CardTitle className="text-lg">{workCategory.name}</CardTitle>
                   <p className="text-sm text-muted-foreground mt-1">
-                    {'How many hours did you work today?'}
+                    How many hours did you work today?
                   </p>
                 </CardHeader>
                 <CardContent>
@@ -796,7 +863,7 @@ function DataIntakeForm({
                   </div>
                   <div className="space-y-3 border-t pt-4 pb-4">
                     <label className="text-sm font-medium">
-                      {'How would you rate your work day?'}
+                      How would you rate your work day?
                     </label>
                     <RatingScale
                       value={workRating ?? 0}
@@ -827,14 +894,20 @@ function DataIntakeForm({
                   </div>
                 </CardContent>
               </Card>
-            </div>
+            </motion.div>
           )}
 
-          {/* Water Intake Card*/}
-          <div className="relative rounded-2xl overflow-hidden p-[2px] bg-gradient-to-r from-emerald-300 via-sky-300 to-violet-300">
+          {/* Water Intake Card */}
+          <motion.div
+            className="relative rounded-2xl overflow-hidden p-[2px] bg-gradient-to-r from-emerald-300 via-sky-300 to-violet-300"
+            initial={{ scale: 0.9, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            transition={{ delay: 0.8, duration: 0.5 }}
+          >
             <Card
-              className={`bg-white rounded-[14px] h-full overflow-hidden border-none break-inside-avoid backdrop-blur-sm relative transition-opacity
-                    ${submitting || !scaleSelection ? 'text-gray-500 bg-gray-100' : ''}`}
+              className={`bg-white rounded-[14px] h-full overflow-hidden border-none break-inside-avoid backdrop-blur-sm relative transition-opacity ${
+                submitting || !scaleSelection ? 'text-gray-500 bg-gray-100' : ''
+              }`}
             >
               {!submitting && scaleSelection && (
                 <FloatingShapes
@@ -842,9 +915,9 @@ function DataIntakeForm({
                 />
               )}
               <CardHeader className="pb-3">
-                <CardTitle className="text-lg">{'water'}</CardTitle>
+                <CardTitle className="text-lg">water</CardTitle>
                 <p className="text-sm text-muted-foreground mt-1">
-                  {'How many cups of water did you drink today?'}
+                  How many cups of water did you drink today?
                 </p>
               </CardHeader>
               <CardContent className="space-y-6">
@@ -857,22 +930,26 @@ function DataIntakeForm({
                 </div>
               </CardContent>
             </Card>
-          </div>
+          </motion.div>
+
+          {/* Additional Categories */}
           {addedCategories &&
-            addedCategories.map((category) => {
+            addedCategories.map((category, index) => {
               const name = personalizedCategories.find(
                 (cat) => cat.id == category.added_habit,
               )?.name;
               const methods = category.tracking_method;
-
               return (
-                <div
+                <motion.div
                   key={name}
                   className="relative rounded-2xl overflow-hidden p-[2px] bg-gradient-to-r from-emerald-300 via-sky-300 to-violet-300"
+                  initial={{ scale: 0.9, opacity: 0 }}
+                  animate={{ scale: 1, opacity: 1 }}
+                  transition={{ delay: 0.9 + index * 0.1, duration: 0.5 }}
                 >
                   <Card
                     className={`bg-white rounded-[14px] break-inside-avoid backdrop-blur-sm border-none relative transition-opacity w-full h-full opacity-100
-                  ${submitting || !scaleSelection ? 'text-gray-500 bg-gray-100' : ''}`}
+                        ${submitting || !scaleSelection ? 'text-gray-500 bg-gray-100' : ''}`}
                   >
                     {!submitting && scaleSelection && (
                       <FloatingShapes
@@ -892,10 +969,10 @@ function DataIntakeForm({
                       )}
                     </CardContent>
                   </Card>
-                </div>
+                </motion.div>
               );
             })}
-        </div>
+        </motion.div>
       </div>
 
       {/* Add Habit Dialog */}
@@ -905,7 +982,7 @@ function DataIntakeForm({
         categories={personalizedCategories}
         onAddHabit={handleAddHabit}
       />
-    </div>
+    </motion.div>
   );
 }
 
