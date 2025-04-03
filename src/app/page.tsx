@@ -649,7 +649,7 @@ export default function RootPage() {
                 transition={{ duration: 0.4 }}
               >
                 <div className="relative rounded-2xl overflow-hidden p-[2px] bg-gradient-to-r from-emerald-300 via-teal-300 to-violet-300">
-                  <Card className="w-full backdrop-blur-sm bg-white/90 shadow-xl border-0 rounded-2xl relative">
+                  <Card className="w-full backdrop-blur-sm bg-white/90 shadow-xl border-0 rounded-[14px] relative">
                     <CardContent className="space-y-8 p-12">
                       <form
                         onSubmit={async (e) => {
