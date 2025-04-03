@@ -19,50 +19,58 @@ export default function YesNoForm({
   onChange,
   disabled,
 }: YesNoFormProps) {
-  const [selected, setSelected] = useState<boolean | null>(initialValue);
+  const [selected, setSelected] = useState(initialValue);
 
-  const handleSelection = (value: boolean | null) => {
-    setSelected(value);
-    onChange(value);
+  const handleSelection = (value: boolean) => {
+    if (selected !== value) {
+      setSelected(value);
+      onChange(value);
+    }
   };
 
   return (
     <div className="flex items-center justify-between py-2 px-3 bg-white/5 backdrop-blur-sm rounded-xl">
       <span className="text-sm font-medium">{question}</span>
 
-      <div className="flex items-center gap-3 ml-3 mr-2">
-        <span className="text-sm mr-1">
-          {selected !== null ? (selected ? 'Yes' : 'No') : ''}
-        </span>
+      <div className="flex items-center gap-3">
+        {selected !== null && (
+          <span className="text-sm font-bold text-gray-700">
+            {selected ? 'Yes' : 'No'}
+          </span>
+        )}
 
-        <Button
-          variant="ghost"
-          size="sm"
-          className={cn(
-            'flex items-center rounded-md transition-all px-1',
-            selected === true ? 'text-green-700' : 'text-gray-500',
-            disabled
-              ? 'opacity-50 pointer-events-none shadow-none bg-transparent'
-              : 'hover:bg-slate-100 hover:shadow',
-          )}
-          onClick={() => handleSelection(true)}
-          disabled={disabled}
-        >
-          <CheckCircle2 className="h-3 w-3" />
-        </Button>
-
-        <Button
-          variant="ghost"
-          size="sm"
-          className={cn(
-            'flex items-center rounded-md transition-all px-1',
-            selected === false ? 'text-red-700' : 'text-gray-500',
-          )}
-          onClick={() => handleSelection(false)}
-          disabled={disabled}
-        >
-          <XCircle className="h-3 w-3" />
-        </Button>
+        {[
+          {
+            value: true,
+            icon: CheckCircle2,
+            color: 'text-green-700',
+            hover: 'hover:bg-green-100',
+            bg: 'bg-green-100',
+          },
+          {
+            value: false,
+            icon: XCircle,
+            color: 'text-red-700',
+            hover: 'hover:bg-red-100',
+            bg: 'bg-red-100',
+          },
+        ].map(({ value, icon: Icon, color, hover, bg }) => (
+          <Button
+            key={String(value)}
+            variant="ghost"
+            size="sm"
+            aria-label={value ? 'Yes' : 'No'}
+            className={cn(
+              'flex items-center rounded-md transition-all px-1',
+              selected === value ? `${color} ${bg}` : 'text-gray-500',
+              disabled ? 'opacity-50 pointer-events-none' : hover,
+            )}
+            onClick={() => handleSelection(value)}
+            disabled={disabled}
+          >
+            <Icon className="h-4 w-4" />
+          </Button>
+        ))}
       </div>
     </div>
   );
