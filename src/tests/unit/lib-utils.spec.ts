@@ -1,4 +1,5 @@
 import {
+  capitalizeWords,
   cn,
   getAverageTimeElapsed,
   getGreetingText,
@@ -56,6 +57,13 @@ describe('Utility functions', () => {
     it('should return 0 if the times array is empty', () => {
       const result = getAverageTimeElapsed([]);
       expect(result).toBe(0);
+    });
+  });
+
+  describe('capitalizeWords function', () => {
+    it('should capitalize the first letter of each word', () => {
+      const result = capitalizeWords('hello world');
+      expect(result).toBe('Hello World');
     });
   });
 });
