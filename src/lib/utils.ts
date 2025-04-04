@@ -155,3 +155,12 @@ export const getAverageTimeElapsed = (times: number[]): number => {
   const total = times.reduce((sum, time) => sum + time, 0);
   return total / times.length;
 };
+
+/**
+ * Capitalizes the first letter of each word in a string.
+ * @param str the input string to transform
+ * @returns the input string with each word's first letter capitalized
+ */
+export const capitalizeWords = (str: string): string => {
+  return str.replace(/\b\w/g, (char) => char.toUpperCase());
+};
