@@ -30,7 +30,7 @@ import {
 import Counter from '@/components/ui/counter';
 import FloatingShapes from '@/components/ui/floating-shapes';
 import { RatingScale } from '@/components/ui/rating-scale';
-import { getLocalISOString } from '@/lib/utils';
+import { capitalizeWords, getLocalISOString } from '@/lib/utils';
 import type {
   IAddedCategory,
   IAttributes,
@@ -714,8 +714,11 @@ function DataIntakeForm({
               )}
               <CardHeader className="pb-3">
                 <CardTitle className="text-lg text-semibold">
-                  {emotionsCategory.name}
+                  {capitalizeWords(emotionsCategory.name)}
                 </CardTitle>
+                <p className="text-sm text-muted-foreground my-1">
+                  How did you feel today?
+                </p>
               </CardHeader>
               <CardContent>
                 <div className="flex flex-wrap justify-center gap-2">
@@ -774,7 +777,7 @@ function DataIntakeForm({
                 )}
                 <CardHeader className="pb-3">
                   <CardTitle className="text-lg">
-                    {schoolCategory.name}
+                    {capitalizeWords(schoolCategory.name)}
                   </CardTitle>
                   <p className="text-sm text-muted-foreground mt-1">
                     How many hours did you study today?
@@ -848,7 +851,9 @@ function DataIntakeForm({
                   />
                 )}
                 <CardHeader className="pb-3">
-                  <CardTitle className="text-lg">{workCategory.name}</CardTitle>
+                  <CardTitle className="text-lg">
+                    {capitalizeWords(workCategory.name)}
+                  </CardTitle>
                   <p className="text-sm text-muted-foreground mt-1">
                     How many hours did you work today?
                   </p>
@@ -915,7 +920,7 @@ function DataIntakeForm({
                 />
               )}
               <CardHeader className="pb-3">
-                <CardTitle className="text-lg">water</CardTitle>
+                <CardTitle className="text-lg">Water</CardTitle>
                 <p className="text-sm text-muted-foreground mt-1">
                   How many cups of water did you drink today?
                 </p>
@@ -961,7 +966,9 @@ function DataIntakeForm({
                       />
                     )}
                     <CardHeader className="pb-3">
-                      <CardTitle className="text-lg">{name}</CardTitle>
+                      <CardTitle className="text-lg">
+                        {capitalizeWords(name ?? '')}
+                      </CardTitle>
                     </CardHeader>
                     <CardContent className="space-y-4">
                       {methods.map((method) =>
