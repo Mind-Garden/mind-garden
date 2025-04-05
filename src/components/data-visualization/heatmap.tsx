@@ -377,7 +377,6 @@ export default function Heatmap({ userId, personalized }: HeatmapProps) {
               if (personalized) {
                 dayDataResp = getHabitDataForDate(category, day);
                 completionValue = getValue(trackingMethod, dayDataResp);
-                console.log(completionValue);
                 backgroundColor = getBackgroundColor(completionValue);
               } else {
                 dayData = getDataForDate(day);
