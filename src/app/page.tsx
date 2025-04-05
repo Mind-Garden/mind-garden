@@ -172,7 +172,7 @@ export default function RootPage() {
         >
           {/* Container for left and right sides */}
           <div className="flex flex-col md:flex-row items-center justify-center gap-10">
-            {/* Left Side: Logo */}
+            {/* Logo */}
             <motion.img
               src="/logo-grad-line.png"
               alt="Mind Garden Logo"
@@ -182,7 +182,7 @@ export default function RootPage() {
               transition={{ duration: 0.6, delay: 0.4, type: 'spring' }}
             />
 
-            {/* Right Side: Title + Slogan */}
+            {/* Title + Slogan */}
             <div className="flex flex-col items-center md:items-start text-center md:text-left">
               <h1 className="pt-5 pb-10 pl-2 pr-5 font-title text-7xl md:text-8xl font-bold bg-gradient-to-r from-emerald-400 via-teal-400 to-violet-400 text-transparent bg-clip-text tracking-tight">
                 Mind Garden
