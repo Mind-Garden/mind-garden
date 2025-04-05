@@ -132,8 +132,3 @@ export interface MoodFlowProps {
   userId: string;
   title?: string;
 }
-
-export interface WaterDataPoint {
-  date: string;
-  water: number;
-}

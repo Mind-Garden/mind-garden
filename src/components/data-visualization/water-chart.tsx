@@ -31,11 +31,15 @@ import {
 } from '@/components/shadcn/card';
 import { Progress } from '@/components/shadcn/progress';
 import { getLocalISOString } from '@/lib/utils';
-import { WaterDataPoint } from '@/supabase/schema';
 
 interface WaterChartProps {
   userId: string;
   dailyGoal?: number; // Cups of water per day goal
+}
+
+export interface WaterDataPoint {
+  date: string;
+  water: number;
 }
 
 type TimeRange = 'week' | 'month' | '3months';
@@ -120,7 +124,7 @@ export default function WaterChart({
           const processedData = response.data
             .map((item: any) => ({
               date: item.entry_date,
-              water: item.water || 0,
+              water: item.water ?? 0,
             }))
             .filter((item) => item.date !== null)
             .sort(
@@ -149,7 +153,7 @@ export default function WaterChart({
     // Calculate today's water intake
     const today = new Date().toISOString().split('T')[0];
     const todayEntry = processedData.find((item) => item.date.includes(today));
-    setTodayWater(todayEntry?.water || 0);
+    setTodayWater(todayEntry?.water ?? 0);
 
     // Calculate average water intake
     if (processedData.length > 0) {
