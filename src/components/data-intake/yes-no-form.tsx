@@ -44,25 +44,23 @@ export default function YesNoForm({
             value: true,
             icon: CheckCircle2,
             color: 'text-green-700',
-            hover: 'hover:bg-green-100',
-            bg: 'bg-green-100',
+            hover: 'hover:text-green-700',
           },
           {
             value: false,
             icon: XCircle,
             color: 'text-red-700',
-            hover: 'hover:bg-red-100',
-            bg: 'bg-red-100',
+            hover: 'hover:text-red-700',
           },
-        ].map(({ value, icon: Icon, color, hover, bg }) => (
+        ].map(({ value, icon: Icon, color, hover }) => (
           <Button
             key={String(value)}
             variant="ghost"
             size="sm"
             aria-label={value ? 'Yes' : 'No'}
             className={cn(
-              'flex items-center rounded-md transition-all px-1',
-              selected === value ? `${color} ${bg}` : 'text-gray-500',
+              'flex items-center h-6 w-6 rounded-full transition-all px-1',
+              selected === value ? `${color}` : 'text-gray-500',
               disabled ? 'opacity-50 pointer-events-none' : hover,
             )}
             onClick={() => handleSelection(value)}

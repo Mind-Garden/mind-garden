@@ -166,7 +166,7 @@ export default function Heatmap({ userId, personalized }: HeatmapProps) {
     if (data?.tracking_method) {
       return data.tracking_method[method];
     }
-    return false;
+    return null;
   };
 
   // Function to get the appropriate background color based on completion value
@@ -305,7 +305,7 @@ export default function Heatmap({ userId, personalized }: HeatmapProps) {
       start?: string;
     };
   }) {
-    if (personalized && completionValue) {
+    if (personalized && completionValue != null) {
       const label =
         trackingMethod === 'boolean'
           ? category

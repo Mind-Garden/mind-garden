@@ -45,12 +45,7 @@ export default function QuantityTracker({
           size="icon"
           onClick={decrement}
           disabled={disabled || value <= min}
-          className={`h-10 w-10 rounded-full p-0
-            ${
-              disabled
-                ? 'opacity-50 pointer-events-none shadow-none bg-transparent'
-                : 'hover:bg-slate-100 hover:shadow' // This applies hover shadow only when not disabled
-            }`}
+          className={'h-6 w-6 rounded-full p-0 shadow-none hover:shadow-none'}
         >
           <MinusCircle className="h-6 w-6" />
           <span className="sr-only">Decrease</span>
@@ -63,12 +58,7 @@ export default function QuantityTracker({
           size="icon"
           onClick={increment}
           disabled={disabled || value >= max}
-          className={`h-10 w-10 rounded-full p-0
-            ${
-              disabled
-                ? 'opacity-50 pointer-events-none shadow-none bg-transparent'
-                : 'hover:bg-slate-100 hover:shadow' // This applies hover shadow only when not disabled
-            }`}
+          className={'h-6 w-6 rounded-full p-0'}
         >
           <PlusCircle className="h-6 w-6" />
           <span className="sr-only">Increase</span>
