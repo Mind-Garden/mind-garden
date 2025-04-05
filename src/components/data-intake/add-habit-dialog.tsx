@@ -143,7 +143,7 @@ export default function AddHabitDialog({
               >
                 {options.length > 0 ? (
                   options.map(({ value, label }) => (
-                    <div key={value} className="mb-1">
+                    <div key={value} className="flex items-center">
                       <RadioGroupItem
                         className="border-primary text-primary-foreground data-[state=checked]:bg-gradient-to-r from-emerald-400 via-sky-400 to-violet-400 data-[state=checked]:border-white"
                         value={value}
