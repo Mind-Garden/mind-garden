@@ -165,35 +165,42 @@ export default function RootPage() {
       >
         {/* Title, logo, and tagline centered */}
         <motion.div
-          className="text-center relative z-10"
+          className="flex flex-col items-center justify-center relative z-10"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.2 }}
         >
-          <div className="flex items-center justify-center">
+          {/* Container for left and right sides */}
+          <div className="flex flex-col md:flex-row items-center justify-center gap-10">
+            {/* Logo */}
             <motion.img
-              src="/logo-blue.png"
+              src="/logo-grad-line.png"
               alt="Mind Garden Logo"
-              className="h-20 w-auto mb-4 mr-7"
+              className="h-[200px] w-auto mb-4 md:mb-0 opacity-80 brightness-110"
               initial={{ rotate: -10, scale: 0.8 }}
               animate={{ rotate: 0, scale: 1 }}
               transition={{ duration: 0.6, delay: 0.4, type: 'spring' }}
             />
-            <h1 className="p-10 font-title text-7xl md:text-8xl font-bold bg-gradient-to-r from-emerald-400 via-teal-400 to-violet-400 text-transparent bg-clip-text mb-4 tracking-tight z-2">
-              Mind Garden
-            </h1>
-          </div>
-          {/* Animated Slogan */}
-          <div className="text-slate-600 flex flex-col md:flex-row items-center">
-            <span className="mr-2 text-slate-500 text-2xl">Cultivate Your</span>
-            <TypingAnimation
-              className="inline-block font-semibold text-2xl"
-              duration={100}
-              delay={500}
-              key={words[index]} // Forces re-render for new word
-            >
-              {words[index]}
-            </TypingAnimation>
+
+            {/* Title + Slogan */}
+            <div className="flex flex-col items-center md:items-start text-center md:text-left">
+              <h1 className="pt-5 pb-10 pl-2 pr-5 font-title text-7xl md:text-8xl font-bold bg-gradient-to-r from-emerald-400 via-teal-400 to-violet-400 text-transparent bg-clip-text tracking-tight">
+                Mind Garden
+              </h1>
+              <div className="text-slate-600 flex flex-col md:flex-row items-center mt-4 pl-2">
+                <span className="mr-2 text-slate-500 text-2xl">
+                  Cultivate Your
+                </span>
+                <TypingAnimation
+                  className="inline-block font-semibold text-2xl"
+                  duration={100}
+                  delay={500}
+                  key={words[index]}
+                >
+                  {words[index]}
+                </TypingAnimation>
+              </div>
+            </div>
           </div>
         </motion.div>
 
