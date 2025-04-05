@@ -56,7 +56,7 @@ export default function ResetPassword({ session }: { session: any }) {
               <div className="space-y-3">
                 <Label
                   htmlFor="newPassword"
-                  className="text-base font-body text-gray-700"
+                  className="text-sm font-body text-gray-700"
                 >
                   New Password
                 </Label>
@@ -75,7 +75,7 @@ export default function ResetPassword({ session }: { session: any }) {
               <div className="space-y-3">
                 <Label
                   htmlFor="confirmPassword"
-                  className="text-base font-body text-gray-700"
+                  className="text-sm font-body text-gray-700"
                 >
                   Confirm New Password
                 </Label>
