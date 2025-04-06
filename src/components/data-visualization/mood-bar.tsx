@@ -22,44 +22,46 @@ import {
 import { getLocalISOString } from '@/lib/utils';
 import type { MoodCountData, MoodDistribution } from '@/supabase/schema';
 
+import ScaleIcon from '../data-intake/scale-icon';
+
 // Define mood types with their properties
 const moodTypes = [
   {
     id: '5',
-    color: '#FFDD85',
-    hoverColor: '#FFD151',
+    color: 'bg-emerald-200',
+    hoverColor: 'hover:bg-emerald-300',
     emoji: '😁',
     label: 'Excellent',
     description: 'Feeling great and energetic',
   },
   {
     id: '4',
-    color: '#D4E6A5',
-    hoverColor: '#C2DB85',
+    color: 'bg-sky-200',
+    hoverColor: 'hover:bg-sky-300',
     emoji: '😊',
     label: 'Good',
     description: 'Feeling positive and content',
   },
   {
     id: '3',
-    color: '#9ACBAD',
-    hoverColor: '#7DBFA0',
+    color: 'bg-violet-200',
+    hoverColor: 'hover:bg-violet-300',
     emoji: '😐',
     label: 'Neutral',
     description: 'Neither good nor bad',
   },
   {
     id: '2',
-    color: '#5EB17F',
-    hoverColor: '#4A9D6A',
+    color: 'bg-amber-200',
+    hoverColor: 'hover:bg-amber-300',
     emoji: '😔',
     label: 'Poor',
     description: 'Feeling down or upset',
   },
   {
     id: '1',
-    color: '#9E9E9E',
-    hoverColor: '#7E7E7E',
+    color: 'bg-rose-200',
+    hoverColor: 'hover:bg-rose-300',
     emoji: '😫',
     label: 'Terrible',
     description: 'Feeling very negative',
@@ -225,11 +227,9 @@ export default function MoodDistributionComponent({
                 {dominantMood && (
                   <Badge
                     style={{
-                      backgroundColor: `${dominantMood.color}40`,
                       color: 'black',
-                      borderColor: dominantMood.color,
                     }}
-                    className="border"
+                    className={`border ${dominantMood.color} border-black ${dominantMood.hoverColor}`}
                   >
                     Mostly {dominantMood.label}
                   </Badge>
@@ -255,15 +255,13 @@ export default function MoodDistributionComponent({
                               transition={{ duration: 0.3 }}
                             >
                               <motion.div
-                                className="w-14 h-14 md:w-16 md:h-16 rounded-full flex items-center justify-center mb-2 cursor-pointer"
-                                style={{ backgroundColor: mood.color }}
+                                className={`w-14 h-14 md:w-16 md:h-16 rounded-full flex items-center justify-center mb-2 cursor-pointer ${mood.color} ${mood.hoverColor}`}
                                 whileHover={{
                                   scale: 1.05,
-                                  backgroundColor: mood.hoverColor,
                                   transition: { duration: 0.2 },
                                 }}
                               >
-                                <span className="text-2xl">{mood.emoji}</span>
+                                <ScaleIcon scaleRating={Number(item.id)} />
                               </motion.div>
                               <div className="text-center">
                                 <div className="font-medium text-lg">
@@ -302,8 +300,7 @@ export default function MoodDistributionComponent({
                     return (
                       <motion.div
                         key={item.id}
-                        className="h-full relative group"
-                        style={{ backgroundColor: mood.color }}
+                        className={`h-full ${mood.color} ${mood.hoverColor} relative`}
                         initial={{ width: 0 }}
                         animate={{ width: `${item.percentage}%` }}
                         transition={{ duration: 0.5, delay: index * 0.1 }}
