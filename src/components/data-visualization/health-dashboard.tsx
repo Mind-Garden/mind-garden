@@ -28,7 +28,7 @@ export default function HealthDashboard({ userId }: HealthDashboardProps) {
       description: 'Track your emotional patterns',
       content: (
         <>
-          <div className="grid md:grid-cols-2">
+          <div className="grid md:grid-cols-1 gap-2">
             <div className="md:col-span-1">
               <MoodFlow userId={userId} />
             </div>
@@ -105,7 +105,7 @@ export default function HealthDashboard({ userId }: HealthDashboardProps) {
       {/* Tabs for navigation */}
       <div className="flex flex-col items-center space-y-3">
         {/* Section Buttons */}
-        <div className="flex justify-center">
+        <div className="flex justify-center gap-2">
           {sections.map((section, index) => (
             <Button
               key={section.id}

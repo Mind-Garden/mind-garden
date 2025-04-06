@@ -20,53 +20,9 @@ import {
   TooltipTrigger,
 } from '@/components/shadcn/tooltip';
 import { getLocalISOString } from '@/lib/utils';
-import type { MoodCountData, MoodDistribution } from '@/supabase/schema';
+import { MoodCountData, MoodDistribution, moodTypes } from '@/supabase/schema';
 
 import ScaleIcon from '../data-intake/scale-icon';
-
-// Define mood types with their properties
-const moodTypes = [
-  {
-    id: '5',
-    color: 'bg-emerald-200',
-    hoverColor: 'hover:bg-emerald-300',
-    emoji: '😁',
-    label: 'Excellent',
-    description: 'Feeling great and energetic',
-  },
-  {
-    id: '4',
-    color: 'bg-sky-200',
-    hoverColor: 'hover:bg-sky-300',
-    emoji: '😊',
-    label: 'Good',
-    description: 'Feeling positive and content',
-  },
-  {
-    id: '3',
-    color: 'bg-violet-200',
-    hoverColor: 'hover:bg-violet-300',
-    emoji: '😐',
-    label: 'Neutral',
-    description: 'Neither good nor bad',
-  },
-  {
-    id: '2',
-    color: 'bg-amber-200',
-    hoverColor: 'hover:bg-amber-300',
-    emoji: '😔',
-    label: 'Poor',
-    description: 'Feeling down or upset',
-  },
-  {
-    id: '1',
-    color: 'bg-rose-200',
-    hoverColor: 'hover:bg-rose-300',
-    emoji: '😫',
-    label: 'Terrible',
-    description: 'Feeling very negative',
-  },
-];
 
 interface MoodDistributionProps {
   userId: string;
