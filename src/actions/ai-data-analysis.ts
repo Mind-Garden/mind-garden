@@ -11,7 +11,10 @@ import {
 import { MoodCountData, SleepDataPoint } from '@/supabase/schema';
 
 // function dictionary to map query types to functions
-const functionary: Record<string, (userId: string) => Promise<string>> = {
+const functionary: Record<
+  string,
+  (userId: string, todaysDate: string, startDate: string) => Promise<string>
+> = {
   sleep: summarizeSleepData,
   mood: summarizeMoodData,
 };
@@ -20,13 +23,33 @@ const functionary: Record<string, (userId: string) => Promise<string>> = {
 export async function summarizeData(
   userId: string,
   queryType: string,
+  range: 'week' | 'month' | '3months',
 ): Promise<string> {
   const functionToCall = functionary[queryType];
 
   if (!functionToCall) {
     throw new Error('Invalid query type');
   }
-  return await functionToCall(userId);
+
+  const today = new Date();
+  const todaysDate = getLocalISOString(today);
+
+  let startDate: string;
+  if (range === 'week') {
+    startDate = getLocalISOString(new Date(today.setDate(today.getDate() - 7)));
+  } else if (range === 'month') {
+    startDate = getLocalISOString(
+      new Date(today.setMonth(today.getMonth() - 1)),
+    );
+  } else if (range === '3months') {
+    startDate = getLocalISOString(
+      new Date(today.setMonth(today.getMonth() - 3)),
+    );
+  } else {
+    throw new Error('Invalid time range');
+  }
+
+  return await functionToCall(userId, todaysDate, startDate);
 }
 
 // functions for the function dictionary

@@ -16,7 +16,6 @@ import { selectSleepDataByDateRange } from '@/actions/data-visualization';
 import {
   Card,
   CardContent,
-  CardDescription,
   CardHeader,
   CardTitle,
 } from '@/components/shadcn/card';
@@ -30,28 +29,72 @@ import {
 } from '@/lib/utils';
 import { ProcessedSleepDataPoint, SleepDataPoint } from '@/supabase/schema';
 
+type TimeRange = 'week' | 'month' | '3months';
+
 interface SleepChartProps {
   userId: string;
   title?: string;
+  range?: TimeRange;
 }
 
 export default function SleepChart({
   userId,
   title = 'Sleep Chart',
+  range = 'week',
 }: Readonly<SleepChartProps>) {
   const [sleepData, setSleepData] = useState<ProcessedSleepDataPoint[]>([]);
 
   const todaysDate = getLocalISOString();
-  const lastMonthDate = getLocalISOString(
-    new Date(new Date().setMonth(new Date().getMonth() - 1)),
-  );
+  let startDate = getLocalISOString();
+
+  const calculateDuration = (startTime: string, endTime: string) => {
+    const parseTime = (timeStr: string) => {
+      const [time, period] = timeStr.split(' ');
+      const [hoursStr, minutes] = time.split(':').map(Number);
+
+      let hours = hoursStr;
+
+      if (period === 'PM' && hours < 12) hours += 12;
+      if (period === 'AM' && hours === 12) hours = 0;
+
+      return hours * 60 + minutes;
+    };
+
+    const start = parseTime(startTime);
+    let end = parseTime(endTime);
+
+    // Handle overnight sleep
+    if (end < start) end += 24 * 60;
+
+    const durationMinutes = end - start;
+    const hours = Math.floor(durationMinutes / 60);
+    const minutes = durationMinutes % 60;
+
+    return `${hours}h ${minutes}m`;
+  };
 
   useEffect(() => {
     const fetchSleepData = async () => {
+      // get the correct start date according to time range
+      const today = new Date();
+      if (range === 'week') {
+        startDate = getLocalISOString(
+          new Date(today.setDate(today.getDate() - 7)),
+        );
+      } else if (range === 'month') {
+        startDate = getLocalISOString(
+          new Date(today.setMonth(today.getMonth() - 1)),
+        );
+      } else if (range === '3months') {
+        startDate = getLocalISOString(
+          new Date(today.setMonth(today.getMonth() - 3)),
+        );
+      }
+
       // Fetch sleep data from the last month
       const response = await selectSleepDataByDateRange(
         userId,
-        lastMonthDate,
+        startDate,
         todaysDate,
       );
       if (
@@ -80,7 +123,7 @@ export default function SleepChart({
       }
     };
     fetchSleepData();
-  }, []);
+  }, [userId, range]);
 
   // formate date to month, day, year format
   const formatDate = (dateString: string) => {
@@ -143,7 +186,7 @@ export default function SleepChart({
     xAxis: {
       dataKey: 'date',
       tick: { fontSize: 12 },
-      axisLine: true,
+      axisLine: false,
       tickLine: false,
     },
     yAxis: {
@@ -152,7 +195,7 @@ export default function SleepChart({
       tickFormatter: formatHour,
       allowDataOverflow: true,
       reversed: true,
-      axisLine: true,
+      axisLine: false,
       tickLine: false,
     },
     barStyles: {
@@ -176,9 +219,6 @@ export default function SleepChart({
         <CardTitle className="text-3xl text-center">{title}</CardTitle>
       </CardHeader>
 
-      <CardDescription className="text-center text-muted-foreground">
-        from {lastMonthDate} to {todaysDate}
-      </CardDescription>
       <CardContent>
         {sleepData.length === 0 ? (
           <div className="h-16 flex items-center justify-center text-center gap-2 text-muted-foreground">
@@ -186,23 +226,52 @@ export default function SleepChart({
             <Frown className="w-5 h-5" />
           </div>
         ) : (
-          <ResponsiveContainer width="100%" height={600}>
-            <BarChart data={sleepData} margin={chartOptions.margin}>
-              <CartesianGrid strokeDasharray="3 3" vertical={false} />
-              <XAxis {...chartOptions.xAxis} />
-              <YAxis {...chartOptions.yAxis} />
-              <Tooltip cursor={<CustomCursor />} content={<CustomTooltip />} />
-              <Bar {...chartOptions.barStyles.start} />
-              <Bar {...chartOptions.barStyles.sleepDuration}>
-                {sleepData.map((entry, index) => (
-                  <Cell
-                    key={`cell-${index}`}
-                    fill={getBarColour(entry.sleepDuration)}
-                  />
-                ))}
-              </Bar>
-            </BarChart>
-          </ResponsiveContainer>
+          <>
+            <ResponsiveContainer width="100%" height={600}>
+              <BarChart data={sleepData} margin={chartOptions.margin}>
+                <CartesianGrid strokeDasharray="3 3" vertical={false} />
+                <XAxis {...chartOptions.xAxis} />
+                <YAxis {...chartOptions.yAxis} />
+                <Tooltip
+                  cursor={<CustomCursor />}
+                  content={<CustomTooltip />}
+                />
+                <Bar {...chartOptions.barStyles.start} />
+                <Bar {...chartOptions.barStyles.sleepDuration}>
+                  {sleepData.map((entry, index) => (
+                    <Cell
+                      key={`cell-${index}`}
+                      fill={getBarColour(entry.sleepDuration)}
+                    />
+                  ))}
+                </Bar>
+              </BarChart>
+            </ResponsiveContainer>
+            {/* Legend */}
+            <div className="flex justify-center mt-4 gap-6 text-sm text-muted-foreground">
+              <div className="flex items-center gap-2">
+                <span
+                  className="w-4 h-4 rounded-sm"
+                  style={{ backgroundColor: '#2ebb61' }}
+                ></span>
+                <span>Long Sleep</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <span
+                  className="w-4 h-4 rounded-sm"
+                  style={{ backgroundColor: '#83e3c6' }}
+                ></span>
+                <span>Normal Sleep </span>
+              </div>
+              <div className="flex items-center gap-2">
+                <span
+                  className="w-4 h-4 rounded-sm"
+                  style={{ backgroundColor: '#d1d5db' }}
+                ></span>
+                <span>Short Sleep </span>
+              </div>
+            </div>
+          </>
         )}
       </CardContent>
     </Card>
