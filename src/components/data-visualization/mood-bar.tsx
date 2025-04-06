@@ -22,12 +22,50 @@ import {
 } from '@/components/shadcn/tooltip';
 import { getStartDate, TimeRange } from '@/lib/time';
 import { getLocalISOString } from '@/lib/utils';
-import { MoodCountData, MoodDistribution, moodTypes } from '@/supabase/schema';
+import { MoodCountData, MoodDistribution } from '@/supabase/schema';
 
 interface MoodDistributionProps {
   userId: string;
   title?: string;
 }
+
+const moodTypes = [
+  {
+    id: '5',
+    color: 'bg-emerald-200',
+    hoverColor: 'hover:bg-emerald-300',
+    label: 'Excellent',
+    description: 'Feeling great and energetic',
+  },
+  {
+    id: '4',
+    color: 'bg-sky-200',
+    hoverColor: 'hover:bg-sky-300',
+    label: 'Good',
+    description: 'Feeling positive and content',
+  },
+  {
+    id: '3',
+    color: 'bg-violet-200',
+    hoverColor: 'hover:bg-violet-300',
+    label: 'Neutral',
+    description: 'Neither good nor bad',
+  },
+  {
+    id: '2',
+    color: 'bg-amber-200',
+    hoverColor: 'hover:bg-amber-300',
+    label: 'Poor',
+    description: 'Feeling down or upset',
+  },
+  {
+    id: '1',
+    color: 'bg-rose-200',
+    hoverColor: 'hover:bg-rose-300',
+    label: 'Terrible',
+    description: 'Feeling very negative',
+  },
+];
 
 export default function MoodDistributionComponent({
   userId,
