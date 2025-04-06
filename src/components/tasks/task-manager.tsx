@@ -24,10 +24,9 @@ import {
   TooltipTrigger,
 } from '@/components/shadcn/tooltip';
 import VoiceRecorder from '@/components/tasks/voice-recorder';
+import FloatingShapes from '@/components/ui/floating-shapes';
 import { getDate, getGreetingText } from '@/lib/utils';
 import type { ITask } from '@/supabase/schema';
-
-import FloatingShapes from '../ui/floating-shapes';
 
 interface TaskManagerProps {
   userId: string;
