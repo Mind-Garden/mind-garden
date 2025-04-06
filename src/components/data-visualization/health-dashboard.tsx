@@ -16,9 +16,37 @@ interface HealthDashboardProps {
   userId: string;
 }
 
+type TimeRange = 'week' | 'month' | '3months';
+
 export default function HealthDashboard({ userId }: HealthDashboardProps) {
   const [activeIndex, setActiveIndex] = useState(0);
   const [direction, setDirection] = useState(0);
+  const [timeRange, setTimeRange] = useState<TimeRange>('week');
+
+  /**
+   * Render time range selector buttons
+   */
+  const renderTimeRangeButtons = () => {
+    const timeRanges: TimeRange[] = ['week', 'month', '3months'];
+
+    return (
+      <div className="items-center w-full flex gap-2">
+        {timeRanges.map((range) => (
+          <Button
+            key={range}
+            className="flex-1"
+            variant={timeRange === range ? 'default' : 'outline'}
+            size="sm"
+            onClick={() => setTimeRange(range)}
+          >
+            {range === '3months'
+              ? '3 Months'
+              : range.charAt(0).toUpperCase() + range.slice(1)}
+          </Button>
+        ))}
+      </div>
+    );
+  };
 
   // Sections to rotate for the dashboard
   const sections = [
@@ -37,7 +65,12 @@ export default function HealthDashboard({ userId }: HealthDashboardProps) {
             </div>
           </div>
           <div className="pt-4 border-t">
-            <AIResponse userId={userId} type="mood" title="Mood Summary" />
+            <AIResponse
+              userId={userId}
+              type="mood"
+              title="Mood Summary"
+              range="month"
+            />
           </div>
         </>
       ),
@@ -48,10 +81,14 @@ export default function HealthDashboard({ userId }: HealthDashboardProps) {
       description: 'Your sleep patterns and insights',
       content: (
         <>
-          <SleepChart userId={userId} />
-          <div className="pt-4 border-t">
-            <AIResponse userId={userId} type="sleep" title="Sleep Summary" />
-          </div>
+          <SleepChart userId={userId} range={timeRange} />
+          {renderTimeRangeButtons()}
+          <AIResponse
+            userId={userId}
+            type="sleep"
+            title="Sleep Summary"
+            range={timeRange}
+          />
         </>
       ),
     },

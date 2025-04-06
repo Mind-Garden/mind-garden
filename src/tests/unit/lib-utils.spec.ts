@@ -1,4 +1,5 @@
 import {
+  calculateDuration,
   capitalizeWords,
   cn,
   getAverageTimeElapsed,
@@ -64,6 +65,38 @@ describe('Utility functions', () => {
     it('should capitalize the first letter of each word', () => {
       const result = capitalizeWords('hello world');
       expect(result).toBe('Hello World');
+    });
+  });
+
+  describe('calculateDuration function', () => {
+    it('should calculate duration within the same AM period', () => {
+      const result = calculateDuration('9:00 AM', '11:30 AM');
+      expect(result).toBe('2h 30m');
+    });
+
+    it('should calculate duration within the same PM period', () => {
+      const result = calculateDuration('2:15 PM', '4:45 PM');
+      expect(result).toBe('2h 30m');
+    });
+
+    it('should calculate duration crossing from AM to PM', () => {
+      const result = calculateDuration('11:00 AM', '1:00 PM');
+      expect(result).toBe('2h 0m');
+    });
+
+    it('should calculate overnight duration correctly', () => {
+      const result = calculateDuration('10:00 PM', '6:00 AM');
+      expect(result).toBe('8h 0m');
+    });
+
+    it('should handle edge case of midnight', () => {
+      const result = calculateDuration('11:59 PM', '12:01 AM');
+      expect(result).toBe('0h 2m');
+    });
+
+    it('should handle edge case of noon', () => {
+      const result = calculateDuration('11:30 AM', '12:30 PM');
+      expect(result).toBe('1h 0m');
     });
   });
 });

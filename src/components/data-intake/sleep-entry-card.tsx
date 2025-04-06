@@ -19,7 +19,11 @@ import {
 import { Label } from '@/components/shadcn/label';
 import FloatingShapes from '@/components/ui/floating-shapes';
 import { RatingScale } from '@/components/ui/rating-scale';
-import { convertTo24HourSleepEntry, getLocalISOString } from '@/lib/utils';
+import {
+  calculateDuration,
+  convertTo24HourSleepEntry,
+  getLocalISOString,
+} from '@/lib/utils';
 import { ISleepEntries } from '@/supabase/schema';
 
 interface SleepTrackerProps {
@@ -34,32 +38,6 @@ export function SleepEntryCard({ userId }: SleepTrackerProps) {
   const [entryExists, setEntryExists] = useState<boolean | null>(null);
   const [todayEntry, setTodayEntry] = useState<ISleepEntries | null>(null);
   const [sleepQuality, setSleepQuality] = useState<number>(0);
-
-  const calculateDuration = () => {
-    const parseTime = (timeStr: string) => {
-      const [time, period] = timeStr.split(' ');
-      const [hoursStr, minutes] = time.split(':').map(Number);
-
-      let hours = hoursStr;
-
-      if (period === 'PM' && hours < 12) hours += 12;
-      if (period === 'AM' && hours === 12) hours = 0;
-
-      return hours * 60 + minutes;
-    };
-
-    const start = parseTime(startTime);
-    let end = parseTime(endTime);
-
-    // Handle overnight sleep
-    if (end < start) end += 24 * 60;
-
-    const durationMinutes = end - start;
-    const hours = Math.floor(durationMinutes / 60);
-    const minutes = durationMinutes % 60;
-
-    return `${hours}h ${minutes}m`;
-  };
 
   const getEntry = async () => {
     setLoading(true);
@@ -94,7 +72,7 @@ export function SleepEntryCard({ userId }: SleepTrackerProps) {
   if (loading)
     return (
       <div className="flex items-center justify-center min-h-screen">
-        <LoaderCircle className="h-12 w-12 text-gray-500 animate-spin" />
+        <LoaderCircle className="h-12 w-12 text-teal-500 animate-spin" />
       </div>
     );
   if (error) return <div>Error: {error}</div>;
@@ -252,7 +230,9 @@ export function SleepEntryCard({ userId }: SleepTrackerProps) {
             <div className="bg-muted/50 rounded-lg p-3 flex items-center justify-between">
               <span className="text-sm font-medium">Sleep Duration</span>
               {startTime && endTime && (
-                <span className="text-sm font-bold">{calculateDuration()}</span>
+                <span className="text-sm font-bold">
+                  {calculateDuration(startTime, endTime)}
+                </span>
               )}
             </div>
           </motion.div>

@@ -95,6 +95,10 @@ export default function BarLineChart({ userId }: Readonly<BarLineChartProps>) {
     }
   };
 
+  const maxTicks = 5;
+  const calculatedInterval =
+    data.length > maxTicks ? Math.floor(data.length / maxTicks) : 0;
+
   return (
     <div>
       <div className="mt-4 pb-5 flex flex-wrap justify-center">
@@ -126,7 +130,7 @@ export default function BarLineChart({ userId }: Readonly<BarLineChartProps>) {
           <div className="h-[400px] w-full">
             {loading ? (
               <div className="flex items-center justify-center h-[400px]">
-                <LoaderCircle className="h-12 w-12 text-gray-500 animate-spin" />
+                <LoaderCircle className="h-12 w-12 text-emerald-200 animate-spin" />
               </div>
             ) : data.length === 0 ? (
               <div className="h-16 flex items-center justify-center text-center gap-2 text-muted-foreground">
@@ -136,12 +140,13 @@ export default function BarLineChart({ userId }: Readonly<BarLineChartProps>) {
             ) : (
               <ResponsiveContainer width="100%" height="100%">
                 <ComposedChart data={data}>
-                  <CartesianGrid
-                    strokeDasharray="3 3"
-                    vertical={false}
-                    stroke="grey"
+                  <CartesianGrid strokeDasharray="3 3" vertical={false} />
+                  <XAxis
+                    dataKey="entry_date"
+                    tickLine={false}
+                    axisLine={false}
+                    interval={calculatedInterval}
                   />
-                  <XAxis dataKey="entry_date" tickLine={false} />
                   <YAxis
                     yAxisId="left"
                     orientation="left"
@@ -152,6 +157,7 @@ export default function BarLineChart({ userId }: Readonly<BarLineChartProps>) {
                       position: 'insideLeft',
                     }}
                     tickLine={false}
+                    axisLine={false}
                   />
                   <YAxis
                     yAxisId="right"
@@ -163,6 +169,7 @@ export default function BarLineChart({ userId }: Readonly<BarLineChartProps>) {
                       position: 'insideRight',
                     }}
                     tickLine={false}
+                    axisLine={false}
                   />
                   {/* Tooltip */}
                   <Tooltip

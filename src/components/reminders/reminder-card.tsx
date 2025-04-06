@@ -195,8 +195,8 @@ function ReminderCard({ userId }: ReminderCardProps) {
         </CardHeader>
 
         {loading ? (
-          <CardContent className="flex justify-center items-center py-16">
-            <LoaderCircle className="h-8 w-8 animate-spin" />
+          <CardContent className="flex items-center justify-center">
+            <LoaderCircle className="h-12 w-12 text-violet-500 animate-spin" />
           </CardContent>
         ) : (
           <CardContent className="mt-4 space-y-4">
