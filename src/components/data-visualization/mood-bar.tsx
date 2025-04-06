@@ -5,6 +5,7 @@ import { Frown, Info, LoaderCircle } from 'lucide-react';
 import { useEffect, useState } from 'react';
 
 import { selectMoodFrequency } from '@/actions/data-visualization';
+import ScaleIcon from '@/components/data-intake/scale-icon';
 import { Badge } from '@/components/shadcn//badge';
 import {
   Card,
@@ -19,17 +20,14 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from '@/components/shadcn/tooltip';
+import { getStartDate, TimeRange } from '@/lib/time';
 import { getLocalISOString } from '@/lib/utils';
 import { MoodCountData, MoodDistribution, moodTypes } from '@/supabase/schema';
-
-import ScaleIcon from '../data-intake/scale-icon';
 
 interface MoodDistributionProps {
   userId: string;
   title?: string;
 }
-
-type TimeRange = 'week' | 'month' | '3months' | 'year';
 
 export default function MoodDistributionComponent({
   userId,
@@ -51,35 +49,11 @@ export default function MoodDistributionComponent({
   // Get date ranges based on selected time period
   const todaysDate = getLocalISOString();
 
-  const getStartDate = () => {
-    const today = new Date();
-    switch (timeRange) {
-      case 'week':
-        return getLocalISOString(new Date(today.setDate(today.getDate() - 7)));
-      case 'month':
-        return getLocalISOString(
-          new Date(today.setMonth(today.getMonth() - 1)),
-        );
-      case '3months':
-        return getLocalISOString(
-          new Date(today.setMonth(today.getMonth() - 3)),
-        );
-      case 'year':
-        return getLocalISOString(
-          new Date(today.setFullYear(today.getFullYear() - 1)),
-        );
-      default:
-        return getLocalISOString(
-          new Date(today.setMonth(today.getMonth() - 1)),
-        );
-    }
-  };
-
   useEffect(() => {
     const fetchMoodData = async () => {
       setLoading(true);
       try {
-        const startDate = getStartDate();
+        const startDate = getStartDate(timeRange);
         const response = await selectMoodFrequency(
           userId,
           startDate,

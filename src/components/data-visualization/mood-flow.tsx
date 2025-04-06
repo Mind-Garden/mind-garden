@@ -21,6 +21,7 @@ import {
 } from 'recharts';
 
 import { selectMoodDataByDateRange } from '@/actions/data-visualization';
+import ScaleIcon from '@/components/data-intake/scale-icon';
 import { Badge } from '@/components/shadcn/badge';
 import { Button } from '@/components/shadcn/button';
 import {
@@ -30,17 +31,14 @@ import {
   CardTitle,
 } from '@/components/shadcn/card';
 import { Tabs, TabsList, TabsTrigger } from '@/components/shadcn/tabs';
+import { formatDate, getStartDate, TimeRange } from '@/lib/time';
 import { getLocalISOString } from '@/lib/utils';
 import { MoodDataPoint, moodTypes } from '@/supabase/schema';
-
-import ScaleIcon from '../data-intake/scale-icon';
 
 interface EnhancedMoodFlowProps {
   userId: string;
   title?: string;
 }
-
-type TimeRange = 'week' | 'month' | '3months' | 'year';
 
 export default function MoodFlow({
   userId,
@@ -56,50 +54,11 @@ export default function MoodFlow({
   // Get date ranges based on selected time period
   const todaysDate = getLocalISOString();
 
-  const getStartDate = () => {
-    const today = new Date();
-    switch (timeRange) {
-      case 'week':
-        return getLocalISOString(new Date(today.setDate(today.getDate() - 7)));
-      case 'month':
-        return getLocalISOString(
-          new Date(today.setMonth(today.getMonth() - 1)),
-        );
-      case '3months':
-        return getLocalISOString(
-          new Date(today.setMonth(today.getMonth() - 3)),
-        );
-      case 'year':
-        return getLocalISOString(
-          new Date(today.setFullYear(today.getFullYear() - 1)),
-        );
-      default:
-        return getLocalISOString(
-          new Date(today.setMonth(today.getMonth() - 1)),
-        );
-    }
-  };
-
-  // Format date for display on chart
-  const formatDate = (dateString: string): string => {
-    try {
-      const date = new Date(`${dateString}T00:00:00Z`);
-      return date.toLocaleDateString('en-US', {
-        month: 'short',
-        day: 'numeric',
-        year: 'numeric',
-        timeZone: 'UTC',
-      });
-    } catch (e) {
-      return dateString;
-    }
-  };
-
   useEffect(() => {
     const fetchMoodData = async () => {
       setLoading(true);
       try {
-        const startDate = getStartDate();
+        const startDate = getStartDate(timeRange);
         const response = await selectMoodDataByDateRange(
           userId,
           startDate,
