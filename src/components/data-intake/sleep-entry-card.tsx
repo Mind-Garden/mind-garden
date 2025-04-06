@@ -19,8 +19,11 @@ import {
 import { Label } from '@/components/shadcn/label';
 import FloatingShapes from '@/components/ui/floating-shapes';
 import { RatingScale } from '@/components/ui/rating-scale';
-import { convertTo24HourSleepEntry, getLocalISOString } from '@/lib/utils';
-import { calculateDuration } from '@/lib/utils';
+import {
+  calculateDuration,
+  convertTo24HourSleepEntry,
+  getLocalISOString,
+} from '@/lib/utils';
 import { ISleepEntries } from '@/supabase/schema';
 
 interface SleepTrackerProps {
