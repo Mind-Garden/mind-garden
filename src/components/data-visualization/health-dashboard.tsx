@@ -83,14 +83,12 @@ export default function HealthDashboard({ userId }: HealthDashboardProps) {
         <>
           <SleepChart userId={userId} range={timeRange} />
           {renderTimeRangeButtons()}
-          <div className="pt-4 border-t">
-            <AIResponse
-              userId={userId}
-              type="sleep"
-              title="Sleep Summary"
-              range={timeRange}
-            />
-          </div>
+          <AIResponse
+            userId={userId}
+            type="sleep"
+            title="Sleep Summary"
+            range={timeRange}
+          />
         </>
       ),
     },

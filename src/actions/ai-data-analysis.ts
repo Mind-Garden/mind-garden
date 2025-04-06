@@ -32,7 +32,7 @@ export async function summarizeData(
   }
 
   const today = new Date();
-  const todaysDate = getLocalISOString(today);
+  const todaysDate = getLocalISOString();
 
   let startDate: string;
   if (range === 'week') {
@@ -57,21 +57,19 @@ export async function summarizeData(
 /**
  * Summarize sleep data for the given user from the last month.
  * @param {string} [todaysDate] - Date string in ISO format. Defaults to today's date.
- * @param {string} [lastMonthDate] - Date string in ISO format. Defaults to today's date minus one month.
+ * @param {string} [startDate] - Date string in ISO format.
  * @returns {Promise<string>} - Summary of sleep data from the last month.
  * @throws {Error} - If the AI service is unavailable, or if there is an error querying the database.
  */
 async function summarizeSleepData(
   userId: string,
-  todaysDate = getLocalISOString(),
-  lastMonthDate = getLocalISOString(
-    new Date(new Date().setMonth(new Date().getMonth() - 1)),
-  ),
+  todaysDate: string,
+  startDate: string,
 ) {
   try {
     const response = await selectSleepDataByDateRange(
       userId,
-      lastMonthDate,
+      startDate,
       todaysDate,
     );
     if (
@@ -109,23 +107,17 @@ async function summarizeSleepData(
 /**
  * Summarize mood data for the given user from the last month.
  * @param {string} [todaysDate] - Date string in ISO format. Defaults to today's date.
- * @param {string} [lastMonthDate] - Date string in ISO format. Defaults to today's date minus one month.
+ * @param {string} [startDate] - Date string in ISO format.
  * @returns {Promise<string>} - Summary of mood data from the last month.
  * @throws {Error} - If the AI service is unavailable, or if there is an error querying the database.
  */
 async function summarizeMoodData(
   userId: string,
-  todaysDate = getLocalISOString(),
-  lastMonthDate = getLocalISOString(
-    new Date(new Date().setMonth(new Date().getMonth() - 1)),
-  ),
+  todaysDate: string,
+  startDate: string,
 ) {
   try {
-    const response = await selectMoodFrequency(
-      userId,
-      lastMonthDate,
-      todaysDate,
-    );
+    const response = await selectMoodFrequency(userId, startDate, todaysDate);
     const moodData = response.data as MoodCountData[];
 
     // Calculate total count

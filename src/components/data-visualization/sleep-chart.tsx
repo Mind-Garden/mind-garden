@@ -27,14 +27,13 @@ import {
   getSleepDuration,
   getTimeAMPM,
 } from '@/lib/utils';
+import { calculateDuration } from '@/lib/utils';
 import { ProcessedSleepDataPoint, SleepDataPoint } from '@/supabase/schema';
-
-type TimeRange = 'week' | 'month' | '3months';
 
 interface SleepChartProps {
   userId: string;
   title?: string;
-  range?: TimeRange;
+  range: 'week' | 'month' | '3months';
 }
 
 export default function SleepChart({
@@ -45,33 +44,7 @@ export default function SleepChart({
   const [sleepData, setSleepData] = useState<ProcessedSleepDataPoint[]>([]);
 
   const todaysDate = getLocalISOString();
-  let startDate = getLocalISOString();
-
-  const calculateDuration = (startTime: string, endTime: string) => {
-    const parseTime = (timeStr: string) => {
-      const [time, period] = timeStr.split(' ');
-      const [hoursStr, minutes] = time.split(':').map(Number);
-
-      let hours = hoursStr;
-
-      if (period === 'PM' && hours < 12) hours += 12;
-      if (period === 'AM' && hours === 12) hours = 0;
-
-      return hours * 60 + minutes;
-    };
-
-    const start = parseTime(startTime);
-    let end = parseTime(endTime);
-
-    // Handle overnight sleep
-    if (end < start) end += 24 * 60;
-
-    const durationMinutes = end - start;
-    const hours = Math.floor(durationMinutes / 60);
-    const minutes = durationMinutes % 60;
-
-    return `${hours}h ${minutes}m`;
-  };
+  let startDate: string;
 
   useEffect(() => {
     const fetchSleepData = async () => {
@@ -147,14 +120,40 @@ export default function SleepChart({
 
       const startTime = getTimeAMPM(data.start);
       const endTime = getTimeAMPM(data.end);
+      const duration = calculateDuration(data.start, data.end);
 
       return (
-        <div className="bg-white p-2 shadow-md rounded-md">
-          <p className="text-sm font-semibold text-gray-800">
+        <div className="bg-white pl-4 pr-4 pt-2 pb-2 shadow-lg rounded-lg border border-gray-100">
+          <p className="text-base font-bold text-gray-800 mb-2">
             {label ? formatDate(label) : ''}
           </p>
-          <p className="text-sm text-gray-600">Start Time: {startTime}</p>
-          <p className="text-sm text-gray-600">End Time: {endTime}</p>
+          <div className="space-y-1">
+            <div className="grid grid-cols-[100px_1fr] text-sm">
+              <span className="font-medium text-gray-600">Start Time</span>
+              <span className="text-gray-800">{startTime}</span>
+            </div>
+            <div className="grid grid-cols-[100px_1fr] text-sm">
+              <span className="font-medium text-gray-600">End Time</span>
+              <span className="text-gray-800">{endTime}</span>
+            </div>
+            <div className="grid grid-cols-[100px_1fr] text-sm pt-1 border-t border-gray-100 mt-1">
+              <span className="font-medium flex items-center gap-1">
+                <span
+                  className="inline-block w-3 h-3 rounded-full"
+                  style={{ backgroundColor: getBarColour(data.sleepDuration) }}
+                ></span>
+                <span style={{ color: getBarColour(data.sleepDuration) }}>
+                  Duration
+                </span>
+              </span>
+              <span
+                className="font-semibold"
+                style={{ color: getBarColour(data.sleepDuration) }}
+              >
+                {duration}
+              </span>
+            </div>
+          </div>
         </div>
       );
     }
@@ -181,6 +180,10 @@ export default function SleepChart({
     );
   };
 
+  const maxTicks = 5;
+  const calculatedInterval =
+    sleepData.length > maxTicks ? Math.floor(sleepData.length / maxTicks) : 0;
+
   const chartOptions = {
     margin: { top: 20, right: 20, left: 30, bottom: 20 },
     xAxis: {
@@ -188,6 +191,7 @@ export default function SleepChart({
       tick: { fontSize: 12 },
       axisLine: false,
       tickLine: false,
+      interval: calculatedInterval,
     },
     yAxis: {
       type: 'number' as const,
