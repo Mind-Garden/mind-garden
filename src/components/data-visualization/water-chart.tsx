@@ -151,8 +151,9 @@ export default function WaterChart({
    */
   const updateMetrics = (processedData: WaterDataPoint[]): void => {
     // Calculate today's water intake
-    const today = new Date().toISOString().split('T')[0];
-    const todayEntry = processedData.find((item) => item.date.includes(today));
+    const todayEntry = processedData.find((item) =>
+      item.date.includes(todaysDate),
+    );
     setTodayWater(todayEntry?.water ?? 0);
 
     // Calculate average water intake
