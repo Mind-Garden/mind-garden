@@ -165,35 +165,42 @@ export default function RootPage() {
       >
         {/* Title, logo, and tagline centered */}
         <motion.div
-          className="text-center relative z-10"
+          className="flex flex-col items-center justify-center relative z-10"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.2 }}
         >
-          <div className="flex items-center justify-center">
+          {/* Container for left and right sides */}
+          <div className="flex flex-col md:flex-row items-center justify-center gap-10">
+            {/* Logo */}
             <motion.img
-              src="/logo-blue.png"
+              src="/logo-grad-line.png"
               alt="Mind Garden Logo"
-              className="h-20 w-auto mb-4 mr-7"
+              className="h-[200px] w-auto mb-4 md:mb-0 opacity-80 brightness-110"
               initial={{ rotate: -10, scale: 0.8 }}
               animate={{ rotate: 0, scale: 1 }}
               transition={{ duration: 0.6, delay: 0.4, type: 'spring' }}
             />
-            <h1 className="p-10 font-title text-7xl md:text-8xl font-bold bg-gradient-to-r from-emerald-400 via-teal-400 to-violet-400 text-transparent bg-clip-text mb-4 tracking-tight z-2">
-              Mind Garden
-            </h1>
-          </div>
-          {/* Animated Slogan */}
-          <div className="text-slate-600 flex flex-col md:flex-row items-center">
-            <span className="mr-2 text-slate-500 text-2xl">Cultivate Your</span>
-            <TypingAnimation
-              className="inline-block font-semibold text-2xl"
-              duration={100}
-              delay={500}
-              key={words[index]} // Forces re-render for new word
-            >
-              {words[index]}
-            </TypingAnimation>
+
+            {/* Title + Slogan */}
+            <div className="flex flex-col items-center md:items-start text-center md:text-left">
+              <h1 className="pt-5 pb-10 pl-2 pr-5 font-title text-7xl md:text-8xl font-bold bg-gradient-to-r from-emerald-400 via-teal-400 to-violet-400 text-transparent bg-clip-text tracking-tight">
+                Mind Garden
+              </h1>
+              <div className="text-slate-600 flex flex-col md:flex-row items-center mt-4 pl-2">
+                <span className="mr-2 text-slate-500 text-2xl">
+                  Cultivate Your
+                </span>
+                <TypingAnimation
+                  className="inline-block font-semibold text-2xl"
+                  duration={100}
+                  delay={500}
+                  key={words[index]}
+                >
+                  {words[index]}
+                </TypingAnimation>
+              </div>
+            </div>
           </div>
         </motion.div>
 
@@ -648,192 +655,194 @@ export default function RootPage() {
                 exit={{ opacity: 0, scale: 0.95 }}
                 transition={{ duration: 0.4 }}
               >
-                <Card className="w-full backdrop-blur-sm bg-white/60 shadow-xl border-0 rounded-2xl relative">
-                  <CardContent className="space-y-8 p-12">
-                    <form
-                      onSubmit={async (e) => {
-                        e.preventDefault();
-                        const formData = new FormData(e.currentTarget);
-                        await handleAuth(formData);
-                      }}
-                      className="space-y-8"
-                    >
-                      {/* Error message */}
-                      {error && (
-                        <motion.div
-                          initial={{ opacity: 0, y: -10 }}
-                          animate={{ opacity: 1, y: 0 }}
-                          className="bg-red-50 border border-red-200 rounded-lg p-6 flex items-center space-x-3"
-                        >
-                          <CircleAlert className="h-6 w-6 text-red-600" />
-                          <p className="text-base text-red-600">{error}</p>
-                        </motion.div>
-                      )}
+                <div className="relative rounded-2xl overflow-hidden p-[2px] bg-gradient-to-r from-emerald-300 via-teal-300 to-violet-300">
+                  <Card className="w-full backdrop-blur-sm bg-white/90 shadow-xl border-0 rounded-[14px] relative">
+                    <CardContent className="space-y-8 p-12">
+                      <form
+                        onSubmit={async (e) => {
+                          e.preventDefault();
+                          const formData = new FormData(e.currentTarget);
+                          await handleAuth(formData);
+                        }}
+                        className="space-y-8"
+                      >
+                        {/* Error message */}
+                        {error && (
+                          <motion.div
+                            initial={{ opacity: 0, y: -10 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            className="bg-red-50 border border-red-200 rounded-lg p-6 flex items-center space-x-3"
+                          >
+                            <CircleAlert className="h-6 w-6 text-red-600" />
+                            <p className="text-base text-red-600">{error}</p>
+                          </motion.div>
+                        )}
 
-                      {/* First and Last Name for signup only */}
-                      {!isLogin && (
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                          <div className="space-y-3">
-                            <Label
-                              htmlFor="firstName"
-                              className="text-base font-medium text-gray-700"
-                            >
-                              First Name
-                            </Label>
-                            <div className="relative">
-                              <User className="absolute left-4 top-3.5 h-5 w-5 text-gray-400" />
-                              <Input
-                                id="firstName"
-                                name="firstName"
-                                placeholder="John"
-                                className="pl-12 h-12 text-lg bg-white/80 border-gray-200 focus:ring-2 focus:ring-emerald-500"
-                                required
-                              />
+                        {/* First and Last Name for signup only */}
+                        {!isLogin && (
+                          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                            <div className="space-y-3">
+                              <Label
+                                htmlFor="firstName"
+                                className="text-base font-medium text-gray-700"
+                              >
+                                First Name
+                              </Label>
+                              <div className="relative">
+                                <User className="absolute left-4 top-3.5 h-5 w-5 text-gray-400" />
+                                <Input
+                                  id="firstName"
+                                  name="firstName"
+                                  placeholder="John"
+                                  className="pl-12 h-12 text-lg bg-white/80 border-gray-200 focus:ring-2 focus:ring-emerald-500"
+                                  required
+                                />
+                              </div>
+                            </div>
+                            <div className="space-y-3">
+                              <Label
+                                htmlFor="lastName"
+                                className="text-base font-medium text-gray-700"
+                              >
+                                Last Name
+                              </Label>
+                              <div className="relative">
+                                <User className="absolute left-4 top-3.5 h-5 w-5 text-gray-400" />
+                                <Input
+                                  id="lastName"
+                                  name="lastName"
+                                  placeholder="Doe"
+                                  className="pl-12 h-12 text-lg bg-white/80 border-gray-200 focus:ring-2 focus:ring-emerald-500"
+                                  required
+                                />
+                              </div>
                             </div>
                           </div>
-                          <div className="space-y-3">
-                            <Label
-                              htmlFor="lastName"
-                              className="text-base font-medium text-gray-700"
-                            >
-                              Last Name
-                            </Label>
-                            <div className="relative">
-                              <User className="absolute left-4 top-3.5 h-5 w-5 text-gray-400" />
-                              <Input
-                                id="lastName"
-                                name="lastName"
-                                placeholder="Doe"
-                                className="pl-12 h-12 text-lg bg-white/80 border-gray-200 focus:ring-2 focus:ring-emerald-500"
-                                required
-                              />
-                            </div>
-                          </div>
-                        </div>
-                      )}
+                        )}
 
-                      {/* Email */}
-                      <div className="space-y-3">
-                        <Label
-                          htmlFor="email"
-                          className="text-base font-medium text-gray-700"
-                        >
-                          Email
-                        </Label>
-                        <div className="relative">
-                          <Mail className="absolute left-4 top-3.5 h-5 w-5 text-gray-400" />
-                          <Input
-                            id="email"
-                            name="email"
-                            type="email"
-                            placeholder="john.doe@example.com"
-                            ref={emailRef}
-                            className="pl-12 h-12 text-lg bg-white/80 border-gray-200 focus:ring-2 focus:ring-emerald-500"
-                            required
-                          />
-                        </div>
-                      </div>
-
-                      {/* Password */}
-                      <div className="space-y-3">
-                        <div className="flex items-center justify-between">
+                        {/* Email */}
+                        <div className="space-y-3">
                           <Label
-                            htmlFor="password"
+                            htmlFor="email"
                             className="text-base font-medium text-gray-700"
                           >
-                            Password
+                            Email
                           </Label>
-                          {isLogin && (
-                            <button
-                              className="text-base text-emerald-600 hover:text-emerald-700 transition-colors"
-                              type="button"
-                              onClick={handleForgotPassword}
+                          <div className="relative">
+                            <Mail className="absolute left-4 top-3.5 h-5 w-5 text-gray-400" />
+                            <Input
+                              id="email"
+                              name="email"
+                              type="email"
+                              placeholder="john.doe@example.com"
+                              ref={emailRef}
+                              className="pl-12 h-12 text-lg bg-white/80 border-gray-200 focus:ring-2 focus:ring-emerald-500"
+                              required
+                            />
+                          </div>
+                        </div>
+
+                        {/* Password */}
+                        <div className="space-y-3">
+                          <div className="flex items-center justify-between">
+                            <Label
+                              htmlFor="password"
+                              className="text-base font-medium text-gray-700"
                             >
-                              Forgot password?
-                            </button>
-                          )}
+                              Password
+                            </Label>
+                            {isLogin && (
+                              <button
+                                className="text-base text-emerald-600 hover:text-emerald-700 transition-colors"
+                                type="button"
+                                onClick={handleForgotPassword}
+                              >
+                                Forgot password?
+                              </button>
+                            )}
+                          </div>
+                          <div className="relative">
+                            <Lock className="absolute left-4 top-3.5 h-5 w-5 text-gray-400" />
+                            <Input
+                              id="password"
+                              name="password"
+                              type={passwordVisible ? 'text' : 'password'}
+                              placeholder={
+                                isLogin
+                                  ? 'Enter your password'
+                                  : 'Create a strong password'
+                              }
+                              className="pl-12 h-12 text-lg bg-white/80 border-gray-200 focus:ring-2 focus:ring-emerald-500"
+                            />
+                            <TooltipProvider delayDuration={50}>
+                              <Tooltip>
+                                <TooltipTrigger asChild>
+                                  <button
+                                    type="button"
+                                    onClick={() =>
+                                      setPasswordVisible(!passwordVisible)
+                                    }
+                                    className="absolute right-5 top-3 h-5 w-5 text-slate-400 hover:text-slate-600 transition-colors"
+                                  >
+                                    {passwordVisible ? <EyeOff /> : <Eye />}
+                                  </button>
+                                </TooltipTrigger>
+                                <TooltipContent>
+                                  <p className="font-body">
+                                    {passwordVisible
+                                      ? 'Hide Password'
+                                      : 'Show Password'}
+                                  </p>
+                                </TooltipContent>
+                              </Tooltip>
+                            </TooltipProvider>
+                          </div>
                         </div>
-                        <div className="relative">
-                          <Lock className="absolute left-4 top-3.5 h-5 w-5 text-gray-400" />
-                          <Input
-                            id="password"
-                            name="password"
-                            type={passwordVisible ? 'text' : 'password'}
-                            placeholder={
-                              isLogin
-                                ? 'Enter your password'
-                                : 'Create a strong password'
-                            }
-                            className="pl-12 h-12 text-lg bg-white/80 border-gray-200 focus:ring-2 focus:ring-emerald-500"
-                          />
-                          <TooltipProvider delayDuration={50}>
-                            <Tooltip>
-                              <TooltipTrigger asChild>
-                                <button
-                                  type="button"
-                                  onClick={() =>
-                                    setPasswordVisible(!passwordVisible)
-                                  }
-                                  className="absolute right-5 top-3 h-5 w-5 text-slate-400 hover:text-slate-600 transition-colors"
-                                >
-                                  {passwordVisible ? <EyeOff /> : <Eye />}
-                                </button>
-                              </TooltipTrigger>
-                              <TooltipContent>
-                                <p className="font-body">
-                                  {passwordVisible
-                                    ? 'Hide Password'
-                                    : 'Show Password'}
-                                </p>
-                              </TooltipContent>
-                            </Tooltip>
-                          </TooltipProvider>
+
+                        {/* Submit auth button for login or signup */}
+                        <motion.div
+                          whileHover={{ scale: 1.02 }}
+                          whileTap={{ scale: 0.98 }}
+                        >
+                          <Button
+                            type="submit"
+                            disabled={isLoading}
+                            className="w-full h-12 text-lg bg-gradient-to-r from-emerald-300 via-teal-300 to-violet-300 hover:from-emerald-400 hover:via-teal-400 hover:to-violet-400 text-white shadow-lg hover:shadow-xl transition-all duration-200"
+                          >
+                            {isLoading ? (
+                              <>
+                                <LoaderCircle className="h-5 w-5 animate-spin mr-2" />
+                                <span>
+                                  {isLogin
+                                    ? 'Unlocking your garden...'
+                                    : 'Sprouting your account...'}
+                                </span>
+                              </>
+                            ) : (
+                              <span>{isLogin ? 'Log in' : 'Sign up'}</span>
+                            )}
+                          </Button>
+                        </motion.div>
+
+                        {/* Toggle between login and signup */}
+                        <div className="text-center">
+                          <span className="text-base text-gray-600">
+                            {isLogin
+                              ? 'Create a new account'
+                              : 'Already have an account?'}
+                          </span>{' '}
+                          <button
+                            type="button"
+                            onClick={() => setIsLogin(!isLogin)}
+                            className="text-base text-emerald-600 hover:text-emerald-700 font-medium transition-colors"
+                          >
+                            {isLogin ? 'Sign up' : 'Log in'}
+                          </button>
                         </div>
-                      </div>
-
-                      {/* Submit auth button for login or signup */}
-                      <motion.div
-                        whileHover={{ scale: 1.02 }}
-                        whileTap={{ scale: 0.98 }}
-                      >
-                        <Button
-                          type="submit"
-                          disabled={isLoading}
-                          className="w-full h-12 text-lg bg-gradient-to-r from-emerald-300 via-teal-300 to-violet-300 hover:from-emerald-400 hover:via-teal-400 hover:to-violet-400 text-white shadow-lg hover:shadow-xl transition-all duration-200"
-                        >
-                          {isLoading ? (
-                            <>
-                              <LoaderCircle className="h-5 w-5 animate-spin mr-2" />
-                              <span>
-                                {isLogin
-                                  ? 'Unlocking your garden...'
-                                  : 'Sprouting your account...'}
-                              </span>
-                            </>
-                          ) : (
-                            <span>{isLogin ? 'Log in' : 'Sign up'}</span>
-                          )}
-                        </Button>
-                      </motion.div>
-
-                      {/* Toggle between login and signup */}
-                      <div className="text-center">
-                        <span className="text-base text-gray-600">
-                          {isLogin
-                            ? 'Create a new account'
-                            : 'Already have an account?'}
-                        </span>{' '}
-                        <button
-                          type="button"
-                          onClick={() => setIsLogin(!isLogin)}
-                          className="text-base text-emerald-600 hover:text-emerald-700 font-medium transition-colors"
-                        >
-                          {isLogin ? 'Sign up' : 'Log in'}
-                        </button>
-                      </div>
-                    </form>
-                  </CardContent>
-                </Card>
+                      </form>
+                    </CardContent>
+                  </Card>
+                </div>
               </motion.div>
             ) : (
               <motion.div

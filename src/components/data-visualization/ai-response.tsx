@@ -18,12 +18,14 @@ interface AIResponseProps {
   readonly userId: string;
   readonly type: string;
   readonly title?: string;
+  range: 'week' | 'month' | '3months';
 }
 
 export default function AIResponse({
   userId,
   type,
   title = 'Summary',
+  range = 'week',
 }: AIResponseProps) {
   const [summaryText, setSummaryText] = useState<string | null>(null);
   const [displayedText, setDisplayedText] = useState<string>('');
@@ -47,7 +49,7 @@ export default function AIResponse({
   useEffect(() => {
     async function fetchAISummary() {
       try {
-        const response = await summarizeData(userId, type);
+        const response = await summarizeData(userId, type, range);
         setSummaryText(response);
         setHasError(false);
       } catch (error) {
@@ -56,7 +58,7 @@ export default function AIResponse({
     }
 
     fetchAISummary();
-  }, [userId, type]);
+  }, [userId, type, range]);
 
   // Second hook to animate text while waiting for AI summary to be fetched
   useEffect(() => {

@@ -155,3 +155,46 @@ export const getAverageTimeElapsed = (times: number[]): number => {
   const total = times.reduce((sum, time) => sum + time, 0);
   return total / times.length;
 };
+
+/**
+ * Capitalizes the first letter of each word in a string.
+ * @param str the input string to transform
+ * @returns the input string with each word's first letter capitalized
+ */
+export const capitalizeWords = (str: string): string => {
+  return str.replace(/\b\w/g, (char) => char.toUpperCase());
+};
+
+/**
+ * Calculates the duration between a start and end time in hours and minutes.
+ * Handles overnight durations (e.g., 10:00 PM to 6:00 AM).
+ *
+ * @param startTime - A string representing the start time in "HH:MM AM/PM" format.
+ * @param endTime - A string representing the end time in "HH:MM AM/PM" format.
+ * @returns A string representing the duration in the format "Xh Ym".
+ */
+export const calculateDuration = (startTime: string, endTime: string) => {
+  const parseTime = (timeStr: string) => {
+    const [time, period] = timeStr.split(' ');
+    const [hoursStr, minutes] = time.split(':').map(Number);
+
+    let hours = hoursStr;
+
+    if (period === 'PM' && hours < 12) hours += 12;
+    if (period === 'AM' && hours === 12) hours = 0;
+
+    return hours * 60 + minutes;
+  };
+
+  const start = parseTime(startTime);
+  let end = parseTime(endTime);
+
+  // Handle overnight sleep
+  if (end < start) end += 24 * 60;
+
+  const durationMinutes = end - start;
+  const hours = Math.floor(durationMinutes / 60);
+  const minutes = durationMinutes % 60;
+
+  return `${hours}h ${minutes}m`;
+};

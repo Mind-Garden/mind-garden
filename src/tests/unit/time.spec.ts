@@ -2,7 +2,9 @@ import {
   convertToLocalTime,
   convertToUtcTime,
   daysAgo,
+  formatDate,
   getLatestDate,
+  getStartDate,
 } from '@/lib/time';
 
 describe('Time Utils', () => {
@@ -100,6 +102,49 @@ describe('Time Utils', () => {
 
     it('should return null if both dates are null', () => {
       expect(getLatestDate(null, null)).toBeNull();
+    });
+  });
+
+  describe('getStartDate', () => {
+    beforeEach(() => {
+      // Freeze the current date for consistent test output
+      jest.useFakeTimers().setSystemTime(new Date('2025-04-06T12:00:00Z'));
+    });
+
+    afterEach(() => {
+      jest.useRealTimers();
+    });
+
+    it('returns date 7 days ago for "week"', () => {
+      const result = getStartDate('week');
+      expect(result).toBe('2025-03-30');
+    });
+
+    it('returns date 1 month ago for "month"', () => {
+      const result = getStartDate('month');
+      expect(result).toBe('2025-03-06');
+    });
+
+    it('returns date 3 months ago for "3months"', () => {
+      const result = getStartDate('3months');
+      expect(result).toBe('2025-01-06');
+    });
+
+    it('returns date 1 year ago for "year"', () => {
+      const result = getStartDate('year');
+      expect(result).toBe('2024-04-06');
+    });
+
+    it('uses default case for unknown timeRange', () => {
+      const result = getStartDate('unknown' as any);
+      expect(result).toBe('2025-03-06');
+    });
+  });
+
+  describe('formatDate', () => {
+    it('formats valid date string', () => {
+      const formatted = formatDate('2024-12-25');
+      expect(formatted).toBe('Dec 25, 2024');
     });
   });
 });

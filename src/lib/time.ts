@@ -1,3 +1,6 @@
+import { getLocalISOString } from '@/lib//utils';
+export type TimeRange = 'week' | 'month' | '3months' | 'year';
+
 /**
  * Converts "HH:mm:ss" from a given timezone to UTC.
  * @param localTime - Time in "HH:mm:ss" format in the given timezone.
@@ -86,3 +89,32 @@ export function getLatestDate(
     return date2;
   }
 }
+
+export const getStartDate = (timeRange: TimeRange): string => {
+  const today = new Date();
+  switch (timeRange) {
+    case 'week':
+      return getLocalISOString(new Date(today.setDate(today.getDate() - 7)));
+    case 'month':
+      return getLocalISOString(new Date(today.setMonth(today.getMonth() - 1)));
+    case '3months':
+      return getLocalISOString(new Date(today.setMonth(today.getMonth() - 3)));
+    case 'year':
+      return getLocalISOString(
+        new Date(today.setFullYear(today.getFullYear() - 1)),
+      );
+    default:
+      return getLocalISOString(new Date(today.setMonth(today.getMonth() - 1)));
+  }
+};
+
+// Format date for display on chart
+export const formatDate = (dateString: string): string => {
+  const date = new Date(`${dateString}T00:00:00Z`);
+  return date.toLocaleDateString('en-US', {
+    month: 'short',
+    day: 'numeric',
+    year: 'numeric',
+    timeZone: 'UTC',
+  });
+};

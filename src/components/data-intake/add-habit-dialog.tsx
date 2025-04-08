@@ -20,6 +20,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/shadcn/select';
+import { capitalizeWords } from '@/lib/utils';
 import type { IPersonalizedCategories } from '@/supabase/schema';
 
 interface AddHabitDialogProps {
@@ -92,14 +93,19 @@ export default function AddHabitDialog({
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
-          <DialogTitle className="font-header">Add New Habit</DialogTitle>
+          <DialogTitle className="font-title text-xl">
+            Add New Habit
+          </DialogTitle>
           <DialogDescription className="font-body">
             Create a new habit to track in your daily form.
           </DialogDescription>
         </DialogHeader>
         <div className="grid gap-4 py-4">
           <div className="grid gap-2">
-            <Label className="font-body" htmlFor="category">
+            <Label
+              className="font-header font-semibold text-md"
+              htmlFor="category"
+            >
               Category
             </Label>
             <Select
@@ -119,7 +125,7 @@ export default function AddHabitDialog({
                     key={category.id}
                     value={category.id}
                   >
-                    {category.name}
+                    {capitalizeWords(category.name)}
                   </SelectItem>
                 ))}
               </SelectContent>
@@ -137,7 +143,7 @@ export default function AddHabitDialog({
               >
                 {options.length > 0 ? (
                   options.map(({ value, label }) => (
-                    <div key={value} className="mb-1">
+                    <div key={value} className="flex items-center">
                       <RadioGroupItem
                         className="border-primary text-primary-foreground data-[state=checked]:bg-gradient-to-r from-emerald-400 via-sky-400 to-violet-400 data-[state=checked]:border-white"
                         value={value}

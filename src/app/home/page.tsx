@@ -107,9 +107,6 @@ export default async function HomePage() {
             <Card className="overflow-hidden border-none shadow-md">
               <CardHeader className="bg-gradient-to-r from-emerald-50 via-teal-50 to-violet-50">
                 <CardTitle className="font-title">Charts</CardTitle>
-                <CardDescription className="font-header text-md font-semibold">
-                  Activity and water intake tracking
-                </CardDescription>
               </CardHeader>
               <CardContent className="p-6 space-y-8">
                 <div>
@@ -125,9 +122,6 @@ export default async function HomePage() {
                   <HabitLineCharts userId={userId} />
                 </div>
                 <div className="pt-4 border-t">
-                  <h3 className="text-lg font-body font-semibold mb-4">
-                    Water Intake History
-                  </h3>
                   <WaterChart userId={userId} />
                 </div>
               </CardContent>

@@ -11,7 +11,10 @@ import {
 import { MoodCountData, SleepDataPoint } from '@/supabase/schema';
 
 // function dictionary to map query types to functions
-const functionary: Record<string, (userId: string) => Promise<string>> = {
+const functionary: Record<
+  string,
+  (userId: string, todaysDate: string, startDate: string) => Promise<string>
+> = {
   sleep: summarizeSleepData,
   mood: summarizeMoodData,
 };
@@ -20,13 +23,33 @@ const functionary: Record<string, (userId: string) => Promise<string>> = {
 export async function summarizeData(
   userId: string,
   queryType: string,
+  range: 'week' | 'month' | '3months',
 ): Promise<string> {
   const functionToCall = functionary[queryType];
 
   if (!functionToCall) {
     throw new Error('Invalid query type');
   }
-  return await functionToCall(userId);
+
+  const today = new Date();
+  const todaysDate = getLocalISOString();
+
+  let startDate: string;
+  if (range === 'week') {
+    startDate = getLocalISOString(new Date(today.setDate(today.getDate() - 7)));
+  } else if (range === 'month') {
+    startDate = getLocalISOString(
+      new Date(today.setMonth(today.getMonth() - 1)),
+    );
+  } else if (range === '3months') {
+    startDate = getLocalISOString(
+      new Date(today.setMonth(today.getMonth() - 3)),
+    );
+  } else {
+    throw new Error('Invalid time range');
+  }
+
+  return await functionToCall(userId, todaysDate, startDate);
 }
 
 // functions for the function dictionary
@@ -34,21 +57,19 @@ export async function summarizeData(
 /**
  * Summarize sleep data for the given user from the last month.
  * @param {string} [todaysDate] - Date string in ISO format. Defaults to today's date.
- * @param {string} [lastMonthDate] - Date string in ISO format. Defaults to today's date minus one month.
+ * @param {string} [startDate] - Date string in ISO format.
  * @returns {Promise<string>} - Summary of sleep data from the last month.
  * @throws {Error} - If the AI service is unavailable, or if there is an error querying the database.
  */
 async function summarizeSleepData(
   userId: string,
-  todaysDate = getLocalISOString(),
-  lastMonthDate = getLocalISOString(
-    new Date(new Date().setMonth(new Date().getMonth() - 1)),
-  ),
+  todaysDate: string,
+  startDate: string,
 ) {
   try {
     const response = await selectSleepDataByDateRange(
       userId,
-      lastMonthDate,
+      startDate,
       todaysDate,
     );
     if (
@@ -86,23 +107,17 @@ async function summarizeSleepData(
 /**
  * Summarize mood data for the given user from the last month.
  * @param {string} [todaysDate] - Date string in ISO format. Defaults to today's date.
- * @param {string} [lastMonthDate] - Date string in ISO format. Defaults to today's date minus one month.
+ * @param {string} [startDate] - Date string in ISO format.
  * @returns {Promise<string>} - Summary of mood data from the last month.
  * @throws {Error} - If the AI service is unavailable, or if there is an error querying the database.
  */
 async function summarizeMoodData(
   userId: string,
-  todaysDate = getLocalISOString(),
-  lastMonthDate = getLocalISOString(
-    new Date(new Date().setMonth(new Date().getMonth() - 1)),
-  ),
+  todaysDate: string,
+  startDate: string,
 ) {
   try {
-    const response = await selectMoodFrequency(
-      userId,
-      lastMonthDate,
-      todaysDate,
-    );
+    const response = await selectMoodFrequency(userId, startDate, todaysDate);
     const moodData = response.data as MoodCountData[];
 
     // Calculate total count

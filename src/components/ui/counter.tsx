@@ -1,5 +1,6 @@
 'use client';
 
+import { AnimatePresence, motion } from 'framer-motion';
 import { Minus, Plus } from 'lucide-react';
 import { useEffect, useState } from 'react';
 
@@ -42,23 +43,41 @@ export default function Counter({ value, onChange, disabled }: CounterProps) {
         disabled ? 'opacity-50 pointer-events-none' : ''
       }`}
     >
-      <button
+      <motion.button
         onClick={decrement}
-        className="w-10 h-10 rounded-full flex items-center justify-center border border-slate-300 text-slate-600 hover:bg-slate-100 hover:shadow"
+        whileTap={{ scale: 0.9 }}
+        disabled={disabled}
+        className="w-10 h-10 rounded-full flex items-center justify-center border border-slate-300 text-slate-600 hover:bg-slate-100 hover:shadow disabled:opacity-50"
         aria-label="Decrease count"
       >
         <Minus className="h-5 w-5" />
-      </button>
-      <span className="text-2xl font-medium text-slate-800 min-w-[2ch] text-center">
-        {count}
-      </span>
-      <button
+      </motion.button>
+
+      {/* Rolling Number Animation */}
+      <div className="relative w-10 h-10 overflow-hidden flex justify-center items-center">
+        <AnimatePresence mode="popLayout">
+          <motion.span
+            key={count}
+            initial={{ y: 20, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            exit={{ y: -20, opacity: 0 }}
+            transition={{ duration: 0.3, ease: 'easeOut' }}
+            className="absolute text-2xl font-medium text-slate-800"
+          >
+            {count}
+          </motion.span>
+        </AnimatePresence>
+      </div>
+
+      <motion.button
         onClick={increment}
-        className="w-10 h-10 rounded-full flex items-center justify-center border border-slate-300 text-slate-600 hover:bg-slate-100 hover:shadow"
+        whileTap={{ scale: 0.9 }}
+        disabled={disabled}
+        className="w-10 h-10 rounded-full flex items-center justify-center border border-slate-300 text-slate-600 hover:bg-slate-100 hover:shadow disabled:opacity-50"
         aria-label="Increase count"
       >
         <Plus className="h-5 w-5" />
-      </button>
+      </motion.button>
     </div>
   );
 }

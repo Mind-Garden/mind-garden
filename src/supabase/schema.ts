@@ -87,6 +87,7 @@ export interface ProcessedSleepDataPoint {
 }
 
 export interface MoodDistribution {
+  count: number;
   id: string;
   percentage: number;
 }

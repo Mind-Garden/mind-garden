@@ -24,6 +24,7 @@ import {
   TooltipTrigger,
 } from '@/components/shadcn/tooltip';
 import VoiceRecorder from '@/components/tasks/voice-recorder';
+import FloatingShapes from '@/components/ui/floating-shapes';
 import { getDate, getGreetingText } from '@/lib/utils';
 import type { ITask } from '@/supabase/schema';
 
@@ -337,8 +338,10 @@ export default function TaskManager({ userId, firstName }: TaskManagerProps) {
       </div>
 
       {/* Main Card */}
-      <Card className="w-full overflow-hidden border-none shadow-lg bg-white rounded-xl">
-        <CardHeader className="flex flex-row items-center justify-between p-4 pb-2 bg-sky-50">
+      <Card className="w-full relative overflow-hidden shadow-lg bg-white rounded-xl border-sky-500 border-2">
+        <FloatingShapes colors={['bg-sky-200']} className={'z-10'} />
+
+        <CardHeader className="flex flex-row items-center justify-between p-4 pb-2">
           <div className="flex items-center gap-2">
             <div className="bg-sky-500 rounded-full p-1.5">
               <ListTodo className="w-5 h-5 text-white" />
@@ -347,10 +350,10 @@ export default function TaskManager({ userId, firstName }: TaskManagerProps) {
           </div>
         </CardHeader>
 
-        <CardContent className="p-0">
+        <CardContent className="p-0 z-10 relative">
           <div className="p-4 pt-4 pb-0">
             <div className="relative mb-4">
-              <div className="h-3 w-full bg-sky-100 rounded-full overflow-hidden">
+              <div className="h-3 w-full bg-sky-200 rounded-full overflow-hidden">
                 <motion.div
                   className="h-full bg-sky-500 rounded-full"
                   custom={calculateProgress()}

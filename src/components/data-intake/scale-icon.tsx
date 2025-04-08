@@ -14,7 +14,7 @@ function ScaleIcon({ scaleRating }: ScaleIconProps) {
   };
 
   const IconComponent = ICON_MAP[scaleRating];
-  return <IconComponent className="h-5 w-5" />;
+  return <IconComponent className="h-7 w-7" />;
 }
 
 export default ScaleIcon;
